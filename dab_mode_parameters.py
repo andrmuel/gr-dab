@@ -15,3 +15,6 @@ cp_length = [-1,504, 126, 63, 252]               # length of cyclic prefix
 #
 # symbols_per_frame*symbol_length+ns_length = frame_length
 # symbol_length = fft_length+cp_length
+
+default_sample_rate = 2048000
+T = 1./default_sample_rate

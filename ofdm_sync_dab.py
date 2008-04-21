@@ -24,8 +24,9 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr
-import sys
 import dab_mode_parameters
+import sys
+from math import pi
 
 class moving_sum(gr.hier_block2):
 	"""
@@ -85,12 +86,16 @@ class ofdm_sync_dab(gr.hier_block2):
 		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
 					gr.io_signature2(2, 2, gr.sizeof_gr_complex*fft_length, gr.sizeof_char*fft_length)) # output signature
 
+		# workaround for a problem that prevents connecting more than one block directly (see trac ticket #161)
+		self.input = gr.kludge_copy(gr.sizeof_gr_complex)
+		self.connect(self, self.input)
+
 		#
 		# null-symbol detection
 		#
 
 		# get the magnitude squared
-		self.c2magsqared = gr.complex_to_mag_squared()
+		self.ns_c2magsquared = gr.complex_to_mag_squared()
 		
 		# this wastes cpu cycles:
 		# ns_detect_taps = [1]*ns_length
@@ -101,21 +106,18 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.ns_moving_sum = moving_sum(ns_length,1)
 		self.ns_invert = gr.multiply_const_ff(-1)
 
-		# peak detecter on the inverted, summed up signal -> we get the zeros (i.e. the position of the start of a frame)
-		self.peak_detect = gr.peak_detector_fb(0.6,0.7,10,0.0001) # mostly found by try and error -> remember that the values are negative!
+		# peak detector on the inverted, summed up signal -> we get the zeros (i.e. the position of the start of a frame)
+		self.ns_peak_detect = gr.peak_detector_fb(0.6,0.7,10,0.0001) # mostly found by try and error -> remember that the values are negative!
 
 		# connect it all
-		self.connect(self, self.c2magsqared, self.ns_moving_sum, self.ns_invert, self.peak_detect, (self,1))
+		self.connect(self.input, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect, (self,1))
 
 		if debug:
-			self.connect(self.ns_invert, gr.file_sink(gr.sizeof_float,"ofdm_sync_dab_ns_filter_inv_f.dat"))
-			self.connect(self.peak_detect,gr.file_sink(gr.sizeof_char,"ofdm_sync_dab_peak_detect_b.dat"))
-		else: # FIXME remove this once the block is finished
-			self.nop = gr.nop(gr.sizeof_char)
-			self.connect(self.peak_detect,self.nop)
+			self.connect(self.ns_invert, gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ns_filter_inv_f.dat"))
+			self.connect(self.ns_peak_detect,gr.file_sink(gr.sizeof_char, "debug/ofdm_sync_dab_peak_detect_b.dat"))
 
 		#
-		# fine frequency detection
+		# fine frequency synchronisation
 		#
 
 		# the code for fine frequency synchronisation is mostly adapted
@@ -125,7 +127,32 @@ class ofdm_sync_dab(gr.hier_block2):
 		# Transactions on Communications, Vol. 45, NO. 12, December
 		# 1997
 
+		# TODO gate angle calculation when unneeded (requires some conditional stream select block)
 
+		self.ffs_delay = gr.delay(gr.sizeof_gr_complex, fft_length/2)
+		self.ffs_conj = gr.conjugate_cc()
+		self.ffs_mult = gr.multiply_cc()
+		self.ffs_angle = gr.complex_to_arg()
+		self.ffs_moving_sum = moving_sum(fft_length/2, 2/fft_length) # average over fft_length/2
+		self.ffs_delay_symbol_start = gr.delay(gr.sizeof_char, fft_length/2)
+		self.ffs_sample_and_hold = gr.sample_and_hold_ff()
+		self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
+		self.ffs_mixer = gr.multiply_cc()
 
-		
+		# calculate fine frequency error
+		self.connect(self.input, self.ffs_conj, self.ffs_mult)
+		self.connect(self.input, self.ffs_delay, (self.ffs_mult, 1))
+		self.connect(self.ffs_mult, self.ffs_angle, self.ffs_moving_sum) # calculate angle first, then sum up; otherwise, all samples must have the same magnitude
+		# only use the value from the first half of the first symbol
+		self.connect(self.ffs_moving_sum, (self.ffs_sample_and_hold, 0))
+		self.connect(self.ns_peak_detect, self.ffs_delay_symbol_start, (self.ffs_sample_and_hold, 1))
+		# do the correction
+		self.connect(self.ffs_sample_and_hold, self.ffs_nco, (self.ffs_mixer, 0))
+		self.connect(self.input, (self.ffs_mixer, 1))
 
+		if debug:
+			self.connect(self.ffs_sample_and_hold, gr.multiply_const_ff(1/(dab_mode_parameters.T*2*pi)), gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_fine_freq_err_f.dat"))
+			self.connect(self.ffs_mixer, gr.file_sink(gr.sizeof_gr_complex, "debug/ofdm_sync_dab_fine_freq_corrected_c.dat"))
+		else: # FIXME remove this once the block is complete
+			self.nop = gr.nop(gr.sizeof_gr_complex)
+			self.connect(self.ffs_mixer, self.nop)
