@@ -161,7 +161,7 @@ class ofdm_sync_dab(gr.hier_block2):
 		#self.ffs_moving_sum = moving_sum_cc(fft_length/2, 2./fft_length)
 		self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*cp_length)
 		self.ffs_angle = gr.complex_to_arg()
-		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, fft_length/2 + cp_length)
+		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, cp_length)
 		self.ffs_sample_and_hold = gr.sample_and_hold_ff()
 		self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
 		self.ffs_mixer = gr.multiply_cc()
