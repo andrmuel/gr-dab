@@ -24,7 +24,7 @@
 # andrmuel@ee.ethz.ch
 
 
-class dab_params:
+class dab_parameters:
 	"""
 	DAB parameters for mode I to IV
 	see Table 38, page 145 of the DAB specification
