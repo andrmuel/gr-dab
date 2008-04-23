@@ -1,3 +1,5 @@
+# _*_ coding: utf8 _*_
+
 # Copyright 2008 Free Software Foundation, Inc.
 # 
 # This file is part of GNU Radio
@@ -142,12 +144,14 @@ class ofdm_sync_dab(gr.hier_block2):
 		# fine frequency synchronisation
 		#
 
-		# the code for fine frequency synchronisation is mostly adapted
-		# from ofdm_sync_pn.py - it uses frequency synchronisation as
-		# described in "Robust Frequency and Timing Synchronization for
-		# OFDM" by Timothy M. Schmidl and Donald C. Cox, IEEE
-		# Transactions on Communications, Vol. 45, NO. 12, December
-		# 1997
+		# the code for fine frequency synchronisation is adapted from
+		# ofdm_sync_pn.py; however, DAB does not use a training symbol
+		# with a prn where odd frequencies are zero - we therefore
+		# abuse the cyclic prefix to find the fine frequency error, as
+		# suggested in "ML Estimation of Timing and Frequency Offset
+		# in OFDM Systems", by Jan-Jaap van de Beek, Magnus Sandell,
+		# Per Ola Börjesson, see
+		# http://www.sm.luth.se/csee/sp/research/report/bsb96r.html
 
 		# TODO gate angle calculation when unneeded (requires some conditional stream select block)
 
@@ -156,10 +160,10 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.ffs_mult = gr.multiply_cc()
 		#FIXME
 		#self.ffs_moving_sum = moving_sum_cc(dp.fft_length/2, 2./dp.fft_length)
-		self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*(dp.cp_length-rp.cp_gap))
+		self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*dp.cp_length)
 		self.ffs_angle = gr.complex_to_arg()
 		self.ffs_angle_scale = gr.multiply_const_ff(1./dp.fft_length)
-		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, dp.cp_length)
+		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, dp.symbol_length)
 		self.ffs_sample_and_hold = gr.sample_and_hold_ff()
 		self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
 		self.ffs_mixer = gr.multiply_cc()
