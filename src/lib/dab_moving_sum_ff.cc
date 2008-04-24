@@ -39,7 +39,7 @@
 dab_moving_sum_ff_sptr 
 dab_make_moving_sum_ff (int length)
 {
-  return dab_moving_sum_ff_sptr (new dab_moving_sum_ff (int length));
+  return dab_moving_sum_ff_sptr (new dab_moving_sum_ff (length));
 }
 
 /*
@@ -65,6 +65,7 @@ dab_moving_sum_ff::dab_moving_sum_ff (int length)
 		   gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
     d_sum(0)
 {
+  assert(length>=0);
   set_length(length);
 }
 
@@ -83,8 +84,14 @@ dab_moving_sum_ff::work (int noutput_items,
 {
   const float *in = (const float *) input_items[0];
   float *out = (float *) output_items[0];
-
-  d_sum+=(double)in[0]-(double)in[noutput_items-1];
+  // just so i know, what gnuradio is doing ...
+  // printf("noutput_items: %d\n", noutput_items);
+  // for (int j=0; j<noutput_items+d_length-1;j++)
+  //    printf("in[%d]=%3.2f out[%d]=%3.2f\n",j,in[j],j,out[j]);
+  for (int i=0; i < noutput_items; i++) {
+    d_sum+=(double)in[i+d_length]-(double)in[i];
+    out[i] = (float)d_sum;
+  }
 
   // Tell runtime system how many output items we produced.
   return noutput_items;

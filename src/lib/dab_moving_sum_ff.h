@@ -65,11 +65,12 @@ private:
   dab_moving_sum_ff (int length);  	// private constructor
 
   double d_sum;
+  int d_length;
 
  public:
   ~dab_moving_sum_ff ();	// public destructor
-  int length() const {return history();}
-  void set_length(int length) {set_history(length);}
+  int length() const {return d_length;}
+  void set_length(int length) {set_history(length+1); d_length=length;}
 
   // Where all the action really happens
 
