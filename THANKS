@@ -1,0 +1,4 @@
+Code from the following two people was very helpful as a reference:
+
+Jens Elsner - implementation of the DAB physical layer in GNU Radio
+Nicolas Alt - complete DAB receiver implementation in Matlab
