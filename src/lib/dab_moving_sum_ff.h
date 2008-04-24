@@ -19,8 +19,8 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_HOWTO_SQUARE2_FF_H
-#define INCLUDED_HOWTO_SQUARE2_FF_H
+#ifndef INCLUDED_DAB_MOVING_SUM_FF_H
+#define INCLUDED_DAB_MOVING_SUM_FF_H
 
 #include <gr_sync_block.h>
 
@@ -78,4 +78,4 @@ private:
 	    gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_HOWTO_SQUARE2_FF_H */
+#endif /* INCLUDED_DAB_MOVING_SUM_FF_H */

@@ -22,10 +22,14 @@
  */
 GR_SWIG_BLOCK_MAGIC(dab,moving_sum_ff);
 
-dab_moving_sum_ff_sptr dab_make_moving_sum_ff ();
+dab_moving_sum_ff_sptr dab_make_moving_sum_ff (int length);
 
 class dab_moving_sum_ff : public gr_sync_block
 {
-private:
-  dab_moving_sum_ff ();
+ private:
+  dab_moving_sum_ff (int length);
+
+ public:
+  int length() const {return history();}
+  void set_length(int length) {set_history(length);}
 };
