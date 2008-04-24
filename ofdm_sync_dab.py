@@ -51,8 +51,11 @@ class moving_sum_ff(gr.hier_block2):
 		self.delay = gr.delay(gr.sizeof_float, elements-1)
 		self.sub = gr.sub_ff()
 		self.iir_filter = gr.iir_filter_ffd([gain],[0,1])
+		# FIXME possible trouble with limited precision (error summing up) -> maybe implement some slow decay towards zero
+		# such as 
+		self.decay = gr.multiply_const_ff(1-1./elements)
 		
-		self.connect(self, self.input, self.sub, self.iir_filter, self)
+		self.connect(self, self.input, self.sub, self.iir_filter, self.decay, self)
 		self.connect(self.input, self.delay, (self.sub,1))
 
 class moving_sum_cc(gr.hier_block2):
@@ -72,14 +75,18 @@ class moving_sum_cc(gr.hier_block2):
 					gr.io_signature(1, 1, gr.sizeof_gr_complex)) # output signature
 
 		self.input = gr.kludge_copy(gr.sizeof_gr_complex) # needed, because external inputs can only be wired to one port
-
-		self.delay = gr.delay(gr.sizeof_gr_complex, elements-1)
-		self.sub = gr.sub_cc()
-		self.iir_filter = gr.single_pole_iir_filter_cc(0.5)
-		self.gain = gr.multiply_const_cc(2.*gain)
 		
-		self.connect(self, self.input, self.sub, self.iir_filter, self.gain, self)
-		self.connect(self.input, self.delay, (self.sub,1))
+		# calculate moving sum as two separate moving sums of the real and imaginary part
+		self.real = gr.complex_to_real()
+		self.imag = gr.complex_to_imag()
+		self.rsum = moving_sum_ff(elements, gain)
+		self.isum = moving_sum_ff(elements, gain)
+		self.out  = gr.float_to_complex()
+
+		self.connect(self, self.input)
+		self.connect(self.input, self.real, self.rsum, (self.out, 0))
+		self.connect(self.input, self.imag, self.isum, (self.out, 1))
+		self.connect(self.out, self)
 
 class ofdm_sync_dab(gr.hier_block2):
 	"""
@@ -145,12 +152,10 @@ class ofdm_sync_dab(gr.hier_block2):
 		#
 
 		# the code for fine frequency synchronisation is adapted from
-		# ofdm_sync_pn.py; however, DAB does not use a training symbol
-		# with a prn where odd frequencies are zero - we therefore
-		# abuse the cyclic prefix to find the fine frequency error, as
-		# suggested in "ML Estimation of Timing and Frequency Offset
-		# in OFDM Systems", by Jan-Jaap van de Beek, Magnus Sandell,
-		# Per Ola Börjesson, see
+		# ofdm_sync_ml.py; it abuses the cyclic prefix to find the fine
+		# frequency error, as suggested in "ML Estimation of Timing and
+		# Frequency Offset in OFDM Systems", by Jan-Jaap van de Beek,
+		# Magnus Sandell, Per Ola Börjesson, see
 		# http://www.sm.luth.se/csee/sp/research/report/bsb96r.html
 
 		# TODO gate angle calculation when unneeded (requires some conditional stream select block)
@@ -159,8 +164,8 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.ffs_conj = gr.conjugate_cc()
 		self.ffs_mult = gr.multiply_cc()
 		#FIXME
-		#self.ffs_moving_sum = moving_sum_cc(dp.fft_length/2, 2./dp.fft_length)
-		self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*dp.cp_length)
+		# self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*dp.cp_length)
+		self.ffs_moving_sum = moving_sum_cc(dp.cp_length, 1)
 		self.ffs_angle = gr.complex_to_arg()
 		self.ffs_angle_scale = gr.multiply_const_ff(1./dp.fft_length)
 		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, dp.symbol_length)

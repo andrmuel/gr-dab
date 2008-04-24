@@ -206,7 +206,7 @@ class receiver_parameters:
 	"""
 	parameters for the receiver, independent of the standard
 	"""
-	__cp_gap__ = [0, 10, 5, 20] # adjust this ...
+	__cp_gap__ = [30, 10, 5, 20] # adjust this ...
 	def __init__(self,mode):
 		assert(mode>=1 and mode <=4)
 		self.cp_gap = self.__cp_gap__[mode-1]
