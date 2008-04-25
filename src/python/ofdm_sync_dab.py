@@ -25,12 +25,12 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr
+from gnuradio import gr, dab
 import parameters
 import sys
 from math import pi
 
-class moving_sum_ff(gr.hier_block2):
+class x_moving_sum_ff(gr.hier_block2):
 	"""
 	moving sum block for float samples
 	"""
@@ -48,7 +48,7 @@ class moving_sum_ff(gr.hier_block2):
 
 		self.input = gr.add_const_ff(0) # needed, because external inputs can only be wired to one port
 
-		self.delay = gr.delay(gr.sizeof_float, elements-1)
+		self.delay = gr.delay(gr.sizeof_float, elements)
 		self.sub = gr.sub_ff()
 		self.iir_filter = gr.iir_filter_ffd([gain],[0,1])
 		# FIXME possible trouble with limited precision (error summing up) -> maybe implement some slow decay towards zero
@@ -79,14 +79,15 @@ class moving_sum_cc(gr.hier_block2):
 		# calculate moving sum as two separate moving sums of the real and imaginary part
 		self.real = gr.complex_to_real()
 		self.imag = gr.complex_to_imag()
-		self.rsum = moving_sum_ff(elements, gain)
-		self.isum = moving_sum_ff(elements, gain)
-		self.out  = gr.float_to_complex()
+		self.rsum = dab.moving_sum_ff(elements)
+		self.isum = dab.moving_sum_ff(elements)
+		self.f2c  = gr.float_to_complex()
+		self.gain = gr.multiply_const_cc(gain)
 
 		self.connect(self, self.input)
-		self.connect(self.input, self.real, self.rsum, (self.out, 0))
-		self.connect(self.input, self.imag, self.isum, (self.out, 1))
-		self.connect(self.out, self)
+		self.connect(self.input, self.real, self.rsum, (self.f2c, 0))
+		self.connect(self.input, self.imag, self.isum, (self.f2c, 1))
+		self.connect(self.f2c, self.gain, self)
 
 class ofdm_sync_dab(gr.hier_block2):
 	"""
@@ -129,12 +130,12 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.ns_c2magsquared = gr.complex_to_mag_squared()
 		
 		# this wastes cpu cycles:
-		# ns_detect_taps = [1]*dp.ns_length
-		# self.ns_moving_sum = gr.fir_filter_fff(1,ns_detect_taps)
+		ns_detect_taps = [1]*dp.ns_length
+		self.ns_moving_sum = gr.fir_filter_fff(1,ns_detect_taps)
 		# this isn't better:
 		#self.ns_filter = gr.iir_filter_ffd([1]+[0]*(dp.ns_length-1)+[-1],[0,1])
 		# this does the same again, but is actually faster (outsourced to an independent block ..):
-		self.ns_moving_sum = moving_sum_ff(dp.ns_length,1)
+		# self.ns_moving_sum = dab.moving_sum_ff(dp.ns_length)
 		self.ns_invert = gr.multiply_const_ff(-1)
 
 		# peak detector on the inverted, summed up signal -> we get the zeros (i.e. the position of the start of a frame)

@@ -35,6 +35,30 @@ class qa_moving_sum(gr_unittest.TestCase):
 		result_data = dst.data()
 		self.assertFloatTuplesAlmostEqual(expected_result, result_data, 4)
 
+	def test_001_moving_sum_cc(self):
+		src_data = (0,1,1j,-1,0,0,0,1,1j,2)
+		expected_result = (0,1,1+1j,1j,1j,-1+1j,-1+1j,1+1j,3+1j)
+		src = gr.vector_source_c(src_data)
+		moving_sum = dab.moving_sum_cc(5)
+		dst = gr.vector_sink_c()
+		self.tb.connect(src, moving_sum)
+		self.tb.connect(moving_sum, dst)
+		self.tb.run()
+		result_data = dst.data()
+		self.assertComplexTuplesAlmostEqual(expected_result, result_data, 6)
+
+	def test_002_moving_sum_cc(self):
+		src_data = [float(i**3)*(7**-2)+0.5j*i for i in range(-20,20)]
+		expected_result = [src_data[0]]+[src_data[i]+src_data[i-1] for i in range(1,40)]
+		src = gr.vector_source_c(src_data)
+		moving_sum = dab.moving_sum_cc(2)
+		dst = gr.vector_sink_c()
+		self.tb.connect(src, moving_sum)
+		self.tb.connect(moving_sum, dst)
+		self.tb.run()
+		result_data = dst.data()
+		self.assertComplexTuplesAlmostEqual(expected_result, result_data, 4)
+
 if __name__ == '__main__':
 	gr_unittest.main()
 
