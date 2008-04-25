@@ -31,8 +31,8 @@ class dab_moving_sum_ff : public gr_sync_block
   dab_moving_sum_ff (int length);
 
  public:
-  int length() const {return history();}
-  void set_length(int length) {set_history(length);}
+  int length() const {return d_length;}
+  void set_length(int length) {set_history(length+1); d_length=length;}
 };
 
 // ----------------------------------------------------------------
@@ -54,6 +54,6 @@ class dab_moving_sum_cc : public gr_sync_block
   dab_moving_sum_cc (int length);
 
  public:
-  int length() const {return history();}
-  void set_length(int length) {set_history(length);}
+  int length() const {return d_length;}
+  void set_length(int length) {set_history(length+1); d_length=length;}
 };

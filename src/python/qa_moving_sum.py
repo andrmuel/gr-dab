@@ -36,8 +36,8 @@ class qa_moving_sum(gr_unittest.TestCase):
 		self.assertFloatTuplesAlmostEqual(expected_result, result_data, 4)
 
 	def test_001_moving_sum_cc(self):
-		src_data = (0,1,1j,-1,0,0,0,1,1j,2)
-		expected_result = (0,1,1+1j,1j,1j,-1+1j,-1+1j,1+1j,3+1j)
+		src_data = (0j,1+0j,1j,-1+0j,0j,0j,0j,1+0j,1j,2+0j)
+		expected_result = (0j,1+0j,1+1j,1j,1j,1j,-1+1j,0j,1+1j,3+1j)
 		src = gr.vector_source_c(src_data)
 		moving_sum = dab.moving_sum_cc(5)
 		dst = gr.vector_sink_c()

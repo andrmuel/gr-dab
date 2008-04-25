@@ -19,8 +19,8 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_MOVING_SUM_FF_H
-#define INCLUDED_DAB_MOVING_SUM_FF_H
+#ifndef INCLUDED_DAB_MOVING_SUM_CC_H
+#define INCLUDED_DAB_MOVING_SUM_CC_H
 
 #include <gr_sync_block.h>
 
@@ -49,7 +49,7 @@ typedef boost::shared_ptr<dab_moving_sum_cc> dab_moving_sum_cc_sptr;
 dab_moving_sum_cc_sptr dab_make_moving_sum_cc (int length);
 
 /*!
- * \brief moving sum over a stream of floats.
+ * \brief moving sum over a stream of complex floats.
  * \ingroup misc
  *
  * This uses the preferred technique: subclassing gr_sync_block.
@@ -79,4 +79,4 @@ private:
 	    gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_MOVING_SUM_FF_H */
+#endif /* INCLUDED_DAB_MOVING_SUM_CC_H */
