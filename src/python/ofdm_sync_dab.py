@@ -30,65 +30,6 @@ import parameters
 import sys
 from math import pi
 
-class x_moving_sum_ff(gr.hier_block2):
-	"""
-	moving sum block for float samples
-	"""
-	
-	def __init__(self, elements, gain):
-		"""
-		moving sum filter, implemented with a delay line + an iir filter
-
-		@param elements: length of the window
-		@param gain: gain factor
-		"""
-		gr.hier_block2.__init__(self,"moving_sum",
-					gr.io_signature(1, 1, gr.sizeof_float), # input signature
-					gr.io_signature(1, 1, gr.sizeof_float)) # output signature
-
-		self.input = gr.add_const_ff(0) # needed, because external inputs can only be wired to one port
-
-		self.delay = gr.delay(gr.sizeof_float, elements)
-		self.sub = gr.sub_ff()
-		self.iir_filter = gr.iir_filter_ffd([gain],[0,1])
-		# FIXME possible trouble with limited precision (error summing up) -> maybe implement some slow decay towards zero
-		# such as 
-		self.decay = gr.multiply_const_ff(1-1./elements)
-		
-		self.connect(self, self.input, self.sub, self.iir_filter, self.decay, self)
-		self.connect(self.input, self.delay, (self.sub,1))
-
-class moving_sum_cc(gr.hier_block2):
-	"""
-	moving sum block for complex samples
-	"""
-	
-	def __init__(self, elements, gain):
-		"""
-		moving sum filter, implemented with a delay line + an iir filter
-
-		@param elements: length of the window
-		@param gain: gain factor
-		"""
-		gr.hier_block2.__init__(self,"moving_sum",
-					gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
-					gr.io_signature(1, 1, gr.sizeof_gr_complex)) # output signature
-
-		self.input = gr.kludge_copy(gr.sizeof_gr_complex) # needed, because external inputs can only be wired to one port
-		
-		# calculate moving sum as two separate moving sums of the real and imaginary part
-		self.real = gr.complex_to_real()
-		self.imag = gr.complex_to_imag()
-		self.rsum = dab.moving_sum_ff(elements)
-		self.isum = dab.moving_sum_ff(elements)
-		self.f2c  = gr.float_to_complex()
-		self.gain = gr.multiply_const_cc(gain)
-
-		self.connect(self, self.input)
-		self.connect(self.input, self.real, self.rsum, (self.f2c, 0))
-		self.connect(self.input, self.imag, self.isum, (self.f2c, 1))
-		self.connect(self.f2c, self.gain, self)
-
 class ofdm_sync_dab(gr.hier_block2):
 	"""
 	OFDM time and frequency synchronisation for DAB
@@ -130,19 +71,19 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.ns_c2magsquared = gr.complex_to_mag_squared()
 		
 		# this wastes cpu cycles:
-		ns_detect_taps = [1]*dp.ns_length
-		self.ns_moving_sum = gr.fir_filter_fff(1,ns_detect_taps)
+		# ns_detect_taps = [1]*dp.ns_length
+		# self.ns_moving_sum = gr.fir_filter_fff(1,ns_detect_taps)
 		# this isn't better:
 		#self.ns_filter = gr.iir_filter_ffd([1]+[0]*(dp.ns_length-1)+[-1],[0,1])
 		# this does the same again, but is actually faster (outsourced to an independent block ..):
-		# self.ns_moving_sum = dab.moving_sum_ff(dp.ns_length)
+		self.ns_moving_sum = dab.moving_sum_ff(dp.ns_length)
 		self.ns_invert = gr.multiply_const_ff(-1)
 
 		# peak detector on the inverted, summed up signal -> we get the zeros (i.e. the position of the start of a frame)
 		self.ns_peak_detect = gr.peak_detector_fb(0.6,0.7,10,0.0001) # mostly found by try and error -> remember that the values are negative!
 
 		# connect it all
-		self.connect(self.input, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect, (self,1))
+		self.connect(self.input, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect)
 
 		if debug:
 			self.connect(self.ns_invert, gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ns_filter_inv_f.dat"))
@@ -159,18 +100,18 @@ class ofdm_sync_dab(gr.hier_block2):
 		# Magnus Sandell, Per Ola Börjesson, see
 		# http://www.sm.luth.se/csee/sp/research/report/bsb96r.html
 
-		# TODO gate angle calculation when unneeded (requires some conditional stream select block)
+		# TODO maybe average over multiple symbols, or gate angle calculation when unneeded (requires some conditional stream select block)
 
 		self.ffs_delay = gr.delay(gr.sizeof_gr_complex, dp.fft_length)
 		self.ffs_conj = gr.conjugate_cc()
 		self.ffs_mult = gr.multiply_cc()
-		#FIXME
 		# self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*dp.cp_length)
-		self.ffs_moving_sum = moving_sum_cc(dp.cp_length, 1)
+		self.ffs_moving_sum = dab.moving_sum_cc(dp.cp_length)
 		self.ffs_angle = gr.complex_to_arg()
 		self.ffs_angle_scale = gr.multiply_const_ff(1./dp.fft_length)
-		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, dp.symbol_length)
+		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, dp.symbol_length) # sample the value at the end of the symbol ..
 		self.ffs_sample_and_hold = gr.sample_and_hold_ff()
+		self.ffs_delay_input_for_correction = gr.delay(gr.sizeof_gr_complex, dp.symbol_length) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
 		self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
 		self.ffs_mixer = gr.multiply_cc()
 
@@ -183,7 +124,11 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.connect(self.ns_peak_detect, self.ffs_delay_sample_and_hold, (self.ffs_sample_and_hold, 1))
 		# do the correction
 		self.connect(self.ffs_sample_and_hold, self.ffs_nco, (self.ffs_mixer, 0))
-		self.connect(self.input, (self.ffs_mixer, 1))
+		self.connect(self.input, self.ffs_delay_input_for_correction, (self.ffs_mixer, 1))
+
+		# output - corrected signal and start of DAB frames
+		self.connect(self.ffs_mixer, (self, 0))
+		self.connect(self.ffs_delay_sample_and_hold, (self, 1))
 
 		if debug:
 			self.connect(self.ffs_angle, gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ffs_angle.dat"))

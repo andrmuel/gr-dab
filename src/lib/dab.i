@@ -9,6 +9,7 @@
 #include "gnuradio_swig_bug_workaround.h"	// mandatory bug fix
 #include "dab_moving_sum_ff.h"
 #include "dab_moving_sum_cc.h"
+#include "dab_ofdm_sampler.h"
 #include <stdexcept>
 %}
 
@@ -56,4 +57,16 @@ class dab_moving_sum_cc : public gr_sync_block
  public:
   int length() const {return d_length;}
   void set_length(int length) {set_history(length+1); d_length=length;}
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,ofdm_sampler);
+
+dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame);
+
+class dab_ofdm_sampler : public gr_block
+{
+ private:
+  dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame);
 };

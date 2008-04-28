@@ -62,7 +62,8 @@ ourlib_LTLIBRARIES = _dab.la
 _dab_la_SOURCES = 			\
 	dab.cc			        \
 	dab_moving_sum_ff.cc            \
-	dab_moving_sum_cc.cc
+	dab_moving_sum_cc.cc            \
+	dab_ofdm_sampler.cc
 
 # magic flags
 _dab_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -79,7 +80,8 @@ dab.cc dab.py: $(LOCAL_IFILES) $(ALL_IFILES)
 # These headers get installed in ${prefix}/include/gnuradio
 grinclude_HEADERS =			\
 	dab_moving_sum_ff.h             \
-	dab_moving_sum_cc.h
+	dab_moving_sum_cc.h             \
+	dab_ofdm_sampler.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig
