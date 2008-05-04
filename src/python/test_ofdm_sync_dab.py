@@ -20,7 +20,7 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-# dab_ofdm_sync_test.py - test the DAB OFDM synchronisation
+# test_ofdm_sync_dab.py - test the DAB OFDM synchronisation
 #
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch

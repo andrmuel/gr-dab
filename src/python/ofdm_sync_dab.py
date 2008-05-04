@@ -57,7 +57,7 @@ class ofdm_sync_dab(gr.hier_block2):
 		
 		gr.hier_block2.__init__(self,"ofdm_sync_dab",
 		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
-					gr.io_signature2(2, 2, gr.sizeof_gr_complex*dp.fft_length, gr.sizeof_char*dp.fft_length)) # output signature
+					gr.io_signature2(2, 2, gr.sizeof_gr_complex, gr.sizeof_char)) # output signature
 
 		# workaround for a problem that prevents connecting more than one block directly (see trac ticket #161)
 		self.input = gr.kludge_copy(gr.sizeof_gr_complex)
