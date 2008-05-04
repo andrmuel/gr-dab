@@ -55,7 +55,7 @@ float
 dab_ofdm_coarse_frequency_correct::mag_squared(const gr_complex sample) {
     const float __x = sample.real();
     const float __y = sample.imag();
-    return sqrt(__x * __x + __y * __y);
+    return __x * __x + __y * __y;
 }
 
 void
