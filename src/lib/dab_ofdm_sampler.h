@@ -51,8 +51,6 @@ dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned i
 /*!
  * \brief cuts stream of DAB samples into symbol vectors
  * \ingroup DAB
- *
- * This uses the preferred technique: subclassing gr_block.
  */
 class dab_ofdm_sampler : public gr_block
 {

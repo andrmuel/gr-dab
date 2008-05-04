@@ -10,6 +10,7 @@
 #include "dab_moving_sum_ff.h"
 #include "dab_moving_sum_cc.h"
 #include "dab_ofdm_sampler.h"
+#include "dab_ofdm_coarse_frequency_correct.h"
 #include <stdexcept>
 %}
 
@@ -69,4 +70,16 @@ class dab_ofdm_sampler : public gr_block
 {
  private:
   dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,ofdm_coarse_frequency_correct);
+
+dab_ofdm_coarse_frequency_correct_sptr dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);
+
+class dab_ofdm_coarse_frequency_correct : public gr_sync_block
+{
+ private:
+  dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);
 };

@@ -68,7 +68,7 @@ dab_ofdm_sampler::general_work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-	/* adapted from gr_ofdm_sampler.cc */
+	/* partially adapted from gr_ofdm_sampler.cc */
 	const gr_complex *iptr = (const gr_complex *) input_items[0];
 	const char *trigger = (const char *) input_items[1];
 	
