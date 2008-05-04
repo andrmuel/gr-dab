@@ -45,7 +45,7 @@ dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int nu
 dab_ofdm_coarse_frequency_correct::dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers) : 
 	gr_sync_block ("ofdm_coarse_frequency_correct",
 	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char)),
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
+	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*num_carriers, sizeof(char))),
 	d_fft_length(fft_length), d_num_carriers(num_carriers), d_freq_offset(0)
 {
 	d_zeros_on_left = (d_fft_length-d_num_carriers)/2;
@@ -117,8 +117,11 @@ dab_ofdm_coarse_frequency_correct::work (int noutput_items,
 		frame_start_out[0] = 0;
 	}
 
-	for (i=0;i<d_num_carriers+1;i++) {
+	for (i=0;i<d_num_carriers/2;i++) {
 		optr[i] = iptr[d_freq_offset+i];
+	}
+	for (i=d_num_carriers/2;i<d_num_carriers;i++) {
+		optr[i] = iptr[d_freq_offset+i+1];
 	}
 
 	return 1;

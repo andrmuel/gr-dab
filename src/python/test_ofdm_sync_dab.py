@@ -51,9 +51,9 @@ class dab_ofdm_sync_test(gr.top_block):
 			print "using samples from file " + filename
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
-		self.sync_dab = ofdm_sync_dab(1, True)
-		
-		self.connect(self.src, self.sync_dab)
+		self.sync_dab = ofdm_sync_dab(1, False)
+		self.nop = gr.nop(gr.sizeof_gr_complex)
+		self.connect(self.src, self.sync_dab, self.nop)
 
 if __name__=='__main__':
 	try:

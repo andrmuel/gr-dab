@@ -134,6 +134,3 @@ class ofdm_sync_dab(gr.hier_block2):
 			self.connect(self.ffs_angle, gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ffs_angle.dat"))
 			self.connect(self.ffs_sample_and_hold, gr.multiply_const_ff(1./(dp.T*2*pi)), gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_fine_freq_err_f.dat"))
 			self.connect(self.ffs_mixer, gr.file_sink(gr.sizeof_gr_complex, "debug/ofdm_sync_dab_fine_freq_corrected_c.dat"))
-		else: # FIXME remove this once the block is complete
-			self.nop = gr.nop(gr.sizeof_gr_complex)
-			self.connect(self.ffs_mixer, self.nop)

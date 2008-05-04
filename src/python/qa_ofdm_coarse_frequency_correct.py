@@ -13,7 +13,7 @@ class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 
 	def test_001_ofdm_coarse_frequency_correct(self):
 		src_data0        = [0,1,2,3,4,5,6,7,8,9,1,2,0,5,7,6,0,4,0,6,1,1,1,0.8,0.1,1.3,1,0.7,1,1,0,1,2,3,4,5,6,7,8,9]
-		expected_result0 = [7,8,9,0,0,0,0,0,0,0,5,7,6,0,0,0,0,0,0,0,0.8,0.1,1.3,0,0,0,0,0,0,0,3,4,5,0,0,0,0,0,0,0]
+		expected_result0 = [7,9,5,6,0.8,1.3,3,5]
 		expected_result0 = [complex(x) for x in expected_result0]
 		src_data1 = [1,1,1,0]
 		expected_result1 = (1,1,1,0)
@@ -21,7 +21,7 @@ class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 		src1 = gr.vector_source_b(src_data1)
 		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex, 10)
 		ofdm_coarse_frequency_correct = dab.ofdm_coarse_frequency_correct(10,2)
-		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex, 10)
+		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex, 2)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()
 		self.tb.connect(src0, s2v0, (ofdm_coarse_frequency_correct,0))
