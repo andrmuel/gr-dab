@@ -65,12 +65,12 @@ class dab_moving_sum_cc : public gr_sync_block
 
 GR_SWIG_BLOCK_MAGIC(dab,ofdm_sampler);
 
-dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame);
+dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
 
 class dab_ofdm_sampler : public gr_block
 {
  private:
-  dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame);
+  dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
 };
 
 // ----------------------------------------------------------------

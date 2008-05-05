@@ -39,16 +39,17 @@
 dab_ofdm_sampler_sptr 
 dab_make_ofdm_sampler (unsigned int fft_length, 
                        unsigned int cp_length, 
-                       unsigned int symbols_per_frame)
+                       unsigned int symbols_per_frame,
+                       unsigned int gap)
 {
-	return dab_ofdm_sampler_sptr (new dab_ofdm_sampler (fft_length, cp_length, symbols_per_frame));
+	return dab_ofdm_sampler_sptr (new dab_ofdm_sampler (fft_length, cp_length, symbols_per_frame, gap));
 }
 
-dab_ofdm_sampler::dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame) : 
+dab_ofdm_sampler::dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap) : 
 	gr_block ("ofdm_sampler",
 	           gr_make_io_signature2 (2, 2, sizeof(gr_complex), sizeof(char)),
 	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
-	d_state(STATE_NS), d_pos(0), d_fft_length(fft_length), d_cp_length(cp_length), d_symbols_per_frame(symbols_per_frame), d_sym_nr(0)
+	d_state(STATE_NS), d_pos(0), d_fft_length(fft_length), d_cp_length(cp_length), d_symbols_per_frame(symbols_per_frame), d_sym_nr(0), d_gap(gap), d_gap_left(0)
 {
 }
 
@@ -83,6 +84,7 @@ dab_ofdm_sampler::general_work (int noutput_items,
 		case(STATE_NS):
 			d_pos = 0;
 			d_sym_nr = 0;
+      d_gap_left = 0;
 			while (index<n_in && !trigger[index])
 				index++;
 			if (trigger[index]) 
@@ -90,11 +92,15 @@ dab_ofdm_sampler::general_work (int noutput_items,
 			else
 				break;
 		case(STATE_CP):
-			while (index<n_in && d_pos < d_cp_length) {
+      while (d_gap_left > 0 && index<n_in) { /* is there a gap left from the previous symbol? */
+        index++;
+        d_gap_left--;
+      }
+			while (index<n_in && d_pos < d_cp_length-d_gap) {
 				index++;
 				d_pos++;
 			}
-			if (d_pos == d_cp_length)
+			if (d_pos == d_cp_length-d_gap)
 				d_state = STATE_SYM;
 			else
 				break;
@@ -111,10 +117,12 @@ dab_ofdm_sampler::general_work (int noutput_items,
 					outsig[out] = 0;
 				out++;
 				/* last symbol in frame? */
-				if (d_sym_nr == d_symbols_per_frame) 
+				if (d_sym_nr == d_symbols_per_frame) {
 					d_state = STATE_NS;
-				else 
+        } else {
 					d_state = STATE_CP;
+          d_gap_left = d_gap;
+        }
 			}
 			break;
 	}
