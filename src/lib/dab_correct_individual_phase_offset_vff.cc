@@ -87,7 +87,7 @@ dab_correct_individual_phase_offset_vff::work (int noutput_items,
   }
 
   for (int i=0;i<vlen;i++)
-    printf("%f, ",d_offset_estimation);
+    printf("%f, ",d_offset_estimation[i]);
   printf(\n");
 
   return noutput_items;
