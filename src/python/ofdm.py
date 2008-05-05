@@ -64,8 +64,11 @@ class ofdm_demod(gr.hier_block2):
 		@param mode: DAB mode (I-IV)
 		@param debug: write debug output to files
 		"""
+
 		self.mode = mode
 		dp = parameters.dab_parameters(mode)
+		rp = parameters.receiver_parameters(mode)
+
 		gr.hier_block2.__init__(self,"ofdm_demod",
 		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
 					gr.io_signature(1, 1, gr.sizeof_char*dp.carriers)) # output signature
@@ -90,7 +93,7 @@ class ofdm_demod(gr.hier_block2):
 		self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
 
 		# ofdm symbol sampler
-		self.sampler = dab.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, 600)
+		self.sampler = dab.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
 		
 		# fft for symbol vectors
 		self.fft = gr.fft_vcc(dp.fft_length, True, [1]*dp.fft_length, True)
@@ -110,6 +113,7 @@ class ofdm_demod(gr.hier_block2):
 		self.connect((self.cfs,0), self.phase_diff)
 
 		if debug:
+			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))
 			self.connect((self.cfs,0), gr.file_sink(gr.sizeof_gr_complex*dp.carriers, "debug/ofdm_after_cfs.dat"))
 			self.connect((self.cfs,1), gr.file_sink(gr.sizeof_char, "debug/ofdm_after_cfs_trigger.dat"))
 			self.connect(self.phase_diff, gr.file_sink(gr.sizeof_gr_complex*dp.carriers, "debug/ofdm_diff_phasor.dat"))
