@@ -73,14 +73,14 @@ dab_correct_individual_phase_offset_vff::work (int noutput_items,
   float ival;
 
   for (int i=0;i<noutput_items;i++) {
-    for (unsigned int j;j<d_vlen;j++) {
+    for (unsigned int j=0;j<d_vlen;j++) {
       ival=in[0];
       while (ival>M_PI_HALF) // poor man's modulo pi/2
         ival-=M_PI_HALF;
-      while (ival<M_PI_HALF)
+      while (ival<0)
         ival+=M_PI_HALF;
       d_offset_estimation[j] = (1-d_alpha)*d_offset_estimation[j] + d_alpha*(ival-M_PI_QUARTER);
-      out[0] = in[0] + d_offset_estimation[j];
+      out[0] = in[0] - d_offset_estimation[j];
       out++;
       in++;
     }
