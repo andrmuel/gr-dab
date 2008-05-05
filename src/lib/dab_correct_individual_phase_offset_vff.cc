@@ -31,6 +31,10 @@
 
 #include <dab_correct_individual_phase_offset_vff.h>
 #include <gr_io_signature.h>
+#include <cmath>
+
+#define M_PI_HALF M_PI/2
+#define M_PI_QUARTER M_PI/4
 
 /*
  * Create a new instance of dab_correct_individual_phase_offset_vff and return
@@ -48,8 +52,15 @@ dab_correct_individual_phase_offset_vff::dab_correct_individual_phase_offset_vff
 	           gr_make_io_signature (1, 1, sizeof(float)*vlen)),
 	d_vlen(vlen), d_alpha(alpha)
 {
+  d_offset_estimation = new float[vlen];
+  for (unsigned int i=0;i<vlen;i++)
+    d_offset_estimation[i] = 0;
 }
 
+dab_correct_individual_phase_offset_vff::~dab_correct_individual_phase_offset_vff (void)
+{
+  delete [] d_offset_estimation;
+}
 
 int 
 dab_correct_individual_phase_offset_vff::work (int noutput_items,
@@ -58,11 +69,26 @@ dab_correct_individual_phase_offset_vff::work (int noutput_items,
 {
   float const *in = (const float *) input_items[0];
   float *out = (float *) output_items[0];
-  in += d_length; /* we are now at the actual start; history ensures that we get d_length (1 vector) old samples */
 
-  for(unsigned int i = 0; i < noutput_items*d_length; i++){
-    out[i] = in[i] * conj(in[i-d_length]);
+  float ival;
+
+  for (int i=0;i<noutput_items;i++) {
+    for (unsigned int j;j<d_vlen;j++) {
+      ival=in[0];
+      while (ival>M_PI_HALF) // poor man's modulo pi/2
+        ival-=M_PI_HALF;
+      while (ival<M_PI_HALF)
+        ival+=M_PI_HALF;
+      d_offset_estimation[j] = (1-d_alpha)*d_offset_estimation[j] + d_alpha*(ival-M_PI_QUARTER);
+      out[0] = in[0] + d_offset_estimation[j];
+      out++;
+      in++;
+    }
   }
-    
+
+  for (int i=0;i<d_vlen;i++)
+    printf("%f, ", d_offset_estimation[i]);
+  printf("\n");
+
   return noutput_items;
 }

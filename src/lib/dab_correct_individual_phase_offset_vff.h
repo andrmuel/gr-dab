@@ -50,11 +50,11 @@ dab_correct_individual_phase_offset_vff_sptr
 dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
 
 /*!
- * \brief corrects the individual phase drift of each subcarrier by doing an estimation
+ * \brief corrects the individual phase offset of each subcarrier by doing an estimation of the error
  * \ingroup DAB
  * 
  * \param vlen length of the vector
- * \param alpha adaptation speed fatcor
+ * \param alpha adaptation speed fatcor (corr = (1-alpha)*corr + alpha*new)
  */
 class dab_correct_individual_phase_offset_vff : public gr_sync_block
 {
@@ -69,8 +69,10 @@ class dab_correct_individual_phase_offset_vff : public gr_sync_block
 
 		unsigned int d_vlen;
 		float d_alpha;
+    float * d_offset_estimation;
 
 	public:
+		~dab_correct_individual_phase_offset_vff (void);
 		int work (int noutput_items,
 		          gr_vector_const_void_star &input_items,
 		          gr_vector_void_star &output_items);
