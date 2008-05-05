@@ -19,12 +19,12 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_DIFF_PHASOR_VCC_H
-#define INCLUDED_DAB_DIFF_PHASOR_VCC_H
+#ifndef INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_DRIFT_VFF_H
+#define INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_DRIFT_VFF_H
 
 #include <gr_sync_block.h>
 
-class dab_diff_phasor_vcc;
+class dab_correct_individual_phase_offset_vff;
 
 /*
  * We use boost::shared_ptr's instead of raw pointers for all access
@@ -37,36 +37,38 @@ class dab_diff_phasor_vcc;
  *
  * As a convention, the _sptr suffix indicates a boost::shared_ptr
  */
-typedef boost::shared_ptr<dab_diff_phasor_vcc> dab_diff_phasor_vcc_sptr;
+typedef boost::shared_ptr<dab_correct_individual_phase_offset_vff> dab_correct_individual_phase_offset_vff_sptr;
 
 /*!
- * \brief Return a shared_ptr to a new instance of dab_diff_phasor_vcc.
+ * \brief Return a shared_ptr to a new instance of dab_correct_individual_phase_offset_vff.
  *
- * To avoid accidental use of raw pointers, dab_diff_phasor_vcc's
- * constructor is private.  dab_make_diff_phasor_vcc is the public
+ * To avoid accidental use of raw pointers, dab_correct_individual_phase_offset_vff's
+ * constructor is private.  dab_make_correct_individual_phase_offset_vff is the public
  * interface for creating new instances.
  */
-dab_diff_phasor_vcc_sptr 
-dab_make_diff_phasor_vcc (unsigned int length);
+dab_correct_individual_phase_offset_vff_sptr 
+dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
 
 /*!
- * \brief outputs the phase difference of consecutive vectors: y[i] = x[i] * conj(x[i-1])
+ * \brief corrects the individual phase drift of each subcarrier by doing an estimation
  * \ingroup DAB
  * 
- * \param length length of the vector
+ * \param vlen length of the vector
+ * \param alpha adaptation speed fatcor
  */
-class dab_diff_phasor_vcc : public gr_sync_block
+class dab_correct_individual_phase_offset_vff : public gr_sync_block
 {
 	private:
-		// The friend declaration allows dab_make_diff_phasor_vcc to
+		// The friend declaration allows dab_make_correct_individual_phase_offset_vff to
 		// access the private constructor.
 
-		friend dab_diff_phasor_vcc_sptr
-    dab_make_diff_phasor_vcc (unsigned int length);
+		friend dab_correct_individual_phase_offset_vff_sptr
+    dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
 
-		dab_diff_phasor_vcc (unsigned int length);  	// private constructor
+		dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);  	// private constructor
 
-		unsigned int d_length;
+		unsigned int d_vlen;
+		float d_alpha;
 
 	public:
 		int work (int noutput_items,
@@ -74,4 +76,4 @@ class dab_diff_phasor_vcc : public gr_sync_block
 		          gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_DIFF_PHASOR_VCC_H */
+#endif /* INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_DRIFT_VFF_H */

@@ -12,6 +12,7 @@
 #include "dab_ofdm_sampler.h"
 #include "dab_ofdm_coarse_frequency_correct.h"
 #include "dab_diff_phasor_vcc.h"
+#include "dab_correct_individual_phase_offset_vff.h"
 #include <stdexcept>
 %}
 
@@ -95,4 +96,16 @@ class dab_diff_phasor_vcc : public gr_sync_block
 {
  private:
   dab_diff_phasor_vcc (unsigned int length);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,correct_individual_phase_offset_vff);
+
+dab_correct_individual_phase_offset_vff_sptr dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
+
+class dab_correct_individual_phase_offset_vff : public gr_sync_block
+{
+ private:
+  dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
 };

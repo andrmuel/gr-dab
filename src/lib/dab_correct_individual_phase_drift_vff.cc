@@ -29,36 +29,35 @@
 #include "config.h"
 #endif
 
-#include <dab_diff_phasor_vcc.h>
+#include <dab_correct_individual_phase_offset_vff.h>
 #include <gr_io_signature.h>
 
 /*
- * Create a new instance of dab_diff_phasor_vcc and return
+ * Create a new instance of dab_correct_individual_phase_offset_vff and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_diff_phasor_vcc_sptr 
-dab_make_diff_phasor_vcc (unsigned int length)
+dab_correct_individual_phase_offset_vff_sptr 
+dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha)
 {
-	return dab_diff_phasor_vcc_sptr (new dab_diff_phasor_vcc (length));
+	return dab_correct_individual_phase_offset_vff_sptr (new dab_correct_individual_phase_offset_vff (vlen, alpha));
 }
 
-dab_diff_phasor_vcc::dab_diff_phasor_vcc (unsigned int length) : 
-	gr_sync_block ("diff_phasor_vcc",
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*length),
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*length)),
-	d_length(length)
+dab_correct_individual_phase_offset_vff::dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha) : 
+	gr_sync_block ("correct_individual_phase_offset_vff",
+	           gr_make_io_signature (1, 1, sizeof(float)*vlen),
+	           gr_make_io_signature (1, 1, sizeof(float)*vlen)),
+	d_vlen(vlen), d_alpha(alpha)
 {
-  set_history(2);
 }
 
 
 int 
-dab_diff_phasor_vcc::work (int noutput_items,
+dab_correct_individual_phase_offset_vff::work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-  gr_complex const *in = (const gr_complex *) input_items[0];
-  gr_complex *out = (gr_complex *) output_items[0];
+  float const *in = (const float *) input_items[0];
+  float *out = (float *) output_items[0];
   in += d_length; /* we are now at the actual start; history ensures that we get d_length (1 vector) old samples */
 
   for(unsigned int i = 0; i < noutput_items*d_length; i++){
