@@ -59,11 +59,11 @@ class test_ofdm(gr.top_block):
 			print "using samples from file " + filename
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
-		self.resample = blks2.rational_resampler_ccc(12800,12799)
+		# self.resample = blks2.rational_resampler_ccc(12800,12799)
 
 		self.dab_demod = ofdm.ofdm_demod(mode=1, debug=True)
 		
-		self.connect(self.src, self.resample, self.dab_demod)
+		self.connect(self.src, self.dab_demod)
 		
 
 if __name__=='__main__':

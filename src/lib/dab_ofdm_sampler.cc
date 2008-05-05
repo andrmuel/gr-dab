@@ -51,6 +51,7 @@ dab_ofdm_sampler::dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_len
 	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
 	d_state(STATE_NS), d_pos(0), d_fft_length(fft_length), d_cp_length(cp_length), d_symbols_per_frame(symbols_per_frame), d_sym_nr(0), d_gap(gap), d_gap_left(0)
 {
+  assert(gap<=cp_length);
 }
 
 void 
