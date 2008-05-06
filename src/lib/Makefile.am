@@ -59,14 +59,15 @@ ourpython_PYTHON =			\
 ourlib_LTLIBRARIES = _dab.la
 
 # These are the source files that go into the shared library
-_dab_la_SOURCES = 			\
-	dab.cc			        \
-	dab_moving_sum_ff.cc            \
-	dab_moving_sum_cc.cc            \
-	dab_ofdm_sampler.cc             \
-	dab_ofdm_coarse_frequency_correct.cc \
-	dab_diff_phasor_vcc.cc          \
-	dab_correct_individual_phase_offset_vff.cc
+_dab_la_SOURCES = 			        \
+	dab.cc			                \
+	dab_moving_sum_ff.cc                    \
+	dab_moving_sum_cc.cc                    \
+	dab_ofdm_sampler.cc                     \
+	dab_ofdm_coarse_frequency_correct.cc    \
+	dab_diff_phasor_vcc.cc                  \
+	dab_correct_individual_phase_offset_vff.cc \
+	dab_ofdm_remove_first_symbol_vcc.cc
 
 # magic flags
 _dab_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -81,13 +82,14 @@ dab.cc dab.py: $(LOCAL_IFILES) $(ALL_IFILES)
 	$(SWIG) $(SWIGPYTHONARGS) -module dab -o dab.cc $(LOCAL_IFILES)
 
 # These headers get installed in ${prefix}/include/gnuradio
-grinclude_HEADERS =			\
-	dab_moving_sum_ff.h             \
-	dab_moving_sum_cc.h             \
-	dab_ofdm_sampler.h              \
-	dab_ofdm_coarse_frequency_correct.h \
-	dab_diff_phasor_vcc.h           \
-	dab_correct_individual_phase_offset_vff.h
+grinclude_HEADERS =			        \
+	dab_moving_sum_ff.h                     \
+	dab_moving_sum_cc.h                     \
+	dab_ofdm_sampler.h                      \
+	dab_ofdm_coarse_frequency_correct.h     \
+	dab_diff_phasor_vcc.h                   \
+	dab_correct_individual_phase_offset_vff.h \
+	dab_ofdm_remove_first_symbol_vcc.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig

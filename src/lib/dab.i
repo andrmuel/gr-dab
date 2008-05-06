@@ -13,6 +13,7 @@
 #include "dab_ofdm_coarse_frequency_correct.h"
 #include "dab_diff_phasor_vcc.h"
 #include "dab_correct_individual_phase_offset_vff.h"
+#include "dab_ofdm_remove_first_symbol_vcc.h"
 #include <stdexcept>
 %}
 
@@ -108,4 +109,16 @@ class dab_correct_individual_phase_offset_vff : public gr_sync_block
 {
  private:
   dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,ofdm_remove_first_symbol_vcc);
+
+dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen);
+
+class dab_ofdm_remove_first_symbol_vcc : public gr_block
+{
+ private:
+  dab_ofdm_remove_first_symbol_vcc (unsigned int vlen);
 };
