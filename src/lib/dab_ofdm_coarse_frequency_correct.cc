@@ -94,7 +94,7 @@ dab_ofdm_coarse_frequency_correct::correlate_energy(const gr_complex *symbol)
   }
 
   d_freq_offset = index;
-  printf("coarse_frequency_offset = %d\n", d_freq_offset+d_num_carriers/2-d_fft_length/2);
+  printf("cfs: coarse_frequency_offset: d\n", d_freq_offset+d_num_carriers/2-d_fft_length/2);
 }
 
 int 
