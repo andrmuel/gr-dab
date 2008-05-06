@@ -50,7 +50,7 @@ dab_correct_individual_phase_offset_vff::dab_correct_individual_phase_offset_vff
 	gr_sync_block ("correct_individual_phase_offset_vff",
 	           gr_make_io_signature (1, 1, sizeof(float)*vlen),
 	           gr_make_io_signature (1, 1, sizeof(float)*vlen)),
-	d_vlen(vlen), d_alpha(alpha)
+	d_vlen(vlen), d_alpha(alpha), d_debug(0)
 {
   d_offset_estimation = new float[vlen];
   for (unsigned int i=0;i<vlen;i++)
@@ -84,6 +84,15 @@ dab_correct_individual_phase_offset_vff::work (int noutput_items,
       out++;
       in++;
     }
+  }
+
+  /* debug */
+  d_debug++;
+  if (d_debug%100==0) {
+    printf("offset=[");
+    for (unsigned int i=0; i<d_vlen; i++) 
+      printf("%f,",d_offset_estimation[i]);
+    printf("];\n");
   }
 
   return noutput_items;

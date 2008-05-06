@@ -63,8 +63,8 @@ class test_ofdm(gr.top_block):
 
 		self.dab_demod = ofdm.ofdm_demod(mode=1, debug=True)
 		
-		self.connect(self.src, self.resample, self.dab_demod)
-		# self.connect(self.src, self.dab_demod)
+		# self.connect(self.src, self.resample, self.dab_demod)
+		self.connect(self.src, self.dab_demod)
 		
 
 if __name__=='__main__':

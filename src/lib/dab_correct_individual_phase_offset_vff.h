@@ -70,6 +70,7 @@ class dab_correct_individual_phase_offset_vff : public gr_sync_block
 		unsigned int d_vlen;
 		float d_alpha;
     float * d_offset_estimation;
+    unsigned int d_debug;
 
 	public:
 		~dab_correct_individual_phase_offset_vff (void);

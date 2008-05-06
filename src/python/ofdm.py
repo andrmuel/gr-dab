@@ -45,9 +45,29 @@ class ofdm_mod(gr.hier_block2):
 
 		@param mode: DAB mode (I-IV)
 		"""
+
+		self.mode = mode
+		dp = parameters.dab_parameters(mode)
+
 		gr.hier_block2.__init__(self,"ofdm_mod",
-		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
+		                        gr.io_signature(1, 1, gr.sizeof_char*dp.carriers), # input signature
 					gr.io_signature(1, 1, gr.sizeof_gr_complex)) # output signature
+
+
+		# create dab frames
+
+		# add pilot symbol
+
+		# symbol mapper
+
+		# phase sum
+
+		# ifft
+
+		# cyclic prefixer
+		self.prefixer = gr.ofdm_cyclic_prefixer()
+
+		# add null symbol
 
 		pass
 
@@ -104,6 +124,9 @@ class ofdm_demod(gr.hier_block2):
 		# diff phasor
 		self.phase_diff = dab.diff_phasor_vcc(dp.carriers)
 
+		# remove pilot symbol
+		self.remove_pilot = dab.ofdm_remove_first_symbol_vcc(dp.carriers)
+
 		# complex to phase
 		self.arg = gr.complex_to_arg(dp.carriers)
 
@@ -117,14 +140,16 @@ class ofdm_demod(gr.hier_block2):
 		self.connect((self.sync, 1), (self.sampler, 1))
 		self.connect((self.sampler, 1), (self.cfs, 1))
 		self.connect((self.cfs,0), self.phase_diff)
-		self.connect(self.phase_diff, self.arg, self.correct_phase_offset)
+		self.connect(self.phase_diff, (self.remove_pilot,0))
+		self.connect((self.cfs,1), (self.remove_pilot,1))
+		self.connect((self.remove_pilot,0), self.arg, self.correct_phase_offset)
 
 		if debug:
 			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))
 			self.connect((self.cfs,0), gr.file_sink(gr.sizeof_gr_complex*dp.carriers, "debug/ofdm_after_cfs.dat"))
-			self.connect((self.cfs,1), gr.file_sink(gr.sizeof_char, "debug/ofdm_after_cfs_trigger.dat"))
 			self.connect(self.phase_diff, gr.file_sink(gr.sizeof_gr_complex*dp.carriers, "debug/ofdm_diff_phasor.dat"))
 			self.connect(self.correct_phase_offset, gr.file_sink(gr.sizeof_float*dp.carriers, "debug/ofdm_phase_offset_corrected.dat"))
+			self.connect((self.remove_pilot,1), gr.file_sink(gr.sizeof_char, "debug/ofdm_after_cfs_trigger.dat"))
 		else: #FIXME remove once completed
 			self.nop0 = gr.nop(gr.sizeof_gr_complex*dp.carriers)
 			self.nop1 = gr.nop(gr.sizeof_char)
