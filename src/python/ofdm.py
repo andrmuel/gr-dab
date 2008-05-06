@@ -108,7 +108,7 @@ class ofdm_demod(gr.hier_block2):
 		self.arg = gr.complex_to_arg(dp.carriers)
 
 		# correct frequency dependent phase offset
-		self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.1)
+		self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.01)
 		
 		# self.connect(self.input, self.fft_filter, self.sync)
 		self.connect(self.input, self.sync)

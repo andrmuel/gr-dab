@@ -37,9 +37,9 @@ class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 		self.tb.connect(src, s2v, mut, v2s, dst)
 		self.tb.run()
 		result_data = dst.data()
-		print src_data
-		print expected_result
-		print result_data
+		# print src_data
+		# print expected_result
+		# print result_data
 		self.assertFloatTuplesAlmostEqual(expected_result, result_data, 5)
 
 if __name__ == '__main__':
