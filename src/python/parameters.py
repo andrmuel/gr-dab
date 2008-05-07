@@ -25,6 +25,8 @@
 
 class dab_parameters:
 	"""
+	@brief Represents the DAB parameters.
+
 	DAB parameters for mode I to IV
 	see Table 38, page 145 of the DAB specification
 	for the PRN sequence vaules, see tables 39-43 on pages 148 and 149
@@ -204,7 +206,7 @@ class dab_parameters:
 
 class receiver_parameters:
 	"""
-	parameters for the receiver, independent of the standard
+	@brief Parameters for the receiver, independent of the DAB standard.
 	"""
 	__cp_gap__ = [30, 10, 5, 20] # adjust this ...
 	def __init__(self,mode):

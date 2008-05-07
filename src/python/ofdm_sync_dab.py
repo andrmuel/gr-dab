@@ -32,11 +32,10 @@ from math import pi
 
 class ofdm_sync_dab(gr.hier_block2):
 	"""
-	OFDM time and frequency synchronisation for DAB
+	@brief OFDM time synchronisation and fine frequency synchronisation for DAB signals
 
-	time synchronisation is done by using the NULL symbols
-	fine frequency synchronisation is by correlating the first and the second half of the symbol
-	coarse frequency synchronisation is done by moving the signal around in the frequency space
+	This block implements synchronisation. Time synchronisation is done by using the NULL symbols.
+	Fine frequency synchronisation is by correlating the first and the second half of the symbol.
 	"""
 	def __init__(self,mode,debug=False):
 		"""

@@ -4,6 +4,11 @@ from gnuradio import gr, gr_unittest
 import dab
 
 class qa_moving_sum(gr_unittest.TestCase):
+	"""
+	@brief Module test for the moving sum class.
+
+	This class implements a test bench to verify the corresponding C++ class.
+	"""
 
 	def setUp(self):
 		self.tb = gr.top_block()

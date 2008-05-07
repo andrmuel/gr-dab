@@ -4,7 +4,12 @@ from gnuradio import gr, gr_unittest
 from math import pi
 import dab
 
-class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
+class qa_correct_individual_phase_offset_vff(gr_unittest.TestCase):
+	"""
+	@brief QA for the individual carrier phase equalisation class.
+
+	This class implements a test bench to verify the corresponding C++ class.
+	"""
 
 	def setUp(self):
 		self.tb = gr.top_block()
@@ -12,7 +17,7 @@ class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 	def tearDown(self):
 		self.tb = None
 
-	def test_001_ofdm_coarse_frequency_correct(self):
+	def test_001_correct_individual_phase_offset_vff(self):
 		expected_result = [x*pi/2+pi/4 for x in [1,-2,-1,0,1,-2]]
 		src_data        = map(lambda x,y: x+y, expected_result,[0.1,0.3,-0.2,0.2,0.4,0.1])
 		src = gr.vector_source_f(src_data)
@@ -25,7 +30,7 @@ class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 		result_data = dst.data()
 		self.assertFloatTuplesAlmostEqual(expected_result, result_data, 5)
 
-	def test_002_ofdm_coarse_frequency_correct(self):
+	def test_002_correct_individual_phase_offset_vff(self):
 		data = [x*pi/2+pi/4 for x in [1,-2,-1,0,1,-2]]
 		src_data        = map(lambda x,y: x+y, data, [0.1,0.3,-0.4,0.2,0.4,0.1])
 		expected_result = map(lambda x,y: x+y, data, [0.05,0.15,-0.2,0.075,0.125,0.15])

@@ -33,6 +33,9 @@ import random
 import os
 
 class dab_ofdm_sync_test(gr.top_block):
+	"""
+	@brief Test application for the synchronisation block.
+	"""
 	def __init__(self):
 		gr.top_block.__init__(self)
 		

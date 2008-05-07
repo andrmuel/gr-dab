@@ -34,6 +34,9 @@ import random
 import os
 
 class test_ofdm(gr.top_block):
+	"""
+	@brief Test program for the ofdm_demod class.
+	"""
 	def __init__(self):
 		gr.top_block.__init__(self)
 		

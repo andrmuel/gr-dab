@@ -16,6 +16,9 @@ from optparse import OptionParser
 import wx
 
 class gr_cfile_fft(stdgui2.std_top_block):
+	"""
+	@brief Plots the fft of samples from a file.
+	"""
 	def __init__(self, frame, panel, vbox, argv):
 		stdgui2.std_top_block.__init__(self, frame, panel, vbox, argv)
         	

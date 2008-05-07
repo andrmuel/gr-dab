@@ -29,10 +29,6 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-"""
-test
-"""
-
 from gnuradio import gr, dab
 import parameters
 import ofdm_sync_dab
@@ -40,8 +36,10 @@ import ofdm_sync_dab
 
 class ofdm_mod(gr.hier_block2):
 	"""
+	@brief Block to create a DAB signal from bits.
+
 	Takes a data stream and performs OFDM modulation according to the DAB standard.
-	Output sample rate is 2.048 MSPS
+	The output sample rate is 2.048 MSPS.
 	"""
 	
 	def __init__(self, mode=1):
@@ -78,6 +76,8 @@ class ofdm_mod(gr.hier_block2):
 
 class ofdm_demod(gr.hier_block2):
 	"""
+	@brief Block to demodulate a DAB signal into bits.
+
 	Takes a stream of complex baseband samples and performs OFDM demodulation according to the DAB standard.
 	Expects an input sample rate of 2.048 MSPS.
 	"""
@@ -86,7 +86,7 @@ class ofdm_demod(gr.hier_block2):
 		"""
 		Hierarchical block for OFDM demodulation
 
-		@param mode: DAB mode (I-IV)
+		@param mode DAB mode (I-IV)
 		@param debug: write debug output to files
 		"""
 
