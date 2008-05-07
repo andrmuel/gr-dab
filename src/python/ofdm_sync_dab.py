@@ -41,10 +41,10 @@ class ofdm_sync_dab(gr.hier_block2):
 		"""
 		OFDM synchronisation for DAB
 
-		@param mode: DAB mode (I-IV)
-		@type mode: integer
-		@param debug: write data streams out to files if true
-		@type debug: boolean
+		@param mode DAB mode (I-IV)
+		@type mode integer
+		@param debug if True: write data streams out to files
+		@type debug boolean
 		"""
 
 		if mode<1 or mode>4:

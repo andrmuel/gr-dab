@@ -49,7 +49,7 @@ typedef boost::shared_ptr<dab_moving_sum_ff> dab_moving_sum_ff_sptr;
 dab_moving_sum_ff_sptr dab_make_moving_sum_ff (int length);
 
 /*!
- * \brief moving sum over a stream of floats.
+ * \brief Moving sum over a stream of floats.
  * \ingroup misc
  *
  * This uses the preferred technique: subclassing gr_sync_block.

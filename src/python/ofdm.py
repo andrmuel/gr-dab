@@ -46,7 +46,7 @@ class ofdm_mod(gr.hier_block2):
 		"""
 		Hierarchical block for OFDM modulation
 
-		@param mode: DAB mode (I-IV)
+		@param mode DAB mode (I-IV)
 		"""
 
 		self.mode = mode
@@ -87,7 +87,7 @@ class ofdm_demod(gr.hier_block2):
 		Hierarchical block for OFDM demodulation
 
 		@param mode DAB mode (I-IV)
-		@param debug: write debug output to files
+		@param debug enables debug output to files
 		"""
 
 		self.mode = mode

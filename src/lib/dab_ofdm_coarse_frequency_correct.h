@@ -51,7 +51,7 @@ dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length,
                                         unsigned int num_carriers);
 
 /*!
- * \brief corrects coarse frequency offset in the frequency spectrum
+ * \brief Corrects coarse frequency offset in the frequency spectrum.
  * \ingroup DAB
  * 
  * \param fft_length total number of fft bins

@@ -49,7 +49,7 @@ typedef boost::shared_ptr<dab_ofdm_remove_first_symbol_vcc> dab_ofdm_remove_firs
 dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen);
 
 /*!
- * \brief removes the first symbol of each frame
+ * \brief Removes the first symbol of each frame
  * \ingroup DAB
  */
 class dab_ofdm_remove_first_symbol_vcc : public gr_block

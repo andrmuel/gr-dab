@@ -50,7 +50,7 @@ dab_diff_phasor_vcc_sptr
 dab_make_diff_phasor_vcc (unsigned int length);
 
 /*!
- * \brief outputs the phase difference of consecutive vectors: y[i] = x[i] * conj(x[i-1])
+ * \brief Outputs the phase difference of consecutive vectors: y[i] = x[i] * conj(x[i-1])
  * \ingroup DAB
  * 
  * \param length length of the vector
