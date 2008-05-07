@@ -29,9 +29,14 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
+"""
+test
+"""
+
 from gnuradio import gr, dab
 import parameters
 import ofdm_sync_dab
+
 
 class ofdm_mod(gr.hier_block2):
 	"""
@@ -101,7 +106,7 @@ class ofdm_demod(gr.hier_block2):
 		
 		# input filtering
 		bw = (dp.carriers/2.0)/dp.fft_length
-		tb = bw*0.2
+		tb = bw*0.15
 		lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
                                                   1.0,                     # sampling rate (1.0 works out fine, as the bandwidth is relative as well)
                                                   bw+tb,                   # cutoff frequency
@@ -133,8 +138,8 @@ class ofdm_demod(gr.hier_block2):
 		# correct frequency dependent phase offset
 		self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.01)
 		
-		# self.connect(self.input, self.fft_filter, self.sync)
-		self.connect(self.input, self.sync)
+		self.connect(self.input, self.fft_filter, self.sync)
+		# self.connect(self.input, self.sync)
 		self.connect((self.sync, 0), (self.sampler, 0))
 		self.connect((self.sampler, 0), self.fft, (self.cfs, 0))
 		self.connect((self.sync, 1), (self.sampler, 1))

@@ -87,16 +87,15 @@ dab_correct_individual_phase_offset_vff::work (int noutput_items,
   }
 
   /* debug */
-///*
+  /*
   d_debug++;
-  // if (d_debug%100==0) {
   if (d_debug==10 || d_debug==50 || d_debug==100||d_debug==500) {
     fprintf(stderr, "individual_phase_offset=[");
     for (unsigned int i=0; i<d_vlen; i++) 
       fprintf(stderr, "%f,",d_offset_estimation[i]);
     fprintf(stderr, "];\n");
   }
-  //*/
+  // */
 
   return noutput_items;
 }
