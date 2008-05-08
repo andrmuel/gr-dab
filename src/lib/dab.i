@@ -14,6 +14,7 @@
 #include "dab_diff_phasor_vcc.h"
 #include "dab_correct_individual_phase_offset_vff.h"
 #include "dab_ofdm_remove_first_symbol_vcc.h"
+#include "dab_estimate_sample_rate_bf.h"
 #include <stdexcept>
 %}
 
@@ -121,4 +122,16 @@ class dab_ofdm_remove_first_symbol_vcc : public gr_block
 {
  private:
   dab_ofdm_remove_first_symbol_vcc (unsigned int vlen);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab, estimate_sample_rate_bf);
+
+dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
+
+class dab_estimate_sample_rate_bf : public gr_sync_block
+{
+ private:
+  dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
 };

@@ -29,22 +29,21 @@ from gnuradio import gr, dab
 import parameters
 import sys
 from math import pi
+import detect_null
 
 class ofdm_sync_dab(gr.hier_block2):
 	"""
-	@brief OFDM time synchronisation and fine frequency synchronisation for DAB signals
+	@brief OFDM Energy based time synchronisation and coarse frequency synchronisation for DAB signals
 
 	This block implements synchronisation. Time synchronisation is done by using the NULL symbols.
-	Fine frequency synchronisation is by correlating the first and the second half of the symbol.
+	Fine frequency synchronisation is done by correlating the cyclic prefix with the last part of the symbol.
 	"""
-	def __init__(self,mode,debug=False):
+	def __init__(self, mode, debug=False):
 		"""
-		OFDM synchronisation for DAB
+		OFDM time and coarse frequency synchronisation for DAB
 
-		@param mode DAB mode (I-IV)
-		@type mode integer
+		@param mode DAB mode (1-4)
 		@param debug if True: write data streams out to files
-		@type debug boolean
 		"""
 
 		if mode<1 or mode>4:
@@ -65,28 +64,10 @@ class ofdm_sync_dab(gr.hier_block2):
 		#
 		# null-symbol detection
 		#
-
-		# get the magnitude squared
-		self.ns_c2magsquared = gr.complex_to_mag_squared()
+		# (outsourced to detect_zero.py)
 		
-		# this wastes cpu cycles:
-		# ns_detect_taps = [1]*dp.ns_length
-		# self.ns_moving_sum = gr.fir_filter_fff(1,ns_detect_taps)
-		# this isn't better:
-		#self.ns_filter = gr.iir_filter_ffd([1]+[0]*(dp.ns_length-1)+[-1],[0,1])
-		# this does the same again, but is actually faster (outsourced to an independent block ..):
-		self.ns_moving_sum = dab.moving_sum_ff(dp.ns_length)
-		self.ns_invert = gr.multiply_const_ff(-1)
-
-		# peak detector on the inverted, summed up signal -> we get the zeros (i.e. the position of the start of a frame)
-		self.ns_peak_detect = gr.peak_detector_fb(0.6,0.7,10,0.0001) # mostly found by try and error -> remember that the values are negative!
-
-		# connect it all
-		self.connect(self.input, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect)
-
-		if debug:
-			self.connect(self.ns_invert, gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ns_filter_inv_f.dat"))
-			self.connect(self.ns_peak_detect,gr.file_sink(gr.sizeof_char, "debug/ofdm_sync_dab_peak_detect_b.dat"))
+		self.ns_detect = detect_null.detect_null(dp.ns_length, debug)
+		self.connect(self.input, self.ns_detect)
 
 		#
 		# fine frequency synchronisation
@@ -120,7 +101,7 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.connect(self.ffs_mult, self.ffs_moving_sum, self.ffs_angle)
 		# only use the value from the first half of the first symbol
 		self.connect(self.ffs_angle, self.ffs_angle_scale, (self.ffs_sample_and_hold, 0))
-		self.connect(self.ns_peak_detect, self.ffs_delay_sample_and_hold, (self.ffs_sample_and_hold, 1))
+		self.connect(self.ns_detect, self.ffs_delay_sample_and_hold, (self.ffs_sample_and_hold, 1))
 		# do the correction
 		self.connect(self.ffs_sample_and_hold, self.ffs_nco, (self.ffs_mixer, 0))
 		self.connect(self.input, self.ffs_delay_input_for_correction, (self.ffs_mixer, 1))

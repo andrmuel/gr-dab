@@ -45,10 +45,18 @@ class test_ofdm(gr.top_block):
 
 		usage = "%prog: [options] samples_file"
 		parser = OptionParser(option_class=eng_option, usage=usage)
+  		parser.add_option("-m", "--dab-mode", type="int", default=1,
+        	     	help="DAB mode [default=%default]")
+		parser.add_option("-F", "--filter-input", action="store_true", default=False,
+                          help="Enable FFT filter at input")
+		parser.add_option("-s", "--correct-sample-rate", action="store_true", default=False,
+                          help="Estimate sample rate offset and resample")
+  		parser.add_option('-u', '--usrp-source', action="store_true", default=False,
+	     		help="Samples from USRP (-> resample from 2 MSPS to 2.048 MSPS)")
+  		parser.add_option('-d', '--debug', action="store_true", default=False,
+	     		help="Write output to files")
 		(options, args) = parser.parse_args ()
 		if len(args)<1:
-			# print "using gaussian noise as source"
-			# self.sigsrc = gr.noise_source_c(gr.GR_GAUSSIAN,10e6)
 			print "using repeating random vector as source"
 			self.sigsrc = gr.vector_source_c([10e6*(random.random() + 1j*random.random()) for i in range(0,100000)],True)
 			self.ns_simulate = gr.vector_source_c([0.01]*dp.ns_length+[1]*dp.symbols_per_frame*dp.symbol_length,1)
@@ -62,12 +70,16 @@ class test_ofdm(gr.top_block):
 			print "using samples from file " + filename
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
-		self.resample = blks2.rational_resampler_ccc(128,125) #2048:2000
-
-		self.dab_demod = ofdm.ofdm_demod(mode=1, debug=True)
 		
-		self.connect(self.src, self.resample, self.dab_demod)
-		# self.connect(self.src, self.dab_demod)
+		if options.usrp_source:
+			self.resample = blks2.rational_resampler_ccc(128,125) #2048:2000
+
+		self.dab_demod = ofdm.ofdm_demod(mode=options.dab_mode, rx_filter=options.filter_input, correct_sample_rate=options.correct_sample_rate, debug=options.debug)
+		
+		if options.usrp_source:
+			self.connect(self.src, self.resample, self.dab_demod)
+		else:
+			self.connect(self.src, self.dab_demod)
 		
 
 if __name__=='__main__':

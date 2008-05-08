@@ -82,11 +82,11 @@ class ofdm_demod(gr.hier_block2):
 	Expects an input sample rate of 2.048 MSPS.
 	"""
 	
-	def __init__(self, mode=1, debug=False):
+	def __init__(self, mode=1, rx_filter=True, correct_sample_rate=False, debug=False):
 		"""
 		Hierarchical block for OFDM demodulation
 
-		@param mode DAB mode (I-IV)
+		@param mode DAB mode (1-4)
 		@param debug enables debug output to files
 		"""
 
@@ -105,15 +105,26 @@ class ofdm_demod(gr.hier_block2):
 		self.connect(self, self.input)
 		
 		# input filtering
-		bw = (dp.carriers/2.0)/dp.fft_length
-		tb = bw*0.15
-		lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
-                                                  1.0,                     # sampling rate (1.0 works out fine, as the bandwidth is relative as well)
-                                                  bw+tb,                   # cutoff frequency
-                                                  tb,                      # width of transition band
-                                                  gr.firdes.WIN_HAMMING)   # Hamming window
-		self.fft_filter = gr.fft_filter_ccc(1, lowpass_taps)
+		if rx_filter: 
+			bw = (dp.carriers/2.0)/dp.fft_length
+			tb = bw*0.15
+			lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
+							  1.0,                     # sampling rate (1.0 works out fine, as the bandwidth is relative as well)
+							  bw+tb,                   # cutoff frequency
+							  tb,                      # width of transition band
+							  gr.firdes.WIN_HAMMING)   # Hamming window
+			self.fft_filter = gr.fft_filter_ccc(1, lowpass_taps)
 		
+
+		# correct sample rate offset, if enabled
+		if correct_sample_rate:
+			# self.mixer=gr.multiply_cc()
+			# self.sin = gr.sig_source_c(2048000,gr.GR_SIN_WAVE, -74000, 1)
+			# self.connect(self.sin, (self.mixer,1))
+			# self.resample = gr.fractional_interpolator_cc(0, 0.999924214680990)
+
+
+
 		# timing and fine frequency synchronisation
 		self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
 
@@ -136,10 +147,13 @@ class ofdm_demod(gr.hier_block2):
 		self.arg = gr.complex_to_arg(dp.carriers)
 
 		# correct frequency dependent phase offset
-		self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.01)
+		# self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.01)
+		self.correct_phase_offset = gr.add_const_vff([0]*dp.carriers)
 		
-		self.connect(self.input, self.fft_filter, self.sync)
-		# self.connect(self.input, self.sync)
+		if rx_filter:
+			self.connect(self.input, self.fft_filter, self.sync)
+		else:
+			self.connect(self.input, self.sync)
 		self.connect((self.sync, 0), (self.sampler, 0))
 		self.connect((self.sampler, 0), self.fft, (self.cfs, 0))
 		self.connect((self.sync, 1), (self.sampler, 1))
@@ -158,8 +172,12 @@ class ofdm_demod(gr.hier_block2):
 		else: #FIXME remove once completed
 			self.nop0 = gr.nop(gr.sizeof_gr_complex*dp.carriers)
 			self.nop1 = gr.nop(gr.sizeof_char)
+			self.nop2 = gr.nop(gr.sizeof_float*dp.carriers)
+			self.nop3 = gr.nop(gr.sizeof_char)
 			self.connect(self.phase_diff, self.nop0)
 			self.connect((self.cfs,1), self.nop1)
+			self.connect(self.correct_phase_offset, self.nop2)
+			self.connect((self.remove_pilot,1), self.nop3)
 
 
 
