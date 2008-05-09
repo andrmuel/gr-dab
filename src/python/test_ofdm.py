@@ -49,15 +49,19 @@ class test_ofdm(gr.top_block):
         	     	help="DAB mode [default=%default]")
 		parser.add_option("-F", "--filter-input", action="store_true", default=False,
                           help="Enable FFT filter at input")
-		parser.add_option("-s", "--correct-sample-rate", action="store_true", default=False,
-                          help="Estimate sample rate offset and resample")
+  		parser.add_option("-s", "--resample-fixed", type="eng_float", default=0,
+			help="resample by a fixed factor (fractional interpolation)")
+		parser.add_option("-S", "--autocorrect-sample-rate", action="store_true", default=False,
+                          help="Estimate sample rate offset and resample (dynamic fractional interpolation)")
   		parser.add_option('-u', '--usrp-source', action="store_true", default=False,
 	     		help="Samples from USRP (-> resample from 2 MSPS to 2.048 MSPS)")
   		parser.add_option('-d', '--debug', action="store_true", default=False,
 	     		help="Write output to files")
+  		parser.add_option('-v', '--verbose', action="store_true", default=False,
+	     		help="Print status messages")
 		(options, args) = parser.parse_args ()
 		if len(args)<1:
-			print "using repeating random vector as source"
+			if options.verbose: print "--> using repeating random vector as source"
 			self.sigsrc = gr.vector_source_c([10e6*(random.random() + 1j*random.random()) for i in range(0,100000)],True)
 			self.ns_simulate = gr.vector_source_c([0.01]*dp.ns_length+[1]*dp.symbols_per_frame*dp.symbol_length,1)
 			self.mult = gr.multiply_cc() # simulate null symbols ...
@@ -67,19 +71,25 @@ class test_ofdm(gr.top_block):
 			self.connect(self.mult, self.src)
 		else:
 			filename = args[0]
-			print "using samples from file " + filename
+			if options.verbose: print "--> using samples from file " + filename
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
 		
 		if options.usrp_source:
 			self.resample = blks2.rational_resampler_ccc(128,125) #2048:2000
 
-		self.dab_demod = ofdm.ofdm_demod(mode=options.dab_mode, rx_filter=options.filter_input, correct_sample_rate=options.correct_sample_rate, debug=options.debug)
+		self.dab_demod = ofdm.ofdm_demod(mode=options.dab_mode, rx_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, debug=options.debug, verbose=options.verbose)
 		
 		if options.usrp_source:
+			print "--> resampling from 2 MSPS to 2.048 MSPS for USRP samples"
 			self.connect(self.src, self.resample, self.dab_demod)
 		else:
 			self.connect(self.src, self.dab_demod)
+			# self.sig = gr.sig_source_c(dp.sample_rate, gr.GR_SIN_WAVE, -74000, 1)
+			# self.mix = gr.multiply_cc()
+			# self.connect(self.sig, (self.mix,1))
+			# self.connect(self.src, self.mix, self.dab_demod)
+			
 		
 
 if __name__=='__main__':

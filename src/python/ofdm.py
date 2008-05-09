@@ -84,7 +84,7 @@ class ofdm_demod(gr.hier_block2):
 	Expects an input sample rate of 2.048 MSPS.
 	"""
 	
-	def __init__(self, mode=1, rx_filter=True, correct_sample_rate=False, debug=False):
+	def __init__(self, mode=1, rx_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, debug=False, verbose=False):
 		"""
 		Hierarchical block for OFDM demodulation
 
@@ -93,6 +93,7 @@ class ofdm_demod(gr.hier_block2):
 		"""
 
 		self.mode = mode
+		self.verbose = verbose
 		dp = parameters.dab_parameters(mode)
 		self.dp = dp
 		rp = parameters.receiver_parameters(mode)
@@ -105,10 +106,11 @@ class ofdm_demod(gr.hier_block2):
 
 		# workaround for a problem that prevents connecting more than one block directly (see trac ticket #161)
 		self.input = gr.kludge_copy(gr.sizeof_gr_complex)
-		# self.connect(self, self.input)
+		self.connect(self, self.input)
 		
 		# input filtering
 		if rx_filter: 
+			if verbose: print "--> RX filter enabled"
 			bw = (dp.carriers/2.0)/dp.fft_length
 			tb = bw*0.15
 			lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
@@ -120,15 +122,23 @@ class ofdm_demod(gr.hier_block2):
 		
 
 		# correct sample rate offset, if enabled
-		if correct_sample_rate:
+		if autocorrect_sample_rate:
+			if verbose: print "--> dynamic sample rate correction enabled"
 			self.rate_detect_ns = detect_null.detect_null(dp.ns_length, False)
 			self.rate_estimator = dab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 			self.prober = gr.probe_signal_f()
 			self.connect(self.input, self.rate_detect_ns, self.rate_estimator, self.prober)
 			self.resample = gr.fractional_interpolator_cc(0, 1)
 			self.updater = threading.Timer(0.1,self.update_correction)
-			self.run_rate_update_thread = True
+			# self.updater = threading.Thread(target=self.update_correction)
+			self.run_interpolater_update_thread = True
+			self.updater.setDaemon(True)
 			self.updater.start()
+		else:
+			self.run_interpolater_update_thread = False
+			if sample_rate_correction_factor != 1:
+				if verbose: print "--> static sample rate correction enabled"
+				self.resample = gr.fractional_interpolator_cc(0, sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
 		self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
@@ -159,14 +169,15 @@ class ofdm_demod(gr.hier_block2):
 		# connect everything
 		#
 
-		if correct_sample_rate:
-			self.connect(self, self.resample, self.input)
+		if autocorrect_sample_rate or sample_rate_correction_factor != 1:
+			self.connect(self.input, self.resample)
+			self.input2 = self.resample
 		else:
-			self.connect(self, self.input)
+			self.input2 = self.input
 		if rx_filter:
-			self.connect(self.input, self.fft_filter, self.sync)
+			self.connect(self.input2, self.fft_filter, self.sync)
 		else:
-			self.connect(self.input, self.sync)
+			self.connect(self.input2, self.sync)
 		self.connect((self.sync, 0), (self.sampler, 0))
 		self.connect((self.sampler, 0), self.fft, (self.cfs, 0))
 		self.connect((self.sync, 1), (self.sampler, 1))
@@ -195,11 +206,13 @@ class ofdm_demod(gr.hier_block2):
 
 
 	def update_correction(self):
-		while self.run_rate_update_thread:
+		while self.run_interpolater_update_thread:
 			rate = self.prober.level()
 			# print "resampling: "+str(rate)
 			self.resample.set_interp_ratio(rate/self.dp.sample_rate)
 			time.sleep(0.1)
 	
 	def stop(self):
-		self.run_rate_update_thread = False
+		if self.run_interpolater_update_thread:
+			self.run_interpolater_update_thread = False
+			self.updater.join()
