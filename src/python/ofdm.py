@@ -32,7 +32,9 @@
 from gnuradio import gr, dab
 import parameters
 import ofdm_sync_dab
-
+import detect_null
+import threading
+import time
 
 class ofdm_mod(gr.hier_block2):
 	"""
@@ -92,6 +94,7 @@ class ofdm_demod(gr.hier_block2):
 
 		self.mode = mode
 		dp = parameters.dab_parameters(mode)
+		self.dp = dp
 		rp = parameters.receiver_parameters(mode)
 
 		gr.hier_block2.__init__(self,"ofdm_demod",
@@ -102,7 +105,7 @@ class ofdm_demod(gr.hier_block2):
 
 		# workaround for a problem that prevents connecting more than one block directly (see trac ticket #161)
 		self.input = gr.kludge_copy(gr.sizeof_gr_complex)
-		self.connect(self, self.input)
+		# self.connect(self, self.input)
 		
 		# input filtering
 		if rx_filter: 
@@ -118,12 +121,13 @@ class ofdm_demod(gr.hier_block2):
 
 		# correct sample rate offset, if enabled
 		if correct_sample_rate:
-			# self.mixer=gr.multiply_cc()
-			# self.sin = gr.sig_source_c(2048000,gr.GR_SIN_WAVE, -74000, 1)
-			# self.connect(self.sin, (self.mixer,1))
-			# self.resample = gr.fractional_interpolator_cc(0, 0.999924214680990)
-
-
+			self.rate_detect_ns = detect_null.detect_null(dp.ns_length, False)
+			self.rate_estimator = dab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
+			self.prober = gr.probe_signal_f()
+			self.connect(self.input, self.rate_detect_ns, self.rate_estimator, self.prober)
+			self.resample = gr.fractional_interpolator_cc(0, 1)
+			self.updater = threading.Timer(0.1,self.update_correction)
+			self.updater.start()
 
 		# timing and fine frequency synchronisation
 		self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
@@ -149,7 +153,15 @@ class ofdm_demod(gr.hier_block2):
 		# correct frequency dependent phase offset
 		# self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.01)
 		self.correct_phase_offset = gr.add_const_vff([0]*dp.carriers)
-		
+
+		#
+		# connect everything
+		#
+
+		if correct_sample_rate:
+			self.connect(self, self.resample, self.input)
+		else:
+			self.connect(self, self.input)
 		if rx_filter:
 			self.connect(self.input, self.fft_filter, self.sync)
 		else:
@@ -181,3 +193,9 @@ class ofdm_demod(gr.hier_block2):
 
 
 
+	def update_correction(self):
+		while self.running:
+			rate = self.prober.level()
+			print "resampling: "+str(rate)
+			self.resample.set_interp_ratio(rate/self.dp.sample_rate)
+			time.sleep(0.1)
