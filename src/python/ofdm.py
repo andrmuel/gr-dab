@@ -127,6 +127,7 @@ class ofdm_demod(gr.hier_block2):
 			self.connect(self.input, self.rate_detect_ns, self.rate_estimator, self.prober)
 			self.resample = gr.fractional_interpolator_cc(0, 1)
 			self.updater = threading.Timer(0.1,self.update_correction)
+			self.run_rate_update_thread = True
 			self.updater.start()
 
 		# timing and fine frequency synchronisation
@@ -194,8 +195,11 @@ class ofdm_demod(gr.hier_block2):
 
 
 	def update_correction(self):
-		while self.running:
+		while self.run_rate_update_thread:
 			rate = self.prober.level()
-			print "resampling: "+str(rate)
+			# print "resampling: "+str(rate)
 			self.resample.set_interp_ratio(rate/self.dp.sample_rate)
 			time.sleep(0.1)
+	
+	def stop(self):
+		self.run_rate_update_thread = False

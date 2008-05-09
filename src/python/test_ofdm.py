@@ -85,9 +85,8 @@ class test_ofdm(gr.top_block):
 if __name__=='__main__':
 	try:
 		to = test_ofdm()
-		to.dab_demod.running = True
 		to.run()
-		to.dab_demod.running = False
+		to.dab_demod.stop()
 		
 	except KeyboardInterrupt:
 		pass
