@@ -142,6 +142,7 @@ class ofdm_demod(gr.hier_block2):
 				self.resample = gr.fractional_interpolator_cc(0, sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
+		# self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
 		self.sync = ofdm_sync_dab2.ofdm_sync_dab2(mode, debug)
 
 		# ofdm symbol sampler

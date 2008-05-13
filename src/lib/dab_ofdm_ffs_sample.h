@@ -24,6 +24,8 @@
 
 #include <gr_sync_block.h>
 
+#define _1_OVER_2PI_T 325949.32345 /* scaling factor for printing frequency error estimates */
+
 class dab_ofdm_ffs_sample;
 
 /*
