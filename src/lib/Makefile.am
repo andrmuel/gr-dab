@@ -68,7 +68,8 @@ _dab_la_SOURCES = 			        \
 	dab_diff_phasor_vcc.cc                  \
 	dab_correct_individual_phase_offset_vff.cc \
 	dab_ofdm_remove_first_symbol_vcc.cc     \
-	dab_estimate_sample_rate_bf.cc
+	dab_estimate_sample_rate_bf.cc          \
+	dab_ofdm_ffs_sample.cc
 
 # magic flags
 _dab_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -91,7 +92,8 @@ grinclude_HEADERS =			        \
 	dab_diff_phasor_vcc.h                   \
 	dab_correct_individual_phase_offset_vff.h \
 	dab_ofdm_remove_first_symbol_vcc.h      \
-	dab_estimate_sample_rate_bf.h
+	dab_estimate_sample_rate_bf.h           \
+	dab_ofdm_ffs_sample.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig

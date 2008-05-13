@@ -40,8 +40,6 @@ class test_ofdm(gr.top_block):
 	def __init__(self):
 		gr.top_block.__init__(self)
 		
-		mode = 1
-		dp = parameters.dab_parameters(mode)
 
 		usage = "%prog: [options] samples_file"
 		parser = OptionParser(option_class=eng_option, usage=usage)
@@ -49,7 +47,7 @@ class test_ofdm(gr.top_block):
         	     	help="DAB mode [default=%default]")
 		parser.add_option("-F", "--filter-input", action="store_true", default=False,
                           help="Enable FFT filter at input")
-  		parser.add_option("-s", "--resample-fixed", type="eng_float", default=0,
+  		parser.add_option("-s", "--resample-fixed", type="eng_float", default=1,
 			help="resample by a fixed factor (fractional interpolation)")
 		parser.add_option("-S", "--autocorrect-sample-rate", action="store_true", default=False,
                           help="Estimate sample rate offset and resample (dynamic fractional interpolation)")
@@ -60,8 +58,10 @@ class test_ofdm(gr.top_block):
   		parser.add_option('-v', '--verbose', action="store_true", default=False,
 	     		help="Print status messages")
 		(options, args) = parser.parse_args ()
+
 		if len(args)<1:
 			if options.verbose: print "--> using repeating random vector as source"
+			dp = parameters.dab_parameters(mode)
 			self.sigsrc = gr.vector_source_c([10e6*(random.random() + 1j*random.random()) for i in range(0,100000)],True)
 			self.ns_simulate = gr.vector_source_c([0.01]*dp.ns_length+[1]*dp.symbols_per_frame*dp.symbol_length,1)
 			self.mult = gr.multiply_cc() # simulate null symbols ...

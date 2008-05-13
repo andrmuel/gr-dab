@@ -15,6 +15,7 @@
 #include "dab_correct_individual_phase_offset_vff.h"
 #include "dab_ofdm_remove_first_symbol_vcc.h"
 #include "dab_estimate_sample_rate_bf.h"
+#include "dab_ofdm_ffs_sample.h"
 #include <stdexcept>
 %}
 
@@ -134,4 +135,16 @@ class dab_estimate_sample_rate_bf : public gr_sync_block
 {
  private:
   dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab, ofdm_ffs_sample);
+
+dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
+
+class dab_ofdm_ffs_sample : public gr_sync_block
+{
+ private:
+  dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
 };

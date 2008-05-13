@@ -32,6 +32,7 @@
 from gnuradio import gr, dab
 import parameters
 import ofdm_sync_dab
+import ofdm_sync_dab2
 import detect_null
 import threading
 import time
@@ -112,7 +113,7 @@ class ofdm_demod(gr.hier_block2):
 		if rx_filter: 
 			if verbose: print "--> RX filter enabled"
 			bw = (dp.carriers/2.0)/dp.fft_length
-			tb = bw*0.15
+			tb = bw*0.2
 			lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
 							  1.0,                     # sampling rate (1.0 works out fine, as the bandwidth is relative as well)
 							  bw+tb,                   # cutoff frequency
@@ -141,7 +142,7 @@ class ofdm_demod(gr.hier_block2):
 				self.resample = gr.fractional_interpolator_cc(0, sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
-		self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
+		self.sync = ofdm_sync_dab2.ofdm_sync_dab2(mode, debug)
 
 		# ofdm symbol sampler
 		self.sampler = dab.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)

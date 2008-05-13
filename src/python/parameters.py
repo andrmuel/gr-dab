@@ -208,7 +208,9 @@ class receiver_parameters:
 	"""
 	@brief Parameters for the receiver, independent of the DAB standard.
 	"""
-	__cp_gap__ = [30, 10, 5, 20] # adjust this ...
+	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
+	__symbols_for_ffs_estimation__ = [10,10,20,10] # number of symbols to evaluate for fine frequency error estimation
+	ffs_alpha = 0.5
 	def __init__(self,mode):
 		"""
 		Create new instance.
@@ -218,3 +220,4 @@ class receiver_parameters:
 		assert(mode>=1 and mode <=4)
 		self.mode = mode
 		self.cp_gap = self.__cp_gap__[mode-1]
+		self.symbols_for_ffs_estimation = self.__symbols_for_ffs_estimation__[mode-1]
