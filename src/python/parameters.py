@@ -188,6 +188,21 @@ class dab_parameters:
 				elif phi_k == 3:
 					self.prn.append(-1j)
 
+		# frequency interleaving sequence (see 14.6)
+		# a = self.fft_length/4-1
+		# b = self.fft_length 
+		# A = [0]
+		# for i in range(1,self.fft_length):
+			# A.append((13*A[-1]+a)%b)
+		# D = []
+		# for i in range(self.fft_length/4,3*self.fft_length/4+1):
+			# if i != self.fft_length/2:
+				# D.append(A[i])
+		# assert(len(D)==self.carriers)
+
+
+		# frequency deinterleaving sequence
+
 	def get_prn_kk_i_n(self,k):
 		assert(k!=0)
 		assert(abs(k)<=self.carriers//2)
@@ -208,6 +223,8 @@ class receiver_parameters:
 	"""
 	@brief Parameters for the receiver, independent of the DAB standard.
 	"""
+	filt_bw = (768+100)*1e3
+	filt_tb = 50e3
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
 	__symbols_for_ffs_estimation__ = [10,10,20,10] # number of symbols to evaluate for fine frequency error estimation
 	ffs_alpha = 0.5

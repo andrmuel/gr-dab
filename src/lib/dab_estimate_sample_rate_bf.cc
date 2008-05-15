@@ -63,7 +63,7 @@ dab_estimate_sample_rate_bf::dab_estimate_sample_rate_bf (float expected_sample_
   : gr_sync_block ("estimate_sample_rate_bf",
 		   gr_make_io_signature (MIN_IN, MAX_IN, sizeof (char)),
 		   gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
-    d_zeros(0), d_expected_sample_rate(expected_sample_rate), d_real_sample_rate(expected_sample_rate), d_frame_length(frame_length), d_found_first_frame(0)
+    d_zeros(0), d_expected_sample_rate(expected_sample_rate), d_real_sample_rate(expected_sample_rate), d_found_first_frame(0), d_frame_length(frame_length)
 {
 }
 

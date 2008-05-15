@@ -77,13 +77,13 @@ dab_ofdm_ffs_sample::work (int noutput_items,
 
       if (d_cur_symbol<d_num_symbols) {
         d_ffs_error_sum += *iptr;
-        printf("ffs_sample: new ffs sample: %f (%f Hz)\n", *iptr, *iptr*_1_OVER_2PI_T);
+        // printf("ffs_sample: new ffs sample: %f (%3.2f Hz)\n", *iptr, *iptr*_1_OVER_2PI_T);
       }
 
       if (d_cur_symbol == d_num_symbols-1) { /* update estimated error */
         d_ffs_error_sum /= d_num_symbols; /* average */
         d_estimated_error = d_alpha*d_ffs_error_sum + (1-d_alpha)*d_estimated_error; /* slow adjustment */
-        printf("ffs_sample: d_estimated_error: %f (%f Hz)\n", d_estimated_error, d_estimated_error*_1_OVER_2PI_T);
+        printf("ffs_sample: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error*_1_OVER_2PI_T);
       }
 
       d_cur_symbol++;

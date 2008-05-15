@@ -5,7 +5,7 @@ import dab
 
 class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 	"""
-	@brief Module test for the OFDM sampler.
+	@brief Module test for the OFDM ffs sampler.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

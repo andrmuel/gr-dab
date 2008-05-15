@@ -16,6 +16,7 @@
 #include "dab_ofdm_remove_first_symbol_vcc.h"
 #include "dab_estimate_sample_rate_bf.h"
 #include "dab_ofdm_ffs_sample.h"
+#include "dab_fractional_interpolator_triggered_update_cc.h"
 #include <stdexcept>
 %}
 
@@ -147,4 +148,24 @@ class dab_ofdm_ffs_sample : public gr_sync_block
 {
  private:
   dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
+};
+
+
+// ----------------------------------------------------------------
+// adapted from GNU Radio codebase:
+
+GR_SWIG_BLOCK_MAGIC(dab, fractional_interpolator_triggered_update_cc);
+
+dab_fractional_interpolator_triggered_update_cc_sptr dab_make_fractional_interpolator_triggered_update_cc (float phase_shift, float interp_ratio);
+
+class dab_fractional_interpolator_triggered_update_cc : public gr_block
+{
+  private:
+    dab_fractional_interpolator_triggered_update_cc (float phase_shift, float interp_ratio);
+
+  public:
+    float mu() const;
+    float interp_ratio() const;
+    void set_mu (float mu);
+    void set_interp_ratio (float interp_ratio);
 };

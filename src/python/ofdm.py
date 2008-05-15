@@ -112,12 +112,10 @@ class ofdm_demod(gr.hier_block2):
 		# input filtering
 		if rx_filter: 
 			if verbose: print "--> RX filter enabled"
-			bw = (dp.carriers/2.0)/dp.fft_length
-			tb = bw*0.2
 			lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
-							  1.0,                     # sampling rate (1.0 works out fine, as the bandwidth is relative as well)
-							  bw+tb,                   # cutoff frequency
-							  tb,                      # width of transition band
+							  dp.sample_rate,          # sampling rate
+							  rp.filt_bw,              # cutoff frequency
+							  rp.filt_tb,              # width of transition band
 							  gr.firdes.WIN_HAMMING)   # Hamming window
 			self.fft_filter = gr.fft_filter_ccc(1, lowpass_taps)
 		
@@ -129,7 +127,9 @@ class ofdm_demod(gr.hier_block2):
 			self.rate_estimator = dab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 			self.prober = gr.probe_signal_f()
 			self.connect(self.input, self.rate_detect_ns, self.rate_estimator, self.prober)
-			self.resample = gr.fractional_interpolator_cc(0, 1)
+			# self.resample = gr.fractional_interpolator_cc(0, 1)
+			self.resample = dab.fractional_interpolator_triggered_update_cc(0,1)
+			self.connect(self.rate_detect_ns, (self.resample,1))
 			self.updater = threading.Timer(0.1,self.update_correction)
 			# self.updater = threading.Thread(target=self.update_correction)
 			self.run_interpolater_update_thread = True
