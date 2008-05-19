@@ -23,6 +23,7 @@
 #include "dab_ofdm_insert_pilot_vcc.h"
 #include "dab_sum_phasor_trig_vcc.h"
 #include "dab_ofdm_move_and_insert_zero.h"
+#include "dab_insert_null_symbol.h"
 #include <stdexcept>
 %}
 
@@ -249,5 +250,17 @@ class dab_ofdm_move_and_insert_zero : public gr_sync_block
 {
  private:
   dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,insert_null_symbol);
+
+dab_insert_null_symbol_sptr dab_make_insert_null_symbol (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
+
+class dab_insert_null_symbol : public gr_block
+{
+ private:
+  dab_insert_null_symbol (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
 };
 

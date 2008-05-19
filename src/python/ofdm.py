@@ -73,12 +73,16 @@ class ofdm_mod(gr.hier_block2):
 		self.interleave = dab.frequency_interleaver_vcc(frequency_interleaving_sequence_array)
 
 		# add central carrier & move to middle
+		self.move_and_insert_carrier = dab.ofdm_move_and_insert_zero(dp.fft_length, dp.num_carriers)
 
 		# ifft
 		self.ifft = gr.fft_vcc(dp.fft_length, False, [1]*dp.fft_length, True)
 
 		# cyclic prefixer
 		self.prefixer = gr.ofdm_cyclic_prefixer(dp.fft_length, dp.symbol_length)
+
+		# convert back to vectors
+		self.s2v = gr.stream_to_vector(gr.sizeof_gr_complex, dp.symbol_length)
 
 		# add null symbol
 
