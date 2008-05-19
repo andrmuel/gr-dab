@@ -64,6 +64,7 @@ class ofdm_mod(gr.hier_block2):
 		self.mapper = dab.qpsk_mapper_vbc(dp.num_carriers)
 		
 		# add pilot symbol
+		self.insert_pilot = dab.ofdm_insert_pilot_vcc(dp.prn)
 
 		# phase sum
 		

@@ -21,6 +21,7 @@
 #include "dab_qpsk_mapper_vbc.h"
 #include "dab_qpsk_demapper_vcb.h"
 #include "dab_ofdm_insert_pilot_vcc.h"
+#include "dab_sum_phasor_trig_vcc.h"
 #include <stdexcept>
 %}
 
@@ -223,5 +224,17 @@ class dab_ofdm_insert_pilot_vcc : public gr_block
 {
  private:
   dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,sum_phasor_trig_vcc);
+
+dab_sum_phasor_trig_vcc_sptr dab_make_sum_phasor_trig_vcc (unsigned int length);
+
+class dab_sum_phasor_trig_vcc : public gr_sync_block
+{
+ private:
+  dab_sum_phasor_trig_vcc (unsigned int length);
 };
 

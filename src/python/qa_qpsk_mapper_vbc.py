@@ -2,6 +2,7 @@
 
 from gnuradio import gr, gr_unittest
 import dab
+import math
 
 class qa_qpsk_mapper_vbc(gr_unittest.TestCase):
 	"""
@@ -19,6 +20,7 @@ class qa_qpsk_mapper_vbc(gr_unittest.TestCase):
 	def test_001_qpsk_mapper_vbc(self):
 		src_data        = [10,128]
 		expected_result = [1+1j,1+1j,-1+1j,-1+1j,-1+1j,1+1j,1+1j,1+1j]
+		expected_result = [x/math.sqrt(2) for x in expected_result]
 		src = gr.vector_source_b(src_data)
 		s2v = gr.stream_to_vector(gr.sizeof_char, 1)
 		qpsk_mapper_vbc = dab.qpsk_mapper_vbc(4)

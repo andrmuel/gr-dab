@@ -67,10 +67,10 @@ dab_qpsk_mapper_vbc::work (int noutput_items,
   for (int i=0; i<noutput_items; i++) {
     for (int j=0; j<d_symbol_length/4; j++) {
       byte = in[j];
-      out[0] = gr_complex((byte&128)>0?-1:1,(byte&64)>0?-1:1);
-      out[1] = gr_complex((byte&32)>0?-1:1, (byte&16)>0?-1:1);
-      out[2] = gr_complex((byte&8)>0?-1:1,  (byte&4)>0?-1:1);
-      out[3] = gr_complex((byte&2)>0?-1:1,  (byte&1)>0?-1:1);
+      out[0] = gr_complex((byte&128)>0?-I_SQRT2:I_SQRT2,(byte&64)>0?-I_SQRT2:I_SQRT2);
+      out[1] = gr_complex((byte&32)>0?-I_SQRT2:I_SQRT2, (byte&16)>0?-I_SQRT2:I_SQRT2);
+      out[2] = gr_complex((byte&8)>0?-I_SQRT2:I_SQRT2,  (byte&4)>0?-I_SQRT2:I_SQRT2);
+      out[3] = gr_complex((byte&2)>0?-I_SQRT2:I_SQRT2,  (byte&1)>0?-I_SQRT2:I_SQRT2);
       out+=4;
     }
     in  += d_symbol_length/4;
