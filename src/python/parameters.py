@@ -33,6 +33,8 @@ class dab_parameters:
 	"""
 
 	# parameter values for all modes
+
+	# OFDM parameters 
 	__symbols_per_frame__ = [76, 76, 153, 76]             # number of OFDM symbols per DAB frame (excl. NS)
 	__carriers__          = [1536, 384, 192, 768]         # number of carriers -> carrier width = 1536kHz/carriers
 	__frame_length__      = [196608, 49152, 49152, 98304] # samples per frame; in ms: 96,24,24,48 (incl. NS)
@@ -42,6 +44,10 @@ class dab_parameters:
 	__cp_length__         = [504, 126, 63, 252]           # length of cyclic prefix
 	sample_rate = 2048000
 	T = 1./sample_rate
+
+	# transport mechanism parameters
+	__num_fibs__ = [12,3,4,6]       # FIC
+	__num_cifs__ = [4,1,1,2]        # MSC
 
 	# prn calculation data
 	
@@ -168,7 +174,8 @@ class dab_parameters:
 		for i in range(0,4):
 			assert(self.__symbols_per_frame__[i]*self.__symbol_length__[i]+self.__ns_length__[i] == self.__frame_length__[i])
 			assert(self.__symbol_length__[i] == self.__fft_length__[i]+self.__cp_length__[i])
-
+		
+		# OFDM parameters
 		self.symbols_per_frame = self.__symbols_per_frame__[mode-1]
 		self.carriers          = self.__carriers__[mode-1]
 		self.frame_length      = self.__frame_length__[mode-1]
@@ -176,6 +183,11 @@ class dab_parameters:
 		self.symbol_length     = self.__symbol_length__[mode-1]
 		self.fft_length        = self.__fft_length__[mode-1]
 		self.cp_length         = self.__cp_length__[mode-1]
+
+		# transport mechanism parameters
+		self.num_fibs = self.__num_fibs__[mode-1]
+		self.num_cifs = self.__num_cifs__[mode-1]
+		
 
 		# prn sequence
 		self.prn = []

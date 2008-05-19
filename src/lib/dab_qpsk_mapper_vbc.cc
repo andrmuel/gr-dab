@@ -29,45 +29,52 @@
 #include "config.h"
 #endif
 
-#include <dab_frequency_interleaver_vcc.h>
+#include <dab_qpsk_mapper_vbc.h>
 #include <gr_io_signature.h>
 
 /*
- * Create a new instance of dab_frequency_interleaver_vcc and return
+ * Create a new instance of dab_qpsk_mapper_vbc and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_frequency_interleaver_vcc_sptr 
-dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence)
+dab_qpsk_mapper_vbc_sptr 
+dab_make_qpsk_mapper_vbc (int symbol_length)
 {
-	return dab_frequency_interleaver_vcc_sptr (new dab_frequency_interleaver_vcc (interleaving_sequence));
+	return dab_qpsk_mapper_vbc_sptr (new dab_qpsk_mapper_vbc (symbol_length));
 }
 
-dab_frequency_interleaver_vcc::dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence) : 
-	gr_sync_block ("frequency_interleaver_vcc",
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*interleaving_sequence.size()),
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*interleaving_sequence.size())),
-	d_interleaving_sequence(interleaving_sequence), d_length(interleaving_sequence.size())
+dab_qpsk_mapper_vbc::dab_qpsk_mapper_vbc (int symbol_length) : 
+	gr_sync_block ("qpsk_mapper_vbc",
+	           gr_make_io_signature (1, 1, sizeof(char)*symbol_length/4),
+	           gr_make_io_signature (1, 1, sizeof(gr_complex)*symbol_length)),
+	d_symbol_length(symbol_length)
 {
-  for (unsigned int i=0; i<d_length; i++) 
-    assert(d_interleaving_sequence[i]<(short)d_length);
+  assert(symbol_length>0);
+  assert(symbol_length%4==0);
 }
 
 
 int 
-dab_frequency_interleaver_vcc::work (int noutput_items,
+dab_qpsk_mapper_vbc::work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-  gr_complex const *in = (const gr_complex *) input_items[0];
+  char const *in = (const char *) input_items[0];
   gr_complex *out = (gr_complex *) output_items[0];
 
-  for (int i = 0; i < noutput_items; i++) {
-    for (unsigned int j = 0; j < d_length; j++) 
-      out[d_interleaving_sequence[j]] = in[j];
-    out += d_length;
-    in  += d_length;
+  gr_complex symbol;
+  char byte;
+
+  for (int i=0; i<noutput_items; i++) {
+    for (int j=0; j<d_symbol_length/4; j++) {
+      byte = in[j];
+      out[0] = gr_complex((byte&128)>0?-1:1,(byte&64)>0?-1:1);
+      out[1] = gr_complex((byte&32)>0?-1:1, (byte&16)>0?-1:1);
+      out[2] = gr_complex((byte&8)>0?-1:1,  (byte&4)>0?-1:1);
+      out[3] = gr_complex((byte&2)>0?-1:1,  (byte&1)>0?-1:1);
+      out+=4;
+    }
+    in  += d_symbol_length/4;
   }
-    
+  
   return noutput_items;
 }
-

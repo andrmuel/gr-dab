@@ -63,7 +63,7 @@ dab_ofdm_ffs_sample::work (int noutput_items,
 	
 	float *optr = (float *) output_items[0];
 
-  for (unsigned int i=0; i<noutput_items; i++) {
+  for (int i=0; i<noutput_items; i++) {
     if (*trigger++ == 1) { /* new frame starts */
       d_cur_symbol = 0;
       d_cur_sample = 0;

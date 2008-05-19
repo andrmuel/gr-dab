@@ -18,6 +18,8 @@
 #include "dab_ofdm_ffs_sample.h"
 #include "dab_fractional_interpolator_triggered_update_cc.h"
 #include "dab_frequency_interleaver_vcc.h"
+#include "dab_qpsk_mapper_vbc.h"
+#include "dab_qpsk_demapper_vcb.h"
 #include <stdexcept>
 %}
 
@@ -184,4 +186,28 @@ class dab_frequency_interleaver_vcc : public gr_sync_block
 
   public:
     void set_sequence(const std::vector<short> &interleaving_sequence) { d_interleaving_sequence = interleaving_sequence; }
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,qpsk_mapper_vbc);
+
+dab_qpsk_mapper_vbc_sptr dab_make_qpsk_mapper_vbc (int symbol_length);
+
+class dab_qpsk_mapper_vbc : public gr_sync_block
+{
+  private:
+    dab_qpsk_mapper_vbc (int symbol_length);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,qpsk_demapper_vcb);
+
+dab_qpsk_demapper_vcb_sptr dab_make_qpsk_demapper_vcb (int symbol_length);
+
+class dab_qpsk_demapper_vcb : public gr_sync_block
+{
+  private:
+    dab_qpsk_demapper_vcb (int symbol_length);
 };

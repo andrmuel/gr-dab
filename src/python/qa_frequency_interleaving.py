@@ -5,7 +5,7 @@ import dab
 
 class qa_frequency_interleaver_vcc(gr_unittest.TestCase):
 	"""
-	@brief QA for the phase differentiation class.
+	@brief QA for frequency interleaving.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

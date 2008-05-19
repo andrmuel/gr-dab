@@ -61,14 +61,19 @@ class ofdm_mod(gr.hier_block2):
 
 
 		# create dab frames
-
+		
+		# symbol mapping
+		
 		# add pilot symbol
 
-		# symbol mapper
-
+		# frequency interleaving
+		
 		# phase sum
 
+		# add central carrier
+
 		# ifft
+		self.ifft = gr.fft_vcc(dp.fft_length, False, [1]*dp.fft_length, True)
 
 		# cyclic prefixer
 		self.prefixer = gr.ofdm_cyclic_prefixer()
@@ -160,12 +165,18 @@ class ofdm_demod(gr.hier_block2):
 		# remove pilot symbol
 		self.remove_pilot = dab.ofdm_remove_first_symbol_vcc(dp.carriers)
 
+		# frequency deinterleaving
+		self.deinterleave = dab.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
+
 		# complex to phase
 		self.arg = gr.complex_to_arg(dp.carriers)
 
 		# correct frequency dependent phase offset
 		# self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.01)
 		self.correct_phase_offset = gr.add_const_vff([0]*dp.carriers)
+		
+		# symbol demapping
+		# TODO
 
 		#
 		# connect everything
@@ -187,7 +198,7 @@ class ofdm_demod(gr.hier_block2):
 		self.connect((self.cfs,0), self.phase_diff)
 		self.connect(self.phase_diff, (self.remove_pilot,0))
 		self.connect((self.cfs,1), (self.remove_pilot,1))
-		self.connect((self.remove_pilot,0), self.arg, self.correct_phase_offset)
+		self.connect((self.remove_pilot,0), self.deinterleave, self.arg, self.correct_phase_offset)
 
 		if debug:
 			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))
