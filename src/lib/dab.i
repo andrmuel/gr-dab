@@ -256,11 +256,11 @@ class dab_ofdm_move_and_insert_zero : public gr_sync_block
 
 GR_SWIG_BLOCK_MAGIC(dab,insert_null_symbol);
 
-dab_insert_null_symbol_sptr dab_make_insert_null_symbol (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
+dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symbol_length);
 
 class dab_insert_null_symbol : public gr_block
 {
  private:
-  dab_insert_null_symbol (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
+  dab_insert_null_symbol (int ns_length, int symbol_length);
 };
 

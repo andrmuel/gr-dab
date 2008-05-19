@@ -46,10 +46,10 @@ typedef boost::shared_ptr<dab_insert_null_symbol> dab_insert_null_symbol_sptr;
  * constructor is private.  dab_make_insert_null_symbol is the public
  * interface for creating new instances.
  */
-dab_insert_null_symbol_sptr dab_make_insert_null_symbol (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
+dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symbol_length);
 
 /*!
- * \brief cuts stream of DAB samples into symbol vectors
+ * \brief Inserts a Null symbol at the start of the frame.
  * \ingroup DAB
  */
 class dab_insert_null_symbol : public gr_block
@@ -58,20 +58,13 @@ class dab_insert_null_symbol : public gr_block
 		// The friend declaration allows dab_make_insert_null_symbol to
 		// access the private constructor.
 
-		friend dab_insert_null_symbol_sptr dab_make_insert_null_symbol (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
+		friend dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symbol_length);
 
-		dab_insert_null_symbol (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);  	// private constructor
+		dab_insert_null_symbol (int ns_length, int symbol_length);  	// private constructor
 
-		enum state_t {STATE_NS, STATE_CP, STATE_SYM};
-
-		state_t d_state;
-		unsigned int d_pos;                     // position inside OFDM symbol
-		unsigned int d_fft_length;
-		unsigned int d_cp_length;
-		unsigned int d_symbols_per_frame;       // total number of symbols in a DAB frame
-		unsigned int d_sym_nr;                  // number of symbol inside DAB frame
-    unsigned int d_gap;                     // gap from next symbol -> if gap>0: sample before end of frame
-    unsigned int d_gap_left;                // gap left to next symbol?
+    int d_ns_length;
+		int d_symbol_length;
+    int d_ns_added;
 
 	public:
 		void forecast (int noutput_items, gr_vector_int &ninput_items_required);
