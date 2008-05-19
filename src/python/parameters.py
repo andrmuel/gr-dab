@@ -36,7 +36,7 @@ class dab_parameters:
 
 	# OFDM parameters 
 	__symbols_per_frame__ = [76, 76, 153, 76]             # number of OFDM symbols per DAB frame (excl. NS)
-	__carriers__          = [1536, 384, 192, 768]         # number of carriers -> carrier width = 1536kHz/carriers
+	__num_carriers__      = [1536, 384, 192, 768]         # number of carriers -> carrier width = 1536kHz/carriers
 	__frame_length__      = [196608, 49152, 49152, 98304] # samples per frame; in ms: 96,24,24,48 (incl. NS)
 	__ns_length__         = [2656, 664, 345, 1328]        # length of null symbol in samples
 	__symbol_length__     = [2552, 638, 319, 1276]        # length of an OFDM symbol in samples
@@ -177,7 +177,7 @@ class dab_parameters:
 		
 		# OFDM parameters
 		self.symbols_per_frame = self.__symbols_per_frame__[mode-1]
-		self.carriers          = self.__carriers__[mode-1]
+		self.num_carriers      = self.__num_carriers__[mode-1]
 		self.frame_length      = self.__frame_length__[mode-1]
 		self.ns_length         = self.__ns_length__[mode-1]
 		self.symbol_length     = self.__symbol_length__[mode-1]
@@ -191,7 +191,7 @@ class dab_parameters:
 
 		# prn sequence
 		self.prn = []
-		for k in range(-self.carriers//2, self.carriers//2+1):
+		for k in range(-self.num_carriers//2, self.num_carriers//2+1):
 			if k == 0:
 				self.prn.append(0)
 			else:
@@ -212,27 +212,27 @@ class dab_parameters:
 		for i in range(1,self.fft_length):
 			A.append((13*A[-1]+a)%b)
 		D = [d for d in A if d >= self.fft_length/8 and d <= 7*self.fft_length/8 and d != self.fft_length/2]
-		assert(len(D)==self.carriers)
+		assert(len(D)==self.num_carriers)
 		self.frequency_interleaving_sequence = [d - self.fft_length/2 for d in D]
 		assert(self.frequency_interleaving_sequence[0:len(self.__expected_frequency_interleaving__[mode-1])]==self.__expected_frequency_interleaving__[mode-1])
 		# sequence for arrays, with indices starting from 0 and central carrier already removed
-		self.frequency_interleaving_sequence_array = [k+self.carriers/2-(k>0) for k in self.frequency_interleaving_sequence]
-		assert(len(self.frequency_interleaving_sequence_array)==self.carriers)
+		self.frequency_interleaving_sequence_array = [k+self.num_carriers/2-(k>0) for k in self.frequency_interleaving_sequence]
+		assert(len(self.frequency_interleaving_sequence_array)==self.num_carriers)
 		assert(min(self.frequency_interleaving_sequence_array)==0)
-		assert(max(self.frequency_interleaving_sequence_array)==self.carriers-1)
+		assert(max(self.frequency_interleaving_sequence_array)==self.num_carriers-1)
 		assert(len(set(self.frequency_interleaving_sequence_array))==len(self.frequency_interleaving_sequence_array)) # uniqueness of elements
 
 		# frequency deinterleaving sequence
-		self.frequency_deinterleaving_sequence_array = [self.frequency_interleaving_sequence_array.index(i) for i in range(0,self.carriers)]
+		self.frequency_deinterleaving_sequence_array = [self.frequency_interleaving_sequence_array.index(i) for i in range(0,self.num_carriers)]
 
 	def get_prn_kk_i_n(self,k):
 		assert(k!=0)
-		assert(abs(k)<=self.carriers//2)
+		assert(abs(k)<=self.num_carriers//2)
 		if k<0:
-			index = (k + self.carriers//2) // 32
+			index = (k + self.num_carriers//2) // 32
 			kk = 32*(int(k)//32)
 		else:
-			index = (k + self.carriers//2 - 1) // 32
+			index = (k + self.num_carriers//2 - 1) // 32
 			kk = 32*(int(k-1)//32)+1
 		values = self.__prn_kin__[self.mode-1][index]
 		assert(k>=values[0] and k<=values[1])

@@ -56,31 +56,34 @@ class ofdm_mod(gr.hier_block2):
 		dp = parameters.dab_parameters(mode)
 
 		gr.hier_block2.__init__(self,"ofdm_mod",
-		                        gr.io_signature(1, 1, gr.sizeof_char*dp.carriers), # input signature
+		                        gr.io_signature(1, 1, gr.sizeof_char*dp.num_carriers/4), # input signature
 					gr.io_signature(1, 1, gr.sizeof_gr_complex)) # output signature
 
 
-		# create dab frames
-		
 		# symbol mapping
+		self.mapper = dab.qpsk_mapper_vbc(dp.num_carriers)
 		
 		# add pilot symbol
 
-		# frequency interleaving
-		
 		# phase sum
+		
+		# frequency interleaving
+		self.interleave = dab.frequency_interleaver_vcc(frequency_interleaving_sequence_array)
 
-		# add central carrier
+		# add central carrier & move to middle
 
 		# ifft
 		self.ifft = gr.fft_vcc(dp.fft_length, False, [1]*dp.fft_length, True)
 
 		# cyclic prefixer
-		self.prefixer = gr.ofdm_cyclic_prefixer()
+		self.prefixer = gr.ofdm_cyclic_prefixer(dp.fft_length, dp.symbol_length)
 
 		# add null symbol
 
-		pass
+		#
+		# connect it all
+		#
+
 
 class ofdm_demod(gr.hier_block2):
 	"""
@@ -106,7 +109,7 @@ class ofdm_demod(gr.hier_block2):
 
 		gr.hier_block2.__init__(self,"ofdm_demod",
 		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
-					gr.io_signature(1, 1, gr.sizeof_char*dp.carriers)) # output signature
+					gr.io_signature(1, 1, gr.sizeof_char*dp.num_carriers/4)) # output signature
 
 		
 
@@ -157,26 +160,26 @@ class ofdm_demod(gr.hier_block2):
 		self.fft = gr.fft_vcc(dp.fft_length, True, [1]*dp.fft_length, True)
 
 		# coarse frequency synchronisation
-		self.cfs = dab.ofdm_coarse_frequency_correct(dp.fft_length, dp.carriers)
+		self.cfs = dab.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers)
 
 		# diff phasor
-		self.phase_diff = dab.diff_phasor_vcc(dp.carriers)
+		self.phase_diff = dab.diff_phasor_vcc(dp.num_carriers)
 
 		# remove pilot symbol
-		self.remove_pilot = dab.ofdm_remove_first_symbol_vcc(dp.carriers)
+		self.remove_pilot = dab.ofdm_remove_first_symbol_vcc(dp.num_carriers)
 
 		# frequency deinterleaving
 		self.deinterleave = dab.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
 
 		# complex to phase
-		self.arg = gr.complex_to_arg(dp.carriers)
+		self.arg = gr.complex_to_arg(dp.num_carriers)
 
 		# correct frequency dependent phase offset
-		# self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.carriers,0.01)
-		self.correct_phase_offset = gr.add_const_vff([0]*dp.carriers)
+		# self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.num_carriers,0.01)
+		self.correct_phase_offset = gr.add_const_vff([0]*dp.num_carriers)
 		
 		# symbol demapping
-		# TODO
+		self.demapper = dab.qpsk_demapper_vcb(dp.num_carriers)
 
 		#
 		# connect everything
@@ -198,18 +201,20 @@ class ofdm_demod(gr.hier_block2):
 		self.connect((self.cfs,0), self.phase_diff)
 		self.connect(self.phase_diff, (self.remove_pilot,0))
 		self.connect((self.cfs,1), (self.remove_pilot,1))
-		self.connect((self.remove_pilot,0), self.deinterleave, self.arg, self.correct_phase_offset)
+		self.connect((self.remove_pilot,0), self.deinterleave, self.demapper, self)
+				
+		self.connect(self.arg, self.correct_phase_offset)
 
 		if debug:
 			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))
-			self.connect((self.cfs,0), gr.file_sink(gr.sizeof_gr_complex*dp.carriers, "debug/ofdm_after_cfs.dat"))
-			self.connect(self.phase_diff, gr.file_sink(gr.sizeof_gr_complex*dp.carriers, "debug/ofdm_diff_phasor.dat"))
-			self.connect(self.correct_phase_offset, gr.file_sink(gr.sizeof_float*dp.carriers, "debug/ofdm_phase_offset_corrected.dat"))
+			self.connect((self.cfs,0), gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_after_cfs.dat"))
+			self.connect(self.phase_diff, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_diff_phasor.dat"))
+			self.connect(self.correct_phase_offset, gr.file_sink(gr.sizeof_float*dp.num_carriers, "debug/ofdm_phase_offset_corrected.dat"))
 			self.connect((self.remove_pilot,1), gr.file_sink(gr.sizeof_char, "debug/ofdm_after_cfs_trigger.dat"))
 		else: #FIXME remove once completed
-			self.nop0 = gr.nop(gr.sizeof_gr_complex*dp.carriers)
+			self.nop0 = gr.nop(gr.sizeof_gr_complex*dp.num_carriers)
 			self.nop1 = gr.nop(gr.sizeof_char)
-			self.nop2 = gr.nop(gr.sizeof_float*dp.carriers)
+			self.nop2 = gr.nop(gr.sizeof_float*dp.num_carriers)
 			self.nop3 = gr.nop(gr.sizeof_char)
 			self.connect(self.phase_diff, self.nop0)
 			self.connect((self.cfs,1), self.nop1)

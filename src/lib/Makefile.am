@@ -73,7 +73,8 @@ _dab_la_SOURCES = 			        \
 	dab_fractional_interpolator_triggered_update_cc.cc \
 	dab_frequency_interleaver_vcc.cc        \
 	dab_qpsk_mapper_vbc.cc                  \
-	dab_qpsk_demapper_vcb.cc                
+	dab_qpsk_demapper_vcb.cc                \
+	dab_ofdm_insert_pilot_vcc.cc
 
 # magic flags
 _dab_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -101,7 +102,8 @@ grinclude_HEADERS =			        \
 	dab_fractional_interpolator_triggered_update_cc.h \
 	dab_frequency_interleaver_vcc.h         \
 	dab_qpsk_mapper_vbc.h                   \
-	dab_qpsk_demapper_vcb.h                
+	dab_qpsk_demapper_vcb.h                 \
+	dab_ofdm_insert_pilot_vcc.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig

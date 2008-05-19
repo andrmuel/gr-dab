@@ -20,6 +20,7 @@
 #include "dab_frequency_interleaver_vcc.h"
 #include "dab_qpsk_mapper_vbc.h"
 #include "dab_qpsk_demapper_vcb.h"
+#include "dab_ofdm_insert_pilot_vcc.h"
 #include <stdexcept>
 %}
 
@@ -211,3 +212,16 @@ class dab_qpsk_demapper_vcb : public gr_sync_block
   private:
     dab_qpsk_demapper_vcb (int symbol_length);
 };
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,ofdm_insert_pilot_vcc);
+
+dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
+
+class dab_ofdm_insert_pilot_vcc : public gr_block
+{
+ private:
+  dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
+};
+

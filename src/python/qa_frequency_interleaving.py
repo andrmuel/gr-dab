@@ -28,8 +28,8 @@ class qa_frequency_interleaver_vcc(gr_unittest.TestCase):
 		self.tb.connect(src, s2v, frequency_interleaver_vcc, v2s, dst)
 		self.tb.run()
 		result_data = dst.data()
-		print expected_result
-		print result_data
+		# print expected_result
+		# print result_data
 		self.assertComplexTuplesAlmostEqual(expected_result, result_data, 6)
 
 if __name__ == '__main__':

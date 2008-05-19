@@ -19,12 +19,12 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_QPSK_DEMAPPER_VCB_H
-#define INCLUDED_DAB_QPSK_DEMAPPER_VCB_H
+#ifndef INCLUDED_DAB_OFDM_INSERT_PILOT_VCC_H
+#define INCLUDED_DAB_OFDM_INSERT_PILOT_VCC_H
 
-#include <gr_sync_block.h>
+#include <gr_block.h>
 
-class dab_qpsk_demapper_vcb;
+class dab_ofdm_insert_pilot_vcc;
 
 /*
  * We use boost::shared_ptr's instead of raw pointers for all access
@@ -37,44 +37,44 @@ class dab_qpsk_demapper_vcb;
  *
  * As a convention, the _sptr suffix indicates a boost::shared_ptr
  */
-typedef boost::shared_ptr<dab_qpsk_demapper_vcb> dab_qpsk_demapper_vcb_sptr;
+typedef boost::shared_ptr<dab_ofdm_insert_pilot_vcc> dab_ofdm_insert_pilot_vcc_sptr;
 
 /*!
- * \brief Return a shared_ptr to a new instance of dab_qpsk_demapper_vcb.
+ * \brief Return a shared_ptr to a new instance of dab_ofdm_insert_pilot_vcc.
  *
- * To avoid accidental use of raw pointers, dab_qpsk_demapper_vcb's
- * constructor is private.  dab_make_qpsk_demapper_vcb is the public
+ * To avoid accidental use of raw pointers, dab_ofdm_insert_pilot_vcc's
+ * constructor is private.  dab_make_ofdm_insert_pilot_vcc is the public
  * interface for creating new instances.
  */
-dab_qpsk_demapper_vcb_sptr 
-dab_make_qpsk_demapper_vcb (int symbol_length);
+dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
 
 /*!
- * \brief QPSK demapper - maps QPSK symbol vectors to byte vectors.
+ * \brief Inserts the pilot symbol at the start of each frame.
  *
- * value < 0 -> bit=1
+ * The pilot symbol vector must have the same width as the other symbols
  *
  * \ingroup DAB
- * 
- * \param symbol_length length of the symbol vector (i.e. number of occupied carriers)
  */
-class dab_qpsk_demapper_vcb : public gr_sync_block
+class dab_ofdm_insert_pilot_vcc : public gr_block
 {
 	private:
-		// The friend declaration allows dab_make_qpsk_demapper_vcb to
+		// The friend declaration allows dab_make_ofdm_insert_pilot_vcc to
 		// access the private constructor.
 
-		friend dab_qpsk_demapper_vcb_sptr
-    dab_make_qpsk_demapper_vcb (int symbol_length);
+		friend dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
 
-		dab_qpsk_demapper_vcb (int symbol_length);  	// private constructor
+		dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);  	// private constructor
 
-		int d_symbol_length;
+    std::vector<gr_complex> d_pilot;
+    char d_start;
 
 	public:
-		int work (int noutput_items,
+		void forecast (int noutput_items, gr_vector_int &ninput_items_required);
+
+		int general_work (int noutput_items,
+		          gr_vector_int &ninput_items,
 		          gr_vector_const_void_star &input_items,
 		          gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_QPSK_DEMAPPER_VCB_H */
+#endif /* INCLUDED_DAB_OFDM_INSERT_PILOT_VCC_H */
