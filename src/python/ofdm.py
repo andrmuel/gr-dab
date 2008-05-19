@@ -67,6 +67,7 @@ class ofdm_mod(gr.hier_block2):
 		self.insert_pilot = dab.ofdm_insert_pilot_vcc(dp.prn)
 
 		# phase sum
+		self.sum_phase = dab.sum_phasor_trig_vcc(dp.num_carriers)
 		
 		# frequency interleaving
 		self.interleave = dab.frequency_interleaver_vcc(frequency_interleaving_sequence_array)

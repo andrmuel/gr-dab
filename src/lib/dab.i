@@ -22,6 +22,7 @@
 #include "dab_qpsk_demapper_vcb.h"
 #include "dab_ofdm_insert_pilot_vcc.h"
 #include "dab_sum_phasor_trig_vcc.h"
+#include "dab_ofdm_move_and_insert_zero.h"
 #include <stdexcept>
 %}
 
@@ -236,5 +237,17 @@ class dab_sum_phasor_trig_vcc : public gr_sync_block
 {
  private:
   dab_sum_phasor_trig_vcc (unsigned int length);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,ofdm_move_and_insert_zero);
+
+dab_ofdm_move_and_insert_zero_sptr dab_make_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);
+
+class dab_ofdm_move_and_insert_zero : public gr_sync_block
+{
+ private:
+  dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);
 };
 

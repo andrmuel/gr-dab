@@ -193,7 +193,8 @@ class dab_parameters:
 		self.prn = []
 		for k in range(-self.num_carriers//2, self.num_carriers//2+1):
 			if k == 0:
-				self.prn.append(0)
+				#self.prn.append(0)
+				pass
 			else:
 				[kk,i,n] = self.get_prn_kk_i_n(k)
 				h = self.__prn_h__[i][k-kk]
@@ -206,6 +207,8 @@ class dab_parameters:
 					self.prn.append(-1)
 				elif phi_k == 3:
 					self.prn.append(-1j)
+
+		# frequency (de)interleaving
 		a = self.fft_length/4-1
 		b = self.fft_length 
 		A = [0]
