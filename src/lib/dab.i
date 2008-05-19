@@ -17,6 +17,7 @@
 #include "dab_estimate_sample_rate_bf.h"
 #include "dab_ofdm_ffs_sample.h"
 #include "dab_fractional_interpolator_triggered_update_cc.h"
+#include "dab_frequency_interleaver_vcc.h"
 #include <stdexcept>
 %}
 
@@ -168,4 +169,19 @@ class dab_fractional_interpolator_triggered_update_cc : public gr_block
     float interp_ratio() const;
     void set_mu (float mu);
     void set_interp_ratio (float interp_ratio);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,frequency_interleaver_vcc);
+
+dab_frequency_interleaver_vcc_sptr dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
+
+class dab_frequency_interleaver_vcc : public gr_sync_block
+{
+  private:
+    dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
+
+  public:
+    void set_sequence(const std::vector<short> &interleaving_sequence) { d_interleaving_sequence = interleaving_sequence; }
 };

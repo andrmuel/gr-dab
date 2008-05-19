@@ -151,6 +151,13 @@ class dab_parameters:
 		[0, 1, 2, 1, 0, 3, 3, 2, 2, 3, 2, 1, 2, 1, 3, 2, 0, 1, 2, 1, 0, 3, 3, 2, 2, 3, 2, 1, 2, 1, 3, 2]
 	]
 
+	__expected_frequency_interleaving__ = [ # these few values are listed in the specs - they are used to verify the sequency
+			[-513,-14,329,692,-733,13,680,273,-36,43],
+			[-129,-14,-55,-76,163,141,-88,7,-111,-85],
+			[-65,-14,52,-29,-58,77,40,71,-38,81],
+			[-257,-14,73,180,198,-243,168,218,17,299]
+	]
+
 	def __init__(self, mode):
 		"""
 		selects the correct parameters for the selected mode and calculates the prn sequence
@@ -187,21 +194,24 @@ class dab_parameters:
 					self.prn.append(-1)
 				elif phi_k == 3:
 					self.prn.append(-1j)
-
-		# frequency interleaving sequence (see 14.6)
-		# a = self.fft_length/4-1
-		# b = self.fft_length 
-		# A = [0]
-		# for i in range(1,self.fft_length):
-			# A.append((13*A[-1]+a)%b)
-		# D = []
-		# for i in range(self.fft_length/4,3*self.fft_length/4+1):
-			# if i != self.fft_length/2:
-				# D.append(A[i])
-		# assert(len(D)==self.carriers)
-
+		a = self.fft_length/4-1
+		b = self.fft_length 
+		A = [0]
+		for i in range(1,self.fft_length):
+			A.append((13*A[-1]+a)%b)
+		D = [d for d in A if d >= self.fft_length/8 and d <= 7*self.fft_length/8 and d != self.fft_length/2]
+		assert(len(D)==self.carriers)
+		self.frequency_interleaving_sequence = [d - self.fft_length/2 for d in D]
+		assert(self.frequency_interleaving_sequence[0:len(self.__expected_frequency_interleaving__[mode-1])]==self.__expected_frequency_interleaving__[mode-1])
+		# sequence for arrays, with indices starting from 0 and central carrier already removed
+		self.frequency_interleaving_sequence_array = [k+self.carriers/2-(k>0) for k in self.frequency_interleaving_sequence]
+		assert(len(self.frequency_interleaving_sequence_array)==self.carriers)
+		assert(min(self.frequency_interleaving_sequence_array)==0)
+		assert(max(self.frequency_interleaving_sequence_array)==self.carriers-1)
+		assert(len(set(self.frequency_interleaving_sequence_array))==len(self.frequency_interleaving_sequence_array)) # uniqueness of elements
 
 		# frequency deinterleaving sequence
+		self.frequency_deinterleaving_sequence_array = [self.frequency_interleaving_sequence_array.index(i) for i in range(0,self.carriers)]
 
 	def get_prn_kk_i_n(self,k):
 		assert(k!=0)

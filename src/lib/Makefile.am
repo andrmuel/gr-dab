@@ -70,7 +70,8 @@ _dab_la_SOURCES = 			        \
 	dab_ofdm_remove_first_symbol_vcc.cc     \
 	dab_estimate_sample_rate_bf.cc          \
 	dab_ofdm_ffs_sample.cc                  \
-	dab_fractional_interpolator_triggered_update_cc.cc
+	dab_fractional_interpolator_triggered_update_cc.cc \
+	dab_frequency_interleaver_vcc.cc
 
 # magic flags
 _dab_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -95,7 +96,8 @@ grinclude_HEADERS =			        \
 	dab_ofdm_remove_first_symbol_vcc.h      \
 	dab_estimate_sample_rate_bf.h           \
 	dab_ofdm_ffs_sample.h                   \
-	dab_fractional_interpolator_triggered_update_cc.h
+	dab_fractional_interpolator_triggered_update_cc.h \
+	dab_frequency_interleaver_vcc.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig
