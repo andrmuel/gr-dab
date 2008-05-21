@@ -29,7 +29,7 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, dab
+from gnuradio import gr, dab_swig
 import parameters
 import ofdm_sync_dab
 import ofdm_sync_dab2
@@ -56,8 +56,8 @@ class ofdm_mod(gr.hier_block2):
 		dp = parameters.dab_parameters(mode)
 
 		gr.hier_block2.__init__(self,"ofdm_mod",
-		                        gr.io_signature(1, 1, gr.sizeof_char*dp.num_carriers/4), # input signature
-					gr.io_signature(1, 1, gr.sizeof_gr_complex)) # output signature
+		                        gr.io_signature2(2, 2, gr.sizeof_char*dp.num_carriers/4, gr.sizeof_char), # input signature
+					gr.io_signature (1, 1, gr.sizeof_gr_complex)) # output signature
 
 
 		# symbol mapping
@@ -85,11 +85,16 @@ class ofdm_mod(gr.hier_block2):
 		self.s2v = gr.stream_to_vector(gr.sizeof_gr_complex, dp.symbol_length)
 
 		# add null symbol
+		self.insert_null = dab.insert_null_symbol(dp.ns_length, dp.symbol_length)
 
 		#
 		# connect it all
 		#
 
+		# data
+		self.connect((self,0), self.mapper, (self.insert_pilot,0), (self.sum_phase,0), self.interleave, self.move_and_insert_carrier, self.ifft, self.prefixer, self.s2v, (self.insert_null,0), self)
+		# control signal (frame start)
+		self.connect((self,1), (self.insert_pilot,1), (self.sum_phase,1), (self.insert_null,1))
 
 class ofdm_demod(gr.hier_block2):
 	"""
@@ -114,8 +119,8 @@ class ofdm_demod(gr.hier_block2):
 		rp = parameters.receiver_parameters(mode)
 
 		gr.hier_block2.__init__(self,"ofdm_demod",
-		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
-					gr.io_signature(1, 1, gr.sizeof_char*dp.num_carriers/4)) # output signature
+		                        gr.io_signature (1, 1, gr.sizeof_gr_complex), # input signature
+					gr.io_signature2(2, 2, gr.sizeof_char*dp.num_carriers/4, gr.sizeof_char)) # output signature
 
 		
 
@@ -200,34 +205,22 @@ class ofdm_demod(gr.hier_block2):
 			self.connect(self.input2, self.fft_filter, self.sync)
 		else:
 			self.connect(self.input2, self.sync)
-		self.connect((self.sync, 0), (self.sampler, 0))
-		self.connect((self.sampler, 0), self.fft, (self.cfs, 0))
-		self.connect((self.sync, 1), (self.sampler, 1))
-		self.connect((self.sampler, 1), (self.cfs, 1))
-		self.connect((self.cfs,0), self.phase_diff)
-		self.connect(self.phase_diff, (self.remove_pilot,0))
-		self.connect((self.cfs,1), (self.remove_pilot,1))
-		self.connect((self.remove_pilot,0), self.deinterleave, self.demapper, self)
+
+		# data stream
+		self.connect((self.sync, 0), (self.sampler, 0), self.fft, (self.cfs, 0), self.phase_diff, 
+				(self.remove_pilot,0), self.deinterleave, self.demapper, (self,0))
+
+		# control stream
+		self.connect((self.sync, 1), (self.sampler, 1), (self.cfs, 1), (self.remove_pilot,1), (self,1))
 				
-		self.connect(self.arg, self.correct_phase_offset)
+		# self.connect(self.remove_pilot, self.arg, self.correct_phase_offset)
 
 		if debug:
 			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))
 			self.connect((self.cfs,0), gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_after_cfs.dat"))
 			self.connect(self.phase_diff, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_diff_phasor.dat"))
-			self.connect(self.correct_phase_offset, gr.file_sink(gr.sizeof_float*dp.num_carriers, "debug/ofdm_phase_offset_corrected.dat"))
+			# self.connect(self.correct_phase_offset, gr.file_sink(gr.sizeof_float*dp.num_carriers, "debug/ofdm_phase_offset_corrected.dat"))
 			self.connect((self.remove_pilot,1), gr.file_sink(gr.sizeof_char, "debug/ofdm_after_cfs_trigger.dat"))
-		else: #FIXME remove once completed
-			self.nop0 = gr.nop(gr.sizeof_gr_complex*dp.num_carriers)
-			self.nop1 = gr.nop(gr.sizeof_char)
-			self.nop2 = gr.nop(gr.sizeof_float*dp.num_carriers)
-			self.nop3 = gr.nop(gr.sizeof_char)
-			self.connect(self.phase_diff, self.nop0)
-			self.connect((self.cfs,1), self.nop1)
-			self.connect(self.correct_phase_offset, self.nop2)
-			self.connect((self.remove_pilot,1), self.nop3)
-
-
 
 	def update_correction(self):
 		while self.run_interpolater_update_thread:

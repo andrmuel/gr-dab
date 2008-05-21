@@ -49,18 +49,18 @@ LOCAL_IFILES = 				\
 # and knows how to call our extensions.
 
 BUILT_SOURCES = 			\
-	dab.cc			\
-	dab.py				
+	dab_swig.cc			\
+	dab_swig.py				
 
 # This gets dab.py installed in the right place
 ourpython_PYTHON =			\
-	dab.py
+	dab_swig.py
 
-ourlib_LTLIBRARIES = _dab.la
+ourlib_LTLIBRARIES = _dab_swig.la
 
 # These are the source files that go into the shared library
-_dab_la_SOURCES = 			        \
-	dab.cc			                \
+_dab_swig_la_SOURCES = 			        \
+	dab_swig.cc		                \
 	dab_moving_sum_ff.cc                    \
 	dab_moving_sum_cc.cc                    \
 	dab_ofdm_sampler.cc                     \
@@ -80,16 +80,16 @@ _dab_la_SOURCES = 			        \
 	dab_insert_null_symbol.cc
 
 # magic flags
-_dab_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
+_dab_swig_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
 
 # link the library against some comon swig runtime code and the 
 # c++ standard library
-_dab_la_LIBADD = 			\
+_dab_swig_la_LIBADD = 			\
 	$(PYTHON_LDFLAGS)		\
 	-lstdc++			
 
-dab.cc dab.py: $(LOCAL_IFILES) $(ALL_IFILES)
-	$(SWIG) $(SWIGPYTHONARGS) -module dab -o dab.cc $(LOCAL_IFILES)
+dab_swig.cc dab_swig.py: $(LOCAL_IFILES) $(ALL_IFILES)
+	$(SWIG) $(SWIGPYTHONARGS) -module dab_swig -o dab_swig.cc $(LOCAL_IFILES)
 
 # These headers get installed in ${prefix}/include/gnuradio
 grinclude_HEADERS =			        \

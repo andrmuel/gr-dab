@@ -90,9 +90,13 @@ class test_ofdm(gr.top_block):
 			# self.mix = gr.multiply_cc()
 			# self.connect(self.sig, (self.mix,1))
 			# self.connect(self.src, self.mix, self.dab_demod)
-			
-		
 
+		# sink output to nowhere 
+		self.nop0 = gr.nop(gr.sizeof_char*dp.num_carriers/4)
+		self.nop1 = gr.nop(gr.sizeof_char)
+		self.connect((self.dab_demod,0),self.nop0)
+		self.connect((self.dab_demod,1),self.nop1)
+			
 if __name__=='__main__':
 	try:
 		to = test_ofdm()

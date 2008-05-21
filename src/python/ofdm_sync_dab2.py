@@ -25,11 +25,10 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, dab
-import parameters
+from gnuradio import gr, dab_swig
 import sys
 from math import pi
-import detect_null
+import parameters, detect_null
 
 class ofdm_sync_dab2(gr.hier_block2):
 	"""
