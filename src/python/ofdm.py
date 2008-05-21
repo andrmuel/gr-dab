@@ -212,7 +212,8 @@ class ofdm_demod(gr.hier_block2):
 
 		# control stream
 		self.connect((self.sync, 1), (self.sampler, 1), (self.cfs, 1), (self.remove_pilot,1), (self,1))
-				
+			
+		# TODO correct phase offset
 		# self.connect(self.remove_pilot, self.arg, self.correct_phase_offset)
 
 		if debug:
