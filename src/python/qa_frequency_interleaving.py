@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_frequency_interleaver_vcc(gr_unittest.TestCase):
 	"""
@@ -22,7 +22,7 @@ class qa_frequency_interleaver_vcc(gr_unittest.TestCase):
 		expected_result = [complex(x) for x in expected_result]
 		src = gr.vector_source_c(src_data)
 		s2v = gr.stream_to_vector(gr.sizeof_gr_complex, 5)
-		frequency_interleaver_vcc = dab.frequency_interleaver_vcc([3,1,0,4,2])
+		frequency_interleaver_vcc = dab_swig.frequency_interleaver_vcc([3,1,0,4,2])
 		v2s = gr.vector_to_stream(gr.sizeof_gr_complex, 5)
 		dst = gr.vector_sink_c()
 		self.tb.connect(src, s2v, frequency_interleaver_vcc, v2s, dst)

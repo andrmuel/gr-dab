@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_ofdm_move_and_insert_zero(gr_unittest.TestCase):
 	"""
@@ -25,7 +25,7 @@ class qa_ofdm_move_and_insert_zero(gr_unittest.TestCase):
 		expected_result0 = [complex(x) for x in expected_result0]
 		src0 = gr.vector_source_c(src_data0)
 		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex, num_carriers)
-		ofdm_move_and_insert_zero = dab.ofdm_move_and_insert_zero(fft_length,num_carriers)
+		ofdm_move_and_insert_zero = dab_swig.ofdm_move_and_insert_zero(fft_length,num_carriers)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex, fft_length)
 		dst0 = gr.vector_sink_c()
 		self.tb.connect(src0, s2v0, ofdm_move_and_insert_zero, v2s0, dst0)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 	"""
@@ -27,7 +27,7 @@ class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 		expected_result = (0,0,0,0,0,0,0,a,a,a,a,a,a,a,a,a,a,a,a,b,b)
 		src0 = gr.vector_source_f(src_data0)
 		src1 = gr.vector_source_b(src_data1)
-		ofdm_ffs_sample = dab.ofdm_ffs_sample(symbol_length,  num_symbols, alpha)
+		ofdm_ffs_sample = dab_swig.ofdm_ffs_sample(symbol_length,  num_symbols, alpha)
 		dst0 = gr.vector_sink_f()
 		self.tb.connect(src0, (ofdm_ffs_sample,0))
 		self.tb.connect(src1, (ofdm_ffs_sample,1))

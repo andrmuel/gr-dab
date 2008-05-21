@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_sum_phasor_trig_vcc(gr_unittest.TestCase):
 	"""
@@ -24,7 +24,7 @@ class qa_sum_phasor_trig_vcc(gr_unittest.TestCase):
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
 		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex,2)
-		sum_phasor_trig_vcc = dab.sum_phasor_trig_vcc(2)
+		sum_phasor_trig_vcc = dab_swig.sum_phasor_trig_vcc(2)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,2)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()
@@ -48,7 +48,7 @@ class qa_sum_phasor_trig_vcc(gr_unittest.TestCase):
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
 		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex,1)
-		sum_phasor_trig_vcc = dab.sum_phasor_trig_vcc(1)
+		sum_phasor_trig_vcc = dab_swig.sum_phasor_trig_vcc(1)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,1)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()

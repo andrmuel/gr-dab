@@ -71,10 +71,10 @@ dab_ofdm_insert_pilot_vcc::general_work (int noutput_items,
 	gr_complex *optr = (gr_complex *) output_items[0];
 	char *o_frame_start = (char *) output_items[1];
 
-	unsigned int n_in = ninput_items[0];
+	unsigned int n_out = (ninput_items[0]<noutput_items)?ninput_items[0]:noutput_items;
   unsigned int in_consumed = 0;
 
-  for (unsigned int i=0; i<n_in; i++) {
+  for (unsigned int i=0; i<n_out; i++) {
     if (*frame_start == 1 && d_start==0) {
       d_start = 1;
       for (unsigned int j=0; j<d_pilot.size(); j++)
@@ -89,5 +89,8 @@ dab_ofdm_insert_pilot_vcc::general_work (int noutput_items,
     *o_frame_start++ = d_start;
   }
 	consume_each(in_consumed);
-	return n_in;
+
+  // printf("ninput_items: %d, noutput_items: %d, consumed: %d, produced: %d\n",ninput_items[0],noutput_items,in_consumed, n_out);
+
+	return n_out;
 }

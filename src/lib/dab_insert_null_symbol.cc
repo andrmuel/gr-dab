@@ -48,7 +48,17 @@ dab_insert_null_symbol::dab_insert_null_symbol (int ns_length, int symbol_length
 	           gr_make_io_signature (1, 1, sizeof(gr_complex))),
   d_ns_length(ns_length), d_symbol_length(symbol_length), d_ns_added(0)
 {
+  /* note: setting output_multiple to a high value without setting the relative rate produces
+   *
+   * gr_vmcircbuf_sysv_shm: shmget (1): Invalid argument
+   * gr_buffer::allocate_buffer: failed to allocate buffer of size 102080 KB
+   * terminate called after throwing an instance of 'std::bad_alloc'
+   *   what():  St9bad_alloc
+   *
+   * maybe the scheduler thinks that d_symbol_length input items are needed, which uses a lot of memory
+   **/
   set_output_multiple(d_symbol_length);
+  set_relative_rate(d_symbol_length);
 }
 
 void 

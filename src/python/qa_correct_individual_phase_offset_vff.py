@@ -2,7 +2,7 @@
 
 from gnuradio import gr, gr_unittest
 from math import pi
-import dab
+import dab_swig
 
 class qa_correct_individual_phase_offset_vff(gr_unittest.TestCase):
 	"""
@@ -22,7 +22,7 @@ class qa_correct_individual_phase_offset_vff(gr_unittest.TestCase):
 		src_data        = map(lambda x,y: x+y, expected_result,[0.1,0.3,-0.2,0.2,0.4,0.1])
 		src = gr.vector_source_f(src_data)
 		s2v = gr.stream_to_vector(gr.sizeof_float, 3)
-		mut = dab.correct_individual_phase_offset_vff(3, 1)
+		mut = dab_swig.correct_individual_phase_offset_vff(3, 1)
 		v2s = gr.vector_to_stream(gr.sizeof_float, 3)
 		dst = gr.vector_sink_f()
 		self.tb.connect(src, s2v, mut, v2s, dst)
@@ -36,7 +36,7 @@ class qa_correct_individual_phase_offset_vff(gr_unittest.TestCase):
 		expected_result = map(lambda x,y: x+y, data, [0.05,0.15,-0.2,0.075,0.125,0.15])
 		src = gr.vector_source_f(src_data)
 		s2v = gr.stream_to_vector(gr.sizeof_float, 3)
-		mut = dab.correct_individual_phase_offset_vff(3, 0.5)
+		mut = dab_swig.correct_individual_phase_offset_vff(3, 0.5)
 		v2s = gr.vector_to_stream(gr.sizeof_float, 3)
 		dst = gr.vector_sink_f()
 		self.tb.connect(src, s2v, mut, v2s, dst)

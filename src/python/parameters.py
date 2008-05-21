@@ -35,7 +35,7 @@ class dab_parameters:
 	# parameter values for all modes
 
 	# OFDM parameters 
-	__symbols_per_frame__ = [76, 76, 153, 76]             # number of OFDM symbols per DAB frame (excl. NS)
+	__symbols_per_frame__ = [76, 76, 153, 76]             # number of OFDM symbols per DAB frame (incl. pilot, excl. NS)
 	__num_carriers__      = [1536, 384, 192, 768]         # number of carriers -> carrier width = 1536kHz/carriers
 	__frame_length__      = [196608, 49152, 49152, 98304] # samples per frame; in ms: 96,24,24,48 (incl. NS)
 	__ns_length__         = [2656, 664, 345, 1328]        # length of null symbol in samples

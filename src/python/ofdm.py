@@ -37,6 +37,7 @@ import detect_null
 import threading
 import time
 
+
 class ofdm_mod(gr.hier_block2):
 	"""
 	@brief Block to create a DAB signal from bits.
@@ -45,7 +46,7 @@ class ofdm_mod(gr.hier_block2):
 	The output sample rate is 2.048 MSPS.
 	"""
 	
-	def __init__(self, mode=1):
+	def __init__(self, mode=1, debug=False):
 		"""
 		Hierarchical block for OFDM modulation
 
@@ -62,23 +63,23 @@ class ofdm_mod(gr.hier_block2):
 
 		# symbol mapping
 		self.mapper = dab_swig.qpsk_mapper_vbc(dp.num_carriers)
-		
+
 		# add pilot symbol
 		self.insert_pilot = dab_swig.ofdm_insert_pilot_vcc(dp.prn)
 
 		# phase sum
 		self.sum_phase = dab_swig.sum_phasor_trig_vcc(dp.num_carriers)
-		
+
 		# frequency interleaving
-		self.interleave = dab_swig.frequency_interleaver_vcc(frequency_interleaving_sequence_array)
+		self.interleave = dab_swig.frequency_interleaver_vcc(dp.frequency_interleaving_sequence_array)
 
 		# add central carrier & move to middle
 		self.move_and_insert_carrier = dab_swig.ofdm_move_and_insert_zero(dp.fft_length, dp.num_carriers)
 
 		# ifft
-		self.ifft = gr.fft_vcc(dp.fft_length, False, [1]*dp.fft_length, True)
+		self.ifft = gr.fft_vcc(dp.fft_length, False, [], True)
 
-		# cyclic prefixer
+		# cyclic prefixer]
 		self.prefixer = gr.ofdm_cyclic_prefixer(dp.fft_length, dp.symbol_length)
 
 		# convert back to vectors
@@ -92,9 +93,23 @@ class ofdm_mod(gr.hier_block2):
 		#
 
 		# data
-		self.connect((self,0), self.mapper, (self.insert_pilot,0), (self.sum_phase,0), self.interleave, self.move_and_insert_carrier, self.ifft, self.prefixer, self.s2v, (self.insert_null,0), self)
+		self.connect((self,0), self.mapper, (self.insert_pilot,0), (self.sum_phase,0), self.interleave, self.move_and_insert_carrier, self.ifft, self.prefixer, self.s2v, (self.insert_null,0))
+		self.connect(self.insert_null, self)
+
 		# control signal (frame start)
 		self.connect((self,1), (self.insert_pilot,1), (self.sum_phase,1), (self.insert_null,1))
+
+		if debug:
+			self.connect(self.mapper, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_mapper.dat"))
+			self.connect(self.insert_pilot, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_insert_pilot.dat"))
+			self.connect(self.sum_phase, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_sum_phase.dat"))
+			self.connect(self.interleave, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_interleave.dat"))
+			self.connect(self.move_and_insert_carrier, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/generated_signal_move_and_insert_carrier.dat"))
+			self.connect(self.ifft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/generated_signal_ifft.dat"))
+			self.connect(self.prefixer, gr.file_sink(gr.sizeof_gr_complex, "debug/generated_signal_prefixer.dat"))
+			self.connect(self.insert_null, gr.file_sink(gr.sizeof_gr_complex, "debug/generated_signal.dat"))
+
+
 
 class ofdm_demod(gr.hier_block2):
 	"""
@@ -109,7 +124,11 @@ class ofdm_demod(gr.hier_block2):
 		Hierarchical block for OFDM demodulation
 
 		@param mode DAB mode (1-4)
+		@param rx_filter disable/enable FFT bandbass at input
+		@param autocorrect_sample_rate whether to correct the sample rate dynamically
+		@param sample_rate_correction_factor static correction factor for sample rate
 		@param debug enables debug output to files
+		@param verbose whether to produce verbose messages
 		"""
 
 		self.mode = mode
@@ -168,7 +187,7 @@ class ofdm_demod(gr.hier_block2):
 		self.sampler = dab_swig.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
 		
 		# fft for symbol vectors
-		self.fft = gr.fft_vcc(dp.fft_length, True, [1]*dp.fft_length, True)
+		self.fft = gr.fft_vcc(dp.fft_length, True, [], True)
 
 		# coarse frequency synchronisation
 		self.cfs = dab_swig.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers)

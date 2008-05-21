@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_ofdm_sampler(gr_unittest.TestCase):
 	"""
@@ -25,7 +25,7 @@ class qa_ofdm_sampler(gr_unittest.TestCase):
 		expected_result1 = (1,0,1)
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
-		ofdm_sampler = dab.ofdm_sampler(fft_len,2,2,0)
+		ofdm_sampler = dab_swig.ofdm_sampler(fft_len,2,2,0)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,fft_len)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()
@@ -48,7 +48,7 @@ class qa_ofdm_sampler(gr_unittest.TestCase):
 		expected_result1 = (1,0,1)
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
-		ofdm_sampler = dab.ofdm_sampler(fft_len,2,2,1)
+		ofdm_sampler = dab_swig.ofdm_sampler(fft_len,2,2,1)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,fft_len)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()
@@ -71,7 +71,7 @@ class qa_ofdm_sampler(gr_unittest.TestCase):
 		expected_result1 = (1,0,0)
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
-		ofdm_sampler = dab.ofdm_sampler(fft_len,3,5,3)
+		ofdm_sampler = dab_swig.ofdm_sampler(fft_len,3,5,3)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,fft_len)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()

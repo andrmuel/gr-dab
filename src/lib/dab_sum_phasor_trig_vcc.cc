@@ -75,6 +75,7 @@ dab_sum_phasor_trig_vcc::work (int noutput_items,
       }
 
     }
+
     *o_frame_start++ = *frame_start++;
     
     /* need to remember last OFDM symbol before leaving function */
@@ -88,6 +89,5 @@ dab_sum_phasor_trig_vcc::work (int noutput_items,
 
   }
 
-    
   return noutput_items;
 }

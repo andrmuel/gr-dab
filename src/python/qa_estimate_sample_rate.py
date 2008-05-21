@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_estimate_sample_rate(gr_unittest.TestCase):
 	"""
@@ -20,7 +20,7 @@ class qa_estimate_sample_rate(gr_unittest.TestCase):
 		src_data =                           [0,1,0,1,0,0,0,0,1,0,1,1]
 		expected_result = [ 7./3.*x for x in [3,3,3,2,2,2,2,2,5,5,2,1]]
 		src = gr.vector_source_b(src_data)
-		estimate_sample_rate = dab.estimate_sample_rate_bf(7,3)
+		estimate_sample_rate = dab_swig.estimate_sample_rate_bf(7,3)
 		dst = gr.vector_sink_f()
 		self.tb.connect(src, estimate_sample_rate)
 		self.tb.connect(estimate_sample_rate, dst)

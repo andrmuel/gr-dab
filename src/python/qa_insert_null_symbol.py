@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_insert_null_symbol(gr_unittest.TestCase):
 	"""
@@ -24,7 +24,7 @@ class qa_insert_null_symbol(gr_unittest.TestCase):
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
 		s2v = gr.stream_to_vector(gr.sizeof_gr_complex, 3)
-		insert_null_symbol = dab.insert_null_symbol(5,3)
+		insert_null_symbol = dab_swig.insert_null_symbol(5,3)
 		dst = gr.vector_sink_c()
 		self.tb.connect(src0, s2v, insert_null_symbol, dst)
 		self.tb.connect(src1, (insert_null_symbol,1))

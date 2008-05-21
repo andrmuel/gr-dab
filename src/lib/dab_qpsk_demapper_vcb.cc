@@ -67,10 +67,10 @@ dab_qpsk_demapper_vcb::work (int noutput_items,
     for (int j=0; j<d_symbol_length/4; j++) {
       byte = 0;
       for (int k=0; k<4; k++) {
-        if (in[j+k].real()<0)
+        if (in[4*j+k].real()<0)
           byte+=1;
         byte = byte << 1;
-        if (in[j+k].imag()<0)
+        if (in[4*j+k].imag()<0)
           byte+=1;
         if (k<3)
           byte = byte << 1;

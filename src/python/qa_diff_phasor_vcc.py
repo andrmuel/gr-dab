@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab
+import dab_swig
 
 class qa_diff_phasor_vcc(gr_unittest.TestCase):
 	"""
@@ -35,7 +35,7 @@ class qa_diff_phasor_vcc(gr_unittest.TestCase):
 		expected_result = [0j,0j,0j,0j,0j]+map(multconj,a,b)+map(multconj,b,c)+map(multconj,c,d)+map(multconj,d,e)
 		src = gr.vector_source_c(src_data)
 		s2v = gr.stream_to_vector(gr.sizeof_gr_complex, 5)
-		diff_phasor_vcc = dab.diff_phasor_vcc(5)
+		diff_phasor_vcc = dab_swig.diff_phasor_vcc(5)
 		v2s = gr.vector_to_stream(gr.sizeof_gr_complex, 5)
 		dst = gr.vector_sink_c()
 		self.tb.connect(src, s2v, diff_phasor_vcc, v2s, dst)
