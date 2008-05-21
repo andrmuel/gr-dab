@@ -61,19 +61,19 @@ class ofdm_mod(gr.hier_block2):
 
 
 		# symbol mapping
-		self.mapper = dab.qpsk_mapper_vbc(dp.num_carriers)
+		self.mapper = dab_swig.qpsk_mapper_vbc(dp.num_carriers)
 		
 		# add pilot symbol
-		self.insert_pilot = dab.ofdm_insert_pilot_vcc(dp.prn)
+		self.insert_pilot = dab_swig.ofdm_insert_pilot_vcc(dp.prn)
 
 		# phase sum
-		self.sum_phase = dab.sum_phasor_trig_vcc(dp.num_carriers)
+		self.sum_phase = dab_swig.sum_phasor_trig_vcc(dp.num_carriers)
 		
 		# frequency interleaving
-		self.interleave = dab.frequency_interleaver_vcc(frequency_interleaving_sequence_array)
+		self.interleave = dab_swig.frequency_interleaver_vcc(frequency_interleaving_sequence_array)
 
 		# add central carrier & move to middle
-		self.move_and_insert_carrier = dab.ofdm_move_and_insert_zero(dp.fft_length, dp.num_carriers)
+		self.move_and_insert_carrier = dab_swig.ofdm_move_and_insert_zero(dp.fft_length, dp.num_carriers)
 
 		# ifft
 		self.ifft = gr.fft_vcc(dp.fft_length, False, [1]*dp.fft_length, True)
@@ -85,7 +85,7 @@ class ofdm_mod(gr.hier_block2):
 		self.s2v = gr.stream_to_vector(gr.sizeof_gr_complex, dp.symbol_length)
 
 		# add null symbol
-		self.insert_null = dab.insert_null_symbol(dp.ns_length, dp.symbol_length)
+		self.insert_null = dab_swig.insert_null_symbol(dp.ns_length, dp.symbol_length)
 
 		#
 		# connect it all
@@ -143,11 +143,11 @@ class ofdm_demod(gr.hier_block2):
 		if autocorrect_sample_rate:
 			if verbose: print "--> dynamic sample rate correction enabled"
 			self.rate_detect_ns = detect_null.detect_null(dp.ns_length, False)
-			self.rate_estimator = dab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
+			self.rate_estimator = dab_swig.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 			self.prober = gr.probe_signal_f()
 			self.connect(self.input, self.rate_detect_ns, self.rate_estimator, self.prober)
 			# self.resample = gr.fractional_interpolator_cc(0, 1)
-			self.resample = dab.fractional_interpolator_triggered_update_cc(0,1)
+			self.resample = dab_swig.fractional_interpolator_triggered_update_cc(0,1)
 			self.connect(self.rate_detect_ns, (self.resample,1))
 			self.updater = threading.Timer(0.1,self.update_correction)
 			# self.updater = threading.Thread(target=self.update_correction)
@@ -161,36 +161,36 @@ class ofdm_demod(gr.hier_block2):
 				self.resample = gr.fractional_interpolator_cc(0, sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
-		# self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
+		# self.sync = ofdm_sync_dab_swig.ofdm_sync_dab(mode, debug)
 		self.sync = ofdm_sync_dab2.ofdm_sync_dab2(mode, debug)
 
 		# ofdm symbol sampler
-		self.sampler = dab.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
+		self.sampler = dab_swig.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
 		
 		# fft for symbol vectors
 		self.fft = gr.fft_vcc(dp.fft_length, True, [1]*dp.fft_length, True)
 
 		# coarse frequency synchronisation
-		self.cfs = dab.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers)
+		self.cfs = dab_swig.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers)
 
 		# diff phasor
-		self.phase_diff = dab.diff_phasor_vcc(dp.num_carriers)
+		self.phase_diff = dab_swig.diff_phasor_vcc(dp.num_carriers)
 
 		# remove pilot symbol
-		self.remove_pilot = dab.ofdm_remove_first_symbol_vcc(dp.num_carriers)
+		self.remove_pilot = dab_swig.ofdm_remove_first_symbol_vcc(dp.num_carriers)
 
 		# frequency deinterleaving
-		self.deinterleave = dab.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
+		self.deinterleave = dab_swig.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
 
 		# complex to phase
 		self.arg = gr.complex_to_arg(dp.num_carriers)
 
 		# correct frequency dependent phase offset
-		# self.correct_phase_offset = dab.correct_individual_phase_offset_vff(dp.num_carriers,0.01)
+		# self.correct_phase_offset = dab_swig.correct_individual_phase_offset_vff(dp.num_carriers,0.01)
 		self.correct_phase_offset = gr.add_const_vff([0]*dp.num_carriers)
 		
 		# symbol demapping
-		self.demapper = dab.qpsk_demapper_vcb(dp.num_carriers)
+		self.demapper = dab_swig.qpsk_demapper_vcb(dp.num_carriers)
 
 		#
 		# connect everything

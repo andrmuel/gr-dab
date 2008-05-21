@@ -61,7 +61,7 @@ class estimate_samplerate(gr.top_block):
 		self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 		self.resample = blks2.rational_resampler_ccc(2048,2000)
 		self.rate_detect_ns = detect_null.detect_null(dp.ns_length, False)
-		self.rate_estimator = dab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
+		self.rate_estimator = dab_swig.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 		self.decimate = gr.keep_one_in_n(gr.sizeof_float, dp.frame_length)
 		self.ignore_first = gr.skiphead(gr.sizeof_float, 1)
 		self.sink = gr.vector_sink_f()
