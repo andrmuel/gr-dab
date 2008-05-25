@@ -25,6 +25,7 @@
 #include "dab_ofdm_move_and_insert_zero.h"
 #include "dab_insert_null_symbol.h"
 #include "dab_concatenate_signals.h"
+#include "dab_measure_processing_rate.h"
 #include <stdexcept>
 %}
 
@@ -43,13 +44,13 @@ dab_moving_sum_ff_sptr dab_make_moving_sum_ff (int length);
 
 class dab_moving_sum_ff : public gr_sync_block
 {
- private:
-  dab_moving_sum_ff (int length);
+  private:
+   dab_moving_sum_ff (int length);
 
- public:
-  int length() const {return d_length;}
-  void set_length(int length) {set_history(length+1); d_length=length;}
-  void reset() {d_sum=0;}
+  public:
+   int length() const {return d_length;}
+   void set_length(int length) {set_history(length+1); d_length=length;}
+   void reset() {d_sum=0;}
 };
 
 // ----------------------------------------------------------------
@@ -67,13 +68,13 @@ dab_moving_sum_cc_sptr dab_make_moving_sum_cc (int length);
 
 class dab_moving_sum_cc : public gr_sync_block
 {
- private:
-  dab_moving_sum_cc (int length);
+  private:
+   dab_moving_sum_cc (int length);
 
- public:
-  int length() const {return d_length;}
-  void set_length(int length) {set_history(length+1); d_length=length;}
-  void reset() {d_sum=0;}
+  public:
+   int length() const {return d_length;}
+   void set_length(int length) {set_history(length+1); d_length=length;}
+   void reset() {d_sum=0;}
 };
 
 // ----------------------------------------------------------------
@@ -84,8 +85,8 @@ dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned i
 
 class dab_ofdm_sampler : public gr_block
 {
- private:
-  dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
+  private:
+   dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
 };
 
 // ----------------------------------------------------------------
@@ -96,8 +97,8 @@ dab_ofdm_coarse_frequency_correct_sptr dab_make_ofdm_coarse_frequency_correct (u
 
 class dab_ofdm_coarse_frequency_correct : public gr_sync_block
 {
- private:
-  dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);
+  private:
+   dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);
 };
 
 // ----------------------------------------------------------------
@@ -108,8 +109,8 @@ dab_diff_phasor_vcc_sptr dab_make_diff_phasor_vcc (unsigned int length);
 
 class dab_diff_phasor_vcc : public gr_sync_block
 {
- private:
-  dab_diff_phasor_vcc (unsigned int length);
+  private:
+   dab_diff_phasor_vcc (unsigned int length);
 };
 
 // ----------------------------------------------------------------
@@ -120,8 +121,8 @@ dab_correct_individual_phase_offset_vff_sptr dab_make_correct_individual_phase_o
 
 class dab_correct_individual_phase_offset_vff : public gr_sync_block
 {
- private:
-  dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
+  private:
+   dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
 };
 
 // ----------------------------------------------------------------
@@ -132,8 +133,8 @@ dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (uns
 
 class dab_ofdm_remove_first_symbol_vcc : public gr_block
 {
- private:
-  dab_ofdm_remove_first_symbol_vcc (unsigned int vlen);
+  private:
+   dab_ofdm_remove_first_symbol_vcc (unsigned int vlen);
 };
 
 // ----------------------------------------------------------------
@@ -144,8 +145,8 @@ dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expecte
 
 class dab_estimate_sample_rate_bf : public gr_sync_block
 {
- private:
-  dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
+  private:
+   dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
 };
 
 // ----------------------------------------------------------------
@@ -156,8 +157,8 @@ dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (int symbol_length, int num_sy
 
 class dab_ofdm_ffs_sample : public gr_sync_block
 {
- private:
-  dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
+  private:
+   dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
 };
 
 
@@ -170,14 +171,14 @@ dab_fractional_interpolator_triggered_update_cc_sptr dab_make_fractional_interpo
 
 class dab_fractional_interpolator_triggered_update_cc : public gr_block
 {
-  private:
-    dab_fractional_interpolator_triggered_update_cc (float phase_shift, float interp_ratio);
+   private:
+     dab_fractional_interpolator_triggered_update_cc (float phase_shift, float interp_ratio);
 
-  public:
-    float mu() const;
-    float interp_ratio() const;
-    void set_mu (float mu);
-    void set_interp_ratio (float interp_ratio);
+   public:
+     float mu() const;
+     float interp_ratio() const;
+     void set_mu (float mu);
+     void set_interp_ratio (float interp_ratio);
 };
 
 // ----------------------------------------------------------------
@@ -188,11 +189,11 @@ dab_frequency_interleaver_vcc_sptr dab_make_frequency_interleaver_vcc (const std
 
 class dab_frequency_interleaver_vcc : public gr_sync_block
 {
-  private:
-    dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
+   private:
+     dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
 
-  public:
-    void set_sequence(const std::vector<short> &interleaving_sequence) { d_interleaving_sequence = interleaving_sequence; }
+   public:
+     void set_sequence(const std::vector<short> &interleaving_sequence) { d_interleaving_sequence = interleaving_sequence; }
 };
 
 // ----------------------------------------------------------------
@@ -203,8 +204,8 @@ dab_qpsk_mapper_vbc_sptr dab_make_qpsk_mapper_vbc (int symbol_length);
 
 class dab_qpsk_mapper_vbc : public gr_sync_block
 {
-  private:
-    dab_qpsk_mapper_vbc (int symbol_length);
+   private:
+     dab_qpsk_mapper_vbc (int symbol_length);
 };
 
 // ----------------------------------------------------------------
@@ -215,8 +216,8 @@ dab_qpsk_demapper_vcb_sptr dab_make_qpsk_demapper_vcb (int symbol_length);
 
 class dab_qpsk_demapper_vcb : public gr_sync_block
 {
-  private:
-    dab_qpsk_demapper_vcb (int symbol_length);
+   private:
+     dab_qpsk_demapper_vcb (int symbol_length);
 };
 
 // ----------------------------------------------------------------
@@ -227,8 +228,8 @@ dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector
 
 class dab_ofdm_insert_pilot_vcc : public gr_block
 {
- private:
-  dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
+  private:
+   dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
 };
 
 // ----------------------------------------------------------------
@@ -239,8 +240,8 @@ dab_sum_phasor_trig_vcc_sptr dab_make_sum_phasor_trig_vcc (unsigned int length);
 
 class dab_sum_phasor_trig_vcc : public gr_sync_block
 {
- private:
-  dab_sum_phasor_trig_vcc (unsigned int length);
+  private:
+   dab_sum_phasor_trig_vcc (unsigned int length);
 };
 
 // ----------------------------------------------------------------
@@ -251,8 +252,8 @@ dab_ofdm_move_and_insert_zero_sptr dab_make_ofdm_move_and_insert_zero (unsigned 
 
 class dab_ofdm_move_and_insert_zero : public gr_sync_block
 {
- private:
-  dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);
+  private:
+   dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);
 };
 
 // ----------------------------------------------------------------
@@ -263,8 +264,8 @@ dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symb
 
 class dab_insert_null_symbol : public gr_block
 {
- private:
-  dab_insert_null_symbol (int ns_length, int symbol_length);
+  private:
+   dab_insert_null_symbol (int ns_length, int symbol_length);
 };
 
 // ----------------------------------------------------------------
@@ -275,7 +276,22 @@ dab_concatenate_signals_sptr dab_make_concatenate_signals (size_t itemsize);
 
 class dab_concatenate_signals : public gr_block
 {
- private:
-  dab_concatenate_signals (size_t itemsize);
+  private:
+   dab_concatenate_signals (size_t itemsize);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,measure_processing_rate);
+
+dab_measure_processing_rate_sptr dab_make_measure_processing_rate (size_t itemsize, int samples_to_count);
+
+class dab_measure_processing_rate : public gr_sync_block
+{
+  private:
+   dab_measure_processing_rate (size_t itemsize, int samples_to_count);
+  public:
+   void set_samples_to_count(int samples_to_count) { d_samples_to_count=samples_to_count; }
+   float processing_rate() { return d_processing_rate; }
 };
 
