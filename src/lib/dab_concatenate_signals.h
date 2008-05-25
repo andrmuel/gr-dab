@@ -20,28 +20,31 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef INCLUDED_DAB_CONCATENATE_SIGNALS_CC_H
-#define INCLUDED_DAB_CONCATENATE_SIGNALS_CC_H
+#ifndef INCLUDED_DAB_CONCATENATE_SIGNALS_H
+#define INCLUDED_DAB_CONCATENATE_SIGNALS_H
 
 #include <gr_block.h>
 
 class dab_concatenate_signals;
 typedef boost::shared_ptr<dab_concatenate_signals> dab_concatenate_signals_sptr;
 
-dab_concatenate_signals_sptr dab_make_concatenate_signals ();
+dab_concatenate_signals_sptr dab_make_concatenate_signals (size_t itemsize);
 
 /*!
  * \brief Concatenate all input signals in time
+ *
+ * \param itemsize size of input and output items
  *
  * Output first signal, as long as it has samples, then second signal, etc...
  */
 class dab_concatenate_signals : public gr_block
 {
   private:
-    friend dab_concatenate_signals_sptr dab_make_concatenate_signals ();
+    friend dab_concatenate_signals_sptr dab_make_concatenate_signals (size_t itemsize);
 
-    dab_concatenate_signals ();
+    dab_concatenate_signals (size_t itemsize);
 
+    size_t d_itemsize;
     unsigned int d_current_signal;
     unsigned int d_callmetwice;
 

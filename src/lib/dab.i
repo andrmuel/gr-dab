@@ -24,7 +24,7 @@
 #include "dab_sum_phasor_trig_vcc.h"
 #include "dab_ofdm_move_and_insert_zero.h"
 #include "dab_insert_null_symbol.h"
-#include "dab_concatenate_signals_cc.h"
+#include "dab_concatenate_signals.h"
 #include <stdexcept>
 %}
 
@@ -271,11 +271,11 @@ class dab_insert_null_symbol : public gr_block
 
 GR_SWIG_BLOCK_MAGIC(dab,concatenate_signals);
 
-dab_concatenate_signals_sptr dab_make_concatenate_signals ();
+dab_concatenate_signals_sptr dab_make_concatenate_signals (size_t itemsize);
 
 class dab_concatenate_signals : public gr_block
 {
  private:
-  dab_concatenate_signals ();
+  dab_concatenate_signals (size_t itemsize);
 };
 

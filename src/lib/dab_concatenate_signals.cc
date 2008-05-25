@@ -24,20 +24,20 @@
 #include "config.h"
 #endif
 
-#include <dab_concatenate_signals_cc.h>
+#include <dab_concatenate_signals.h>
 #include <gr_io_signature.h>
 
 dab_concatenate_signals_sptr
-dab_make_concatenate_signals ()
+dab_make_concatenate_signals (size_t itemsize)
 {
-  return dab_concatenate_signals_sptr (new dab_concatenate_signals ());
+  return dab_concatenate_signals_sptr (new dab_concatenate_signals (itemsize));
 }
 
-dab_concatenate_signals::dab_concatenate_signals ()
-  : gr_block ("concatenate_signals_cc",
-       gr_make_io_signature (1, -1, sizeof (gr_complex)),
-       gr_make_io_signature (1,  1, sizeof (gr_complex))),
-    d_current_signal(0), d_callmetwice(1)
+dab_concatenate_signals::dab_concatenate_signals (size_t itemsize)
+  : gr_block ("concatenate_signals",
+       gr_make_io_signature (1, -1, itemsize),
+       gr_make_io_signature (1,  1, itemsize)),
+    d_itemsize(itemsize), d_current_signal(0), d_callmetwice(1)
 {
 }
 
@@ -45,7 +45,7 @@ void
 dab_concatenate_signals::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   int in_req  = noutput_items;
-  unsigned ninputs = ninput_items_required.size ();
+  unsigned int ninputs = ninput_items_required.size ();
 
   if (d_current_signal<ninputs) {
     for (unsigned i = 0; i < ninputs; i++)
@@ -63,15 +63,13 @@ dab_concatenate_signals::general_work(int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items)
 {
-  gr_complex *optr = (gr_complex *) output_items[0];
-
-  int ninputs = input_items.size ();
-  int i;
+  unsigned int ninputs = input_items.size ();
+  int produced;
 
   // for (i=0; i < ninputs; i++) 
   //   printf("input %d: has %d items\n", i, ninput_items[i]);
 
-  if (d_current_signal==ninputs) /* no more streams - finished */
+  if (d_current_signal == ninputs) /* no more streams - finished */
     return -1;
 
   if (ninput_items[d_current_signal]==0) { /* no more input - go to next stream */
@@ -82,11 +80,11 @@ dab_concatenate_signals::general_work(int noutput_items,
     return 0;
   }
 
-  d_callmetwice=1;
+  d_callmetwice = 1;
 
-  for (i=0; (i<noutput_items) && (i<ninput_items[d_current_signal]); i++) 
-    *optr++ = ((gr_complex *) input_items[d_current_signal])[i];
+  produced = (noutput_items<ninput_items[d_current_signal])?noutput_items:ninput_items[d_current_signal]; /* minimum */
+  memcpy(output_items[0], input_items[d_current_signal], produced*d_itemsize);
+  consume(d_current_signal,produced);
 
-  consume(d_current_signal,i);
-  return i;
+  return produced;
 }
