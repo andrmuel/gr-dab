@@ -41,13 +41,13 @@ class dab_concatenate_signals : public gr_block
     friend dab_concatenate_signals_sptr dab_make_concatenate_signals ();
 
     dab_concatenate_signals ();
-    void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
     unsigned int d_current_signal;
-    char d_next;
+    unsigned int d_callmetwice;
 
   public:
 
+    void forecast (int noutput_items, gr_vector_int &ninput_items_required);
     int general_work(int noutput_items,
                      gr_vector_int &ninput_items,
                      gr_vector_const_void_star &input_items,

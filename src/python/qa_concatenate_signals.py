@@ -19,7 +19,7 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 	def test_001_concatenate_signals(self):
 		src_data0       = [1j,2j,3j,4j,5j]
 		src_data1       = [6j,7j,8j]
-		src_data2       = [9j,10j,11j,12j,13j]
+		src_data2       = [9j,10j,11j,12j,13j,14j]
 		expected_result = src_data0 + src_data1 + src_data2
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_c(src_data1)
@@ -39,6 +39,27 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 		src_data1       = [6j,7j,8j]*10
 		src_data2       = [9j,10j,11j,12j,13j]*100
 		src_data3       = [9j,10j,11j,12j,13j,7+7j]*200
+		expected_result = src_data0 + src_data1 + src_data2 + src_data3
+		src0 = gr.vector_source_c(src_data0)
+		src1 = gr.vector_source_c(src_data1)
+		src2 = gr.vector_source_c(src_data2)
+		src3 = gr.vector_source_c(src_data3)
+		concatenate_signals = dab_swig.concatenate_signals()
+		dst = gr.vector_sink_c()
+		self.tb.connect(src0, (concatenate_signals,0))
+		self.tb.connect(src1, (concatenate_signals,1))
+		self.tb.connect(src2, (concatenate_signals,2))
+		self.tb.connect(src3, (concatenate_signals,3))
+		self.tb.connect(concatenate_signals, dst)
+		self.tb.run()
+		result_data = dst.data()
+		self.assertComplexTuplesAlmostEqual(expected_result, result_data, 6)
+
+	def test_003_concatenate_signals(self):
+		src_data0       = [6j]
+		src_data1       = [1j,2j,3j,4j,5j]*3000
+		src_data2       = [7j]
+		src_data3       = [8j,9j,10j,11j]*3000
 		expected_result = src_data0 + src_data1 + src_data2 + src_data3
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_c(src_data1)

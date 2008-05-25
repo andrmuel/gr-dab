@@ -37,37 +37,26 @@ dab_concatenate_signals::dab_concatenate_signals ()
   : gr_block ("concatenate_signals_cc",
        gr_make_io_signature (1, -1, sizeof (gr_complex)),
        gr_make_io_signature (1,  1, sizeof (gr_complex))),
-    d_current_signal(0), d_next(0)
+    d_current_signal(0), d_callmetwice(1)
 {
 }
 
 void 
 dab_concatenate_signals::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
+  int in_req  = noutput_items;
   unsigned ninputs = ninput_items_required.size ();
 
-  if (d_next==1) {
-    if (d_current_signal<ninputs-1) {
-      d_next = 0;
-      d_current_signal++;
-    }
+  if (d_current_signal<ninputs) {
+    for (unsigned i = 0; i < ninputs; i++)
+        ninput_items_required[i] = (i==d_current_signal)?in_req-1:0; /* must be -1, so we get to zero at the end of the stream */
+  } else { /* no more streams left -> make sure the scheduler notices it */
+    for (unsigned i = 0; i < ninputs; i++)
+        ninput_items_required[i] = noutput_items;
   }
-
-
-  for (unsigned i = 0; i < ninputs; i++)
-    ninput_items_required[i] = 0;
-  ninput_items_required[d_current_signal] = noutput_items;
-
-  for (unsigned i = 0; i < ninputs; i++)
-    printf("ninput_items_required[%d]: %d\n", i, ninput_items_required[i]);
-
-  printf("forecast: noutput_items: %d\n", noutput_items);
-  printf("forecast: current_signal: %d\n\n", d_current_signal);
-
-  if (noutput_items==1)
-      d_next = 1;
 }
 
+  
 int
 dab_concatenate_signals::general_work(int noutput_items,
               gr_vector_int &ninput_items,
@@ -79,8 +68,21 @@ dab_concatenate_signals::general_work(int noutput_items,
   int ninputs = input_items.size ();
   int i;
 
-  for (i=0; i < ninputs; i++) 
-    printf("input %d: has %d items\n", i, ninput_items[i]);
+  // for (i=0; i < ninputs; i++) 
+  //   printf("input %d: has %d items\n", i, ninput_items[i]);
+
+  if (d_current_signal==ninputs) /* no more streams - finished */
+    return -1;
+
+  if (ninput_items[d_current_signal]==0) { /* no more input - go to next stream */
+    if (d_callmetwice == 0) /* workaround: general_work gets called with no inputs rigth at the start in any case */
+      d_current_signal++;
+    else 
+      d_callmetwice=0;
+    return 0;
+  }
+
+  d_callmetwice=1;
 
   for (i=0; (i<noutput_items) && (i<ninput_items[d_current_signal]); i++) 
     *optr++ = ((gr_complex *) input_items[d_current_signal])[i];
