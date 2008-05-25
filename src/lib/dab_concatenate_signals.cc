@@ -66,8 +66,9 @@ dab_concatenate_signals::general_work(int noutput_items,
   unsigned int ninputs = input_items.size ();
   int produced;
 
-  // for (i=0; i < ninputs; i++) 
+  // for (unsigned int i=0; i < ninputs; i++) 
   //   printf("input %d: has %d items\n", i, ninput_items[i]);
+  // printf("current signal: %d\n", d_current_signal);
 
   if (d_current_signal == ninputs) /* no more streams - finished */
     return -1;
@@ -76,7 +77,7 @@ dab_concatenate_signals::general_work(int noutput_items,
     if (d_callmetwice == 0) /* workaround: general_work gets called with no inputs rigth at the start in any case */
       d_current_signal++;
     else 
-      d_callmetwice=0;
+      d_callmetwice--;
     return 0;
   }
 
@@ -84,7 +85,9 @@ dab_concatenate_signals::general_work(int noutput_items,
 
   produced = (noutput_items<ninput_items[d_current_signal])?noutput_items:ninput_items[d_current_signal]; /* minimum */
   memcpy(output_items[0], input_items[d_current_signal], produced*d_itemsize);
-  consume(d_current_signal,produced);
+
+  for (unsigned int i=0; i<ninputs; i++)
+    consume(i,(i==d_current_signal)?produced:0);
 
   return produced;
 }
