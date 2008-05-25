@@ -181,7 +181,7 @@ class ofdm_demod(gr.hier_block2):
 				self.resample = gr.fractional_interpolator_cc(0, sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
-		# self.sync = ofdm_sync_dab_swig.ofdm_sync_dab(mode, debug)
+		# self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
 		self.sync = ofdm_sync_dab2.ofdm_sync_dab2(mode, debug)
 
 		# ofdm symbol sampler
@@ -242,6 +242,9 @@ class ofdm_demod(gr.hier_block2):
 			self.connect(self.phase_diff, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_diff_phasor.dat"))
 			# self.connect(self.correct_phase_offset, gr.file_sink(gr.sizeof_float*dp.num_carriers, "debug/ofdm_phase_offset_corrected.dat"))
 			self.connect((self.remove_pilot,1), gr.file_sink(gr.sizeof_char, "debug/ofdm_after_cfs_trigger.dat"))
+	
+	def clear_state(self):
+		self.sync.clear_state()
 
 	def update_correction(self):
 		while self.run_interpolater_update_thread:

@@ -63,3 +63,7 @@ class detect_null(gr.hier_block2):
 		if debug:
 			self.connect(self.ns_invert, gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ns_filter_inv_f.dat"))
 			self.connect(self.ns_peak_detect,gr.file_sink(gr.sizeof_char, "debug/ofdm_sync_dab_peak_detect_b.dat"))
+	
+	def clear_state(self):	
+		self.ns_moving_sum.reset()
+		self.ns_peak_detect.clear_state()

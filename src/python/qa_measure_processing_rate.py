@@ -27,6 +27,18 @@ class qa_measure_processing_rate(gr_unittest.TestCase):
 
 		rate = sink.processing_rate()
 		assert(rate > 900000 and rate < 1100000)
+	
+	def test_002_measure_processing_rate(self):
+		src = gr.null_source(gr.sizeof_char)
+		throttle = gr.throttle(gr.sizeof_char, 10000000)
+		head = gr.head(gr.sizeof_char, 1000000)
+		sink = dab_swig.measure_processing_rate(gr.sizeof_char,1000000)
+		
+		self.tb.connect(src, throttle, head, sink)
+		self.tb.run()
+
+		rate = sink.processing_rate()
+		assert(rate > 9000000 and rate < 11000000)
 
 if __name__ == '__main__':
 	gr_unittest.main()
