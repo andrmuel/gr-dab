@@ -51,18 +51,18 @@ dab_make_moving_sum_cc (int length)
  * are connected to this block.  In this case, we accept
  * only 1 input and 1 output.
  */
-static const int MIN_IN = 1;	// mininum number of input streams
-static const int MAX_IN = 1;	// maximum number of input streams
-static const int MIN_OUT = 1;	// minimum number of output streams
-static const int MAX_OUT = 1;	// maximum number of output streams
+static const int MIN_IN = 1;  // mininum number of input streams
+static const int MAX_IN = 1;  // maximum number of input streams
+static const int MIN_OUT = 1; // minimum number of output streams
+static const int MAX_OUT = 1; // maximum number of output streams
 
 /*
  * The private constructor
  */
 dab_moving_sum_cc::dab_moving_sum_cc (int length)
   : gr_sync_block ("moving_sum_cc",
-		   gr_make_io_signature (MIN_IN, MAX_IN, sizeof (gr_complex)),
-		   gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (gr_complex))),
+       gr_make_io_signature (MIN_IN, MAX_IN, sizeof (gr_complex)),
+       gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (gr_complex))),
     d_sum(0)
 {
   assert(length>=0);
@@ -79,8 +79,8 @@ dab_moving_sum_cc::~dab_moving_sum_cc ()
 
 int 
 dab_moving_sum_cc::work (int noutput_items,
-			gr_vector_const_void_star &input_items,
-			gr_vector_void_star &output_items)
+      gr_vector_const_void_star &input_items,
+      gr_vector_void_star &output_items)
 {
   const gr_complex *in = (const gr_complex *) input_items[0];
   gr_complex *out = (gr_complex *) output_items[0];

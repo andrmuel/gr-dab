@@ -184,6 +184,9 @@ class dab_parameters:
 		self.fft_length        = self.__fft_length__[mode-1]
 		self.cp_length         = self.__cp_length__[mode-1]
 
+		# bytes per frame
+		self.bytes_per_frame   = (self.symbols_per_frame-1)*self.num_carriers/4
+
 		# transport mechanism parameters
 		self.num_fibs = self.__num_fibs__[mode-1]
 		self.num_cifs = self.__num_cifs__[mode-1]

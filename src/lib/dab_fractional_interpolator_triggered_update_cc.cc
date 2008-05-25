@@ -37,8 +37,8 @@ dab_fractional_interpolator_triggered_update_cc_sptr dab_make_fractional_interpo
 
 dab_fractional_interpolator_triggered_update_cc::dab_fractional_interpolator_triggered_update_cc(float phase_shift, float interp_ratio)
   : gr_block ("fractional_interpolator_triggered_update_cc",
-	      gr_make_io_signature2 (2, 2, sizeof (gr_complex), sizeof(char)),
-	      gr_make_io_signature (1, 1, sizeof (gr_complex))),
+        gr_make_io_signature2 (2, 2, sizeof (gr_complex), sizeof(char)),
+        gr_make_io_signature (1, 1, sizeof (gr_complex))),
     d_mu (phase_shift), d_mu_inc (interp_ratio), d_next_mu_inc(interp_ratio), d_interp(new gri_mmse_fir_interpolator_cc())
 {
   if (interp_ratio <=  0)
@@ -66,16 +66,16 @@ dab_fractional_interpolator_triggered_update_cc::forecast(int noutput_items, gr_
 
 int
 dab_fractional_interpolator_triggered_update_cc::general_work(int noutput_items,
-					    gr_vector_int &ninput_items,
-					    gr_vector_const_void_star &input_items,
-					    gr_vector_void_star &output_items)
+              gr_vector_int &ninput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items)
 {
   const gr_complex *in = (const gr_complex *) input_items[0];
   const char *trigger = (const char *) input_items[1];
   gr_complex *out = (gr_complex *) output_items[0];
 
-  int 	ii = 0;				// input index
-  int  	oo = 0;				// output index
+  int ii = 0;       // input index
+  int oo = 0;        // output index
 
   while (oo < noutput_items) {
 

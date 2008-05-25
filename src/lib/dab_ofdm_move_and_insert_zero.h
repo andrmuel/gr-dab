@@ -61,23 +61,23 @@ dab_make_ofdm_move_and_insert_zero (unsigned int fft_length,
  */
 class dab_ofdm_move_and_insert_zero : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_ofdm_move_and_insert_zero to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_ofdm_move_and_insert_zero to
+    // access the private constructor.
 
-		friend dab_ofdm_move_and_insert_zero_sptr
+    friend dab_ofdm_move_and_insert_zero_sptr
     dab_make_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);
 
-		dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);  	// private constructor
+    dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers);    // private constructor
 
-		unsigned int d_fft_length;
-		unsigned int d_num_carriers;
-		unsigned int d_zeros_on_left;
+    unsigned int d_fft_length;
+    unsigned int d_num_carriers;
+    unsigned int d_zeros_on_left;
 
-	public:
-		int work (int noutput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+  public:
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_OFDM_MOVE_AND_INSERT_ZERO_H */

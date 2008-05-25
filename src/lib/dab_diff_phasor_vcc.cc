@@ -39,14 +39,14 @@
 dab_diff_phasor_vcc_sptr 
 dab_make_diff_phasor_vcc (unsigned int length)
 {
-	return dab_diff_phasor_vcc_sptr (new dab_diff_phasor_vcc (length));
+  return dab_diff_phasor_vcc_sptr (new dab_diff_phasor_vcc (length));
 }
 
 dab_diff_phasor_vcc::dab_diff_phasor_vcc (unsigned int length) : 
-	gr_sync_block ("diff_phasor_vcc",
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*length),
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*length)),
-	d_length(length)
+  gr_sync_block ("diff_phasor_vcc",
+             gr_make_io_signature (1, 1, sizeof(gr_complex)*length),
+             gr_make_io_signature (1, 1, sizeof(gr_complex)*length)),
+  d_length(length)
 {
   set_history(2);
 }

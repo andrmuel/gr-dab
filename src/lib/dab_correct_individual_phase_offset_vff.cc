@@ -43,14 +43,14 @@
 dab_correct_individual_phase_offset_vff_sptr 
 dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha)
 {
-	return dab_correct_individual_phase_offset_vff_sptr (new dab_correct_individual_phase_offset_vff (vlen, alpha));
+  return dab_correct_individual_phase_offset_vff_sptr (new dab_correct_individual_phase_offset_vff (vlen, alpha));
 }
 
 dab_correct_individual_phase_offset_vff::dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha) : 
-	gr_sync_block ("correct_individual_phase_offset_vff",
-	           gr_make_io_signature (1, 1, sizeof(float)*vlen),
-	           gr_make_io_signature (1, 1, sizeof(float)*vlen)),
-	d_vlen(vlen), d_alpha(alpha), d_debug(0)
+  gr_sync_block ("correct_individual_phase_offset_vff",
+             gr_make_io_signature (1, 1, sizeof(float)*vlen),
+             gr_make_io_signature (1, 1, sizeof(float)*vlen)),
+  d_vlen(vlen), d_alpha(alpha), d_debug(0)
 {
   d_offset_estimation = new float[vlen];
   for (unsigned int i=0;i<vlen;i++)

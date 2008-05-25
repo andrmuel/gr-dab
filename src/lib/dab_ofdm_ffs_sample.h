@@ -56,15 +56,15 @@ dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (int symbol_length, int num_sy
  */
 class dab_ofdm_ffs_sample : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_ofdm_ffs_sample to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_ofdm_ffs_sample to
+    // access the private constructor.
 
-		friend dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
+    friend dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
 
-		dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);  	// private constructor
+    dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);    // private constructor
 
-		unsigned int d_symbol_length;   // length of a symbol in samples
+    unsigned int d_symbol_length;   // length of a symbol in samples
     unsigned int d_num_symbols;     // number of symbols per frame to average over
     float d_alpha;                  // adjustment speed factor
 
@@ -73,10 +73,10 @@ class dab_ofdm_ffs_sample : public gr_sync_block
     float d_ffs_error_sum;          // sum of error samples in current frame
     float d_estimated_error;        // total estimated error
 
-	public:
+  public:
     int work (int noutput_items,
-        gr_vector_const_void_star &input_items,
-        gr_vector_void_star &output_items);
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_OFDM_FFS_SAMPLE_H */

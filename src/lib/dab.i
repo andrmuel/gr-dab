@@ -1,12 +1,12 @@
 /* -*- c++ -*- */
 
-%feature("autodoc", "1");		// generate python docstrings
+%feature("autodoc", "1");    // generate python docstrings
 
 %include "exception.i"
-%import "gnuradio.i"			// the common stuff
+%import "gnuradio.i"      // the common stuff
 
 %{
-#include "gnuradio_swig_bug_workaround.h"	// mandatory bug fix
+#include "gnuradio_swig_bug_workaround.h"  // mandatory bug fix
 #include "dab_moving_sum_ff.h"
 #include "dab_moving_sum_cc.h"
 #include "dab_ofdm_sampler.h"
@@ -24,6 +24,7 @@
 #include "dab_sum_phasor_trig_vcc.h"
 #include "dab_ofdm_move_and_insert_zero.h"
 #include "dab_insert_null_symbol.h"
+#include "dab_concatenate_signals_cc.h"
 #include <stdexcept>
 %}
 
@@ -48,6 +49,7 @@ class dab_moving_sum_ff : public gr_sync_block
  public:
   int length() const {return d_length;}
   void set_length(int length) {set_history(length+1); d_length=length;}
+  void reset() {d_sum=0;}
 };
 
 // ----------------------------------------------------------------
@@ -71,6 +73,7 @@ class dab_moving_sum_cc : public gr_sync_block
  public:
   int length() const {return d_length;}
   void set_length(int length) {set_history(length+1); d_length=length;}
+  void reset() {d_sum=0;}
 };
 
 // ----------------------------------------------------------------
@@ -262,5 +265,17 @@ class dab_insert_null_symbol : public gr_block
 {
  private:
   dab_insert_null_symbol (int ns_length, int symbol_length);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,concatenate_signals);
+
+dab_concatenate_signals_sptr dab_make_concatenate_signals ();
+
+class dab_concatenate_signals : public gr_block
+{
+ private:
+  dab_concatenate_signals ();
 };
 

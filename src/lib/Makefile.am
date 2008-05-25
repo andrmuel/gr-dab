@@ -77,7 +77,8 @@ _dab_swig_la_SOURCES = 			        \
 	dab_ofdm_insert_pilot_vcc.cc            \
 	dab_sum_phasor_trig_vcc.cc              \
 	dab_ofdm_move_and_insert_zero.cc        \
-	dab_insert_null_symbol.cc
+	dab_insert_null_symbol.cc               \
+	dab_concatenate_signals_cc.cc
 
 # magic flags
 _dab_swig_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -109,7 +110,8 @@ grinclude_HEADERS =			        \
 	dab_ofdm_insert_pilot_vcc.h             \
 	dab_sum_phasor_trig_vcc.h               \
 	dab_ofdm_move_and_insert_zero.h         \
-	dab_insert_null_symbol.h
+	dab_insert_null_symbol.h                \
+	dab_concatenate_signals_cc.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig

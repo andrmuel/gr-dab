@@ -20,11 +20,9 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-# ofdm.py - modulator and demodulator for the DAB physical layer 
-#
-# the code in this file is partially adapted from ofdm.py and ofdm_receiver.py
-# from the gnuradio trunk; this implementation is however stream based, not
-# packet based
+# the code in this file is partially adapted from ofdm.py from the gnuradio
+# trunk (actually, only coarse frequency synchronisation is done the same way,
+# as that implementation otherwise is not suited for DAB)
 #
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
@@ -37,6 +35,9 @@ import detect_null
 import threading
 import time
 
+"""
+modulator and demodulator for the DAB physical layer 
+"""
 
 class ofdm_mod(gr.hier_block2):
 	"""
@@ -79,7 +80,7 @@ class ofdm_mod(gr.hier_block2):
 		# ifft
 		self.ifft = gr.fft_vcc(dp.fft_length, False, [], True)
 
-		# cyclic prefixer]
+		# cyclic prefixer
 		self.prefixer = gr.ofdm_cyclic_prefixer(dp.fft_length, dp.symbol_length)
 
 		# convert back to vectors

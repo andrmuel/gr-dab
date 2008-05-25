@@ -1,0 +1,12 @@
+Index: gnuradio-core/src/lib/gengen/gr_peak_detector_XX.cc.t
+===================================================================
+--- gnuradio-core/src/lib/gengen/gr_peak_detector_XX.cc.t	(revision 8484)
++++ gnuradio-core/src/lib/gengen/gr_peak_detector_XX.cc.t	(working copy)
+@@ -106,6 +106,6 @@
+   }
+   else {   // only return up to passing the threshold
+     //printf("Leave in State 1, only produced %d of %d\n",peak_ind,noutput_items);
+-    return peak_ind+1;
++    return peak_ind;
+   }
+ }

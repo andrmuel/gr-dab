@@ -39,14 +39,14 @@
 dab_ofdm_ffs_sample_sptr 
 dab_make_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha)
 {
-	return dab_ofdm_ffs_sample_sptr (new dab_ofdm_ffs_sample (symbol_length, num_symbols, alpha));
+  return dab_ofdm_ffs_sample_sptr (new dab_ofdm_ffs_sample (symbol_length, num_symbols, alpha));
 }
 
 dab_ofdm_ffs_sample::dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha) : 
-	gr_sync_block ("ofdm_ffs_sample",
-	           gr_make_io_signature2 (2, 2, sizeof(float), sizeof(char)),
-	           gr_make_io_signature (1, 1, sizeof(float))),
-	d_symbol_length(symbol_length), d_num_symbols(num_symbols), d_alpha(alpha), d_cur_symbol(0), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0)
+  gr_sync_block ("ofdm_ffs_sample",
+             gr_make_io_signature2 (2, 2, sizeof(float), sizeof(char)),
+             gr_make_io_signature (1, 1, sizeof(float))),
+  d_symbol_length(symbol_length), d_num_symbols(num_symbols), d_alpha(alpha), d_cur_symbol(0), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0)
 {
 }
 
@@ -54,14 +54,14 @@ dab_ofdm_ffs_sample::dab_ofdm_ffs_sample (int symbol_length, int num_symbols, fl
 
 int 
 dab_ofdm_ffs_sample::work (int noutput_items,
-			gr_vector_const_void_star &input_items,
-			gr_vector_void_star &output_items)
+      gr_vector_const_void_star &input_items,
+      gr_vector_void_star &output_items)
 {
-	/* partially adapted from gr_ofdm_ffs_sample.cc */
-	const float *iptr = (const float *) input_items[0];
-	const char *trigger = (const char *) input_items[1];
-	
-	float *optr = (float *) output_items[0];
+  /* partially adapted from gr_ofdm_ffs_sample.cc */
+  const float *iptr = (const float *) input_items[0];
+  const char *trigger = (const char *) input_items[1];
+  
+  float *optr = (float *) output_items[0];
 
   for (int i=0; i<noutput_items; i++) {
     if (*trigger++ == 1) { /* new frame starts */
@@ -83,7 +83,7 @@ dab_ofdm_ffs_sample::work (int noutput_items,
       if (d_cur_symbol == d_num_symbols-1) { /* update estimated error */
         d_ffs_error_sum /= d_num_symbols; /* average */
         d_estimated_error = d_alpha*d_ffs_error_sum + (1-d_alpha)*d_estimated_error; /* slow adjustment */
-        printf("ffs_sample: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error*_1_OVER_2PI_T);
+        fprintf(stderr, "ffs_sample: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error*_1_OVER_2PI_T);
       }
 
       d_cur_symbol++;

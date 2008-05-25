@@ -57,23 +57,23 @@ dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_seque
  */
 class dab_frequency_interleaver_vcc : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_frequency_interleaver_vcc to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_frequency_interleaver_vcc to
+    // access the private constructor.
 
-		friend dab_frequency_interleaver_vcc_sptr
+    friend dab_frequency_interleaver_vcc_sptr
     dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
 
-		dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);  	// private constructor
+    dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);    // private constructor
 
     std::vector<short> d_interleaving_sequence;
-		unsigned int d_length;
+    unsigned int d_length;
 
-	public:
+  public:
     void set_sequence(const std::vector<short> &interleaving_sequence) { d_interleaving_sequence = interleaving_sequence; }
-		int work (int noutput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_H */

@@ -58,25 +58,25 @@ dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
  */
 class dab_correct_individual_phase_offset_vff : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_correct_individual_phase_offset_vff to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_correct_individual_phase_offset_vff to
+    // access the private constructor.
 
-		friend dab_correct_individual_phase_offset_vff_sptr
+    friend dab_correct_individual_phase_offset_vff_sptr
     dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
 
-		dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);  	// private constructor
+    dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);    // private constructor
 
-		unsigned int d_vlen;
-		float d_alpha;
+    unsigned int d_vlen;
+    float d_alpha;
     float * d_offset_estimation;
     unsigned int d_debug;
 
-	public:
-		~dab_correct_individual_phase_offset_vff (void);
-		int work (int noutput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+  public:
+    ~dab_correct_individual_phase_offset_vff (void);
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_DRIFT_VFF_H */

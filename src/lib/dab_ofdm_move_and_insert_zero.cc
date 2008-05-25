@@ -39,16 +39,16 @@
 dab_ofdm_move_and_insert_zero_sptr 
 dab_make_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers)
 {
-	return dab_ofdm_move_and_insert_zero_sptr (new dab_ofdm_move_and_insert_zero (fft_length, num_carriers));
+  return dab_ofdm_move_and_insert_zero_sptr (new dab_ofdm_move_and_insert_zero (fft_length, num_carriers));
 }
 
 dab_ofdm_move_and_insert_zero::dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers) : 
-	gr_sync_block ("ofdm_move_and_insert_zero",
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*num_carriers),
-	           gr_make_io_signature (1, 1, sizeof(gr_complex)*fft_length)),
-	d_fft_length(fft_length), d_num_carriers(num_carriers)
+  gr_sync_block ("ofdm_move_and_insert_zero",
+             gr_make_io_signature (1, 1, sizeof(gr_complex)*num_carriers),
+             gr_make_io_signature (1, 1, sizeof(gr_complex)*fft_length)),
+  d_fft_length(fft_length), d_num_carriers(num_carriers)
 {
-	d_zeros_on_left = (d_fft_length-d_num_carriers)/2;
+  d_zeros_on_left = (d_fft_length-d_num_carriers)/2;
 }
 
 int 
@@ -56,11 +56,11 @@ dab_ofdm_move_and_insert_zero::work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-	int i;
+  int i;
   unsigned int j,k;
-	/* partially adapted from gr_ofdm_frame_acquisition.cc */
-	const gr_complex *in = (const gr_complex *) input_items[0];
-	gr_complex *out = (gr_complex *) output_items[0];
+  /* partially adapted from gr_ofdm_frame_acquisition.cc */
+  const gr_complex *in = (const gr_complex *) input_items[0];
+  gr_complex *out = (gr_complex *) output_items[0];
 
   for (i=0; i<noutput_items; i++) {
     /* zeros on left */

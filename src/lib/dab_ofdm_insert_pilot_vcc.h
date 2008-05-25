@@ -57,24 +57,24 @@ dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector
  */
 class dab_ofdm_insert_pilot_vcc : public gr_block
 {
-	private:
-		// The friend declaration allows dab_make_ofdm_insert_pilot_vcc to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_ofdm_insert_pilot_vcc to
+    // access the private constructor.
 
-		friend dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
+    friend dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);
 
-		dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);  	// private constructor
+    dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot);    // private constructor
 
     std::vector<gr_complex> d_pilot;
     char d_start;
 
-	public:
-		void forecast (int noutput_items, gr_vector_int &ninput_items_required);
+  public:
+    void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
-		int general_work (int noutput_items,
-		          gr_vector_int &ninput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+    int general_work (int noutput_items,
+                      gr_vector_int &ninput_items,
+                      gr_vector_const_void_star &input_items,
+                      gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_OFDM_INSERT_PILOT_VCC_H */

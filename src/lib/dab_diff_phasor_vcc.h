@@ -57,21 +57,21 @@ dab_make_diff_phasor_vcc (unsigned int length);
  */
 class dab_diff_phasor_vcc : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_diff_phasor_vcc to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_diff_phasor_vcc to
+    // access the private constructor.
 
-		friend dab_diff_phasor_vcc_sptr
+    friend dab_diff_phasor_vcc_sptr
     dab_make_diff_phasor_vcc (unsigned int length);
 
-		dab_diff_phasor_vcc (unsigned int length);  	// private constructor
+    dab_diff_phasor_vcc (unsigned int length);    // private constructor
 
-		unsigned int d_length;
+    unsigned int d_length;
 
-	public:
-		int work (int noutput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+  public:
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_DIFF_PHASOR_VCC_H */

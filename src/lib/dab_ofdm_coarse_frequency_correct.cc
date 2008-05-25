@@ -39,16 +39,16 @@
 dab_ofdm_coarse_frequency_correct_sptr 
 dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers)
 {
-	return dab_ofdm_coarse_frequency_correct_sptr (new dab_ofdm_coarse_frequency_correct (fft_length, num_carriers));
+  return dab_ofdm_coarse_frequency_correct_sptr (new dab_ofdm_coarse_frequency_correct (fft_length, num_carriers));
 }
 
 dab_ofdm_coarse_frequency_correct::dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers) : 
-	gr_sync_block ("ofdm_coarse_frequency_correct",
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char)),
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*num_carriers, sizeof(char))),
-	d_fft_length(fft_length), d_num_carriers(num_carriers), d_freq_offset(0)
+  gr_sync_block ("ofdm_coarse_frequency_correct",
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char)),
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*num_carriers, sizeof(char))),
+  d_fft_length(fft_length), d_num_carriers(num_carriers), d_freq_offset(0)
 {
-	d_zeros_on_left = (d_fft_length-d_num_carriers)/2;
+  d_zeros_on_left = (d_fft_length-d_num_carriers)/2;
 }
 
 float
@@ -94,7 +94,7 @@ dab_ofdm_coarse_frequency_correct::correlate_energy(const gr_complex *symbol)
   }
 
   d_freq_offset = index;
-  printf("cfs: coarse_frequency_offset: %d\n", d_freq_offset+d_num_carriers/2-d_fft_length/2);
+  fprintf(stderr, "cfs: coarse_frequency_offset: %d\n", d_freq_offset+d_num_carriers/2-d_fft_length/2);
 }
 
 int 
@@ -102,27 +102,27 @@ dab_ofdm_coarse_frequency_correct::work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-	unsigned int i;
-	/* partially adapted from gr_ofdm_frame_acquisition.cc */
-	const gr_complex *iptr = (const gr_complex *) input_items[0];
-	const char *frame_start = (const char *) input_items[1];
-	
-	gr_complex *optr = (gr_complex *) output_items[0];
-	char *frame_start_out = (char *) output_items[1];
+  unsigned int i;
+  /* partially adapted from gr_ofdm_frame_acquisition.cc */
+  const gr_complex *iptr = (const gr_complex *) input_items[0];
+  const char *frame_start = (const char *) input_items[1];
+  
+  gr_complex *optr = (gr_complex *) output_items[0];
+  char *frame_start_out = (char *) output_items[1];
 
-	if (frame_start[0]) {
-		frame_start_out[0] = 1;
-		correlate_energy(iptr);
-	} else {
-		frame_start_out[0] = 0;
-	}
+  if (frame_start[0]) {
+    frame_start_out[0] = 1;
+    correlate_energy(iptr);
+  } else {
+    frame_start_out[0] = 0;
+  }
 
-	for (i=0;i<d_num_carriers/2;i++) {
-		optr[i] = iptr[d_freq_offset+i];
-	}
-	for (i=d_num_carriers/2;i<d_num_carriers;i++) {
-		optr[i] = iptr[d_freq_offset+i+1];
-	}
+  for (i=0;i<d_num_carriers/2;i++) {
+    optr[i] = iptr[d_freq_offset+i];
+  }
+  for (i=d_num_carriers/2;i<d_num_carriers;i++) {
+    optr[i] = iptr[d_freq_offset+i+1];
+  }
 
-	return 1;
+  return 1;
 }

@@ -51,18 +51,18 @@ dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length)
  * are connected to this block.  In this case, we accept
  * only 1 input and 1 output.
  */
-static const int MIN_IN = 1;	// mininum number of input streams
-static const int MAX_IN = 1;	// maximum number of input streams
-static const int MIN_OUT = 1;	// minimum number of output streams
-static const int MAX_OUT = 1;	// maximum number of output streams
+static const int MIN_IN = 1;  // mininum number of input streams
+static const int MAX_IN = 1;  // maximum number of input streams
+static const int MIN_OUT = 1;  // minimum number of output streams
+static const int MAX_OUT = 1;  // maximum number of output streams
 
 /*
  * The private constructor
  */
 dab_estimate_sample_rate_bf::dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length)
   : gr_sync_block ("estimate_sample_rate_bf",
-		   gr_make_io_signature (MIN_IN, MAX_IN, sizeof (char)),
-		   gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
+       gr_make_io_signature (MIN_IN, MAX_IN, sizeof (char)),
+       gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
     d_zeros(0), d_expected_sample_rate(expected_sample_rate), d_real_sample_rate(expected_sample_rate), d_found_first_frame(0), d_frame_length(frame_length)
 {
 }
@@ -77,8 +77,8 @@ dab_estimate_sample_rate_bf::~dab_estimate_sample_rate_bf ()
 
 int 
 dab_estimate_sample_rate_bf::work (int noutput_items,
-			gr_vector_const_void_star &input_items,
-			gr_vector_void_star &output_items)
+      gr_vector_const_void_star &input_items,
+      gr_vector_void_star &output_items)
 {
   const char *in = (const char *) input_items[0];
   float *out = (float *) output_items[0];

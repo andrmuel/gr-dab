@@ -39,21 +39,22 @@
 dab_ofdm_remove_first_symbol_vcc_sptr 
 dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen)
 {
-	return dab_ofdm_remove_first_symbol_vcc_sptr (new dab_ofdm_remove_first_symbol_vcc (vlen));
+  return dab_ofdm_remove_first_symbol_vcc_sptr (new dab_ofdm_remove_first_symbol_vcc (vlen));
 }
 
 dab_ofdm_remove_first_symbol_vcc::dab_ofdm_remove_first_symbol_vcc (unsigned int vlen) : 
-	gr_block ("ofdm_remove_first_symbol_vcc",
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
-	d_vlen(vlen), d_start(0)
+  gr_block ("ofdm_remove_first_symbol_vcc",
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
+  d_vlen(vlen), d_start(0)
 {
 }
 
 void 
 dab_ofdm_remove_first_symbol_vcc::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
-  int in_req  = noutput_items + 1 + noutput_items/76; // at most every 76th symbol is thrown away (depends on the DAB mode)
+  //int in_req  = noutput_items; + 1 + noutput_items/76; // at most every 76th symbol is thrown away (depends on the DAB mode)
+  int in_req = noutput_items; // altough more may be needed, try to produce output even with only one input - if it's a pilot, we can just consume it ...
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned int i = 0; i < ninputs; i++)
     ninput_items_required[i] = in_req;
@@ -66,29 +67,31 @@ dab_ofdm_remove_first_symbol_vcc::general_work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-	const gr_complex *iptr = (const gr_complex *) input_items[0];
-	const char *frame_start = (const char *) input_items[1];
-	
-	gr_complex *optr = (gr_complex *) output_items[0];
-	char *o_frame_start = (char *) output_items[1];
+  const gr_complex *iptr = (const gr_complex *) input_items[0];
+  const char *frame_start = (const char *) input_items[1];
+  
+  gr_complex *optr = (gr_complex *) output_items[0];
+  char *o_frame_start = (char *) output_items[1];
 
-	unsigned int n_in = ninput_items[0];
-	unsigned int out = 0;
+  int n_consumed = 0;
+  int n_produced = 0;
 
-  for (unsigned int i=0; i<n_in; i++) {
+  for (n_consumed=0; n_consumed<ninput_items[0] && n_consumed<ninput_items[1] && n_produced<noutput_items; n_consumed++) {
     if (*frame_start == 1) {
       d_start = 1;
       iptr += d_vlen;
     } else {
       *o_frame_start++ = d_start;
-      out++;
-      if (d_start==1)
-        d_start = 0;
+      n_produced++;
+      d_start = 0;
       for (unsigned int j=0; j<d_vlen; j++)
         *optr++ = *iptr++;
     }
     frame_start++;
   }
-	consume_each(n_in);
-	return out;
+
+  // printf("ninput_items[0]: %d, ninput_items[1]: %d, noutput_items: %d, consumed: %d, produced: %d\n", ninput_items[0], ninput_items[1], noutput_items, n_consumed, n_produced);
+
+  consume_each(n_consumed);
+  return n_produced;
 }

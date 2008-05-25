@@ -61,26 +61,26 @@ dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length,
  */
 class dab_ofdm_coarse_frequency_correct : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_ofdm_coarse_frequency_correct to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_ofdm_coarse_frequency_correct to
+    // access the private constructor.
 
-		friend dab_ofdm_coarse_frequency_correct_sptr
+    friend dab_ofdm_coarse_frequency_correct_sptr
     dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);
 
     float mag_squared(const gr_complex sample);
-		dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);  	// private constructor
-		void correlate_energy(const gr_complex *symbol);
+    dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);    // private constructor
+    void correlate_energy(const gr_complex *symbol);
 
-		unsigned int d_fft_length;
-		unsigned int d_num_carriers;
-		unsigned int d_zeros_on_left;
-		unsigned int d_freq_offset;
+    unsigned int d_fft_length;
+    unsigned int d_num_carriers;
+    unsigned int d_zeros_on_left;
+    unsigned int d_freq_offset;
 
-	public:
-		int work (int noutput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+  public:
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_H */

@@ -39,14 +39,14 @@
 dab_sum_phasor_trig_vcc_sptr 
 dab_make_sum_phasor_trig_vcc (unsigned int length)
 {
-	return dab_sum_phasor_trig_vcc_sptr (new dab_sum_phasor_trig_vcc (length));
+  return dab_sum_phasor_trig_vcc_sptr (new dab_sum_phasor_trig_vcc (length));
 }
 
 dab_sum_phasor_trig_vcc::dab_sum_phasor_trig_vcc (unsigned int length) : 
-	gr_sync_block ("sum_phasor_trig_vcc",
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*length, sizeof(char)), 
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*length, sizeof(char))),
-	d_length(length), d_last_symbol(length,0)
+  gr_sync_block ("sum_phasor_trig_vcc",
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*length, sizeof(char)), 
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*length, sizeof(char))),
+  d_length(length), d_last_symbol(length,0)
 {
 }
 
@@ -58,8 +58,8 @@ dab_sum_phasor_trig_vcc::work (int noutput_items,
 {
   gr_complex const *in = (const gr_complex *) input_items[0];
   gr_complex *out = (gr_complex *) output_items[0];
-	const char *frame_start = (const char *) input_items[1];
-	char *o_frame_start = (char *) output_items[1];
+  const char *frame_start = (const char *) input_items[1];
+  char *o_frame_start = (char *) output_items[1];
   
   for(int i = 0; i < noutput_items; i++){
     if (*frame_start==1) {

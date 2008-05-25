@@ -66,23 +66,23 @@ dab_make_sum_phasor_trig_vcc (unsigned int length);
  */
 class dab_sum_phasor_trig_vcc : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_sum_phasor_trig_vcc to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_sum_phasor_trig_vcc to
+    // access the private constructor.
 
-		friend dab_sum_phasor_trig_vcc_sptr
+    friend dab_sum_phasor_trig_vcc_sptr
     dab_make_sum_phasor_trig_vcc (unsigned int length);
 
-		dab_sum_phasor_trig_vcc (unsigned int length);  	// private constructor
+    dab_sum_phasor_trig_vcc (unsigned int length);    // private constructor
 
-		unsigned int d_length;
+    unsigned int d_length;
     std::vector<gr_complex> d_last_symbol;
 
 
-	public:
-		int work (int noutput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+  public:
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_H */

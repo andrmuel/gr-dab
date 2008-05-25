@@ -1,0 +1,25 @@
+Index: gnuradio-core/src/lib/gengen/gr_peak_detector_XX.h.t
+===================================================================
+--- gnuradio-core/src/lib/gengen/gr_peak_detector_XX.h.t	(revision 8484)
++++ gnuradio-core/src/lib/gengen/gr_peak_detector_XX.h.t	(working copy)
+@@ -117,6 +117,10 @@
+    */
+   float alpha() { return d_avg_alpha; }
+ 
++  /*! \brief Clear internal state
++   */
++  void clear_state() {d_avg=0; d_found=0;}
++
+   int work (int noutput_items,
+ 	    gr_vector_const_void_star &input_items,
+ 	    gr_vector_void_star &output_items);
+Index: gnuradio-core/src/lib/gengen/gr_peak_detector_XX.i.t
+===================================================================
+--- gnuradio-core/src/lib/gengen/gr_peak_detector_XX.i.t	(revision 8484)
++++ gnuradio-core/src/lib/gengen/gr_peak_detector_XX.i.t	(working copy)
+@@ -46,4 +46,5 @@
+   float threshold_factor_fall() { return d_threshold_factor_fall; }
+   int look_ahead() { return d_look_ahead; }
+   float alpha() { return d_avg_alpha; }
++  void clear_state() {d_avg=0; d_found=0;}
+ };

@@ -54,24 +54,24 @@ dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (uns
  */
 class dab_ofdm_remove_first_symbol_vcc : public gr_block
 {
-	private:
-		// The friend declaration allows dab_make_ofdm_remove_first_symbol_vcc to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_ofdm_remove_first_symbol_vcc to
+    // access the private constructor.
 
-		friend dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen);
+    friend dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen);
 
-		dab_ofdm_remove_first_symbol_vcc (unsigned int vlen);  	// private constructor
+    dab_ofdm_remove_first_symbol_vcc (unsigned int vlen);    // private constructor
 
     unsigned int d_vlen;
     char d_start;
 
-	public:
-		void forecast (int noutput_items, gr_vector_int &ninput_items_required);
+  public:
+    void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
-		int general_work (int noutput_items,
-		          gr_vector_int &ninput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+    int general_work (int noutput_items,
+                      gr_vector_int &ninput_items,
+                      gr_vector_const_void_star &input_items,
+                      gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_H */

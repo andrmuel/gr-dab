@@ -59,21 +59,21 @@ dab_make_qpsk_mapper_vbc (int symbol_length);
  */
 class dab_qpsk_mapper_vbc : public gr_sync_block
 {
-	private:
-		// The friend declaration allows dab_make_qpsk_mapper_vbc to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_qpsk_mapper_vbc to
+    // access the private constructor.
 
-		friend dab_qpsk_mapper_vbc_sptr
+    friend dab_qpsk_mapper_vbc_sptr
     dab_make_qpsk_mapper_vbc (int symbol_length);
 
-		dab_qpsk_mapper_vbc (int symbol_length);  	// private constructor
+    dab_qpsk_mapper_vbc (int symbol_length);    // private constructor
 
-		int d_symbol_length;
+    int d_symbol_length;
 
-	public:
-		int work (int noutput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+  public:
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_QPSK_MAPPER_VBC_H */

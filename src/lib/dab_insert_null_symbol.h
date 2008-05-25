@@ -54,25 +54,25 @@ dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symb
  */
 class dab_insert_null_symbol : public gr_block
 {
-	private:
-		// The friend declaration allows dab_make_insert_null_symbol to
-		// access the private constructor.
+  private:
+    // The friend declaration allows dab_make_insert_null_symbol to
+    // access the private constructor.
 
-		friend dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symbol_length);
+    friend dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symbol_length);
 
-		dab_insert_null_symbol (int ns_length, int symbol_length);  	// private constructor
+    dab_insert_null_symbol (int ns_length, int symbol_length);    // private constructor
 
     int d_ns_length;
-		int d_symbol_length;
+    int d_symbol_length;
     int d_ns_added;
 
-	public:
-		void forecast (int noutput_items, gr_vector_int &ninput_items_required);
+  public:
+    void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
-		int general_work (int noutput_items,
-		          gr_vector_int &ninput_items,
-		          gr_vector_const_void_star &input_items,
-		          gr_vector_void_star &output_items);
+    int general_work (int noutput_items,
+                      gr_vector_int &ninput_items,
+                      gr_vector_const_void_star &input_items,
+                      gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_INSERT_NULL_SYMBOL_H */

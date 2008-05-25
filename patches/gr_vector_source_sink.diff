@@ -1,0 +1,49 @@
+Index: gnuradio-core/src/lib/gengen/gr_vector_source_X.h.t
+===================================================================
+--- gnuradio-core/src/lib/gengen/gr_vector_source_X.h.t	(revision 8484)
++++ gnuradio-core/src/lib/gengen/gr_vector_source_X.h.t	(working copy)
+@@ -46,6 +46,7 @@
+   @NAME@ (const std::vector<@TYPE@> &data, bool repeat);
+ 
+  public:
++  void rewind() {d_offset=0;}
+   virtual int work (int noutput_items,
+ 		    gr_vector_const_void_star &input_items,
+ 		    gr_vector_void_star &output_items);
+Index: gnuradio-core/src/lib/gengen/gr_vector_sink_X.h.t
+===================================================================
+--- gnuradio-core/src/lib/gengen/gr_vector_sink_X.h.t	(revision 8484)
++++ gnuradio-core/src/lib/gengen/gr_vector_sink_X.h.t	(working copy)
+@@ -49,6 +49,7 @@
+ 		    gr_vector_const_void_star &input_items,
+ 		    gr_vector_void_star &output_items);
+ 
++  void clear() {d_data.clear();}
+   std::vector<@TYPE@> data () const;
+ };
+ 
+Index: gnuradio-core/src/lib/gengen/gr_vector_source_X.i.t
+===================================================================
+--- gnuradio-core/src/lib/gengen/gr_vector_source_X.i.t	(revision 8484)
++++ gnuradio-core/src/lib/gengen/gr_vector_source_X.i.t	(working copy)
+@@ -28,6 +28,8 @@
+ gr_make_@BASE_NAME@ (const std::vector<@TYPE@> &data, bool repeat = false);
+ 
+ class @NAME@ : public gr_sync_block {
++ public:
++  void rewind() {d_offset=0;}
+  private:
+   @NAME@ (const std::vector<@TYPE@> &data);
+ };
+Index: gnuradio-core/src/lib/gengen/gr_vector_sink_X.i.t
+===================================================================
+--- gnuradio-core/src/lib/gengen/gr_vector_sink_X.i.t	(revision 8484)
++++ gnuradio-core/src/lib/gengen/gr_vector_sink_X.i.t	(working copy)
+@@ -32,6 +32,7 @@
+   @NAME@ ();
+ 
+  public:
++  void clear() {d_data.clear();}
+   std::vector<@TYPE@> data () const;
+ };
+ 

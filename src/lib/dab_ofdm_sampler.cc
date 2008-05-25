@@ -42,25 +42,28 @@ dab_make_ofdm_sampler (unsigned int fft_length,
                        unsigned int symbols_per_frame,
                        unsigned int gap)
 {
-	return dab_ofdm_sampler_sptr (new dab_ofdm_sampler (fft_length, cp_length, symbols_per_frame, gap));
+  return dab_ofdm_sampler_sptr (new dab_ofdm_sampler (fft_length, cp_length, symbols_per_frame, gap));
 }
 
 dab_ofdm_sampler::dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap) : 
-	gr_block ("ofdm_sampler",
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex), sizeof(char)),
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
-	d_state(STATE_NS), d_pos(0), d_fft_length(fft_length), d_cp_length(cp_length), d_symbols_per_frame(symbols_per_frame), d_sym_nr(0), d_gap(gap), d_gap_left(0)
+  gr_block ("ofdm_sampler",
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex), sizeof(char)),
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
+  d_state(STATE_NS), d_pos(0), d_fft_length(fft_length), d_cp_length(cp_length), d_symbols_per_frame(symbols_per_frame), d_sym_nr(0), d_gap(gap), d_gap_left(0)
 {
   assert(gap<=cp_length);
+  set_relative_rate(1/float(fft_length+cp_length));
 }
 
 void 
 dab_ofdm_sampler::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
-  int in_req  = noutput_items * (d_fft_length+d_cp_length);
+  int in_req  = noutput_items * (d_fft_length+d_cp_length-d_gap);
+  // int in_req  = noutput_items * d_fft_length;
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned i = 0; i < ninputs; i++)
     ninput_items_required[i] = in_req;
+  // printf("dab_ofdm_sampler forecast: noutput_items: %d in_req: %d\n", noutput_items, in_req);
 }
 
 
@@ -70,63 +73,63 @@ dab_ofdm_sampler::general_work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-	/* partially adapted from gr_ofdm_sampler.cc */
-	const gr_complex *iptr = (const gr_complex *) input_items[0];
-	const char *trigger = (const char *) input_items[1];
-	
-	gr_complex *optr = (gr_complex *) output_items[0];
-	char *outsig = (char *) output_items[1];
+  /* partially adapted from gr_ofdm_sampler.cc */
+  const gr_complex *iptr = (const gr_complex *) input_items[0];
+  const char *trigger = (const char *) input_items[1];
+  
+  gr_complex *optr = (gr_complex *) output_items[0];
+  char *outsig = (char *) output_items[1];
 
-	unsigned int n_in = ninput_items[0];
-	unsigned int index = 0;
-	unsigned int out = 0;
+  unsigned int n_in = (ninput_items[0]<ninput_items[1])?ninput_items[0]:ninput_items[1];
+  unsigned int index = 0;
+  unsigned int out = 0;
 
-	switch (d_state) {
-		case(STATE_NS):
-			d_pos = 0;
-			d_sym_nr = 0;
+  switch (d_state) {
+    case(STATE_NS):
+      d_pos = 0;
+      d_sym_nr = 0;
       d_gap_left = 0;
-			while (index<n_in && !trigger[index])
-				index++;
-			if (trigger[index]) 
-				d_state = STATE_CP;
-			else
-				break;
-		case(STATE_CP):
+      while (index<n_in && !trigger[index])
+        index++;
+      if (trigger[index]) 
+        d_state = STATE_CP;
+      else
+        break;
+    case(STATE_CP):
       while (d_gap_left > 0 && index<n_in) { /* is there a gap left from the previous symbol? */
         index++;
         d_gap_left--;
       }
-			while (index<n_in && d_pos < d_cp_length-d_gap) {
-				index++;
-				d_pos++;
-			}
-			if (d_pos == d_cp_length-d_gap)
-				d_state = STATE_SYM;
-			else
-				break;
-		case(STATE_SYM):
-			if (index + d_fft_length <= n_in) {
-				memcpy(&optr[out], &iptr[index], d_fft_length*sizeof(gr_complex));
-				d_sym_nr++;
-				index += d_fft_length;
-				d_pos = 0;
-				/* first symbol in frame? */
-				if (d_sym_nr==1)
-					outsig[out] = 1;
-				else
-					outsig[out] = 0;
-				out++;
-				/* last symbol in frame? */
-				if (d_sym_nr == d_symbols_per_frame) {
-					d_state = STATE_NS;
+      while (index<n_in && d_pos < d_cp_length-d_gap) {
+        index++;
+        d_pos++;
+      }
+      if (d_pos == d_cp_length-d_gap)
+        d_state = STATE_SYM;
+      else
+        break;
+    case(STATE_SYM):
+      if (index + d_fft_length <= n_in) {
+        memcpy(&optr[out], &iptr[index], d_fft_length*sizeof(gr_complex));
+        d_sym_nr++;
+        index += d_fft_length;
+        d_pos = 0;
+        /* first symbol in frame? */
+        if (d_sym_nr==1)
+          outsig[out] = 1;
+        else
+          outsig[out] = 0;
+        out++;
+        /* last symbol in frame? */
+        if (d_sym_nr == d_symbols_per_frame) {
+          d_state = STATE_NS;
         } else {
-					d_state = STATE_CP;
+          d_state = STATE_CP;
           d_gap_left = d_gap;
         }
-			}
-			break;
-	}
-	consume_each(index);
-	return out;
+      }
+      break;
+  }
+  consume_each(index);
+  return out;
 }

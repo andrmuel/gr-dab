@@ -39,13 +39,13 @@
 dab_insert_null_symbol_sptr 
 dab_make_insert_null_symbol (int ns_length, int symbol_length)
 {
-	return dab_insert_null_symbol_sptr (new dab_insert_null_symbol (ns_length, symbol_length));
+  return dab_insert_null_symbol_sptr (new dab_insert_null_symbol (ns_length, symbol_length));
 }
 
 dab_insert_null_symbol::dab_insert_null_symbol (int ns_length, int symbol_length) : 
-	gr_block ("insert_null_symbol",
-	           gr_make_io_signature2 (2, 2, sizeof(gr_complex)*symbol_length, sizeof(char)),
-	           gr_make_io_signature (1, 1, sizeof(gr_complex))),
+  gr_block ("insert_null_symbol",
+             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*symbol_length, sizeof(char)),
+             gr_make_io_signature (1, 1, sizeof(gr_complex))),
   d_ns_length(ns_length), d_symbol_length(symbol_length), d_ns_added(0)
 {
   /* note: setting output_multiple to a high value without setting the relative rate produces
@@ -77,16 +77,16 @@ dab_insert_null_symbol::general_work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-	const gr_complex *iptr = (const gr_complex *) input_items[0];
-	const char *trigger = (const char *) input_items[1];
-	
-	gr_complex *optr = (gr_complex *) output_items[0];
+  const gr_complex *iptr = (const gr_complex *) input_items[0];
+  const char *trigger = (const char *) input_items[1];
+  
+  gr_complex *optr = (gr_complex *) output_items[0];
 
   int produced_items=0;
   int consumed_items=0;
   int i;
   
-  while (noutput_items-produced_items>=d_symbol_length) {
+  while (noutput_items-produced_items>=d_symbol_length && consumed_items<ninput_items[0] && consumed_items<ninput_items[1]) {
     if (*trigger==1 && d_ns_added<d_ns_length) {
       for (i=0; i<d_ns_length-d_ns_added && i<noutput_items-produced_items; i++) 
         *optr++ = 0;

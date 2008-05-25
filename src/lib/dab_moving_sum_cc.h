@@ -62,21 +62,22 @@ private:
 
   friend dab_moving_sum_cc_sptr dab_make_moving_sum_cc (int length);
 
-  dab_moving_sum_cc (int length);  	// private constructor
+  dab_moving_sum_cc (int length);    // private constructor
 
   gr_complexd d_sum;
   int d_length;
 
  public:
-  ~dab_moving_sum_cc ();	// public destructor
+  ~dab_moving_sum_cc ();  // public destructor
   int length() const {return d_length;}
   void set_length(int length) {set_history(length+1); d_length=length;}
+  void reset() {d_sum=0;}
 
   // Where all the action really happens
 
   int work (int noutput_items,
-	    gr_vector_const_void_star &input_items,
-	    gr_vector_void_star &output_items);
+            gr_vector_const_void_star &input_items,
+            gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_MOVING_SUM_CC_H */
