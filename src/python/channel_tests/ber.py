@@ -13,5 +13,5 @@ def find_ber(sent, received):
 	errors = 0
 	for i in range(0,len(received)):
 		errors += bits_set(sent[i] ^ received[i]) # ^ is xor
-	return float(errors)/float(8*len(sent))
+	return float(errors)/float(8*len(received))
 
