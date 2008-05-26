@@ -18,7 +18,7 @@ NUM_BYTES = 1000000
 
 MODES=[1,2,3,4]
 # MODES=[1]
-SNR_DB = [-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8,9,10]
+SNR_DB = range(-5,21)
 # SNR_DB = [0,5]
 
 
@@ -71,12 +71,11 @@ if __name__ == '__main__':
 				# calculate bit error rate
 				ber_values.append(ber.find_ber(expected_result,result))
 				print "BER: " + str(ber_values[-1])
-				# tb.disconnect_all()
 				print
 
 			# plot it:
-			# pylab.semilogy(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
-			pylab.plot(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			pylab.semilogy(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			# pylab.plot(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
 			logfile.write("Mode: " + str(mode)+"\n" +
 				      "=======\n\n" +
 				      "SNR: BER (number of bytes received)\n" +
@@ -86,7 +85,7 @@ if __name__ == '__main__':
 			logfile.write("\n\n")
 
 		logfile.close()
-		pylab.axis([SNR_DB[0],SNR_DB[-1],0,0.52])
+		# pylab.axis([SNR_DB[0],SNR_DB[-1],0,0.52])
 		pylab.legend()
 		pylab.show()
 

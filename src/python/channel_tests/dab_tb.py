@@ -36,10 +36,10 @@ class dab_ofdm_testbench(gr.top_block):
 		self.sink      = gr.vector_sink_b()
 		self.trig_sink = gr.null_sink(gr.sizeof_char)
 
-		self.noise_start      = gr.noise_source_c(gr.GR_GAUSSIAN, math.sqrt(2), random.randint(0,10000))
-		self.noise_start_head = gr.head(gr.sizeof_gr_complex, NOISE_SAMPLES_AT_START)
-		self.noise_end        = gr.noise_source_c(gr.GR_GAUSSIAN, math.sqrt(2), random.randint(0,10000))
-		self.noise_end_head   = gr.head(gr.sizeof_gr_complex, NOISE_SAMPLES_AT_END)
+		# self.noise_start      = gr.noise_source_c(gr.GR_GAUSSIAN, math.sqrt(2), random.randint(0,10000))
+		# self.noise_start_head = gr.head(gr.sizeof_gr_complex, NOISE_SAMPLES_AT_START)
+		# self.noise_end        = gr.noise_source_c(gr.GR_GAUSSIAN, math.sqrt(2), random.randint(0,10000))
+		# self.noise_end_head   = gr.head(gr.sizeof_gr_complex, NOISE_SAMPLES_AT_END)
 		
 		# blocks
 		self.s2v     = gr.stream_to_vector(gr.sizeof_char, self.vlen)
@@ -74,7 +74,7 @@ class dab_ofdm_testbench(gr.top_block):
 		self.amp.set_k(math.sqrt(signal_energy))
 	
 	def set_carrier_frequency_offset(self, freq_offset):
-		self.channel.set_frequency_offset(freq_offset)
+		self.channel.set_frequency_offset(float(freq_offset)/self.dp.sample_rate)
 
 	def set_sampling_frequency_offset(self, ratio):
 		self.channel.set_timing_offset(ratio)	
@@ -97,7 +97,7 @@ class dab_ofdm_testbench(gr.top_block):
 		# self.cat.reset()
 		self.demod.clear_state()
 
-		# TODO some state is stull left - for now just make a new one
+		# TODO some state is still left in the demod block - for now just make a new one
 		self.disconnect(self.channel, self.demod)
 		self.disconnect((self.demod,0), self.v2s)
 		self.disconnect((self.demod,1), self.trig_sink)
