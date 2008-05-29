@@ -57,7 +57,10 @@ dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length,
  * \param fft_length total number of fft bins
  * \param num_carriers number of carriers with OFDM symbols, not including the zero carrier
  *
- * This uses the preferred technique: subclassing gr_sync_block.
+ * This block detects where the signal is (coarse frequency offset) by looking
+ * at the energy and returns only the carriers containing information (i.e. it
+ * removes the zeros on the left, the zeros on the right and the one zero
+ * carrier in the middle). 
  */
 class dab_ofdm_coarse_frequency_correct : public gr_sync_block
 {

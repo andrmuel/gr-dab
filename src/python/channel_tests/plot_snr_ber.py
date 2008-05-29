@@ -49,6 +49,7 @@ if __name__ == '__main__':
 			tb.set_signal_energy(1)
 			tb.set_noise_energy(0)
 			tb.run()
+			
 			tb.set_power_correction(tb.probe_signal.level())
 			print "estimated energy: " + str(tb.probe_signal.level()) + "\n"
 			for snr_db in SNR_DB:

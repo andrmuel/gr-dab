@@ -53,6 +53,11 @@ dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (int symbol_length, int num_sy
 /*!
  * \brief samples FFS error estimation at the correct time and averages it
  * \ingroup DAB
+ * \param symbol_length number of samples in an OFDM symbol
+ * \param num_symbols number of symbols to use for averaging (more symbols is better, but symbols towards the end of the frame tend to have larger time offsets and worse values)
+ * \param alpha how fast should we adapt to new FFS error values (1=immediately)
+ *
+ * Port 0 is the actual data, port 1 is a trigger signal indicating the start of a frame (input only).
  */
 class dab_ofdm_ffs_sample : public gr_sync_block
 {

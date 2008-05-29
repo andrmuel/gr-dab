@@ -54,10 +54,8 @@ dab_make_ofdm_move_and_insert_zero (unsigned int fft_length,
  * \brief Moves the symbols into the middle of a signal of length fft_length and inserts the zero carrier in the middle.
  * \ingroup DAB
  * 
- * \param fft_length total number of fft bins
- * \param num_carriers number of carriers with OFDM symbols, not including the zero carrier
- *
- * This uses the preferred technique: subclassing gr_sync_block.
+ * \param fft_length total number of fft bins (-> output vector length)
+ * \param num_carriers number of carriers with OFDM symbols, not including the zero carrier (-> input vector length)
  */
 class dab_ofdm_move_and_insert_zero : public gr_sync_block
 {

@@ -51,6 +51,12 @@ dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned i
 /*!
  * \brief cuts stream of DAB samples into symbol vectors
  * \ingroup DAB
+ * \param fft_length length of the output vectors - number of samples per symbol without cyclic prefix
+ * \param cp_length lengith of the cyclic prefix
+ * \param symbols_per_frame number of symbols in a DAB frame, without Null symbol
+ * \param gap If the gap is > 0, leave a gap at the end of the symbol, i.e. return some of the cyclic prefix instead of the end of the symbol
+ *
+ * Port 0 is the actual data, port 1 is a trigger signal indicating the start of a frame.
  */
 class dab_ofdm_sampler : public gr_block
 {

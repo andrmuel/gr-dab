@@ -51,6 +51,8 @@ dab_make_sum_phasor_trig_vcc (unsigned int length);
 
 /*!
  * \brief Sums up the phase of consecutive symbol vectors.
+ * \ingroup DAB
+ * \param length length of the vector
  *
  * When a new frame starts (trig == 1), the pilot symbol is produced directly, without any summing up:
  *  y[i] = x[i]
@@ -59,10 +61,6 @@ dab_make_sum_phasor_trig_vcc (unsigned int length);
  *  y[i] = x[i]*y[i-1]
  *
  *  NOTE: This means it's important that the absolute value of the symbols is 1.
- *
- * \ingroup DAB
- * 
- * \param length length of the symbol vector
  */
 class dab_sum_phasor_trig_vcc : public gr_sync_block
 {

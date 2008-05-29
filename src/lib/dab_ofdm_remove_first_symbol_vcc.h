@@ -51,6 +51,9 @@ dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (uns
 /*!
  * \brief Removes the first symbol of each frame
  * \ingroup DAB
+ * \param vlen length of the symbol vectors
+ *
+ * Port 0 is the actual data, port 1 is a trigger signal indicating the start of a frame.
  */
 class dab_ofdm_remove_first_symbol_vcc : public gr_block
 {

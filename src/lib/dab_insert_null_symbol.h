@@ -51,6 +51,10 @@ dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symb
 /*!
  * \brief Inserts a Null symbol at the start of the frame.
  * \ingroup DAB
+ * \param ns_length number of samples that makes a Null symbol
+ * \param symbol_length number of samples in an ordinary symbol_length
+ *
+ * Port 0 is the actual data, port 1 is a trigger signal indicating the start of a frame (input only).
  */
 class dab_insert_null_symbol : public gr_block
 {

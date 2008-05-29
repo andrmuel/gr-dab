@@ -50,10 +50,11 @@ dab_ofdm_insert_pilot_vcc_sptr dab_make_ofdm_insert_pilot_vcc (const std::vector
 
 /*!
  * \brief Inserts the pilot symbol at the start of each frame.
+ * \ingroup DAB
+ * \param pilot Complex vector containing the pilot OFDM symbol
  *
  * The pilot symbol vector must have the same width as the other symbols
- *
- * \ingroup DAB
+ * Port 0 is the actual data, port 1 is a trigger signal indicating the start of a frame.
  */
 class dab_ofdm_insert_pilot_vcc : public gr_block
 {

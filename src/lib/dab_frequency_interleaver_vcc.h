@@ -51,9 +51,9 @@ dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_seque
 
 /*!
  * \brief Interleaves vector elements according to the interleaving sequence: out[sequence[i]] = in[i]
- * \ingroup DAB
+ * \ingroup misc
  * 
- * \param sequence interleaving sequence
+ * \param interleaving_sequence interleaving sequence, according to which the vector elements are mapped
  */
 class dab_frequency_interleaver_vcc : public gr_sync_block
 {

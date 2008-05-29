@@ -55,6 +55,9 @@ dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha);
  * 
  * \param vlen length of the vector
  * \param alpha adaptation speed fatcor: corr = (1-alpha)*corr + alpha*new_val)
+ *
+ * Note: This block only makes sense as long as the offset of the majority of
+ * the samples is smaller than pi/4
  */
 class dab_correct_individual_phase_offset_vff : public gr_sync_block
 {

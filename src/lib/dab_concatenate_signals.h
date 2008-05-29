@@ -33,9 +33,12 @@ dab_concatenate_signals_sptr dab_make_concatenate_signals (size_t itemsize);
 /*!
  * \brief Concatenate all input signals in time
  *
+ * \ingroup flow
  * \param itemsize size of input and output items
  *
  * Output first signal, as long as it has samples, then second signal, etc...
+ * Note: Altough this block works with simple vectors, it seems that samples
+ * get lost when more complicated blocks are used.
  */
 class dab_concatenate_signals : public gr_block
 {

@@ -49,10 +49,11 @@ typedef boost::shared_ptr<dab_estimate_sample_rate_bf> dab_estimate_sample_rate_
 dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
 
 /*!
- * \brief Moving sum over a stream of floats.
- * \ingroup misc
+ * \brief Estimate the sample rate of a DAB stream from the detected frame starts
+ * \ingroup DAB
  *
- * This uses the preferred technique: subclassing gr_sync_block.
+ * \param expected_sample_rate exact value of the sample rate if there are no inaccuracies
+ * \param frame_length length of a DAB frame in samples
  */
 class dab_estimate_sample_rate_bf : public gr_sync_block
 {
