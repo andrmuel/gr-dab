@@ -26,6 +26,7 @@
 #include "dab_insert_null_symbol.h"
 #include "dab_concatenate_signals.h"
 #include "dab_measure_processing_rate.h"
+#include "dab_sum_elements_vff.h"
 #include <stdexcept>
 %}
 
@@ -295,5 +296,17 @@ class dab_measure_processing_rate : public gr_sync_block
   public:
     void set_samples_to_count(int samples_to_count) { d_samples_to_count=samples_to_count; }
     float processing_rate() { return d_processing_rate; }
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,sum_elements_vff);
+
+dab_sum_elements_vff_sptr dab_make_sum_elements_vff (unsigned int length);
+
+class dab_sum_elements_vff : public gr_sync_block
+{
+  private:
+    dab_sum_elements_vff (unsigned int length);
 };
 
