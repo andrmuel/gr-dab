@@ -33,6 +33,7 @@ import ofdm_sync_dab2
 import detect_null
 import threading
 import time
+from math import pi
 
 """
 modulator and demodulator for the DAB physical layer 
@@ -190,7 +191,7 @@ class ofdm_demod(gr.hier_block2):
 		self.fft = gr.fft_vcc(dp.fft_length, True, [], True)
 
 		# coarse frequency synchronisation
-		self.cfs = dab_swig.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers)
+		self.cfs = dab_swig.ofdm_coarse_frequency_correct2(dp.fft_length, dp.num_carriers, dp.cp_length)
 
 		# diff phasor
 		self.phase_diff = dab_swig.diff_phasor_vcc(dp.num_carriers)
@@ -235,6 +236,13 @@ class ofdm_demod(gr.hier_block2):
 		# TODO correct phase offset
 		# self.connect(self.remove_pilot, self.arg, self.correct_phase_offset)
 
+		# calculate an estimate of the SNR
+		alpha = 0.05
+		self.average_snr_estimate = gr.iir_filter_ffd([alpha], [0,1-alpha])
+		self.probe_snr_estimate = gr.probe_signal_f()
+		self.connect((self.remove_pilot,0), self.arg, dab_swig.sum_elements_vff(dp.num_carriers), dab_swig.modulo_ff(pi/2), gr.multiply_const_ff(1/float(dp.num_carriers)), gr.add_const_ff(-pi/4), self.average_snr_estimate, self.probe_snr_estimate)
+		
+		# debugging
 		if debug:
 			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))
 			self.connect((self.cfs,0), gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_after_cfs.dat"))

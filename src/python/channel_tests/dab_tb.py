@@ -59,8 +59,8 @@ class dab_ofdm_testbench(gr.top_block):
 		self.connect((self.demod, 1), self.trig_sink)
 
 		# SNR calculation and prober
-		self.probe_signal = gr.probe_avg_mag_sqrd_c(1,0.00001)
-		self.probe_total  = gr.probe_avg_mag_sqrd_c(1,0.00001)
+		self.probe_signal = gr.probe_avg_mag_sqrd_c(0,0.00001)
+		self.probe_total  = gr.probe_avg_mag_sqrd_c(0,0.00001)
 		self.connect(self.amp, self.probe_signal)
 		self.connect(self.channel, self.probe_total)
         	

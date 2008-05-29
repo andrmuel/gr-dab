@@ -31,7 +31,7 @@ if __name__ == '__main__':
 		tb.gen_random_bytes(NUM_BYTES)
 
 		# prepeare plot	
-		pylab.title("BER in noisy channel")
+		#pylab.title("BER in noisy channel") # add caption in LaTeX -> looks better
 		pylab.xlabel("SNR [dB]")
 		pylab.ylabel("BER")
 

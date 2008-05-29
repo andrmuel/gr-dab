@@ -58,10 +58,10 @@ dab_make_sum_phasor_trig_vcc (unsigned int length);
  * output: port 0: phase diff vectors; port 1: byte stream indicating frame start
  *
  * When a new frame starts (trig == 1), the pilot symbol is produced directly, without any summing up:
- *  y[i] = x[i]
+ *  \f[y[i] = x[i]\f]
  * 
  * Otherwise:
- *  y[i] = x[i]*y[i-1]
+ *  \f[y[i] = x[i]*y[i-1]\f]
  *
  *  NOTE: This means it's important that the absolute value of the symbols is 1.
  */

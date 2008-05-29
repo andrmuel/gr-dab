@@ -65,6 +65,7 @@ _dab_swig_la_SOURCES = 			        \
 	dab_moving_sum_cc.cc                    \
 	dab_ofdm_sampler.cc                     \
 	dab_ofdm_coarse_frequency_correct.cc    \
+	dab_ofdm_coarse_frequency_correct2.cc   \
 	dab_diff_phasor_vcc.cc                  \
 	dab_correct_individual_phase_offset_vff.cc \
 	dab_ofdm_remove_first_symbol_vcc.cc     \
@@ -101,6 +102,7 @@ grinclude_HEADERS =			        \
 	dab_moving_sum_cc.h                     \
 	dab_ofdm_sampler.h                      \
 	dab_ofdm_coarse_frequency_correct.h     \
+	dab_ofdm_coarse_frequency_correct2.h    \
 	dab_diff_phasor_vcc.h                   \
 	dab_correct_individual_phase_offset_vff.h \
 	dab_ofdm_remove_first_symbol_vcc.h      \

@@ -11,6 +11,7 @@
 #include "dab_moving_sum_cc.h"
 #include "dab_ofdm_sampler.h"
 #include "dab_ofdm_coarse_frequency_correct.h"
+#include "dab_ofdm_coarse_frequency_correct2.h"
 #include "dab_diff_phasor_vcc.h"
 #include "dab_correct_individual_phase_offset_vff.h"
 #include "dab_ofdm_remove_first_symbol_vcc.h"
@@ -101,6 +102,18 @@ class dab_ofdm_coarse_frequency_correct : public gr_sync_block
 {
   private:
     dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,ofdm_coarse_frequency_correct2);
+
+dab_ofdm_coarse_frequency_correct2_sptr dab_make_ofdm_coarse_frequency_correct2 (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length);
+
+class dab_ofdm_coarse_frequency_correct2 : public gr_sync_block
+{
+  private:
+    dab_ofdm_coarse_frequency_correct2 (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length);
 };
 
 // ----------------------------------------------------------------
