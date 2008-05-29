@@ -26,26 +26,8 @@
 
 class dab_ofdm_remove_first_symbol_vcc;
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
 typedef boost::shared_ptr<dab_ofdm_remove_first_symbol_vcc> dab_ofdm_remove_first_symbol_vcc_sptr;
 
-/*!
- * \brief Return a shared_ptr to a new instance of dab_ofdm_remove_first_symbol_vcc.
- *
- * To avoid accidental use of raw pointers, dab_ofdm_remove_first_symbol_vcc's
- * constructor is private.  dab_make_ofdm_remove_first_symbol_vcc is the public
- * interface for creating new instances.
- */
 dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen);
 
 /*!
@@ -53,7 +35,8 @@ dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (uns
  * \ingroup DAB
  * \param vlen length of the symbol vectors
  *
- * Port 0 is the actual data, port 1 is a trigger signal indicating the start of a frame.
+ * input: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
+ * output: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
  */
 class dab_ofdm_remove_first_symbol_vcc : public gr_block
 {

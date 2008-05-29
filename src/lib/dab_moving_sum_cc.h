@@ -26,32 +26,17 @@
 
 class dab_moving_sum_cc;
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
 typedef boost::shared_ptr<dab_moving_sum_cc> dab_moving_sum_cc_sptr;
 
-/*!
- * \brief Return a shared_ptr to a new instance of dab_moving_sum_cc.
- *
- * To avoid accidental use of raw pointers, dab_moving_sum_cc's
- * constructor is private.  dab_make_moving_sum_cc is the public
- * interface for creating new instances.
- */
 dab_moving_sum_cc_sptr dab_make_moving_sum_cc (int length);
 
 /*!
  * \brief Moving sum over a stream of complex floats.
  * \ingroup filter
  * \param length length of the moving sum (=number of taps)
+ *
+ * input: complex
+ * output: complex
  *
  * This is the same as an FIR filter with length taps 1, but much faster
  * (linear time instead of O(n*m)). On the other hand, since only the diff is

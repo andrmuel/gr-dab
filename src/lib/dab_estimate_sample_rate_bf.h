@@ -54,6 +54,9 @@ dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expecte
  *
  * \param expected_sample_rate exact value of the sample rate if there are no inaccuracies
  * \param frame_length length of a DAB frame in samples
+ *
+ * input: byte stream with frame starts
+ * output: float stream with sample rate estimation
  */
 class dab_estimate_sample_rate_bf : public gr_sync_block
 {

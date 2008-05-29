@@ -53,6 +53,9 @@ dab_moving_sum_ff_sptr dab_make_moving_sum_ff (int length);
  * \ingroup filter
  * \param length length of the moving sum (=number of taps)
  *
+ * input: float
+ * output: float
+ *
  * This is the same as an FIR filter with length taps 1, but much faster
  * (linear time instead of O(n*m)). On the other hand, since only the diff is
  * calculated for each sample, there is some chance of an accumulating error.

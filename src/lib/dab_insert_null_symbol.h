@@ -26,26 +26,8 @@
 
 class dab_insert_null_symbol;
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
 typedef boost::shared_ptr<dab_insert_null_symbol> dab_insert_null_symbol_sptr;
 
-/*!
- * \brief Return a shared_ptr to a new instance of dab_insert_null_symbol.
- *
- * To avoid accidental use of raw pointers, dab_insert_null_symbol's
- * constructor is private.  dab_make_insert_null_symbol is the public
- * interface for creating new instances.
- */
 dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symbol_length);
 
 /*!
@@ -54,7 +36,8 @@ dab_insert_null_symbol_sptr dab_make_insert_null_symbol (int ns_length, int symb
  * \param ns_length number of samples that makes a Null symbol
  * \param symbol_length number of samples in an ordinary symbol_length
  *
- * Port 0 is the actual data, port 1 is a trigger signal indicating the start of a frame (input only).
+ * input: port 0: complex vector stream with the actual data; port 1: trigger signal indicating the start of a frame
+ * output: complex stream
  */
 class dab_insert_null_symbol : public gr_block
 {

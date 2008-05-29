@@ -54,6 +54,9 @@ dab_make_sum_phasor_trig_vcc (unsigned int length);
  * \ingroup DAB
  * \param length length of the vector
  *
+ * input: port 0: symbol vectors; port 1: byte stream indicating frame start
+ * output: port 0: phase diff vectors; port 1: byte stream indicating frame start
+ *
  * When a new frame starts (trig == 1), the pilot symbol is produced directly, without any summing up:
  *  y[i] = x[i]
  * 

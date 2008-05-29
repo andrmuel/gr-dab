@@ -52,6 +52,9 @@ dab_make_diff_phasor_vcc (unsigned int length);
 /*!
  * \brief Outputs the phase difference of consecutive vectors: y[i] = x[i] * conj(x[i-1])
  * \ingroup math
+ *
+ * input: complex vector
+ * output: complex vector
  * 
  * \param length length of the vector
  */

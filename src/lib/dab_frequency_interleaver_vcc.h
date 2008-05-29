@@ -26,34 +26,18 @@
 
 class dab_frequency_interleaver_vcc;
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
 typedef boost::shared_ptr<dab_frequency_interleaver_vcc> dab_frequency_interleaver_vcc_sptr;
 
-/*!
- * \brief Return a shared_ptr to a new instance of dab_frequency_interleaver_vcc.
- *
- * To avoid accidental use of raw pointers, dab_frequency_interleaver_vcc's
- * constructor is private.  dab_make_frequency_interleaver_vcc is the public
- * interface for creating new instances.
- */
 dab_frequency_interleaver_vcc_sptr 
 dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
 
 /*!
  * \brief Interleaves vector elements according to the interleaving sequence: out[sequence[i]] = in[i]
  * \ingroup misc
- * 
  * \param interleaving_sequence interleaving sequence, according to which the vector elements are mapped
+ *
+ * input: complex vectors
+ * output: complex vectors with reordered elements
  */
 class dab_frequency_interleaver_vcc : public gr_sync_block
 {

@@ -54,8 +54,10 @@ dab_make_qpsk_mapper_vbc (int symbol_length);
 /*!
  * \brief Maps byte vectors to complex symbol vectors.
  * \ingroup DAB
- * 
  * \param symbol_length length of the symbol vector (i.e. number of occupied carriers)
+ *
+ * input: byte vectors
+ * output: symbol vectors
  */
 class dab_qpsk_mapper_vbc : public gr_sync_block
 {

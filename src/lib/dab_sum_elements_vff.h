@@ -52,8 +52,10 @@ dab_make_sum_elements_vff (unsigned int length);
 /*!
  * \brief Sum up all elements of a vector
  * \ingroup math
- * 
  * \param length length of the vector
+ *
+ * input: float vector
+ * output: float
  */
 class dab_sum_elements_vff : public gr_sync_block
 {

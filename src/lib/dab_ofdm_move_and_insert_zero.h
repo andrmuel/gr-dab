@@ -26,26 +26,8 @@
 
 class dab_ofdm_move_and_insert_zero;
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
 typedef boost::shared_ptr<dab_ofdm_move_and_insert_zero> dab_ofdm_move_and_insert_zero_sptr;
 
-/*!
- * \brief Return a shared_ptr to a new instance of dab_ofdm_move_and_insert_zero.
- *
- * To avoid accidental use of raw pointers, dab_ofdm_move_and_insert_zero's
- * constructor is private.  dab_make_ofdm_move_and_insert_zero is the public
- * interface for creating new instances.
- */
 dab_ofdm_move_and_insert_zero_sptr 
 dab_make_ofdm_move_and_insert_zero (unsigned int fft_length, 
                                         unsigned int num_carriers);
@@ -53,9 +35,11 @@ dab_make_ofdm_move_and_insert_zero (unsigned int fft_length,
 /*!
  * \brief Moves the symbols into the middle of a signal of length fft_length and inserts the zero carrier in the middle.
  * \ingroup DAB
- * 
  * \param fft_length total number of fft bins (-> output vector length)
  * \param num_carriers number of carriers with OFDM symbols, not including the zero carrier (-> input vector length)
+ *
+ * input: complex vector with symbols
+ * output: complex vector length fft_length
  */
 class dab_ofdm_move_and_insert_zero : public gr_sync_block
 {

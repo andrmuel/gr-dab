@@ -36,6 +36,8 @@ dab_measure_processing_rate_sptr dab_make_measure_processing_rate(size_t itemsiz
  * \param itemsize size of items (gr.sizeof_foo)
  * \param samples_to_count number of samples until updating the value - for good estimations, use at least the number of samples expected in one second
  *
+ * input: sample stream
+ *
  * \ingroup sink
  */
 class dab_measure_processing_rate : public gr_sync_block
