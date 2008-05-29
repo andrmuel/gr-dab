@@ -33,13 +33,13 @@ class qa_sum_elements_vff(gr_unittest.TestCase):
 		self.assertFloatTuplesAlmostEqual(expected_result, result_data, 8)
 	
 	def test_002_sum_elements_vff(self):
-		a = range(-1000,2000)
-		b = range(10000,13000)
+		a = range(-1000,3096)
+		b = range(10000,14096)
 		src_data        = a+b
 		expected_result = [sum(a),sum(b)]
 		src = gr.vector_source_f(src_data)
-		s2v = gr.stream_to_vector(gr.sizeof_float, 3000)
-		sum_elements_vff = dab_swig.sum_elements_vff(3000)
+		s2v = gr.stream_to_vector(gr.sizeof_float, 4096)
+		sum_elements_vff = dab_swig.sum_elements_vff(4096)
 		dst = gr.vector_sink_f()
 		self.tb.connect(src, s2v, sum_elements_vff, dst)
 		self.tb.run()

@@ -80,7 +80,8 @@ _dab_swig_la_SOURCES = 			        \
 	dab_insert_null_symbol.cc               \
 	dab_concatenate_signals.cc              \
 	dab_measure_processing_rate.cc          \
-	dab_sum_elements_vff.cc
+	dab_sum_elements_vff.cc                 \
+	dab_modulo_ff.cc
 
 # magic flags
 _dab_swig_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -115,7 +116,8 @@ grinclude_HEADERS =			        \
 	dab_insert_null_symbol.h                \
 	dab_concatenate_signals.h               \
 	dab_measure_processing_rate.h           \
-	dab_sum_elements_vff.h
+	dab_sum_elements_vff.h                  \
+	dab_modulo_ff.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig

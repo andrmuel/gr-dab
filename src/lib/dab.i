@@ -27,6 +27,7 @@
 #include "dab_concatenate_signals.h"
 #include "dab_measure_processing_rate.h"
 #include "dab_sum_elements_vff.h"
+#include "dab_modulo_ff.h"
 #include <stdexcept>
 %}
 
@@ -310,3 +311,14 @@ class dab_sum_elements_vff : public gr_sync_block
     dab_sum_elements_vff (unsigned int length);
 };
 
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,modulo_ff);
+
+dab_modulo_ff_sptr dab_make_modulo_ff (float div);
+
+class dab_modulo_ff : public gr_sync_block
+{
+  private:
+    dab_modulo_ff (float div);
+};
