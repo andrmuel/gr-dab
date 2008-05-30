@@ -19,21 +19,24 @@ class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 	def test_001_ofdm_ffs_sample(self):
 		symbol_length = 3
 		num_symbols = 2
+		fft_length = 2
 		alpha = 0.1
 		src_data0       = (0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0)
 		src_data1       = (0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0)
-		a = 0.1*11./2
-		b = 0.9*a+0.1*15./2
+		a = (11./2) / fft_length
+		b = 0.9*a + (0.1*15./2) / fft_length
 		expected_result = (0,0,0,0,0,0,0,a,a,a,a,a,a,a,a,a,a,a,a,b,b)
 		src0 = gr.vector_source_f(src_data0)
 		src1 = gr.vector_source_b(src_data1)
-		ofdm_ffs_sample = dab_swig.ofdm_ffs_sample(symbol_length,  num_symbols, alpha)
+		ofdm_ffs_sample = dab_swig.ofdm_ffs_sample(symbol_length, fft_length, num_symbols, alpha, 10)
 		dst0 = gr.vector_sink_f()
 		self.tb.connect(src0, (ofdm_ffs_sample,0))
 		self.tb.connect(src1, (ofdm_ffs_sample,1))
 		self.tb.connect(ofdm_ffs_sample, dst0)
 		self.tb.run()
 		result_data0 = dst0.data()
+		# print expected_result
+		# print result_data0
 		self.assertFloatTuplesAlmostEqual(expected_result, result_data0, 6)
 
 if __name__ == '__main__':
