@@ -87,7 +87,7 @@ class ofdm_sync_dab2(gr.hier_block2):
 		self.ffs_angle = gr.complex_to_arg()
 		self.ffs_angle_scale = gr.multiply_const_ff(1./dp.fft_length)
 		self.ffs_delay_frame_start = gr.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
-		self.ffs_sample_and_average = dab_swig.ofdm_ffs_sample(dp.symbol_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha)
+		self.ffs_sample_and_average = dab_swig.ofdm_ffs_sample(dp.symbol_length, dp.fft_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha, dp.sample_rate)
 		self.ffs_delay_input_for_correction = gr.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
 		self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
 		self.ffs_mixer = gr.multiply_cc()

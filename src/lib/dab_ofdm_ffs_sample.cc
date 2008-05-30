@@ -37,16 +37,16 @@
  * a boost shared_ptr.  This is effectively the public constructor.
  */
 dab_ofdm_ffs_sample_sptr 
-dab_make_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha)
+dab_make_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
 {
-  return dab_ofdm_ffs_sample_sptr (new dab_ofdm_ffs_sample (symbol_length, num_symbols, alpha));
+  return dab_ofdm_ffs_sample_sptr (new dab_ofdm_ffs_sample (symbol_length, fft_length, num_symbols, alpha, sample_rate));
 }
 
-dab_ofdm_ffs_sample::dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha) : 
+dab_ofdm_ffs_sample::dab_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate) : 
   gr_sync_block ("ofdm_ffs_sample",
              gr_make_io_signature2 (2, 2, sizeof(float), sizeof(char)),
              gr_make_io_signature (1, 1, sizeof(float))),
-  d_symbol_length(symbol_length), d_num_symbols(num_symbols), d_alpha(alpha), d_cur_symbol(0), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0)
+  d_symbol_length(symbol_length), d_fft_length(fft_length), d_num_symbols(num_symbols), d_alpha(alpha), d_sample_rate(sample_rate), d_cur_symbol(0), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0)
 {
 }
 
@@ -57,7 +57,6 @@ dab_ofdm_ffs_sample::work (int noutput_items,
       gr_vector_const_void_star &input_items,
       gr_vector_void_star &output_items)
 {
-  /* partially adapted from gr_ofdm_ffs_sample.cc */
   const float *iptr = (const float *) input_items[0];
   const char *trigger = (const char *) input_items[1];
   
@@ -77,13 +76,18 @@ dab_ofdm_ffs_sample::work (int noutput_items,
 
       if (d_cur_symbol<d_num_symbols) {
         d_ffs_error_sum += *iptr;
-        // printf("ffs_sample: new ffs sample: %f (%3.2f Hz)\n", *iptr, *iptr*_1_OVER_2PI_T);
       }
 
       if (d_cur_symbol == d_num_symbols-1) { /* update estimated error */
         d_ffs_error_sum /= d_num_symbols; /* average */
-        d_estimated_error = d_alpha*d_ffs_error_sum + (1-d_alpha)*d_estimated_error; /* slow adjustment */
-        fprintf(stderr, "ffs_sample: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error*_1_OVER_2PI_T);
+
+        /* the following distinction is not really needed; but without it, simulation would need to run much longer */
+        if (d_estimated_error == 0)
+          d_estimated_error = d_ffs_error_sum; /* first time -> fast adjustment */
+        else
+          d_estimated_error = d_alpha*d_ffs_error_sum + (1-d_alpha)*d_estimated_error; /* slow adjustment */
+
+        fprintf(stderr, "ffs_sample: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error*d_sample_rate/M_TWOPI);
       }
 
       d_cur_symbol++;

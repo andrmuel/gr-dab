@@ -21,8 +21,8 @@
 # 
 
 # the code in this file is partially adapted from ofdm.py from the gnuradio
-# trunk (actually, only coarse frequency synchronisation is done the same way,
-# as that implementation otherwise is not suited for DAB)
+# trunk (actually, only frequency synchronisation is done the same way, as that
+# implementation otherwise is not suited for DAB)
 #
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch

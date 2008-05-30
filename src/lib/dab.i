@@ -168,12 +168,12 @@ class dab_estimate_sample_rate_bf : public gr_sync_block
 
 GR_SWIG_BLOCK_MAGIC(dab, ofdm_ffs_sample);
 
-dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
+dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
 
 class dab_ofdm_ffs_sample : public gr_sync_block
 {
   private:
-    dab_ofdm_ffs_sample (int symbol_length, int num_symbols, float alpha);
+    dab_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
 };
 
 
