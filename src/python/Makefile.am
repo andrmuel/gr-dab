@@ -33,7 +33,6 @@ grdabpython_PYTHON =   \
 	__init__.py            \
 	ofdm.py                \
 	ofdm_sync_dab.py       \
-	ofdm_sync_dab2.py      \
 	detect_null.py         \
 	parameters.py          \
 	estimate_samplerate.py

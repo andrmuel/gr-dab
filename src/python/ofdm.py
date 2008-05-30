@@ -29,7 +29,7 @@
 
 from gnuradio import gr, dab_swig
 import parameters
-import ofdm_sync_dab2
+import ofdm_sync_dab
 import detect_null
 import threading
 import time

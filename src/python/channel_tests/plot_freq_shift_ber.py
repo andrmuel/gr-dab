@@ -14,13 +14,11 @@ from gnuradio import dab
 import math, random, pylab
 import dab_tb, ber
 
-NUM_BYTES = 1000000
 NUM_BYTES = 100000
 
 MODES=[1,2,3,4]
-MODES=[1]
-FREQ_OFFSET_RANGE = range(0,100000,1000)
-FREQ_OFFSET_RANGE = [480]
+MODES=[4]
+FREQ_OFFSET_RANGE = range(0,1000,77)
 
 PLOT_FORMAT=['-','-x','--x','-.x',':x']
 

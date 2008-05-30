@@ -24,8 +24,6 @@
 
 #include <gr_sync_block.h>
 
-#define M_TWOPI (2*M_PI)
-
 class dab_ofdm_ffs_sample;
 
 typedef boost::shared_ptr<dab_ofdm_ffs_sample> dab_ofdm_ffs_sample_sptr;
@@ -64,6 +62,7 @@ class dab_ofdm_ffs_sample : public gr_sync_block
     unsigned int d_cur_sample;      // which sample in the symbol is currently under observation?
     float d_ffs_error_sum;          // sum of error samples in current frame
     float d_estimated_error;        // total estimated error
+    float d_estimated_error_per_sample; // total estimated error / fft_length
 
   public:
     int work (int noutput_items,

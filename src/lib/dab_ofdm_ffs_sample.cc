@@ -46,7 +46,7 @@ dab_ofdm_ffs_sample::dab_ofdm_ffs_sample (unsigned int symbol_length, unsigned i
   gr_sync_block ("ofdm_ffs_sample",
              gr_make_io_signature2 (2, 2, sizeof(float), sizeof(char)),
              gr_make_io_signature (1, 1, sizeof(float))),
-  d_symbol_length(symbol_length), d_fft_length(fft_length), d_num_symbols(num_symbols), d_alpha(alpha), d_sample_rate(sample_rate), d_cur_symbol(0), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0)
+  d_symbol_length(symbol_length), d_fft_length(fft_length), d_num_symbols(num_symbols), d_alpha(alpha), d_sample_rate(sample_rate), d_cur_symbol(num_symbols), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0), d_estimated_error_per_sample(0)
 {
 }
 
@@ -59,8 +59,9 @@ dab_ofdm_ffs_sample::work (int noutput_items,
 {
   const float *iptr = (const float *) input_items[0];
   const char *trigger = (const char *) input_items[1];
-  
   float *optr = (float *) output_items[0];
+
+  float new_estimate;
 
   for (int i=0; i<noutput_items; i++) {
     if (*trigger++ == 1) { /* new frame starts */
@@ -75,25 +76,53 @@ dab_ofdm_ffs_sample::work (int noutput_items,
       d_cur_sample = 0;
 
       if (d_cur_symbol<d_num_symbols) {
-        d_ffs_error_sum += *iptr;
+        new_estimate = *iptr;
+
+        if (d_cur_symbol>0) {
+          if (d_ffs_error_sum/d_cur_symbol < -M_PI/2 && new_estimate > M_PI/2)
+            new_estimate -= 2*M_PI;
+          else if (d_ffs_error_sum/d_cur_symbol > M_PI/2 && new_estimate < -M_PI/2)
+            new_estimate += 2*M_PI;
+        }
+
+        d_ffs_error_sum += new_estimate;
       }
 
       if (d_cur_symbol == d_num_symbols-1) { /* update estimated error */
         d_ffs_error_sum /= d_num_symbols; /* average */
 
-        /* the following distinction is not really needed; but without it, simulation would need to run much longer */
+        /* if the offset is close to half of the subcarrier bandwidth, it may
+         * jump from some large positive value to some large negative value.
+         * with averaging, this is a problem - we have to detect it (although
+         * it really only makes a difference when the offset is very close to
+         * half the subcarrier bandwidth)
+         
+         * note: if there is an offset of one subcarrier bandwidth, the phase
+         * offset in fft_length samples is 2pi */
+        if (d_estimated_error < -M_PI/2 && d_ffs_error_sum > M_PI/2) {
+          fprintf(stderr, "ofdm_ffs_sample: switch detected: neg -> pos\n");
+          d_estimated_error += 2*M_PI; 
+        } else if (d_estimated_error > M_PI/2 && d_ffs_error_sum < -M_PI/2) {
+          fprintf(stderr, "ofdm_ffs_sample: switch detected: pos -> neg\n");
+          d_estimated_error -= 2*M_PI; 
+        }
+
+        /* the following distinction is not really needed; but without it,
+         * simulation would need to run much longer, becuase the
+         * synchronisation would need time to adjust to the offset */
         if (d_estimated_error == 0)
           d_estimated_error = d_ffs_error_sum; /* first time -> fast adjustment */
         else
           d_estimated_error = d_alpha*d_ffs_error_sum + (1-d_alpha)*d_estimated_error; /* slow adjustment */
 
-        fprintf(stderr, "ffs_sample: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error*d_sample_rate/M_TWOPI);
+        d_estimated_error_per_sample = d_estimated_error / (float)d_fft_length;
+        fprintf(stderr, "ofdm_ffs_sample: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error_per_sample*d_sample_rate/(2*M_PI));
       }
 
       d_cur_symbol++;
     } 
 
-    *optr++ = d_estimated_error;
+    *optr++ = d_estimated_error_per_sample;
     iptr++;
   }
 

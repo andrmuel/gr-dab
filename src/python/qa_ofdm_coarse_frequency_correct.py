@@ -4,7 +4,7 @@ from gnuradio import gr, gr_unittest
 import dab_swig
 import cmath
 
-class qa_ofdm_coarse_frequency_correct2(gr_unittest.TestCase):
+class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 	"""
 	@brief QA for the coarse frequency correction class.
 
@@ -17,7 +17,7 @@ class qa_ofdm_coarse_frequency_correct2(gr_unittest.TestCase):
 	def tearDown(self):
 		self.tb = None
 
-	def test_001_ofdm_coarse_frequency_correct2(self):
+	def test_001_ofdm_coarse_frequency_correct(self):
 		fft_length   = 10
 		num_carriers = 2
 		cp_length    = 3
@@ -31,14 +31,14 @@ class qa_ofdm_coarse_frequency_correct2(gr_unittest.TestCase):
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
 		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex, fft_length)
-		ofdm_coarse_frequency_correct2 = dab_swig.ofdm_coarse_frequency_correct2(fft_length,num_carriers,cp_length)
+		ofdm_coarse_frequency_correct = dab_swig.ofdm_coarse_frequency_correct(fft_length,num_carriers,cp_length)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex, num_carriers)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()
-		self.tb.connect(src0, s2v0, (ofdm_coarse_frequency_correct2,0))
-		self.tb.connect(src1, (ofdm_coarse_frequency_correct2,1))
-		self.tb.connect((ofdm_coarse_frequency_correct2,0), v2s0, dst0)
-		self.tb.connect((ofdm_coarse_frequency_correct2,1), dst1)
+		self.tb.connect(src0, s2v0, (ofdm_coarse_frequency_correct,0))
+		self.tb.connect(src1, (ofdm_coarse_frequency_correct,1))
+		self.tb.connect((ofdm_coarse_frequency_correct,0), v2s0, dst0)
+		self.tb.connect((ofdm_coarse_frequency_correct,1), dst1)
 		self.tb.run()
 		result_data0 = dst0.data()
 		result_data1 = dst1.data()
