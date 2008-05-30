@@ -181,8 +181,7 @@ class ofdm_demod(gr.hier_block2):
 				self.resample = gr.fractional_interpolator_cc(0, sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
-		# self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
-		self.sync = ofdm_sync_dab2.ofdm_sync_dab2(mode, debug)
+		self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
 
 		# ofdm symbol sampler
 		self.sampler = dab_swig.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
@@ -191,7 +190,7 @@ class ofdm_demod(gr.hier_block2):
 		self.fft = gr.fft_vcc(dp.fft_length, True, [], True)
 
 		# coarse frequency synchronisation
-		self.cfs = dab_swig.ofdm_coarse_frequency_correct2(dp.fft_length, dp.num_carriers, dp.cp_length)
+		self.cfs = dab_swig.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers, dp.cp_length)
 
 		# diff phasor
 		self.phase_diff = dab_swig.diff_phasor_vcc(dp.num_carriers)
