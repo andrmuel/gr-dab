@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_concatenate_signals(gr_unittest.TestCase):
 	"""
-	@brief QA for Null symbol insertion.
+	@brief QA for signal concatenation block.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_estimate_sample_rate(gr_unittest.TestCase):
 	"""
-	@brief Module test for the moving sum class.
+	@brief Module test for the sample rate estimation block.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

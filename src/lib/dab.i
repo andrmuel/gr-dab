@@ -28,6 +28,7 @@
 #include "dab_measure_processing_rate.h"
 #include "dab_sum_elements_vff.h"
 #include "dab_modulo_ff.h"
+#include "dab_measure_ber_b.h"
 #include <stdexcept>
 %}
 
@@ -321,4 +322,22 @@ class dab_modulo_ff : public gr_sync_block
 {
   private:
     dab_modulo_ff (float div);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,measure_ber_b);
+
+dab_measure_ber_b_sptr dab_make_measure_ber_b ();
+
+class dab_measure_ber_b : public gr_sync_block
+{
+  private:
+    dab_measure_ber_b ();
+  public:
+    void clear() { d_errors=0; d_bytes=0; }
+    float ber() { return (float)d_errors/(float)d_bytes; }
+    unsigned int bytecount() { return d_bytes; }
+    unsigned int bitcount() { return 8*d_bytes; }
+    unsigned int errorcount() { return d_errors; }
 };

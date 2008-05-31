@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_modulo_ff(gr_unittest.TestCase):
 	"""
-	@brief Module test for the moving sum class.
+	@brief Module test for the modulo block.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

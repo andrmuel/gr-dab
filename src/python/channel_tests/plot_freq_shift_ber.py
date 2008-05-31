@@ -7,7 +7,7 @@
 # this code may be freely used under GNU GPL conditions
 
 """
-Simulate noise channel to evaluate BER vs SNR
+Simulate channel with frequency offset
 """
 
 from gnuradio import dab
@@ -17,15 +17,14 @@ import dab_tb, ber
 NUM_BYTES = 100000
 
 MODES=[1,2,3,4]
-MODES=[4]
-FREQ_OFFSET_RANGE = range(0,1000,77)
+FREQ_OFFSET_RANGE = range(-300000,300000,10000)
 
 PLOT_FORMAT=['-','-x','--x','-.x',':x']
 
 if __name__ == '__main__':
 	try:
 		# initialise test flowgraph
-		tb = dab_tb.dab_ofdm_testbench()
+		tb = dab_tb.dab_ofdm_testbench(ber_sink=True)
 		tb.gen_random_bytes(NUM_BYTES)
 
 		# prepeare plot	
@@ -60,19 +59,16 @@ if __name__ == '__main__':
 				print "signal power: " + str(tb.probe_signal.level())
 				print "total power: " + str(tb.probe_total.level())
 				# get the result
-				result = tb.sink.data()
-				expected_result = tb.random_bytes[dp.bytes_per_frame:]
-				bytes_received.append(len(result))
+				bytes_received.append(tb.sink.bytecount())
 				print "bytes sent: " + str(NUM_BYTES)
-				print "bytes received: " + str(len(result))
-				# calculate bit error rate
-				ber_values.append(ber.find_ber(expected_result,result))
+				print "bytes received: " + str(tb.sink.bytecount())
+				ber_values.append(tb.sink.ber())
 				print "BER: " + str(ber_values[-1])
 				print
 
 			# plot it:
-			# pylab.semilogy(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
-			pylab.plot(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			pylab.semilogy(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			# pylab.plot(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
 			logfile.write("Mode: " + str(mode)+"\n" +
 				      "=======\n\n" +
 				      "Frequency shift: BER (number of bytes received)\n" +

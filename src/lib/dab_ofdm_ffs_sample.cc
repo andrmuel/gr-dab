@@ -79,9 +79,9 @@ dab_ofdm_ffs_sample::work (int noutput_items,
         new_estimate = *iptr;
 
         if (d_cur_symbol>0) {
-          if (d_ffs_error_sum/d_cur_symbol < -M_PI/2 && new_estimate > M_PI/2)
+          if (d_ffs_error_sum < 0 && new_estimate > 0 && new_estimate - d_ffs_error_sum/d_cur_symbol > M_PI)
             new_estimate -= 2*M_PI;
-          else if (d_ffs_error_sum/d_cur_symbol > M_PI/2 && new_estimate < -M_PI/2)
+          else if (d_ffs_error_sum > 0 && new_estimate < 0 && d_ffs_error_sum/d_cur_symbol - new_estimate > M_PI)
             new_estimate += 2*M_PI;
         }
 
@@ -99,10 +99,10 @@ dab_ofdm_ffs_sample::work (int noutput_items,
          
          * note: if there is an offset of one subcarrier bandwidth, the phase
          * offset in fft_length samples is 2pi */
-        if (d_estimated_error < -M_PI/2 && d_ffs_error_sum > M_PI/2) {
+        if (d_estimated_error < 0 && d_ffs_error_sum > 0 && d_ffs_error_sum - d_estimated_error > M_PI) {
           fprintf(stderr, "ofdm_ffs_sample: switch detected: neg -> pos\n");
           d_estimated_error += 2*M_PI; 
-        } else if (d_estimated_error > M_PI/2 && d_ffs_error_sum < -M_PI/2) {
+        } else if (d_estimated_error > 0 && d_ffs_error_sum < 0 && d_estimated_error - d_ffs_error_sum > M_PI) {
           fprintf(stderr, "ofdm_ffs_sample: switch detected: pos -> neg\n");
           d_estimated_error -= 2*M_PI; 
         }

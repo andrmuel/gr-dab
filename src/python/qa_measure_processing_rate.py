@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_measure_processing_rate(gr_unittest.TestCase):
 	"""
-	@brief QA for Null symbol insertion.
+	@brief QA for measure processing rate sink.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_sum_elements_vff(gr_unittest.TestCase):
 	"""
-	@brief QA for the phase differentiation class.
+	@brief QA for the vector element adder block.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

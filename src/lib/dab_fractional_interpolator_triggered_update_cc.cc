@@ -90,7 +90,7 @@ dab_fractional_interpolator_triggered_update_cc::general_work(int noutput_items,
     for (int i=0; i<incr; i++) {
       if (*trigger == 1) {
         d_mu_inc = d_next_mu_inc;
-        printf("fractional_interpolator_triggered_update: adjusting interp ratio\n");
+        fprintf(stderr, "fractional_interpolator_triggered_update: adjusting interp ratio to %f\n", d_mu_inc);
       }
       trigger++;
     }

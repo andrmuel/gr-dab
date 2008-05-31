@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_fractional_interpolator_triggered_update(gr_unittest.TestCase):
 	"""
-	@brief Module test for the moving sum class.
+	@brief Module test for the fractional interpolator block with triggered update.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

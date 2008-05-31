@@ -1,0 +1,24 @@
+Index: gnuradio-core/src/lib/general/gr_skiphead.h
+===================================================================
+--- gnuradio-core/src/lib/general/gr_skiphead.h	(revision 8534)
++++ gnuradio-core/src/lib/general/gr_skiphead.h	(working copy)
+@@ -46,7 +46,7 @@
+   long long		d_nitems;		// total items seen
+ 
+  public:
+-
++  void rewind() { d_nitems=0; }
+   int general_work(int noutput_items,
+ 		   gr_vector_int &ninput_items,
+ 		   gr_vector_const_void_star &input_items,
+Index: gnuradio-core/src/lib/general/gr_skiphead.i
+===================================================================
+--- gnuradio-core/src/lib/general/gr_skiphead.i	(revision 8534)
++++ gnuradio-core/src/lib/general/gr_skiphead.i	(working copy)
+@@ -27,4 +27,6 @@
+ class gr_skiphead : public gr_block {
+   friend gr_skiphead_sptr gr_make_skiphead (size_t itemsize, size_t nitems_to_skip);
+   gr_skiphead (size_t itemsize, size_t nitems_to_skip);
++  public:
++    void rewind() { d_ncopied_items=0; }
+ };

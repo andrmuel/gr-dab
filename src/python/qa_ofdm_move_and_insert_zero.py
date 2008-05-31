@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_ofdm_move_and_insert_zero(gr_unittest.TestCase):
 	"""
-	@brief QA for the coarse frequency correction class.
+	@brief QA for the block that moves the signal to the middle of the band and inserts the zero carrier in the middle.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

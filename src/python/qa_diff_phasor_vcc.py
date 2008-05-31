@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_diff_phasor_vcc(gr_unittest.TestCase):
 	"""
-	@brief QA for the phase differentiation class.
+	@brief QA for the phase differentiation block.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

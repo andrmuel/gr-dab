@@ -6,7 +6,7 @@ import dab_swig
 
 class qa_correct_individual_phase_offset_vff(gr_unittest.TestCase):
 	"""
-	@brief QA for the individual carrier phase equalisation class.
+	@brief QA for the individual carrier phase equalisation block.
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

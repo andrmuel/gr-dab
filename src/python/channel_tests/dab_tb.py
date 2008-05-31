@@ -17,8 +17,11 @@ NOISE_SAMPLES_AT_START = 100000
 NOISE_SAMPLES_AT_END = 100000
 
 class dab_ofdm_testbench(gr.top_block):
-	def __init__(self):
+	def __init__(self, autocorrect_sample_rate=False, input_filter=True, ber_sink=False):
 		gr.top_block.__init__(self)
+		self.autocorrect_sample_rate = autocorrect_sample_rate
+		self.input_filter = input_filter
+		self.ber_sink = ber_sink
 
 	def setup_flowgraph(self, mode):
 		# parameters
@@ -33,7 +36,10 @@ class dab_ofdm_testbench(gr.top_block):
 		# sources/sinks
 		self.source    = gr.vector_source_b(self.random_bytes, False)
 		self.trig      = gr.vector_source_b(self.frame_start, False)
-		self.sink      = gr.vector_sink_b()
+		if self.ber_sink:
+			self.sink = dab.measure_ber_b()
+		else:
+			self.sink = gr.vector_sink_b()
 		self.trig_sink = gr.null_sink(gr.sizeof_char)
 
 		# self.noise_start      = gr.noise_source_c(gr.GR_GAUSSIAN, math.sqrt(2), random.randint(0,10000))
@@ -42,21 +48,24 @@ class dab_ofdm_testbench(gr.top_block):
 		# self.noise_end_head   = gr.head(gr.sizeof_gr_complex, NOISE_SAMPLES_AT_END)
 		
 		# blocks
-		self.s2v     = gr.stream_to_vector(gr.sizeof_char, self.vlen)
-		self.v2s     = gr.vector_to_stream(gr.sizeof_char, self.vlen)
+		self.s2v       = gr.stream_to_vector(gr.sizeof_char, self.vlen)
+		self.v2s       = gr.vector_to_stream(gr.sizeof_char, self.vlen)
+		self.skipbytes = gr.skiphead(gr.sizeof_char, self.dp.bytes_per_frame)
 		
 		# more blocks (they have state, so better reinitialise them)
-		self.mod     = dab.ofdm_mod(self.mode, debug = False)
-		self.rescale = gr.multiply_const_cc(1)
-		self.amp     = gr.multiply_const_cc(1)
-		self.channel = blks2.channel_model(noise_voltage=0, noise_seed=random.randint(0,10000))
-		# self.cat     = dab.concatenate_signals(gr.sizeof_gr_complex)
-		self.demod   = dab.ofdm_demod(self.mode, rx_filter = True, autocorrect_sample_rate = False, sample_rate_correction_factor = 1, debug = False, verbose = False)
+		self.mod       = dab.ofdm_mod(self.mode, debug = False)
+		self.rescale   = gr.multiply_const_cc(1)
+		self.amp       = gr.multiply_const_cc(1)
+		self.channel   = blks2.channel_model(noise_voltage=0, noise_seed=random.randint(0,10000))
+		# self.cat       = dab.concatenate_signals(gr.sizeof_gr_complex)
+		self.demod     = dab.ofdm_demod(self.mode, rx_filter = self.input_filter, autocorrect_sample_rate = self.autocorrect_sample_rate, sample_rate_correction_factor = 1, debug = False, verbose = True)
 
 		# connect it all
 		self.connect(self.source, self.s2v, (self.mod,0), self.rescale, self.amp, self.channel, (self.demod,0), self.v2s, self.sink)
 		self.connect(self.trig, (self.mod,1))
 		self.connect((self.demod, 1), self.trig_sink)
+		if self.ber_sink:
+			self.connect(self.source, self.skipbytes, (self.sink,1))
 
 		# SNR calculation and prober
 		self.probe_signal = gr.probe_avg_mag_sqrd_c(0,0.00001)
@@ -94,6 +103,7 @@ class dab_ofdm_testbench(gr.top_block):
 		self.sink.clear()
 	
 	def clear_state(self):
+		self.skipbytes.rewind()
 		# self.cat.reset()
 		self.demod.clear_state()
 
@@ -101,7 +111,7 @@ class dab_ofdm_testbench(gr.top_block):
 		self.disconnect(self.channel, self.demod)
 		self.disconnect((self.demod,0), self.v2s)
 		self.disconnect((self.demod,1), self.trig_sink)
-		self.demod   = dab.ofdm_demod(self.mode, rx_filter = True, autocorrect_sample_rate = False, sample_rate_correction_factor = 1, debug = False, verbose = False)
+		self.demod = dab.ofdm_demod(self.mode, rx_filter = self.input_filter, autocorrect_sample_rate = self.autocorrect_sample_rate, sample_rate_correction_factor = 1, debug = False, verbose = True)
 		self.connect(self.channel, self.demod)
 		self.connect((self.demod,0), self.v2s)
 		self.connect((self.demod,1), self.trig_sink)
