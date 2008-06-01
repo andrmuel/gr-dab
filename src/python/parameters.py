@@ -42,8 +42,8 @@ class dab_parameters:
 	__symbol_length__     = [2552, 638, 319, 1276]        # length of an OFDM symbol in samples
 	__fft_length__        = [2048, 512, 256, 1024]        # fft length
 	__cp_length__         = [504, 126, 63, 252]           # length of cyclic prefix
-	sample_rate = 2048000
-	T = 1./sample_rate
+	default_sample_rate = 2048000
+	T = 1./default_sample_rate
 
 	# transport mechanism parameters
 	__num_fibs__ = [12,3,4,6]       # FIC
@@ -164,17 +164,44 @@ class dab_parameters:
 			[-257,-14,73,180,198,-243,168,218,17,299]
 	]
 
-	def __init__(self, mode):
+	def __init__(self, mode, sample_rate=2048000, verbose=True):
 		"""
-		selects the correct parameters for the selected mode and calculates the prn sequence
+		selects the correct parameters for the selected mode and calculates the prn sequence, etc.
+		
+		@param mode DAB mode (I-IV)
+		@param sample_rate sampling frequency
 		"""
+		if verbose:
+			print "-> creating DAB parametor object" # should not be seen more than once
+
 		assert(mode>=1 and mode <=4)
 		self.mode = mode
+		self.sample_rate = sample_rate
+		self.verbose = verbose
+
 		# sanity checks:
 		for i in range(0,4):
 			assert(self.__symbols_per_frame__[i]*self.__symbol_length__[i]+self.__ns_length__[i] == self.__frame_length__[i])
 			assert(self.__symbol_length__[i] == self.__fft_length__[i]+self.__cp_length__[i])
-		
+
+		self.__update_parameters__()
+	
+	def set_mode(self, mode):
+		if self.verbose:
+			print "-> setting DAB mode to "+str(mode)
+		self.mode = mode
+		self.__update_parameters__()
+
+	def set_sample_rate(self, sample_rate):
+		if self.verbose:
+			print "-> setting sample rate to "+str(sample_rate)
+		self.sample_rate = sample_rate
+		self.__update_parameters__()
+
+	def __update_parameters__(self):
+		if self.verbose:
+			print "-> updating DAB parameters"
+		mode = self.mode
 		# OFDM parameters
 		self.symbols_per_frame = self.__symbols_per_frame__[mode-1]
 		self.num_carriers      = self.__num_carriers__[mode-1]
@@ -199,7 +226,7 @@ class dab_parameters:
 				#self.prn.append(0)
 				pass
 			else:
-				[kk,i,n] = self.get_prn_kk_i_n(k)
+				[kk,i,n] = self.__get_prn_kk_i_n__(k)
 				h = self.__prn_h__[i][k-kk]
 				phi_k = (h+n)%4 # actually phi_k/(pi/2)
 				if phi_k == 0: # e^(j*pi/2*phi_k) is not exact if calculated by python
@@ -230,8 +257,20 @@ class dab_parameters:
 
 		# frequency deinterleaving sequence
 		self.frequency_deinterleaving_sequence_array = [self.frequency_interleaving_sequence_array.index(i) for i in range(0,self.num_carriers)]
+		
+		# adapt for non-standard sample rate - do this at end, frequency interleaving calculation still needs default fft length
+		if self.sample_rate != self.default_sample_rate:
+			if self.verbose:
+				print "-> using non-standard sample rate: "+str(self.sample_rate)
+			self.T = 1./self.sample_rate
+			self.ns_length = int(round(self.ns_length*float(self.sample_rate)/float(self.default_sample_rate)))
+			self.cp_length = int(round(self.cp_length*float(self.sample_rate)/float(self.default_sample_rate)))
+			self.fft_length = int(round(self.fft_length*float(self.sample_rate)/float(self.default_sample_rate)))
+			self.symbol_length = self.cp_length + self.fft_length
+			self.frame_length = self.symbols_per_frame * self.symbol_length + self.ns_length
 
-	def get_prn_kk_i_n(self,k):
+
+	def __get_prn_kk_i_n__(self,k):
 		assert(k!=0)
 		assert(abs(k)<=self.num_carriers//2)
 		if k<0:
@@ -256,13 +295,28 @@ class receiver_parameters:
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
 	__symbols_for_ffs_estimation__ = [10,10,20,10] # number of symbols to evaluate for fine frequency error estimation
 	ffs_alpha = 0.5
-	def __init__(self,mode):
+	def __init__(self, mode, sample_rate=2048000, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, verbose=True):
 		"""
 		Create new instance.
 		
 		@param mode DAB mode (I-IV)
+		@param sample_rate sampling frequency
+		@param input_fft_filter whether to use an FFT filter at the input
+		@param autocorrect_sample_rate whether to correct the sample rate dynamically
+		@param sample_rate_correction_factor static correction factor for sample rate
 		"""
+		if verbose:
+			print "-> creating RX parameter object"
 		assert(mode>=1 and mode <=4)
+
+		self.set_mode(mode)
+		self.sample_rate = sample_rate
+		self.input_fft_filter = input_fft_filter
+		self.autocorrect_sample_rate = autocorrect_sample_rate
+		self.sample_rate_correction_factor = sample_rate_correction_factor
+		self.verbose = verbose
+
+	def set_mode(self, mode):
 		self.mode = mode
 		self.cp_gap = self.__cp_gap__[mode-1]
 		self.symbols_for_ffs_estimation = self.__symbols_for_ffs_estimation__[mode-1]

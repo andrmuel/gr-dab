@@ -37,7 +37,6 @@ logfile.write("number of bytes: " + str(NUM_BYTES) + "\nFrequency shift range: "
 for mode in MODES:
 	print "Mode: "+str(mode)+"\n-------\n"
 	tb.setup_flowgraph(mode)
-	dp = dab.dab_parameters(mode)
 	ber_values = []
 	bytes_received = []
 	# estimate signal energy for this mode (disturbed by FFT ...)

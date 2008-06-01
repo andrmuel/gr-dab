@@ -36,8 +36,7 @@ logfile.write("number of bytes: " + str(NUM_BYTES) + "\nRange of sampling rate r
 
 for mode in MODES:
 	print "Mode: "+str(mode)+"\n-------\n"
-	dp = dab.dab_parameters(mode)
-	tb.setup_flowgraph(mode, ber_skipbytes=5*dp.bytes_per_frame)
+	tb.setup_flowgraph(mode, ber_skipbytes=5*tb.dp.bytes_per_frame)
 	ber_values = []
 	bytes_received = []
 	# estimate signal energy for this mode (disturbed by FFT ...)
@@ -47,7 +46,6 @@ for mode in MODES:
 	tb.demod.stop()
 	tb.set_power_correction(tb.probe_signal.level())
 	print "estimated energy: " + str(tb.probe_signal.level()) + "\n"
-	tb.autocorrect_sample_rate = True
 	for ratio in SAMPLE_RATE_ERROR:
 		print "Mode: "+str(mode)+" Ratio: "+str(ratio)
 		# reset and run the test

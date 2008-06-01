@@ -26,7 +26,7 @@
 from gnuradio import gr, dab_swig
 import sys
 from math import pi
-import parameters, detect_null
+import detect_null
 
 class ofdm_sync_dab(gr.hier_block2):
 	"""
@@ -37,7 +37,7 @@ class ofdm_sync_dab(gr.hier_block2):
 
 	In contrast to the first version, this block averages over multiple symbols to get better fine frequency error estimates.
 	"""
-	def __init__(self, mode, debug=False):
+	def __init__(self, dab_params, rx_params, debug=False):
 		"""
 		OFDM time and coarse frequency synchronisation for DAB
 
@@ -45,12 +45,8 @@ class ofdm_sync_dab(gr.hier_block2):
 		@param debug if True: write data streams out to files
 		"""
 
-		if mode<1 or mode>4:
-			raise ValueError, "Invalid DAB mode: "+str(mode)+" (modes 1-4 exist)"
-
-		# get the correct DAB parameters
-		dp = parameters.dab_parameters(mode)
-		rp = parameters.receiver_parameters(mode)
+		dp = dab_params
+		rp = rx_params
 		
 		gr.hier_block2.__init__(self,"ofdm_sync_dab",
 		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
@@ -85,7 +81,6 @@ class ofdm_sync_dab(gr.hier_block2):
 		# self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*dp.cp_length)
 		self.ffs_moving_sum = dab_swig.moving_sum_cc(dp.cp_length)
 		self.ffs_angle = gr.complex_to_arg()
-#		self.ffs_angle_scale = gr.multiply_const_ff(1./dp.fft_length)
 		self.ffs_delay_frame_start = gr.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
 		self.ffs_sample_and_average = dab_swig.ofdm_ffs_sample(dp.symbol_length, dp.fft_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha, dp.sample_rate)
 		self.ffs_delay_input_for_correction = gr.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
@@ -97,7 +92,6 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.connect(self.input, self.ffs_delay, (self.ffs_mult, 1))
 		self.connect(self.ffs_mult, self.ffs_moving_sum, self.ffs_angle)
 		# only use the value from the first half of the first symbol
-#		self.connect(self.ffs_angle, self.ffs_angle_scale, (self.ffs_sample_and_average, 0))
 		self.connect(self.ffs_angle, (self.ffs_sample_and_average, 0))
 		self.connect(self.ns_detect, (self.ffs_sample_and_average, 1))
 		# do the correction

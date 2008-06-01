@@ -15,9 +15,12 @@ import math, random, pylab
 import dab_tb, ber
 
 NUM_BYTES = 1000000
+NUM_BYTES = 100000
 
 MODES=[1,2,3,4]
+MODES=[1]
 SNR_DB = range(-5,21)
+SNR_DB = range(-5,21,5)
 
 PLOT_FORMAT=['-','-x','--x','-.x',':x']
 
@@ -37,7 +40,6 @@ logfile.write("number of bytes: " + str(NUM_BYTES) + "\nSNR range: " + str(SNR_D
 for mode in MODES:
 	print "Mode: "+str(mode)+"\n-------\n"
 	tb.setup_flowgraph(mode)
-	dp = dab.dab_parameters(mode)
 	ber_values = []
 	bytes_received = []
 	# estimate signal energy for this mode (disturbed by FFT ...)
@@ -60,7 +62,7 @@ for mode in MODES:
 		print "total power: " + str(tb.probe_total.level())
 		# get the result
 		result = tb.sink.data()
-		expected_result = tb.random_bytes[dp.bytes_per_frame:]
+		expected_result = tb.random_bytes[tb.dp.bytes_per_frame:]
 		bytes_received.append(len(result))
 		print "bytes sent: " + str(NUM_BYTES)
 		print "bytes received: " + str(len(result))

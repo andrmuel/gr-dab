@@ -13,20 +13,20 @@ Complete DAB TX and RX with a software channel to simulate noise, frequency offs
 from gnuradio import gr, blks2, dab
 import math, random
 
-NOISE_SAMPLES_AT_START = 100000
-NOISE_SAMPLES_AT_END = 100000
+DAB_SAMPLE_RATE=2048000
+DAB_SAMPLE_RATE=2000000
 
 class dab_ofdm_testbench(gr.top_block):
 	def __init__(self, autocorrect_sample_rate=False, input_filter=True, ber_sink=False):
 		gr.top_block.__init__(self)
-		self.autocorrect_sample_rate = autocorrect_sample_rate
-		self.input_filter = input_filter
+		self.dp = dab.dab_parameters(1)
+		self.rp = dab.receiver_parameters(1, input_fft_filter=input_filter, autocorrect_sample_rate=autocorrect_sample_rate)
 		self.ber_sink = ber_sink
 
 	def setup_flowgraph(self, mode, ber_skipbytes=0):
 		# parameters
-		self.mode = mode
-		self.dp   = dab.dab_parameters(mode)
+		self.dp.set_mode(mode)
+		self.rp.set_mode(mode)
 		self.vlen = self.dp.num_carriers/4
 		self.ber_skipbytes = ber_skipbytes
 
@@ -56,12 +56,12 @@ class dab_ofdm_testbench(gr.top_block):
 			self.ber_skipbytes1 = gr.skiphead(gr.sizeof_char, self.ber_skipbytes+self.dp.bytes_per_frame)
 		
 		# more blocks (they have state, so better reinitialise them)
-		self.mod       = dab.ofdm_mod(self.mode, debug = False)
+		self.mod       = dab.ofdm_mod(self.dp, debug = False)
 		self.rescale   = gr.multiply_const_cc(1)
 		self.amp       = gr.multiply_const_cc(1)
 		self.channel   = blks2.channel_model(noise_voltage=0, noise_seed=random.randint(0,10000))
 		# self.cat       = dab.concatenate_signals(gr.sizeof_gr_complex)
-		self.demod     = dab.ofdm_demod(self.mode, rx_filter = self.input_filter, autocorrect_sample_rate = self.autocorrect_sample_rate, sample_rate_correction_factor = 1, debug = False, verbose = True)
+		self.demod     = dab.ofdm_demod(self.dp, self.rp, debug = False, verbose = True)
 
 		# connect it all
 		if self.ber_sink:
@@ -121,7 +121,7 @@ class dab_ofdm_testbench(gr.top_block):
 		self.disconnect(self.channel, self.demod)
 		self.disconnect((self.demod,0), self.v2s)
 		self.disconnect((self.demod,1), self.trig_sink)
-		self.demod = dab.ofdm_demod(self.mode, rx_filter = self.input_filter, autocorrect_sample_rate = self.autocorrect_sample_rate, sample_rate_correction_factor = 1, debug = False, verbose = True)
+		self.demod = dab.ofdm_demod(self.dp, self.rp, debug = False, verbose = True)
 		self.connect(self.channel, self.demod)
 		self.connect((self.demod,0), self.v2s)
 		self.connect((self.demod,1), self.trig_sink)

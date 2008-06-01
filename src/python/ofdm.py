@@ -28,7 +28,6 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr, dab_swig
-import parameters
 import ofdm_sync_dab
 import detect_null
 import threading
@@ -47,15 +46,15 @@ class ofdm_mod(gr.hier_block2):
 	The output sample rate is 2.048 MSPS.
 	"""
 	
-	def __init__(self, mode=1, debug=False):
+	def __init__(self, dab_params, debug=False):
 		"""
 		Hierarchical block for OFDM modulation
 
-		@param mode DAB mode (I-IV)
+		@param dab_params DAB parameter object (dab.parameters.dab_parameters)
+		@param debug enables debug output to files
 		"""
 
-		self.mode = mode
-		dp = parameters.dab_parameters(mode)
+		dp = dab_params
 
 		gr.hier_block2.__init__(self,"ofdm_mod",
 		                        gr.io_signature2(2, 2, gr.sizeof_char*dp.num_carriers/4, gr.sizeof_char), # input signature
@@ -120,27 +119,23 @@ class ofdm_demod(gr.hier_block2):
 	Expects an input sample rate of 2.048 MSPS.
 	"""
 	
-	def __init__(self, mode=1, rx_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, debug=False, verbose=False):
+	def __init__(self, dab_params, rx_params, debug=False, verbose=False):
 		"""
 		Hierarchical block for OFDM demodulation
 
-		@param mode DAB mode (1-4)
-		@param rx_filter disable/enable FFT bandbass at input
-		@param autocorrect_sample_rate whether to correct the sample rate dynamically
-		@param sample_rate_correction_factor static correction factor for sample rate
+		@param dab_params DAB parameter object (dab.parameters.dab_parameters)
+		@param rx_params RX parameter object (dab.parameters.receiver_parameters)
 		@param debug enables debug output to files
 		@param verbose whether to produce verbose messages
 		"""
 
-		self.mode = mode
+		self.dp = dp = dab_params
+		self.rp = rp = rx_params
 		self.verbose = verbose
-		dp = parameters.dab_parameters(mode)
-		self.dp = dp
-		rp = parameters.receiver_parameters(mode)
 
 		gr.hier_block2.__init__(self,"ofdm_demod",
 		                        gr.io_signature (1, 1, gr.sizeof_gr_complex), # input signature
-					gr.io_signature2(2, 2, gr.sizeof_char*dp.num_carriers/4, gr.sizeof_char)) # output signature
+					gr.io_signature2(2, 2, gr.sizeof_char*self.dp.num_carriers/4, gr.sizeof_char)) # output signature
 
 		
 
@@ -149,8 +144,8 @@ class ofdm_demod(gr.hier_block2):
 		self.connect(self, self.input)
 		
 		# input filtering
-		if rx_filter: 
-			if verbose: print "--> RX filter enabled"
+		if self.rp.input_fft_filter: 
+			if verbose: print "-> RX filter enabled"
 			lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
 							  dp.sample_rate,          # sampling rate
 							  rp.filt_bw,              # cutoff frequency
@@ -160,8 +155,8 @@ class ofdm_demod(gr.hier_block2):
 		
 
 		# correct sample rate offset, if enabled
-		if autocorrect_sample_rate:
-			if verbose: print "--> dynamic sample rate correction enabled"
+		if self.rp.autocorrect_sample_rate:
+			if verbose: print "-> dynamic sample rate correction enabled"
 			self.rate_detect_ns = detect_null.detect_null(dp.ns_length, False)
 			self.rate_estimator = dab_swig.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 			self.rate_prober = gr.probe_signal_f()
@@ -176,12 +171,12 @@ class ofdm_demod(gr.hier_block2):
 			self.updater.start()
 		else:
 			self.run_interpolater_update_thread = False
-			if sample_rate_correction_factor != 1:
-				if verbose: print "--> static sample rate correction enabled"
-				self.resample = gr.fractional_interpolator_cc(0, sample_rate_correction_factor)
+			if self.rp.sample_rate_correction_factor != 1:
+				if verbose: print "-> static sample rate correction enabled"
+				self.resample = gr.fractional_interpolator_cc(0, self.rp.sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
-		self.sync = ofdm_sync_dab.ofdm_sync_dab(mode, debug)
+		self.sync = ofdm_sync_dab.ofdm_sync_dab(self.dp, self.rp, debug)
 
 		# ofdm symbol sampler
 		self.sampler = dab_swig.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
@@ -215,12 +210,12 @@ class ofdm_demod(gr.hier_block2):
 		# connect everything
 		#
 
-		if autocorrect_sample_rate or sample_rate_correction_factor != 1:
+		if self.rp.autocorrect_sample_rate or self.rp.sample_rate_correction_factor != 1:
 			self.connect(self.input, self.resample)
 			self.input2 = self.resample
 		else:
 			self.input2 = self.input
-		if rx_filter:
+		if self.rp.input_fft_filter:
 			self.connect(self.input2, self.fft_filter, self.sync)
 		else:
 			self.connect(self.input2, self.sync)

@@ -29,6 +29,7 @@ from gnuradio import gr
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 from ofdm_sync_dab import ofdm_sync_dab
+import parameters
 import random
 import os
 
@@ -54,9 +55,13 @@ class dab_ofdm_sync_test(gr.top_block):
 			print "using samples from file " + filename
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
-		self.sync_dab = ofdm_sync_dab(1, False)
-		self.nop = gr.nop(gr.sizeof_gr_complex)
-		self.connect(self.src, self.sync_dab, self.nop)
+		dp = parameters.dab_parameters(1)
+		rp = parameters.receiver_parameters(1)
+		self.sync_dab = ofdm_sync_dab(dp, rp, False)
+		self.nop0 = gr.nop(gr.sizeof_gr_complex)
+		self.nop1 = gr.nop(gr.sizeof_char)
+		self.connect(self.src, self.sync_dab, self.nop0)
+		self.connect((self.sync_dab,1), self.nop1)
 
 if __name__=='__main__':
 	try:
