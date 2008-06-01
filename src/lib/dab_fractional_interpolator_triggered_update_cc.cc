@@ -77,7 +77,7 @@ dab_fractional_interpolator_triggered_update_cc::general_work(int noutput_items,
   int ii = 0;       // input index
   int oo = 0;        // output index
 
-  while (oo < noutput_items) {
+  while (oo < noutput_items && ii+(int)floor(d_mu+d_mu_inc)<ninput_items[0]) {
 
     out[oo++] = d_interp->interpolate(&in[ii], d_mu);
 
@@ -91,11 +91,13 @@ dab_fractional_interpolator_triggered_update_cc::general_work(int noutput_items,
       if (*trigger == 1) {
         d_mu_inc = d_next_mu_inc;
         fprintf(stderr, "fractional_interpolator_triggered_update: adjusting interp ratio to %f\n", d_mu_inc);
+        set_relative_rate (1.0 / d_mu_inc);
       }
       trigger++;
     }
   }
 
+  assert(ii<ninput_items[0]);
   consume_each (ii);
 
   return noutput_items;

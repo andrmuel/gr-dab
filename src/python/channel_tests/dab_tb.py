@@ -93,6 +93,9 @@ class dab_ofdm_testbench(gr.top_block):
 	def set_sampling_frequency_offset(self, ratio):
 		self.channel.set_timing_offset(ratio)	
 
+	def set_multipath_taps(self, taps):
+		self.channel.set_taps(taps)
+
 	def set_power_correction(self, estimated_energy):
 		self.estimated_signal_energy = estimated_energy
 		sig_ratio = float(self.dp.num_carriers) / float(self.dp.fft_length) # not all subcarriers are occupied -> must be considered to calculate scale factor
