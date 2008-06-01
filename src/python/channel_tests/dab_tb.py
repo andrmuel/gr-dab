@@ -23,11 +23,12 @@ class dab_ofdm_testbench(gr.top_block):
 		self.input_filter = input_filter
 		self.ber_sink = ber_sink
 
-	def setup_flowgraph(self, mode):
+	def setup_flowgraph(self, mode, ber_skipbytes=0):
 		# parameters
 		self.mode = mode
 		self.dp   = dab.dab_parameters(mode)
 		self.vlen = self.dp.num_carriers/4
+		self.ber_skipbytes = ber_skipbytes
 
 		# trigger signals
 		frame_trigger = [1]+[0]*(self.dp.symbols_per_frame-2)
@@ -50,7 +51,9 @@ class dab_ofdm_testbench(gr.top_block):
 		# blocks
 		self.s2v       = gr.stream_to_vector(gr.sizeof_char, self.vlen)
 		self.v2s       = gr.vector_to_stream(gr.sizeof_char, self.vlen)
-		self.skipbytes = gr.skiphead(gr.sizeof_char, self.dp.bytes_per_frame)
+		if self.ber_sink:
+			self.ber_skipbytes0 = gr.skiphead(gr.sizeof_char, self.ber_skipbytes)
+			self.ber_skipbytes1 = gr.skiphead(gr.sizeof_char, self.ber_skipbytes+self.dp.bytes_per_frame)
 		
 		# more blocks (they have state, so better reinitialise them)
 		self.mod       = dab.ofdm_mod(self.mode, debug = False)
@@ -61,11 +64,13 @@ class dab_ofdm_testbench(gr.top_block):
 		self.demod     = dab.ofdm_demod(self.mode, rx_filter = self.input_filter, autocorrect_sample_rate = self.autocorrect_sample_rate, sample_rate_correction_factor = 1, debug = False, verbose = True)
 
 		# connect it all
-		self.connect(self.source, self.s2v, (self.mod,0), self.rescale, self.amp, self.channel, (self.demod,0), self.v2s, self.sink)
+		if self.ber_sink:
+			self.connect(self.source, self.s2v, (self.mod,0), self.rescale, self.amp, self.channel, (self.demod,0), self.v2s, self.ber_skipbytes0, self.sink)
+			self.connect(self.source, self.ber_skipbytes1, (self.sink,1))
+		else:
+			self.connect(self.source, self.s2v, (self.mod,0), self.rescale, self.amp, self.channel, (self.demod,0), self.v2s, self.sink)
 		self.connect(self.trig, (self.mod,1))
 		self.connect((self.demod, 1), self.trig_sink)
-		if self.ber_sink:
-			self.connect(self.source, self.skipbytes, (self.sink,1))
 
 		# SNR calculation and prober
 		self.probe_signal = gr.probe_avg_mag_sqrd_c(0,0.00001)
@@ -103,7 +108,9 @@ class dab_ofdm_testbench(gr.top_block):
 		self.sink.clear()
 	
 	def clear_state(self):
-		self.skipbytes.rewind()
+		if self.ber_sink:
+			self.ber_skipbytes0.rewind()
+			self.ber_skipbytes1.rewind()
 		# self.cat.reset()
 		self.demod.clear_state()
 

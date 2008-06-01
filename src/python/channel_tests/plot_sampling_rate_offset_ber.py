@@ -40,8 +40,8 @@ if __name__ == '__main__':
 
 		for mode in MODES:
 			print "Mode: "+str(mode)+"\n-------\n"
-			tb.setup_flowgraph(mode)
 			dp = dab.dab_parameters(mode)
+			tb.setup_flowgraph(mode, ber_skipbytes=5*dp.bytes_per_frame)
 			ber_values = []
 			bytes_received = []
 			# estimate signal energy for this mode (disturbed by FFT ...)
@@ -50,6 +50,7 @@ if __name__ == '__main__':
 			tb.run()
 			tb.set_power_correction(tb.probe_signal.level())
 			print "estimated energy: " + str(tb.probe_signal.level()) + "\n"
+			tb.autocorrect_sample_rate = True
 			for offset in RATE_OFFSET:
 				print "Mode: "+str(mode)+" Offset: "+str(offset)
 				# reset and run the test
@@ -67,10 +68,7 @@ if __name__ == '__main__':
 				ber_values.append(tb.sink.ber())
 				print "BER: " + str(ber_values[-1])
 				print
-
-			# plot it:
-			pylab.semilogy(RATE_OFFSET, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
-			# pylab.plot(RATE_OFFSET, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			# write log
 			logfile.write("Mode: " + str(mode)+"\n" +
 				      "=======\n\n" +
 				      "Actual to real sampling frequency ratio: BER (number of bytes received)\n" +
@@ -78,6 +76,12 @@ if __name__ == '__main__':
 			for i in range(0,len(RATE_OFFSET)):
 				logfile.write(str(RATE_OFFSET[i])+": "+str(ber_values[i])+" (" + str(bytes_received[i]) + ")\n")
 			logfile.write("\n\n")
+			# plot it:
+			if sum([abs(x) for x in ber_values])==0:
+				print "all BER values are 0 - not plotting"
+			else:
+				pylab.semilogy(RATE_OFFSET, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+				# pylab.plot(RATE_OFFSET, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
 
 		logfile.close()
 		# pylab.axis([RATE_OFFSET[0],RATE_OFFSET[-1],0,0.52])

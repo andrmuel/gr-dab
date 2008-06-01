@@ -14,10 +14,12 @@ from gnuradio import dab
 import math, random, pylab
 import dab_tb, ber
 
-NUM_BYTES = 100000
+NUM_BYTES = 1000000
 
 MODES=[1,2,3,4]
+MODES=[1]
 FREQ_OFFSET_RANGE = range(-300000,300000,10000)
+FREQ_OFFSET_RANGE = range(0,1000,10)
 
 PLOT_FORMAT=['-','-x','--x','-.x',':x']
 
@@ -66,9 +68,7 @@ if __name__ == '__main__':
 				print "BER: " + str(ber_values[-1])
 				print
 
-			# plot it:
-			pylab.semilogy(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
-			# pylab.plot(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			# write log
 			logfile.write("Mode: " + str(mode)+"\n" +
 				      "=======\n\n" +
 				      "Frequency shift: BER (number of bytes received)\n" +
@@ -76,6 +76,9 @@ if __name__ == '__main__':
 			for i in range(0,len(FREQ_OFFSET_RANGE)):
 				logfile.write(str(FREQ_OFFSET_RANGE[i])+": "+str(ber_values[i])+" (" + str(bytes_received[i]) + ")\n")
 			logfile.write("\n\n")
+			# plot it:
+			pylab.semilogy(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			# pylab.plot(FREQ_OFFSET_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
 
 		logfile.close()
 		# pylab.axis([FREQ_OFFSET_RANGE[0],FREQ_OFFSET_RANGE[-1],0,0.52])

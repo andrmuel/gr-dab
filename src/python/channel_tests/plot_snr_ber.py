@@ -19,7 +19,6 @@ NUM_BYTES = 1000000
 MODES=[1,2,3,4]
 SNR_DB = range(-5,21)
 
-
 PLOT_FORMAT=['-','-x','--x','-.x',':x']
 
 if __name__ == '__main__':
@@ -72,9 +71,7 @@ if __name__ == '__main__':
 				print "BER: " + str(ber_values[-1])
 				print
 
-			# plot it:
-			pylab.semilogy(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
-			# pylab.plot(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+			# write log
 			logfile.write("Mode: " + str(mode)+"\n" +
 				      "=======\n\n" +
 				      "SNR: BER (number of bytes received)\n" +
@@ -82,6 +79,12 @@ if __name__ == '__main__':
 			for i in range(0,len(SNR_DB)):
 				logfile.write(str(SNR_DB[i])+": "+str(ber_values[i])+" (" + str(bytes_received[i]) + ")\n")
 			logfile.write("\n\n")
+			# plot it:
+			if sum([abs(x) for x in ber_values])==0:
+				print "all BER values are 0 - not plotting"
+			else:
+				pylab.semilogy(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
+				# pylab.plot(SNR_DB, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode))
 
 		logfile.close()
 		# pylab.axis([SNR_DB[0],SNR_DB[-1],0,0.52])
