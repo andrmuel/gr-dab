@@ -196,9 +196,6 @@ class ofdm_demod(gr.hier_block2):
 		# frequency deinterleaving
 		self.deinterleave = dab_swig.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
 
-		# complex to phase
-		self.arg = gr.complex_to_arg(dp.num_carriers)
-
 		# correct frequency dependent phase offset
 		# self.correct_phase_offset = dab_swig.correct_individual_phase_offset_vff(dp.num_carriers,0.01)
 		self.correct_phase_offset = gr.add_const_vff([0]*dp.num_carriers)
@@ -227,14 +224,15 @@ class ofdm_demod(gr.hier_block2):
 		# control stream
 		self.connect((self.sync, 1), (self.sampler, 1), (self.cfs, 1), (self.remove_pilot,1), (self,1))
 			
-		# TODO correct phase offset
-		# self.connect(self.remove_pilot, self.arg, self.correct_phase_offset)
-
 		# calculate an estimate of the SNR
-		alpha = 0.05
-		self.average_snr_estimate = gr.iir_filter_ffd([alpha], [0,1-alpha])
+		self.snr_estimate_decimate = gr.keep_one_in_n(gr.sizeof_gr_complex*self.dp.num_carriers, self.rp.snr_estimate_downsample)
+		self.snr_estimate_arg = gr.complex_to_arg(dp.num_carriers)
+		self.average_snr_estimate = gr.iir_filter_ffd([rp.snr_estimate_alpha], [0,1-rp.snr_estimate_alpha])
 		self.probe_snr_estimate = gr.probe_signal_f()
-		self.connect((self.remove_pilot,0), self.arg, dab_swig.sum_elements_vff(dp.num_carriers), dab_swig.modulo_ff(pi/2), gr.multiply_const_ff(1/float(dp.num_carriers)), gr.add_const_ff(-pi/4), self.average_snr_estimate, self.probe_snr_estimate)
+		self.connect((self.remove_pilot,0), self.snr_estimate_decimate, 
+			     self.snr_estimate_arg, dab_swig.sum_elements_vff(dp.num_carriers), 
+			     dab_swig.modulo_ff(pi/2), gr.multiply_const_ff(1/float(dp.num_carriers)), 
+			     gr.add_const_ff(-pi/4), self.average_snr_estimate, self.probe_snr_estimate)
 		
 		# debugging
 		if debug:

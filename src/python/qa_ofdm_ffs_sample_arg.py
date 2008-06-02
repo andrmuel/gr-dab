@@ -1,0 +1,47 @@
+#!/usr/bin/env python
+
+from gnuradio import gr, gr_unittest
+import dab_swig
+import cmath
+
+class qa_ofdm_ffs_sample(gr_unittest.TestCase):
+	"""
+	@brief Module test for the OFDM ffs sampler with phase calculation.
+
+	This class implements a test bench to verify the corresponding C++ class.
+	"""
+
+	def setUp(self):
+		self.tb = gr.top_block()
+
+	def tearDown(self):
+		self.tb = None
+
+	def test_001_ofdm_ffs_sample(self):
+		symbol_length = 3
+		num_symbols = 2
+		fft_length = 2
+		alpha = 0.1
+		src_data0 = (0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0)
+		src_data0 = (0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0)
+		src_data0 = [cmath.exp(1j*x) for x in src_data0]
+		src_data1 = (0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0)
+		a = (3./2) / fft_length
+		b = 0.9*a + (0.1*3./2) / fft_length
+		expected_result = (0,0,0,0,0,0,0,a,a,a,a,a,a,a,a,a,a,a,a,b,b)
+		src0 = gr.vector_source_c(src_data0)
+		src1 = gr.vector_source_b(src_data1)
+		ofdm_ffs_sample = dab_swig.ofdm_ffs_sample_arg(symbol_length, fft_length, num_symbols, alpha, 10)
+		dst0 = gr.vector_sink_f()
+		self.tb.connect(src0, (ofdm_ffs_sample,0))
+		self.tb.connect(src1, (ofdm_ffs_sample,1))
+		self.tb.connect(ofdm_ffs_sample, dst0)
+		self.tb.run()
+		result_data0 = dst0.data()
+		# print expected_result
+		# print result_data0
+		self.assertFloatTuplesAlmostEqual(expected_result, result_data0, 3)
+
+if __name__ == '__main__':
+	gr_unittest.main()
+

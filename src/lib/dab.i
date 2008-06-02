@@ -16,6 +16,7 @@
 #include "dab_ofdm_remove_first_symbol_vcc.h"
 #include "dab_estimate_sample_rate_bf.h"
 #include "dab_ofdm_ffs_sample.h"
+#include "dab_ofdm_ffs_sample_arg.h"
 #include "dab_fractional_interpolator_triggered_update_cc.h"
 #include "dab_frequency_interleaver_vcc.h"
 #include "dab_qpsk_mapper_vbc.h"
@@ -164,6 +165,17 @@ class dab_ofdm_ffs_sample : public gr_sync_block
     dab_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
 };
 
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab, ofdm_ffs_sample_arg);
+
+dab_ofdm_ffs_sample_arg_sptr dab_make_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
+
+class dab_ofdm_ffs_sample_arg : public gr_sync_block
+{
+  private:
+    dab_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
+};
 
 // ----------------------------------------------------------------
 // adapted from GNU Radio codebase:
