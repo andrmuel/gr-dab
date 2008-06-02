@@ -15,10 +15,8 @@ import math, random, pylab
 import dab_tb, ber
 
 NUM_BYTES = 1000000
-NUM_BYTES = 100000
 
 MODES=[1,2,3,4]
-MODES=[1]
 FREQ_OFFSET_RANGE = range(-300000,300000,10000)
 FREQ_OFFSET_RANGE = range(0,1000,100)
 

@@ -295,9 +295,9 @@ class receiver_parameters:
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
 	__symbols_for_ffs_estimation__ = [10,10,20,10] # number of symbols to evaluate for fine frequency error estimation
 	ffs_alpha = 0.5
-	phase_var_estimate_alpha = 0.0001
+	phase_var_estimate_alpha = 0.01
 	phase_var_estimate_downsample = 50 # 50 -> uses about 1% of the CPU time
-	def __init__(self, mode, sample_rate=2048000, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, verbose=True):
+	def __init__(self, mode, sample_rate=2048000, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, correct_ffe=True, verbose=True):
 		"""
 		Create new instance.
 		
@@ -306,6 +306,8 @@ class receiver_parameters:
 		@param input_fft_filter whether to use an FFT filter at the input
 		@param autocorrect_sample_rate whether to correct the sample rate dynamically
 		@param sample_rate_correction_factor static correction factor for sample rate
+		@parem correct_ffe if False, only estimate fine frequency error - don't correct it
+		@param verbose be talkative
 		"""
 		if verbose:
 			print "--> creating RX parameter object"
@@ -316,6 +318,7 @@ class receiver_parameters:
 		self.input_fft_filter = input_fft_filter
 		self.autocorrect_sample_rate = autocorrect_sample_rate
 		self.sample_rate_correction_factor = sample_rate_correction_factor
+		self.correct_ffe = correct_ffe
 		self.verbose = verbose
 
 	def set_mode(self, mode):

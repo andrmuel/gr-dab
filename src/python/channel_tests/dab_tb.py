@@ -14,7 +14,6 @@ from gnuradio import gr, blks2, dab
 import math, random
 
 DAB_SAMPLE_RATE=2048000
-DAB_SAMPLE_RATE=2000000
 
 class dab_ofdm_testbench(gr.top_block):
 	def __init__(self, autocorrect_sample_rate=False, input_filter=True, ber_sink=False):

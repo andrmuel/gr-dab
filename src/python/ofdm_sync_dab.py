@@ -79,26 +79,32 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.ffs_conj = gr.conjugate_cc()
 		self.ffs_mult = gr.multiply_cc()
 		self.ffs_moving_sum = dab_swig.moving_sum_cc(dp.cp_length)
-		self.ffs_delay_frame_start = gr.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
-		# self.ffs_angle = gr.complex_to_arg()
-		# self.ffs_sample_and_average = dab_swig.ofdm_ffs_sample(dp.symbol_length, dp.fft_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha, dp.sample_rate)
 		self.ffs_sample_and_average_arg = dab_swig.ofdm_ffs_sample_arg(dp.symbol_length, dp.fft_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha, dp.sample_rate)
-		self.ffs_delay_input_for_correction = gr.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
-		self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
-		self.ffs_mixer = gr.multiply_cc()
+		if rp.correct_ffe:
+			self.ffs_delay_input_for_correction = gr.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
+			self.ffs_delay_frame_start = gr.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
+			self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
+			self.ffs_mixer = gr.multiply_cc()
 
 		# calculate fine frequency error
 		self.connect(self.input, self.ffs_conj, self.ffs_mult)
 		self.connect(self.input, self.ffs_delay, (self.ffs_mult, 1))
 		self.connect(self.ffs_mult, self.ffs_moving_sum, (self.ffs_sample_and_average_arg, 0))
 		self.connect(self.ns_detect, (self.ffs_sample_and_average_arg, 1))
-		# do the correction
-		self.connect(self.ffs_sample_and_average_arg, self.ffs_nco, (self.ffs_mixer, 0))
-		self.connect(self.input, self.ffs_delay_input_for_correction, (self.ffs_mixer, 1))
 
-		# output - corrected signal and start of DAB frames
-		self.connect(self.ffs_mixer, (self, 0))
-		self.connect(self.ns_detect, self.ffs_delay_frame_start, (self, 1))
+		if rp.correct_ffe: 
+			# do the correction
+			self.connect(self.ffs_sample_and_average_arg, self.ffs_nco, (self.ffs_mixer, 0))
+			self.connect(self.input, self.ffs_delay_input_for_correction, (self.ffs_mixer, 1))
+			# output - corrected signal and start of DAB frames
+			self.connect(self.ffs_mixer, (self, 0))
+			self.connect(self.ns_detect, self.ffs_delay_frame_start, (self, 1))
+		else: 
+			# just patch the signal through
+			self.connect(self.ffs_sample_and_average_arg, gr.null_sink(gr.sizeof_float))
+			self.connect(self.input, (self,0))
+			# frame start still needed ..
+			self.connect(self.ns_detect, (self,1))
 
 		if debug:
 			self.connect(self.ffs_angle, gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ffs_angle.dat"))

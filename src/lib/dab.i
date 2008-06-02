@@ -163,6 +163,8 @@ class dab_ofdm_ffs_sample : public gr_sync_block
 {
   private:
     dab_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
+  public:
+    float ffe_estimate() { return d_estimated_error_per_sample*d_sample_rate/(2*M_PI); }
 };
 
 // ----------------------------------------------------------------
@@ -175,6 +177,8 @@ class dab_ofdm_ffs_sample_arg : public gr_sync_block
 {
   private:
     dab_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
+  public:
+    float ffe_estimate() { return d_estimated_error_per_sample*d_sample_rate/(2*M_PI); }
 };
 
 // ----------------------------------------------------------------

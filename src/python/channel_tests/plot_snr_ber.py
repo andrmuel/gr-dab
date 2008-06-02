@@ -24,8 +24,6 @@ PLOT_FORMAT=['-','-x','--x','-.x',':x']
 # initialise test flowgraph
 tb = dab_tb.dab_ofdm_testbench()
 tb.gen_random_bytes(NUM_BYTES)
-#
-tb.dp.set_sample_rate(2000000)
 
 # prepeare plot	
 #pylab.title("BER in noisy channel") # add caption in LaTeX -> looks better
@@ -37,7 +35,7 @@ logfile = open("snr_ber_log.txt",'w')
 logfile.write("number of bytes: " + str(NUM_BYTES) + "\nSNR range: " + str(SNR_DB) + "\n\n")
 
 for mode in MODES:
-	print "Mode: "+str(mode)+"\n-------\n"
+	print "\nMode: "+str(mode)+"\n-------\n"
 	tb.setup_flowgraph(mode)
 	ber_values = []
 	bytes_received = []
@@ -49,7 +47,7 @@ for mode in MODES:
 	tb.set_power_correction(tb.probe_signal.level())
 	print "estimated energy: " + str(tb.probe_signal.level()) + "\n"
 	for snr_db in SNR_DB:
-		print "Mode: "+str(mode)+" SNR: "+str(snr_db)
+		print "\nMode: "+str(mode)+" SNR: "+str(snr_db)
 		# reset and run the test
 		tb.rewind_sources()
 		tb.clear_sinks()
@@ -68,7 +66,7 @@ for mode in MODES:
 		# calculate bit error rate
 		ber_values.append(ber.find_ber(expected_result,result))
 		print "BER: " + str(ber_values[-1])
-		print
+		print "Phase - sqrt(var): " + str(math.sqrt(tb.demod.probe_phase_var.level()))
 
 	# write log
 	logfile.write("Mode: " + str(mode)+"\n" +

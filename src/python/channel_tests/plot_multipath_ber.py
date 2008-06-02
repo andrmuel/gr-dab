@@ -80,7 +80,8 @@ for mode in MODES:
 		if sum([abs(x) for x in ber_values])==0:
 			print "all BER values are 0 - not plotting"
 		else:
-			pylab.semilogy(ECHO_DELAY_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode)+" Mag "+str(magnitude))
+			# pylab.semilogy(ECHO_DELAY_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode)+" Mag "+str(magnitude))
+			pylab.semilogy(ECHO_DELAY_RANGE, ber_values, PLOT_FORMAT[mode], label=str(magnitude))
 			# pylab.plot(ECHO_DELAY_RANGE, ber_values, PLOT_FORMAT[mode], label="Mode "+str(mode)+" Magnitude: "+str(magnitude))
 
 logfile.close()

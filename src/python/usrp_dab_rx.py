@@ -15,7 +15,7 @@ from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 import sys
 
-class usrp_rx_dab(gr.top_block):
+class usrp_dab_rx(gr.top_block):
 	def __init__(self):
 		gr.top_block.__init__(self)
         
@@ -31,9 +31,11 @@ class usrp_rx_dab(gr.top_block):
 		     help="verbose output")
 
         	(options, args) = parser.parse_args ()
-		if len(args)==0:
+		if len(args)!=1:
 			parser.print_help()
 			sys.exit(1)
+		else:
+			self.filename = args[0]
 
 		# if gr.enable_realtime_scheduling() != gr.RT_OK:
 		#       print "-> failed to enable realtime scheduling"
@@ -53,7 +55,7 @@ class usrp_rx_dab(gr.top_block):
 
 		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
 
-		self.sink = gr.file_sink(gr.sizeof_char*384, options.output_filename)
+		self.sink = gr.file_sink(gr.sizeof_char*384, self.filename)
 
 		self.trigsink = gr.null_sink(gr.sizeof_char)
 
@@ -85,10 +87,14 @@ class usrp_rx_dab(gr.top_block):
 			print "--> Phase variance: " + str(var) +"\n"
 			print "--> Signal quality: " + '='*(50-q) + '>' + '-'*q + "\n"
 			time.sleep(0.1)
+	
+	def correct_ffs(self):
+		while self.run_correct_ffs_thread:
+			self.frequency
 
 if __name__=='__main__':
 	try:
-		usrp_rx_dab().run()
+		usrp_dab_rx().run()
 	except KeyboardInterrupt:
 		pass
 

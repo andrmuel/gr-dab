@@ -37,10 +37,10 @@ dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (unsigned int symbol_length, u
  * \param fft_length number of samples in an OFDM symbol without the cyclic prefix
  * \param num_symbols number of symbols to use for averaging (more symbols is better, but symbols towards the end of the frame tend to have larger time offsets and worse values)
  * \param alpha how fast should we adapt to new FFS error values (1=immediately)
- * \param sample_rate sampling rate - only needed to print out the offset estimation in Hz
+ * \param sample_rate sampling rate - needed to calculate the offset estimation in Hz
  *
  * input: port 0: float - actual data; port 1: byte - trigger signal indicating the start of a frame
- * output: float fine frequency offset estimation
+ * output: float fine frequency offset estimation (in radian per sample)
  */
 class dab_ofdm_ffs_sample : public gr_sync_block
 {
@@ -65,6 +65,8 @@ class dab_ofdm_ffs_sample : public gr_sync_block
     float d_estimated_error_per_sample; // total estimated error / fft_length
 
   public:
+    /*! \return fine frequency error estimate in Hz */
+    float ffe_estimate() { return d_estimated_error_per_sample*d_sample_rate/(2*M_PI); }
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
