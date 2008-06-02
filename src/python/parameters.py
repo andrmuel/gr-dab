@@ -172,7 +172,7 @@ class dab_parameters:
 		@param sample_rate sampling frequency
 		"""
 		if verbose:
-			print "-> creating DAB parametor object" # should not be seen more than once
+			print "--> creating DAB parametor object" # should not be seen more than once
 
 		assert(mode>=1 and mode <=4)
 		self.mode = mode
@@ -188,19 +188,19 @@ class dab_parameters:
 	
 	def set_mode(self, mode):
 		if self.verbose:
-			print "-> setting DAB mode to "+str(mode)
+			print "--> setting DAB mode to "+str(mode)
 		self.mode = mode
 		self.__update_parameters__()
 
 	def set_sample_rate(self, sample_rate):
 		if self.verbose:
-			print "-> setting sample rate to "+str(sample_rate)
+			print "--> setting sample rate to "+str(sample_rate)
 		self.sample_rate = sample_rate
 		self.__update_parameters__()
 
 	def __update_parameters__(self):
 		if self.verbose:
-			print "-> updating DAB parameters"
+			print "--> updating DAB parameters"
 		mode = self.mode
 		# OFDM parameters
 		self.symbols_per_frame = self.__symbols_per_frame__[mode-1]
@@ -261,7 +261,7 @@ class dab_parameters:
 		# adapt for non-standard sample rate - do this at end, frequency interleaving calculation still needs default fft length
 		if self.sample_rate != self.default_sample_rate:
 			if self.verbose:
-				print "-> using non-standard sample rate: "+str(self.sample_rate)
+				print "--> using non-standard sample rate: "+str(self.sample_rate)
 			self.T = 1./self.sample_rate
 			self.ns_length = int(round(self.ns_length*float(self.sample_rate)/float(self.default_sample_rate)))
 			self.cp_length = int(round(self.cp_length*float(self.sample_rate)/float(self.default_sample_rate)))
@@ -295,8 +295,8 @@ class receiver_parameters:
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
 	__symbols_for_ffs_estimation__ = [10,10,20,10] # number of symbols to evaluate for fine frequency error estimation
 	ffs_alpha = 0.5
-	snr_estimate_alpha = 0.1
-	snr_estimate_downsample = 50 # 50 -> uses about 1% of the CPU time
+	phase_var_estimate_alpha = 0.0001
+	phase_var_estimate_downsample = 50 # 50 -> uses about 1% of the CPU time
 	def __init__(self, mode, sample_rate=2048000, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, verbose=True):
 		"""
 		Create new instance.
@@ -308,7 +308,7 @@ class receiver_parameters:
 		@param sample_rate_correction_factor static correction factor for sample rate
 		"""
 		if verbose:
-			print "-> creating RX parameter object"
+			print "--> creating RX parameter object"
 		assert(mode>=1 and mode <=4)
 
 		self.set_mode(mode)

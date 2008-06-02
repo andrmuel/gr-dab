@@ -145,7 +145,7 @@ class ofdm_demod(gr.hier_block2):
 		
 		# input filtering
 		if self.rp.input_fft_filter: 
-			if verbose: print "-> RX filter enabled"
+			if verbose: print "--> RX filter enabled"
 			lowpass_taps = gr.firdes_low_pass(1.0,                     # gain
 							  dp.sample_rate,          # sampling rate
 							  rp.filt_bw,              # cutoff frequency
@@ -156,7 +156,7 @@ class ofdm_demod(gr.hier_block2):
 
 		# correct sample rate offset, if enabled
 		if self.rp.autocorrect_sample_rate:
-			if verbose: print "-> dynamic sample rate correction enabled"
+			if verbose: print "--> dynamic sample rate correction enabled"
 			self.rate_detect_ns = detect_null.detect_null(dp.ns_length, False)
 			self.rate_estimator = dab_swig.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 			self.rate_prober = gr.probe_signal_f()
@@ -172,7 +172,7 @@ class ofdm_demod(gr.hier_block2):
 		else:
 			self.run_interpolater_update_thread = False
 			if self.rp.sample_rate_correction_factor != 1:
-				if verbose: print "-> static sample rate correction enabled"
+				if verbose: print "--> static sample rate correction enabled"
 				self.resample = gr.fractional_interpolator_cc(0, self.rp.sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
@@ -225,14 +225,18 @@ class ofdm_demod(gr.hier_block2):
 		self.connect((self.sync, 1), (self.sampler, 1), (self.cfs, 1), (self.remove_pilot,1), (self,1))
 			
 		# calculate an estimate of the SNR
-		self.snr_estimate_decimate = gr.keep_one_in_n(gr.sizeof_gr_complex*self.dp.num_carriers, self.rp.snr_estimate_downsample)
-		self.snr_estimate_arg = gr.complex_to_arg(dp.num_carriers)
-		self.average_snr_estimate = gr.iir_filter_ffd([rp.snr_estimate_alpha], [0,1-rp.snr_estimate_alpha])
-		self.probe_snr_estimate = gr.probe_signal_f()
-		self.connect((self.remove_pilot,0), self.snr_estimate_decimate, 
-			     self.snr_estimate_arg, dab_swig.sum_elements_vff(dp.num_carriers), 
-			     dab_swig.modulo_ff(pi/2), gr.multiply_const_ff(1/float(dp.num_carriers)), 
-			     gr.add_const_ff(-pi/4), self.average_snr_estimate, self.probe_snr_estimate)
+		self.phase_var_decim   = gr.keep_one_in_n(gr.sizeof_gr_complex*self.dp.num_carriers, self.rp.phase_var_estimate_downsample)
+		self.phase_var_arg     = gr.complex_to_arg(dp.num_carriers)
+		self.phase_var_v2s     = gr.vector_to_stream(gr.sizeof_gr_complex, dp.num_carriers)
+		self.phase_var_mod     = dab_swig.modulo_ff(pi/2)
+		self.phase_var_avg_mod = gr.iir_filter_ffd([rp.phase_var_estimate_alpha], [0,1-rp.phase_var_estimate_alpha]) 
+		self.phase_var_sub_avg = gr.sub_ff()
+		self.phase_var_sqr     = gr.multiply_ff()
+		self.phase_var_avg     = gr.iir_filter_ffd([rp.phase_var_estimate_alpha], [0,1-rp.phase_var_estimate_alpha]) 
+		self.probe_phase_var   = gr.probe_signal_f()
+		self.connect((self.remove_pilot,0), self.phase_var_decim, self.phase_var_arg, self.phase_var_v2s, self.phase_var_mod, (self.phase_var_sub_avg,0), (self.phase_var_sqr,0))
+		self.connect(self.phase_var_mod, self.phase_var_avg_mod, (self.phase_var_sub_avg,1), (self.phase_var_sqr,1))
+		self.connect(self.phase_var_sqr, self.phase_var_avg, self.probe_phase_var)
 		
 		# debugging
 		if debug:

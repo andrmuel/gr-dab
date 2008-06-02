@@ -15,18 +15,17 @@ import math, random, pylab
 import dab_tb, ber
 
 NUM_BYTES = 1000000
-NUM_BYTES = 100000
 
 MODES=[1,2,3,4]
-MODES=[1]
 SNR_DB = range(-5,21)
-SNR_DB = range(-5,21,5)
 
 PLOT_FORMAT=['-','-x','--x','-.x',':x']
 
 # initialise test flowgraph
 tb = dab_tb.dab_ofdm_testbench()
 tb.gen_random_bytes(NUM_BYTES)
+#
+tb.dp.set_sample_rate(2000000)
 
 # prepeare plot	
 #pylab.title("BER in noisy channel") # add caption in LaTeX -> looks better

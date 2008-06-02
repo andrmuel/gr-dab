@@ -14,11 +14,14 @@ from gnuradio import dab
 import math, random, pylab
 import dab_tb, ber
 
-NUM_BYTES = 200000
+NUM_BYTES = 500000
 
 MODES=[1,2,3,4]
+MODES=[1]
 ECHO_MAGNITUDE_RANGE = [0.5]
-ECHO_DELAY_RANGE = range(50,301,10)
+ECHO_MAGNITUDE_RANGE = [1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2]
+ECHO_DELAY_RANGE = range(50,401,10)
+ECHO_DELAY_RANGE = range(50,1001,50)
 
 PLOT_FORMAT=['-','-x','--x','-.x',':x']
 
@@ -27,7 +30,6 @@ tb = dab_tb.dab_ofdm_testbench(ber_sink=True)
 tb.gen_random_bytes(NUM_BYTES)
 
 # prepeare plot	
-#pylab.title("BER in channel with frequency shift") # add caption in LaTeX -> looks better
 pylab.xlabel("Echo delay [samples]")
 pylab.ylabel("BER")
 

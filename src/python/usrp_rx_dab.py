@@ -20,17 +20,18 @@ class usrp_rx_dab(gr.top_block):
 		gr.top_block.__init__(self)
         
 		
-		parser = OptionParser(option_class=eng_option)
+		parser = OptionParser(option_class=eng_option, usage="%prog: [options] output-filename")
 		parser.add_option("-R", "--rx-subdev-spec", type="subdev", default=(0, 0),
 		     help="select USRP Rx side A or B [default=A]")
 		parser.add_option("-f", "--freq", type="eng_float", default=227.36e6,
 		     help="set frequency to FREQ [default=%default]")
 		parser.add_option("-g", "--rx-gain", type="eng_float", default=None,
 		     help="set receive gain in dB (default is midpoint)")
-		parser.add_option("-o", "--output-filename", type="string", default="debug/usrp_bytes.raw",
-		     help="specify output-filename [default=%default]")
+		parser.add_option('-v', '--verbose', action="store_true", default=False,
+		     help="verbose output")
+
         	(options, args) = parser.parse_args ()
-		if len(args)>0:
+		if len(args)==0:
 			parser.print_help()
 			sys.exit(1)
 
@@ -39,7 +40,7 @@ class usrp_rx_dab(gr.top_block):
 
 		decim = 32
 
-		self.dab_params = dab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=True)
+		self.dab_params = dab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=options.verbose)
 		self.rx_params = dab.parameters.receiver_parameters(mode=1, sample_rate=2000000, input_fft_filter=False)
 
 		self.src = usrp.source_c(decim_rate=decim)
@@ -50,7 +51,7 @@ class usrp_rx_dab(gr.top_block):
 		self.sample_rate = self.src.adc_rate()/decim
 		print self.sample_rate
 
-		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=True) 
+		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
 
 		self.sink = gr.file_sink(gr.sizeof_char*384, options.output_filename)
 
@@ -68,6 +69,22 @@ class usrp_rx_dab(gr.top_block):
 			g = self.subdev.gain_range()
 			options.rx_gain = float(g[0]+g[1])/2
 		self.subdev.set_gain(options.rx_gain)
+
+		self.update_ui = options.verbose
+		if self.update_ui:
+			self.updater = threading.Timer(0.1,self.update_ui)
+			self.run_ui_update_thread = True
+			self.updater.setDaemon(True)
+			self.updater.start()
+	
+	def update_ui(self):
+		while self.run_ui_update_thread:
+			rate = self.rate_prober.level()
+			var = self.demod.probe_phase_var.level()
+			q = int(50*(math.sqrt(var)/(math.pi/2)))
+			print "--> Phase variance: " + str(var) +"\n"
+			print "--> Signal quality: " + '='*(50-q) + '>' + '-'*q + "\n"
+			time.sleep(0.1)
 
 if __name__=='__main__':
 	try:
