@@ -58,8 +58,12 @@ class test_ofdm(gr.top_block):
   		parser.add_option('-v', '--verbose', action="store_true", default=False,
 	     		help="Print status messages")
 		(options, args) = parser.parse_args ()
-		
-		dp = parameters.dab_parameters(options.dab_mode, verbose=options.verbose)
+	
+		if options.usrp_source:
+			dp = parameters.dab_parameters(options.dab_mode, verbose=options.verbose, sample_rate=2000000)
+		else:
+			dp = parameters.dab_parameters(options.dab_mode, verbose=options.verbose)
+
 		rp = parameters.receiver_parameters(options.dab_mode, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose)
 
 		if len(args)<1:
@@ -82,15 +86,7 @@ class test_ofdm(gr.top_block):
 
 		self.dab_demod = ofdm.ofdm_demod(dp, rp, debug=options.debug, verbose=options.verbose)
 		
-		if options.usrp_source:
-			print "-> resampling from 2 MSPS to 2.048 MSPS for USRP samples"
-			self.connect(self.src, self.resample, self.dab_demod)
-		else:
-			self.connect(self.src, self.dab_demod)
-			# self.sig = gr.sig_source_c(dp.sample_rate, gr.GR_SIN_WAVE, -74000, 1)
-			# self.mix = gr.multiply_cc()
-			# self.connect(self.sig, (self.mix,1))
-			# self.connect(self.src, self.mix, self.dab_demod)
+		self.connect(self.src, self.dab_demod)
 
 		# sink output to nowhere 
 		self.nop0 = gr.nop(gr.sizeof_char*dp.num_carriers/4)

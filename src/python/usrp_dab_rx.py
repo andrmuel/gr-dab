@@ -13,7 +13,7 @@ receive DAB with USRP
 from gnuradio import gr, usrp, blks2, dab
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
-import sys
+import sys, time, threading, math
 
 class usrp_dab_rx(gr.top_block):
 	def __init__(self):
@@ -27,6 +27,8 @@ class usrp_dab_rx(gr.top_block):
 		     help="set frequency to FREQ [default=%default]")
 		parser.add_option("-g", "--rx-gain", type="eng_float", default=None,
 		     help="set receive gain in dB (default is midpoint)")
+		parser.add_option('-u', '--correct-ffe-usrp', action="store_true", default=False,
+		     help="do fine frequency correction by retuning the USRP instead of in software")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
 		     help="verbose output")
 
@@ -41,9 +43,10 @@ class usrp_dab_rx(gr.top_block):
 		#       print "-> failed to enable realtime scheduling"
 
 		decim = 32
+		self.verbose = options.verbose
 
 		self.dab_params = dab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=1, sample_rate=2000000, input_fft_filter=False)
+		self.rx_params = dab.parameters.receiver_parameters(mode=1, sample_rate=2000000, input_fft_filter=False, correct_ffe = not options.correct_ffe_usrp)
 
 		self.src = usrp.source_c(decim_rate=decim)
         	self.src.set_mux(usrp.determine_rx_mux_value(self.src, options.rx_subdev_spec))
@@ -63,7 +66,8 @@ class usrp_dab_rx(gr.top_block):
 		self.connect((self.demod,1), self.trigsink)
 
 		# tune frequency
-		self.src.tune(0, self.subdev, options.freq)
+		self.frequency = options.freq
+		self.set_freq(options.freq)
 
 		# set gain      
 		if options.rx_gain is None:
@@ -74,24 +78,45 @@ class usrp_dab_rx(gr.top_block):
 
 		self.update_ui = options.verbose
 		if self.update_ui:
-			self.updater = threading.Timer(0.1,self.update_ui)
 			self.run_ui_update_thread = True
-			self.updater.setDaemon(True)
-			self.updater.start()
-	
-	def update_ui(self):
+			self.ui_updater = threading.Timer(0.1,self.update_ui_function)
+			self.ui_updater.setDaemon(True)
+			self.ui_updater.start()
+
+		self.correct_ffe_usrp = options.correct_ffe_usrp
+		if self.correct_ffe_usrp:
+			print "--> correcting FFE on USRP"
+			self.run_correct_ffe_thread = True
+			self.ffe_updater = threading.Timer(0.1, self.correct_ffe)
+			self.ffe_updater.setDaemon(True)
+			self.ffe_updater.start()
+
+	def update_ui_function(self):
 		while self.run_ui_update_thread:
-			rate = self.rate_prober.level()
 			var = self.demod.probe_phase_var.level()
 			q = int(50*(math.sqrt(var)/(math.pi/2)))
 			print "--> Phase variance: " + str(var) +"\n"
 			print "--> Signal quality: " + '='*(50-q) + '>' + '-'*q + "\n"
 			time.sleep(0.1)
 	
-	def correct_ffs(self):
-		while self.run_correct_ffs_thread:
-			self.frequency
+	def correct_ffe(self):
+		while self.run_correct_ffe_thread:
+			diff = self.demod.sync.ffs_sample_and_average_arg.ffe_estimate()
+			if abs(diff) > self.rx_params.usrp_ffc_min_deviation:
+				self.frequency -= diff*self.rx_params.usrp_ffc_adapt_factor
+				print "--> updating fine frequency correction: " + str(self.frequency)
+				self.set_freq(self.frequency)
+			time.sleep(1./self.rx_params.usrp_ffc_retune_frequency)
 
+	def set_freq(self, freq):
+		if self.src.tune(0, self.subdev, freq):
+			if self.verbose:
+				print "--> retuned to " + str(freq) + " Hz"
+			return True
+		else:
+			print "-> error - cannot tune to " + str(freq) + " Hz"
+			return False
+        
 if __name__=='__main__':
 	try:
 		usrp_dab_rx().run()

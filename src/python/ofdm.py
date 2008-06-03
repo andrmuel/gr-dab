@@ -46,7 +46,7 @@ class ofdm_mod(gr.hier_block2):
 	The output sample rate is 2.048 MSPS.
 	"""
 	
-	def __init__(self, dab_params, debug=False):
+	def __init__(self, dab_params, verbose=False, debug=False):
 		"""
 		Hierarchical block for OFDM modulation
 
@@ -119,7 +119,7 @@ class ofdm_demod(gr.hier_block2):
 	Expects an input sample rate of 2.048 MSPS.
 	"""
 	
-	def __init__(self, dab_params, rx_params, debug=False, verbose=False):
+	def __init__(self, dab_params, rx_params, verbose=False, debug=False):
 		"""
 		Hierarchical block for OFDM demodulation
 

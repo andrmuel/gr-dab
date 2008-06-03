@@ -46,8 +46,17 @@ class dab_parameters:
 	T = 1./default_sample_rate
 
 	# transport mechanism parameters
+	fib_bits = 256
 	__num_fibs__ = [12,3,4,6]       # FIC
-	__num_cifs__ = [4,1,1,2]        # MSC
+	__num_cifs__ = [4,1,1,2]        # MSC -> num cifs = num fib groups
+	__num_fib_blocks__ = [3,3,8,3]  # each OFDM symbol translates to one block, but not necessarily one FIB
+
+	# energy dispersal
+	__energy_dispersal_fic_fibs_per_vector__ = [3, 3, 4, 3]
+	__energy_dispersal_fic_vector_length__   = [768, 768, 1024, 768]
+
+	# convolutional coding
+	__conv_enc_fic_out_length__ = [2304, 2304, 3072, 2304]
 
 	# prn calculation data
 	
@@ -181,8 +190,14 @@ class dab_parameters:
 
 		# sanity checks:
 		for i in range(0,4):
+			# OFDM parameters
 			assert(self.__symbols_per_frame__[i]*self.__symbol_length__[i]+self.__ns_length__[i] == self.__frame_length__[i])
 			assert(self.__symbol_length__[i] == self.__fft_length__[i]+self.__cp_length__[i])
+			# energy dispersal parameters
+			assert(self.__energy_dispersal_fic_fibs_per_vector__[i]*self.fib_bits == self.__energy_dispersal_fic_vector_length__[i])
+			assert(3*self.__energy_dispersal_fic_vector_length__[i] == self.__conv_enc_fic_out_length__[i])
+			# transport mode parameters
+			assert(self.__num_carriers__[i] * 2 * self.__num_fib_blocks__[i] / self.__num_cifs__[i] == self.__conv_enc_fic_out_length__[i]) 
 
 		self.__update_parameters__()
 	
@@ -217,6 +232,8 @@ class dab_parameters:
 		# transport mechanism parameters
 		self.num_fibs = self.__num_fibs__[mode-1]
 		self.num_cifs = self.__num_cifs__[mode-1]
+		self.fib_group_length = self.num_fibs / self.num_cifs
+		# self.fib_symbols_per_group = self.__fib_symbols_per_group__[mode-1]
 		
 
 		# prn sequence
@@ -290,13 +307,24 @@ class receiver_parameters:
 	"""
 	@brief Parameters for the receiver, independent of the DAB standard.
 	"""
-	filt_bw = (768+100)*1e3
-	filt_tb = 50e3
+	# filter at input
+	filt_bw = (768+10)*1e3
+	filt_tb = 10e3
+
+	# OFDM stuff
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
 	__symbols_for_ffs_estimation__ = [10,10,20,10] # number of symbols to evaluate for fine frequency error estimation
 	ffs_alpha = 0.5
+
+	# phase variance estimation
 	phase_var_estimate_alpha = 0.01
 	phase_var_estimate_downsample = 50 # 50 -> uses about 1% of the CPU time
+
+	# for USRP
+	usrp_ffc_retune_frequency = 5  # how often should the USRP be retuned at most?
+	usrp_ffc_min_deviation = 5 # how far off does the FFE have to be to retune the USRP?
+	usrp_ffc_adapt_factor = 0.5 # how much to adapt the correction?
+
 	def __init__(self, mode, sample_rate=2048000, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, correct_ffe=True, verbose=True):
 		"""
 		Create new instance.

@@ -31,7 +31,7 @@ class usrp_dab_tx(gr.top_block):
 		     help="verbose output")
 
         	(options, args) = parser.parse_args ()
-		if len(args)!=0:
+		if len(args)!=1:
 			parser.print_help()
 			sys.exit(1)
 		else:
@@ -44,19 +44,21 @@ class usrp_dab_tx(gr.top_block):
 		self.dab_params = dab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=options.verbose)
 
 		self.src = gr.file_source(gr.sizeof_char, self.filename)
-		self.trigsrc = gr.vector_source_b([1]+[0]*(self.dab_params.num_frames-1),True)
-
-
+		self.trigsrc = gr.vector_source_b([1]+[0]*(self.dab_params.symbols_per_frame-1),True)
+		
+		self.s2v = gr.stream_to_vector(gr.sizeof_char, 384)
+		
 		self.mod = dab.ofdm_mod(self.dab_params, verbose=options.verbose) 
 
 		self.sink = usrp.sink_c(interp_rate = interp)
         	self.sink.set_mux(usrp.determine_tx_mux_value(self.sink, options.tx_subdev_spec))
         	self.subdev = usrp.selected_subdev(self.sink, options.tx_subdev_spec)
-		self.sample_rate = self.sink.adc_rate()/decim
-		print self.sample_rate
+		self.sample_rate = self.sink.dac_rate()/interp
+		
+		print "--> using sample rate: " + str(self.sample_rate)
 
 
-		self.connect(self.src, self.mod, self.sink)
+		self.connect(self.src, self.s2v, self.mod, self.sink)
 		self.connect(self.trigsrc, (self.mod,1))
 
 		# tune frequency
