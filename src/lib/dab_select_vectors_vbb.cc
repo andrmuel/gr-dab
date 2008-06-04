@@ -47,8 +47,8 @@ dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int s
 
 dab_select_vectors_vbb::dab_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip) : 
   gr_block ("select_vectors_vbb",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
+             gr_make_io_signature2 (2, 2, sizeof(char)*vlen, sizeof(char)),
+             gr_make_io_signature2 (2, 2, sizeof(char)*vlen, sizeof(char))),
   d_vlen(vlen), d_num(num), d_skip(skip), d_index(0)
 {
   assert(d_num!=0);
@@ -86,19 +86,21 @@ dab_select_vectors_vbb::general_work (int noutput_items,
     /* start of frame? */
     if (*trigger++ == 1)
       d_index=0;
-   
-    /* start of output? */
-    if (d_index == d_skip)
-      *triggerout++ = 1;
-    else
-      *triggerout++ = 0;
     
     /* select this vector? */
     if (d_index >= d_skip && d_index < d_num + d_skip) {
+      /* trigger signal */
+      if (d_index == d_skip)
+        *triggerout++ = 1;
+      else
+        *triggerout++ = 0;
+      /* data */
       memcpy(optr, iptr, d_vlen);
       iptr += d_vlen;
       optr += d_vlen;
       n_produced++;
+    } else {
+      iptr += d_vlen;
     }
   
     d_index++;
