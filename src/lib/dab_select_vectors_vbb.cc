@@ -29,24 +29,24 @@
 #include "config.h"
 #endif
 
-#include <dab_select_symbols_vbb.h>
+#include <dab_select_vectors_vbb.h>
 #include <gr_io_signature.h>
 #include <gr_expj.h>
 
 #define M_TWOPI (2*M_PI)
 
 /*
- * Create a new instance of dab_select_symbols_vbb and return
+ * Create a new instance of dab_select_vectors_vbb and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_select_symbols_vbb_sptr 
-dab_make_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int skip)
+dab_select_vectors_vbb_sptr 
+dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip)
 {
-  return dab_select_symbols_vbb_sptr (new dab_select_symbols_vbb (vlen, num, skip));
+  return dab_select_vectors_vbb_sptr (new dab_select_vectors_vbb (vlen, num, skip));
 }
 
-dab_select_symbols_vbb::dab_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int skip) : 
-  gr_block ("select_symbols_vbb",
+dab_select_vectors_vbb::dab_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip) : 
+  gr_block ("select_vectors_vbb",
              gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
              gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
   d_vlen(vlen), d_num(num), d_skip(skip), d_index(0)
@@ -56,7 +56,7 @@ dab_select_symbols_vbb::dab_select_symbols_vbb (unsigned int vlen, unsigned int 
 }
 
 void 
-dab_select_symbols_vbb::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+dab_select_vectors_vbb::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   int in_req  = noutput_items * (d_skip+d_num)/d_num; /* very coarse .. */
 
@@ -66,7 +66,7 @@ dab_select_symbols_vbb::forecast (int noutput_items, gr_vector_int &ninput_items
 }
 
 int 
-dab_select_symbols_vbb::general_work (int noutput_items,
+dab_select_vectors_vbb::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)

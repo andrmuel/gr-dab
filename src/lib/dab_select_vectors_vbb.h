@@ -24,12 +24,12 @@
 
 #include <gr_block.h>
 
-class dab_select_symbols_vbb;
+class dab_select_vectors_vbb;
 
-typedef boost::shared_ptr<dab_select_symbols_vbb> dab_select_symbols_vbb_sptr;
+typedef boost::shared_ptr<dab_select_vectors_vbb> dab_select_vectors_vbb_sptr;
 
-dab_select_symbols_vbb_sptr 
-dab_make_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+dab_select_vectors_vbb_sptr 
+dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
 
 /*!
  * \brief select some vectors from a vector stream
@@ -44,16 +44,16 @@ dab_make_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int s
  * input: port 0: byte vectors; port 1: new trigger signal (char)
  * output: port 0: selected byte vectors; port 1: new trigger signal (char)
  */
-class dab_select_symbols_vbb : public gr_block
+class dab_select_vectors_vbb : public gr_block
 {
   private:
-    // The friend declaration allows dab_make_select_symbols_vbb to
+    // The friend declaration allows dab_make_select_vectors_vbb to
     // access the private constructor.
 
-    friend dab_select_symbols_vbb_sptr
-    dab_make_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+    friend dab_select_vectors_vbb_sptr
+    dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
 
-    dab_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int skip);    // private constructor
+    dab_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);    // private constructor
 
     unsigned int d_vlen;
     unsigned int d_num;
