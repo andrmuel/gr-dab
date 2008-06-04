@@ -28,13 +28,16 @@ class dab_parameters:
 	@brief Represents the DAB parameters.
 
 	DAB parameters for mode I to IV
-	see Table 38, page 145 of the DAB specification
-	for the PRN sequence vaules, see tables 39-43 on pages 148 and 149
+	
+	as specified in 
+	ETSI EN 300 401 V1.4.1 (2006-06)
+	"Digital Audio Broadcasting (DAB) to mobile, portable and fixed receivers"
 	"""
 
 	# parameter values for all modes
 
-	# OFDM parameters 
+	# OFDM parameters (section 14)
+	# Table 38, page 145 of the DAB specification
 	__symbols_per_frame__ = [76, 76, 153, 76]             # number of OFDM symbols per DAB frame (incl. pilot, excl. NS)
 	__num_carriers__      = [1536, 384, 192, 768]         # number of carriers -> carrier width = 1536kHz/carriers
 	__frame_length__      = [196608, 49152, 49152, 98304] # samples per frame; in ms: 96,24,24,48 (incl. NS)
@@ -45,20 +48,8 @@ class dab_parameters:
 	default_sample_rate = 2048000
 	T = 1./default_sample_rate
 
-	# transport mechanism parameters
-	fib_bits = 256
-	__num_fibs__ = [12,3,4,6]       # FIC
-	__num_cifs__ = [4,1,1,2]        # MSC -> num cifs = num fib groups
-	__num_fib_blocks__ = [3,3,8,3]  # each OFDM symbol translates to one block, but not necessarily one FIB
-
-	# energy dispersal
-	__energy_dispersal_fic_fibs_per_vector__ = [3, 3, 4, 3]
-	__energy_dispersal_fic_vector_length__   = [768, 768, 1024, 768]
-
-	# convolutional coding
-	__conv_enc_fic_out_length__ = [2304, 2304, 3072, 2304]
-
 	# prn calculation data
+	# tables 39-43 on pages 148 and 149
 	
 	#format: [mode][index][k_min, k_max, k', i, n]
 	__prn_kin__ = [[
@@ -173,6 +164,23 @@ class dab_parameters:
 			[-257,-14,73,180,198,-243,168,218,17,299]
 	]
 
+	# transport mechanism parameters
+	__num_fic_syms__ = [3,3,8,3]  # number of OFDM symbols per frame belonging to the FIC
+
+	# convolutional coding
+	__conv_enc_fic_out_length__ = [2304, 2304, 3072, 2304]
+
+	# energy dispersal
+	__energy_dispersal_fic_fibs_per_vector__ = [3, 3, 4, 3]
+	__energy_dispersal_fic_vector_length__   = [768, 768, 1024, 768]
+	__prbs_bits__ = [0,0,0,0,0,1,1,1,1,0,1,1,1,1,1,0] # first 16 PRBS bits are given in the standard - can be used for another assert
+	
+	# transport mechanism parameters
+	fib_bits = 256
+	cif_bits = 55296
+	__num_fibs__ = [12,3,4,6]       # FIC
+	__num_cifs__ = [4,1,1,2]        # MSC -> num cifs = num fib groups
+
 	def __init__(self, mode, sample_rate=2048000, verbose=True):
 		"""
 		selects the correct parameters for the selected mode and calculates the prn sequence, etc.
@@ -193,11 +201,17 @@ class dab_parameters:
 			# OFDM parameters
 			assert(self.__symbols_per_frame__[i]*self.__symbol_length__[i]+self.__ns_length__[i] == self.__frame_length__[i])
 			assert(self.__symbol_length__[i] == self.__fft_length__[i]+self.__cp_length__[i])
+			# block partitioning
+			assert(self.__num_carriers__[i] * 2 * self.__num_fic_syms__[i] / self.__num_cifs__[i] == self.__conv_enc_fic_out_length__[i]) 
 			# energy dispersal parameters
 			assert(self.__energy_dispersal_fic_fibs_per_vector__[i]*self.fib_bits == self.__energy_dispersal_fic_vector_length__[i])
 			assert(3*self.__energy_dispersal_fic_vector_length__[i] == self.__conv_enc_fic_out_length__[i])
-			# transport mode parameters
-			assert(self.__num_carriers__[i] * 2 * self.__num_fib_blocks__[i] / self.__num_cifs__[i] == self.__conv_enc_fic_out_length__[i]) 
+
+		# sanity checks for PRBS sequence (energy dispersal)
+		assert(self.prbs(16) == self.__prbs_bits__) # bits from DAB standard
+		assert(prbs(511) == prbs(1022)[511:])       # sequence must repeat itself
+		if verbose:
+			print "--> DAB parameters self check ok"
 
 		self.__update_parameters__()
 	
@@ -217,7 +231,7 @@ class dab_parameters:
 		if self.verbose:
 			print "--> updating DAB parameters"
 		mode = self.mode
-		# OFDM parameters
+		# OFDM parameters (14)
 		self.symbols_per_frame = self.__symbols_per_frame__[mode-1]
 		self.num_carriers      = self.__num_carriers__[mode-1]
 		self.frame_length      = self.__frame_length__[mode-1]
@@ -226,13 +240,9 @@ class dab_parameters:
 		self.fft_length        = self.__fft_length__[mode-1]
 		self.cp_length         = self.__cp_length__[mode-1]
 
-		# bytes per frame
+		# bytes per frame and bytes per symbol
 		self.bytes_per_frame   = (self.symbols_per_frame-1)*self.num_carriers/4
-
-		# transport mechanism parameters
-		self.num_fibs = self.__num_fibs__[mode-1]
-		self.num_cifs = self.__num_cifs__[mode-1]
-		self.num_fib_blocks = self.__num_fib_blocks__[mode-1]	
+		self.bytes_per_symbol  = self.num_carriers/4
 
 		# prn sequence
 		self.prn = []
@@ -284,6 +294,19 @@ class dab_parameters:
 			self.symbol_length = self.cp_length + self.fft_length
 			self.frame_length = self.symbols_per_frame * self.symbol_length + self.ns_length
 
+		# block partitioning parameters (14.4)
+		self.num_fic_syms = self.__num_fic_syms__[mode-1]	
+
+		# convolutional coding (11)
+		self.conv_enc_fic_out_length = self.__conv_enc_fic_out_length__[mode-1]
+
+		# energy dispersal (10)
+		self.energy_dispersal_fic_fibs_per_vector =self. __energy_dispersal_fic_fibs_per_vector__[mode-1]
+		self.energy_dispersal_fic_vector_length = self.__energy_dispersal_fic_vector_length__[mode-1]
+		
+		# transport mechanism parameters (5)
+		self.num_fibs = self.__num_fibs__[mode-1]
+		self.num_cifs = self.__num_cifs__[mode-1]
 
 	def __get_prn_kk_i_n__(self,k):
 		assert(k!=0)
@@ -301,9 +324,24 @@ class dab_parameters:
 		n = values[4]
 		return [kk, i, n]
 
+	def prbs(self, length):
+		"""
+		PRBS generated with the polynomial p(x) = x^9 + x^5 + 1
+		and initial state 111111111 
+
+		@param length number of bits in the sequence
+		"""
+		bits = [1]*9
+		sequence = []
+		for i in range(0,length):
+			newbit = bits[8] ^ bits[4]
+			bits = [newbit]+bits[0:-1]
+			sequence.append(newbit)
+		return sequence
+
 class receiver_parameters:
 	"""
-	@brief Parameters for the receiver, independent of the DAB standard.
+	@brief Parameters for the receiver, independent of the DAB standard
 	"""
 	# filter at input
 	filt_bw = (768+10)*1e3
