@@ -60,28 +60,28 @@ dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expecte
  */
 class dab_estimate_sample_rate_bf : public gr_sync_block
 {
-private:
-  // The friend declaration allows dab_make_estimate_sample_rate_bf to
-  // access the private constructor.
+  private:
+    // The friend declaration allows dab_make_estimate_sample_rate_bf to
+    // access the private constructor.
 
-  friend dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
+    friend dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
 
-  dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);    // private constructor
+    dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);    // private constructor
 
-  int d_zeros;
-  float d_expected_sample_rate;
-  float d_real_sample_rate;
-  char d_found_first_frame;
-  int d_frame_length;
+    int d_zeros;
+    float d_expected_sample_rate;
+    float d_real_sample_rate;
+    char d_found_first_frame;
+    int d_frame_length;
 
- public:
-  ~dab_estimate_sample_rate_bf ();  // public destructor
+  public:
+    ~dab_estimate_sample_rate_bf ();  // public destructor
 
-  // Where all the action really happens
+    // Where all the action really happens
 
-  int work (int noutput_items,
-            gr_vector_const_void_star &input_items,
-            gr_vector_void_star &output_items);
+    int work (int noutput_items,
+              gr_vector_const_void_star &input_items,
+              gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_H */

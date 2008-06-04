@@ -30,6 +30,7 @@
 #include "dab_sum_elements_vff.h"
 #include "dab_modulo_ff.h"
 #include "dab_measure_ber_b.h"
+#include "dab_select_symbols_vbb.h"
 #include <stdexcept>
 %}
 
@@ -314,6 +315,7 @@ class dab_measure_processing_rate : public gr_sync_block
   public:
     void set_samples_to_count(int samples_to_count) { d_samples_to_count=samples_to_count; }
     float processing_rate() { return d_processing_rate; }
+    float bitrate() { return d_itemsize*8*d_processing_rate; }
 };
 
 // ----------------------------------------------------------------
@@ -357,3 +359,16 @@ class dab_measure_ber_b : public gr_sync_block
     unsigned int bitcount() { return 8*d_bytes; }
     unsigned int errorcount() { return d_errors; }
 };
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,select_symbols_vbb);
+
+dab_select_symbols_vbb_sptr dab_make_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+
+class dab_select_symbols_vbb : public gr_block
+{
+  private:
+    dab_select_symbols_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+};
+

@@ -38,7 +38,7 @@ class qa_measure_processing_rate(gr_unittest.TestCase):
 		self.tb.run()
 
 		rate = sink.processing_rate()
-		assert(rate > 9000000 and rate < 11000000)
+		assert(rate > 8000000 and rate < 12000000)
 
 if __name__ == '__main__':
 	gr_unittest.main()

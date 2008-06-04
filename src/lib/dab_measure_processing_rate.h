@@ -56,7 +56,10 @@ class dab_measure_processing_rate : public gr_sync_block
 
  public:
   void set_samples_to_count(int samples_to_count) { d_samples_to_count=samples_to_count; }
+  /*! \return processing rate in samples per second */
   float processing_rate() { return d_processing_rate; }
+  /*! \return processing rate in bits per second */
+  float bitrate() { return d_itemsize*8*d_processing_rate; }
 
   int work(int noutput_items,
 	   gr_vector_const_void_star &input_items,

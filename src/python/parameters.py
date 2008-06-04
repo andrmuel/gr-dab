@@ -232,9 +232,7 @@ class dab_parameters:
 		# transport mechanism parameters
 		self.num_fibs = self.__num_fibs__[mode-1]
 		self.num_cifs = self.__num_cifs__[mode-1]
-		self.fib_group_length = self.num_fibs / self.num_cifs
-		# self.fib_symbols_per_group = self.__fib_symbols_per_group__[mode-1]
-		
+		self.num_fib_blocks = self.__num_fib_blocks__[mode-1]	
 
 		# prn sequence
 		self.prn = []
