@@ -20,14 +20,12 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-# ofdm.py - modulator and demodulator for the DAB physical layer 
-#
-# the code in this file is partially adapted from ofdm.py and ofdm_receiver.py
-# from the gnuradio trunk; this implementation is however stream based, not
-# packet based
-#
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
+
+"""
+estimate the sample rate of DAB samples by looking at the Null symbols
+"""
 
 from gnuradio import gr, blks2
 from gnuradio.eng_option import eng_option

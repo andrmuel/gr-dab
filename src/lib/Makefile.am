@@ -84,7 +84,8 @@ _dab_swig_la_SOURCES = 			        \
 	dab_sum_elements_vff.cc                 \
 	dab_modulo_ff.cc                        \
 	dab_measure_ber_b.cc                    \
-	dab_select_vectors_vbb.cc
+	dab_select_vectors_vbb.cc               \
+	dab_block_partitioning_vbb.cc
 
 # magic flags
 _dab_swig_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -123,7 +124,8 @@ grinclude_HEADERS =			        \
 	dab_sum_elements_vff.h                  \
 	dab_modulo_ff.h                         \
 	dab_measure_ber_b.h                     \
-	dab_select_vectors_vbb.h
+	dab_select_vectors_vbb.h                \
+	dab_block_partitioning_vbb.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig

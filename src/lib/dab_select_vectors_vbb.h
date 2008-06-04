@@ -19,8 +19,8 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_SELECT_SYMBOLS_VBB_H
-#define INCLUDED_DAB_SELECT_SYMBOLS_VBB_H
+#ifndef INCLUDED_DAB_SELECT_VECTORS_VBB_H
+#define INCLUDED_DAB_SELECT_VECTORS_VBB_H
 
 #include <gr_block.h>
 
@@ -68,4 +68,4 @@ class dab_select_vectors_vbb : public gr_block
                       gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_SELECT_SYMBOLS_VBB_H */
+#endif /* INCLUDED_DAB_SELECT_VECTORS_VBB_H */

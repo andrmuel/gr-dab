@@ -31,7 +31,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		parser.add_option("-F", "--filter-input", action="store_true", default=False,
                           help="Enable FFT filter at input")
 		parser.add_option('-c', '--correct-ffe', action="store_true", default=False,
-		     help="do not do fine frequency correction")
+		     help="do fine frequency correction")
 		parser.add_option('-u', '--correct-ffe-usrp', action="store_true", default=False,
 		     help="do fine frequency correction by retuning the USRP instead of in software")
   		parser.add_option("-s", "--resample-fixed", type="eng_float", default=1,

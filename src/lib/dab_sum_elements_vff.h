@@ -53,6 +53,7 @@ dab_make_sum_elements_vff (unsigned int length);
  * \brief Sum up all elements of a vector
  * \ingroup math
  * \param length length of the vector
+ * \return \f[ y[k] = \sum_{i=1}^n x_i[k]\f]
  *
  * input: float vector
  * output: float

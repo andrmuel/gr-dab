@@ -31,9 +31,6 @@
 
 #include <dab_select_vectors_vbb.h>
 #include <gr_io_signature.h>
-#include <gr_expj.h>
-
-#define M_TWOPI (2*M_PI)
 
 /*
  * Create a new instance of dab_select_vectors_vbb and return
