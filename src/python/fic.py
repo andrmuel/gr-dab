@@ -52,13 +52,21 @@ class fic_decode(gr.hier_block2):
 		self.dp = dab_params
 		self.verbose = verbose
 
+		# FIB selection and block partitioning
 		self.select_fics = dab_swig.select_vectors_vbb(self.dp.num_carriers/4, self.dp.num_fic_syms, 0)
 		self.repartition_fic = dab_swig.block_partitioning_vbb(self.dp.num_carriers/4, self.dp.conv_enc_fic_out_length, self.dp.num_fic_syms, self.dp.num_cifs)
 
 		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0))
 		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1))
 
+		# unpuncturing
+
+
+		# convolutional coding
+
+
 		# energy dispersal
+		self.prbs_src   = gr.vector_source_b(self.dp.prbs(self.dp.energy_dispersal_fic_vector_length), repeat=True)
 		self.energy_v2s = gr.stream_to_vector(self.dp.energy_dispersal_fic_vector_length)
 		self.add_mod_2  = gr.xor_bb()
 		self.energy_s2v = gr.stream_to_vector(self.dp.energy_dispersal_fic_vector_length)

@@ -32,6 +32,8 @@
 #include "dab_measure_ber_b.h"
 #include "dab_select_vectors_vbb.h"
 #include "dab_block_partitioning_vbb.h"
+#include "dab_puncture_vbb.h"
+#include "dab_unpuncture_vbb.h"
 #include <stdexcept>
 %}
 
@@ -383,5 +385,29 @@ class dab_block_partitioning_vbb : public gr_block
 {
   private:
     dab_block_partitioning_vbb (unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,puncture_vbb);
+
+dab_puncture_vbb_sptr dab_make_puncture_vbb (const std::vector<unsigned char> &puncturing_vector);
+
+class dab_puncture_vbb : public gr_sync_block
+{
+  private:
+    dab_puncture_vbb (const std::vector<unsigned char> &puncturing_vector);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,unpuncture_vbb);
+
+dab_unpuncture_vbb_sptr dab_make_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval = 0);
+
+class dab_unpuncture_vbb : public gr_sync_block
+{
+  private:
+    dab_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval);
 };
 
