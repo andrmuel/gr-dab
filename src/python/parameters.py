@@ -150,7 +150,7 @@ class dab_parameters:
 
 	# h_i,j
 	# note: values for h_i,j are the same as for h_i,j+16 ...
-	__prn_h__ = [ 
+	__prn_h__ = [
 		[0, 2, 0, 0, 0, 0, 1, 1, 2, 0, 0, 0, 2, 2, 1, 1, 0, 2, 0, 0, 0, 0, 1, 1, 2, 0, 0, 0, 2, 2, 1, 1],
 		[0, 3, 2, 3, 0, 1, 3, 0, 2, 1, 2, 3, 2, 3, 3, 0, 0, 3, 2, 3, 0, 1, 3, 0, 2, 1, 2, 3, 2, 3, 3, 0],
 		[0, 0, 0, 2, 0, 2, 1, 3, 2, 2, 0, 2, 2, 0, 1, 3, 0, 0, 0, 2, 0, 2, 1, 3, 2, 2, 0, 2, 2, 0, 1, 3],
@@ -167,8 +167,7 @@ class dab_parameters:
 	# transport mechanism parameters
 	__num_fic_syms__ = [3,3,8,3]  # number of OFDM symbols per frame belonging to the FIC
 
-	# convolutional coding
-	__conv_enc_fic_out_length__ = [2304, 2304, 3072, 2304]
+	# puncturing
 	puncturing_vectors = [ # table 29, page 131
 			[],  # "Who are you? How did you get in my house?"
 			[1,1,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0, 1,0,0,0],  # PI=1: code rate: 8/9
@@ -198,9 +197,13 @@ class dab_parameters:
 	]
 	puncturing_tail_vector =  [1,1,0,0, 1,1,0,0, 1,1,0,0, 1,1,0,0, 1,1,0,0, 1,1,0,0]  # V_T
 
+	# convolutional coding
+	__fic_conv_codeword_length__ = [3096, 3096, 4120, 3096] # 4*I + 24
+	__fic_punctured_codeword_length__ = [2304, 2304, 3072, 2304]
+
 	# energy dispersal
 	__energy_dispersal_fic_fibs_per_vector__ = [3, 3, 4, 3]
-	__energy_dispersal_fic_vector_length__   = [768, 768, 1024, 768]
+	__energy_dispersal_fic_vector_length__   = [768, 768, 1024, 768] # I
 	__prbs_bits__ = [0,0,0,0,0,1,1,1,1,0,1,1,1,1,1,0] # first 16 PRBS bits are given in the standard - can be used for another assert
 	
 	# transport mechanism parameters
@@ -230,14 +233,14 @@ class dab_parameters:
 			assert(self.__symbols_per_frame__[i]*self.__symbol_length__[i]+self.__ns_length__[i] == self.__frame_length__[i])
 			assert(self.__symbol_length__[i] == self.__fft_length__[i]+self.__cp_length__[i])
 			# block partitioning
-			assert(self.__num_carriers__[i] * 2 * self.__num_fic_syms__[i] / self.__num_cifs__[i] == self.__conv_enc_fic_out_length__[i]) 
+			assert(self.__num_carriers__[i] * 2 * self.__num_fic_syms__[i] / self.__num_cifs__[i] == self.__fic_punctured_codeword_length__[i])
 			# energy dispersal parameters
 			assert(self.__energy_dispersal_fic_fibs_per_vector__[i]*self.fib_bits == self.__energy_dispersal_fic_vector_length__[i])
-			assert(3*self.__energy_dispersal_fic_vector_length__[i] == self.__conv_enc_fic_out_length__[i])
+			assert(3*self.__energy_dispersal_fic_vector_length__[i] == self.__fic_punctured_codeword_length__[i]) # not sure - according to specification, code rate is only approximately 1/3, but seems to be exact
 
 		# sanity checks for PRBS sequence (energy dispersal)
 		assert(self.prbs(16) == self.__prbs_bits__) # bits from DAB standard
-		assert(prbs(511) == prbs(1022)[511:])       # sequence must repeat itself
+		assert(self.prbs(511) == self.prbs(1022)[511:])       # sequence must repeat itself
 		if verbose:
 			print "--> DAB parameters self check ok"
 
@@ -293,7 +296,7 @@ class dab_parameters:
 
 		# frequency (de)interleaving
 		a = self.fft_length/4-1
-		b = self.fft_length 
+		b = self.fft_length
 		A = [0]
 		for i in range(1,self.fft_length):
 			A.append((13*A[-1]+a)%b)
@@ -323,10 +326,20 @@ class dab_parameters:
 			self.frame_length = self.symbols_per_frame * self.symbol_length + self.ns_length
 
 		# block partitioning parameters (14.4)
-		self.num_fic_syms = self.__num_fic_syms__[mode-1]	
+		self.num_fic_syms = self.__num_fic_syms__[mode-1]
 
 		# convolutional coding (11)
-		self.conv_enc_fic_out_length = self.__conv_enc_fic_out_length__[mode-1]
+		self.fic_conv_codeword_length = self.__fic_conv_codeword_length__[mode-1] # length after puncturing
+
+		# unpuncturing sequence (assembled, such that it can be applied on a complete fib group)
+		# see 11.2 page 132
+		self.fic_punctured_codeword_length = self.__fic_punctured_codeword_length__[mode-1]
+		if mode in [1,2,4]:
+			self.assembled_fic_puncturing_sequence = 21*4*self.puncturing_vectors[16] + 3*4*self.puncturing_vectors[15] + self.puncturing_tail_vector
+		else:
+			self.assembled_fic_puncturing_sequence = 29*4*self.puncturing_vectors[16] + 3*4*self.puncturing_vectors[15] + self.puncturing_tail_vector
+		assert(len(self.assembled_fic_puncturing_sequence)==self.fic_conv_codeword_length)
+		assert(len(filter(lambda x: x==1, self.assembled_fic_puncturing_sequence))==self.fic_punctured_codeword_length)
 
 		# energy dispersal (10)
 		self.energy_dispersal_fic_fibs_per_vector =self. __energy_dispersal_fic_fibs_per_vector__[mode-1]
@@ -355,7 +368,7 @@ class dab_parameters:
 	def prbs(self, length):
 		"""
 		PRBS generated with the polynomial p(x) = x^9 + x^5 + 1
-		and initial state 111111111 
+		and initial state 111111111
 
 		@param length number of bits in the sequence
 		"""

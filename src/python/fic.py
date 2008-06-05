@@ -54,13 +54,11 @@ class fic_decode(gr.hier_block2):
 
 		# FIB selection and block partitioning
 		self.select_fics = dab_swig.select_vectors_vbb(self.dp.num_carriers/4, self.dp.num_fic_syms, 0)
-		self.repartition_fic = dab_swig.block_partitioning_vbb(self.dp.num_carriers/4, self.dp.conv_enc_fic_out_length, self.dp.num_fic_syms, self.dp.num_cifs)
+		self.repartition_fic = dab_swig.block_partitioning_vbb(self.dp.num_carriers/4, self.dp.fic_punctured_codeword_length, self.dp.num_fic_syms, self.dp.num_cifs)
 
-		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0))
-		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1))
 
 		# unpuncturing
-
+		self.unpuncture = dab_swig.unpuncture_vbb(self.dp.assembled_fic_puncturing_sequence)
 
 		# convolutional coding
 
@@ -71,3 +69,14 @@ class fic_decode(gr.hier_block2):
 		self.add_mod_2  = gr.xor_bb()
 		self.energy_s2v = gr.stream_to_vector(self.dp.energy_dispersal_fic_vector_length)
 		self.cut_into_fibs = dab_swig.block_partitioning_vbb(self.dp.energy_dispersal_fic_vector_length, self.dp.fib_bits, 1, self.dp.energy_dispersal_fic_fibs_per_vector)
+		
+		
+		# connect all
+		self.nullsink = gr.null_sink(gr.sizeof_char)
+		self.filesink = gr.file_sink(gr.sizeof_char, "debug/fic.dat")
+		
+		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_decode, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), self.filesink)
+		self.connect(self.prbs_src, (self.add_mod_2,1))
+		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1), (self.cut_into_fibs,1), self.nullsink)
+
+
