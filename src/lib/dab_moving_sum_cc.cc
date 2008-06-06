@@ -83,8 +83,8 @@ dab_moving_sum_cc::work (int noutput_items,
       gr_vector_void_star &output_items)
 {
   const gr_complex *in = (const gr_complex *) input_items[0];
-  const gr_complex *in_shifted = &in[d_length];
   gr_complex *out = (gr_complex *) output_items[0];
+
   for (int i=0; i < noutput_items; i++) {
     d_sum+=(gr_complexd)in[i+d_length]-(gr_complexd)in[i];
     out[i] = (gr_complex)d_sum;

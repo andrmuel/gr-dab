@@ -63,10 +63,10 @@ dab_moving_sum_ff::dab_moving_sum_ff (int length)
   : gr_sync_block ("moving_sum_ff",
        gr_make_io_signature (MIN_IN, MAX_IN, sizeof (float)),
        gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
-    d_sum(0)
+    d_length(length), d_sum(0)
 {
   assert(length>=0);
-  set_length(length);
+  set_history(length+1);
 }
 
 /*
