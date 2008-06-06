@@ -197,9 +197,22 @@ class dab_parameters:
 	]
 	puncturing_tail_vector =  [1,1,0,0, 1,1,0,0, 1,1,0,0, 1,1,0,0, 1,1,0,0, 1,1,0,0]  # V_T
 
-	# convolutional coding
+	# convolutional coding - 11.1, page 129/130
+	conv_code_generator_polynomials = [ 
+		0133,
+		0171,
+		0145,
+		0133
+	]
+	conv_code_encoder_initial_state = 0
+	conv_code_encoder_final_state = 0
+	conv_code_constraint_length = 7
+	conv_code_in_bits = 1
+	conv_code_add_bits_input = 6
+	conv_code_out_bits = 4
 	__fic_conv_codeword_length__ = [3096, 3096, 4120, 3096] # 4*I + 24
 	__fic_punctured_codeword_length__ = [2304, 2304, 3072, 2304]
+
 
 	# energy dispersal
 	__energy_dispersal_fic_fibs_per_vector__ = [3, 3, 4, 3]

@@ -34,6 +34,7 @@
 #include "dab_block_partitioning_vbb.h"
 #include "dab_puncture_vbb.h"
 #include "dab_unpuncture_vbb.h"
+#include "dab_magnitude_equalizer_vcc.h"
 #include <stdexcept>
 %}
 
@@ -409,5 +410,17 @@ class dab_unpuncture_vbb : public gr_sync_block
 {
   private:
     dab_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,magnitude_equalizer_vcc);
+
+dab_magnitude_equalizer_vcc_sptr dab_make_magnitude_equalizer_vcc (unsigned int vlen, float alpha = 0.01, unsigned int decimate = 1, float magnitude = 1);
+
+class dab_magnitude_equalizer_vcc : public gr_sync_block
+{
+  private:
+    dab_magnitude_equalizer_vcc (unsigned int vlen, float alpha = 0.01, unsigned int decimate = 1, float magnitude = 1);
 };
 

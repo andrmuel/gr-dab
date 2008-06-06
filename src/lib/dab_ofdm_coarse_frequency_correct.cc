@@ -125,7 +125,8 @@ dab_ofdm_coarse_frequency_correct::work (int noutput_items,
     frame_start_out[0] = 0;
     d_symbol_num++;
   }
-
+  
+  /* correct phase offset from removing cp */
   /* could be done after diff phasor, then it would be the same offset for each symbol; but its hardly much of an overhead */
   phase_offset_correct = gr_expj(-M_TWOPI*(float)d_delta_f*(float)d_cp_length/(float)d_fft_length * (float)d_symbol_num);
 

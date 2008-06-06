@@ -82,5 +82,4 @@ dab_qpsk_demapper_vcb::work (int noutput_items,
   }
   
   return noutput_items;
-  return noutput_items;
 }

@@ -254,7 +254,9 @@ class ofdm_demod(gr.hier_block2):
 		while self.run_interpolater_update_thread:
 			rate = self.rate_prober.level()
 			# print "resampling: "+str(rate)
-			self.resample.set_interp_ratio(rate/self.dp.sample_rate)
+			if rate!=0:
+				# print "resampling: "+str(rate)
+				self.resample.set_interp_ratio(rate/self.dp.sample_rate)
 			time.sleep(0.1)
 	
 	def stop(self):

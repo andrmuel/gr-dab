@@ -29,50 +29,57 @@
 #include "config.h"
 #endif
 
-#include <dab_correct_individual_phase_offset_vff.h>
+#include <dab_magnitude_equalizer_vcc.h>
 #include <gr_io_signature.h>
-#include <cmath>
-
-#define M_PI_HALF M_PI/2
-#define M_PI_QUARTER M_PI/4
 
 /*
- * Create a new instance of dab_correct_individual_phase_offset_vff and return
+ * Create a new instance of dab_magnitude_equalizer_vcc and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_correct_individual_phase_offset_vff_sptr 
-dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha)
+dab_magnitude_equalizer_vcc_sptr 
+dab_make_magnitude_equalizer_vcc (unsigned int vlen, float alpha, unsigned int decimate, float magnitude)
 {
-  return dab_correct_individual_phase_offset_vff_sptr (new dab_correct_individual_phase_offset_vff (vlen, alpha));
+  return dab_magnitude_equalizer_vcc_sptr (new dab_magnitude_equalizer_vcc (vlen, alpha, decimate, magnitude));
 }
 
-dab_correct_individual_phase_offset_vff::dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha) : 
-  gr_sync_block ("correct_individual_phase_offset_vff",
-             gr_make_io_signature (1, 1, sizeof(float)*vlen),
-             gr_make_io_signature (1, 1, sizeof(float)*vlen)),
-  d_vlen(vlen), d_alpha(alpha), d_debug(0)
+dab_magnitude_equalizer_vcc::dab_magnitude_equalizer_vcc (unsigned int vlen, float alpha, unsigned int decimate, float magnitude) : 
+  gr_sync_block ("magnitude_equalizer_vcc",
+             gr_make_io_signature (1, 1, sizeof(gr_complex)*vlen),
+             gr_make_io_signature (1, 1, sizeof(gr_complex)*vlen)),
+  d_vlen(vlen), d_alpha(alpha), d_decimate(decimate), d_magnitude(magnitude), d_equalisation_factors(), d_count(0)
 {
-  d_offset_estimation = new float[vlen];
+  d_equalisation_factors = new float[vlen];
   for (unsigned int i=0;i<vlen;i++)
-    d_offset_estimation[i] = 0;
+    d_equalisation_factors[i] = 1;
 }
 
-dab_correct_individual_phase_offset_vff::~dab_correct_individual_phase_offset_vff (void)
+dab_magnitude_equalizer_vcc::~dab_magnitude_equalizer_vcc (void)
 {
   delete [] d_equalisation_factors;
 }
 
 int 
-dab_correct_individual_phase_offset_vff::work (int noutput_items,
+dab_magnitude_equalizer_vcc::work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
-  float const *in = (const float *) input_items[0];
-  float *out = (float *) output_items[0];
+  gr_complex const *in = (const gr_complex *) input_items[0];
+  gr_complex *out = (gr_complex *) output_items[0];
 
-  float ival;
 
   for (int i=0;i<noutput_items;i++) {
+
+    d_count++;
+
+    /* update equalisation factors ? */
+    if (d_count==d_decimate) {
+      d_decimate = 0;
+      for (unsigned int j=0;i<;j++) {
+        <+do_something+>
+      }
+    }
+
+    /* equalize it ... */
     for (unsigned int j=0;j<d_vlen;j++) {
       ival=in[0];
       while (ival>M_PI_HALF) // poor man's modulo pi/2
@@ -85,17 +92,6 @@ dab_correct_individual_phase_offset_vff::work (int noutput_items,
       in++;
     }
   }
-
-  /* debug */
-  /*
-  d_debug++;
-  if (d_debug==10 || d_debug==50 || d_debug==100||d_debug==500) {
-    fprintf(stderr, "individual_phase_offset=[");
-    for (unsigned int i=0; i<d_vlen; i++) 
-      fprintf(stderr, "%f,",d_offset_estimation[i]);
-    fprintf(stderr, "];\n");
-  }
-  // */
 
   return noutput_items;
 }

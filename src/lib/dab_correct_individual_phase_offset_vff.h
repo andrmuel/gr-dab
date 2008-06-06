@@ -19,8 +19,8 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_DRIFT_VFF_H
-#define INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_DRIFT_VFF_H
+#ifndef INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_OFFSET_VFF_H
+#define INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_OFFSET_VFF_H
 
 #include <gr_sync_block.h>
 
@@ -85,4 +85,4 @@ class dab_correct_individual_phase_offset_vff : public gr_sync_block
               gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_DRIFT_VFF_H */
+#endif /* INCLUDED_DAB_CORRECT_INDIVIDUAL_PHASE_OFFSET_VFF_H */
