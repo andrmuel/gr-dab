@@ -108,7 +108,13 @@ dab_ofdm_coarse_frequency_correct::work (int noutput_items,
   unsigned int i;
   gr_complex phase_offset_correct;
 
-  /* partially adapted from gr_ofdm_frame_acquisition.cc */
+  /* partially adapted from gr_ofdm_frame_acquisition.cc 
+     however: 
+      - energy based offset frequency estimation instead of using the pilot symbol
+      - correlation in linear time instead of sqare
+      - only magnitude equalisation (phase equalisation is unnecessery, because of the diff_phasor later in the chain)
+      - calculation of the magnitude scale factors is done in the same step as the calculation of the energy for the freq. offset estimation -> very efficient :)
+  */
   const gr_complex *iptr = (const gr_complex *) input_items[0];
   const char *frame_start = (const char *) input_items[1];
   

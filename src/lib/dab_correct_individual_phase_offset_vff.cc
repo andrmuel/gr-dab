@@ -59,7 +59,7 @@ dab_correct_individual_phase_offset_vff::dab_correct_individual_phase_offset_vff
 
 dab_correct_individual_phase_offset_vff::~dab_correct_individual_phase_offset_vff (void)
 {
-  delete [] d_equalisation_factors;
+  delete [] d_offset_estimation;
 }
 
 int 

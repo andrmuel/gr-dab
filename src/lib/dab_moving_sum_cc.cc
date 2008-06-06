@@ -63,10 +63,10 @@ dab_moving_sum_cc::dab_moving_sum_cc (int length)
   : gr_sync_block ("moving_sum_cc",
        gr_make_io_signature (MIN_IN, MAX_IN, sizeof (gr_complex)),
        gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (gr_complex))),
-    d_sum(0)
+    d_length(length), d_sum(0)
 {
   assert(length>=0);
-  set_length(length);
+  set_history(length+1);
 }
 
 /*
@@ -83,6 +83,7 @@ dab_moving_sum_cc::work (int noutput_items,
       gr_vector_void_star &output_items)
 {
   const gr_complex *in = (const gr_complex *) input_items[0];
+  const gr_complex *in_shifted = &in[d_length];
   gr_complex *out = (gr_complex *) output_items[0];
   for (int i=0; i < noutput_items; i++) {
     d_sum+=(gr_complexd)in[i+d_length]-(gr_complexd)in[i];

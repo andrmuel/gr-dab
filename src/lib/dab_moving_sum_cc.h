@@ -58,7 +58,6 @@ private:
  public:
   ~dab_moving_sum_cc ();  // public destructor
   int length() const {return d_length;}
-  void set_length(int length) {set_history(length+1); d_length=length;}
   void reset() {d_sum=0;}
 
   // Where all the action really happens
