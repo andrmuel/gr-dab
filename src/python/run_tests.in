@@ -34,7 +34,7 @@ export PYTHONPATH
 #
 
 ok=yes
-for file in @srcdir@/qa_*.py
+for file in @srcdir@/qa/qa_*.py
 do
   if ! $file
   then
