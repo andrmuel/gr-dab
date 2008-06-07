@@ -70,7 +70,7 @@ _dab_swig_la_SOURCES = 			        \
 	dab_ofdm_remove_first_symbol_vcc.cc     \
 	dab_estimate_sample_rate_bf.cc          \
 	dab_ofdm_ffs_sample.cc                  \
-	dab_ofdm_ffs_sample_arg.cc              \
+	dab_ofdm_ffe_all_in_one.cc              \
 	dab_fractional_interpolator_triggered_update_cc.cc \
 	dab_frequency_interleaver_vcc.cc        \
 	dab_qpsk_mapper_vbc.cc                  \
@@ -112,7 +112,7 @@ grinclude_HEADERS =			        \
 	dab_ofdm_remove_first_symbol_vcc.h      \
 	dab_estimate_sample_rate_bf.h           \
 	dab_ofdm_ffs_sample.h                   \
-	dab_ofdm_ffs_sample_arg.h               \
+	dab_ofdm_ffe_all_in_one.h               \
 	dab_fractional_interpolator_triggered_update_cc.h \
 	dab_frequency_interleaver_vcc.h         \
 	dab_qpsk_mapper_vbc.h                   \
