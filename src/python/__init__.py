@@ -1,5 +1,6 @@
 # the C++ blocks
-from gnuradio.dab_swig import *
+import dab_swig as blocks
 # Python blocks
-from ofdm import *
-from parameters import *
+from ofdm import ofdm_mod, ofdm_demod
+from parameters import dab_parameters, receiver_parameters
+from fic import fic_decode

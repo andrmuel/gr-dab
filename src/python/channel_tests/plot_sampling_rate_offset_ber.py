@@ -10,7 +10,6 @@
 Simulate channel with sampling frequency offset
 """
 
-from gnuradio import dab
 import math, random, pylab
 import dab_tb, ber
 

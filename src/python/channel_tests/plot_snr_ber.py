@@ -10,7 +10,6 @@
 Simulate noise channel to evaluate BER vs SNR
 """
 
-from gnuradio import dab
 import math, random, pylab
 import dab_tb, ber
 

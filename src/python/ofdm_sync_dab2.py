@@ -23,10 +23,10 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, dab_swig
+from gnuradio import gr
+import dab_swig, detect_null
 import sys
 from math import pi
-import detect_null
 
 class ofdm_sync_dab(gr.hier_block2):
 	"""

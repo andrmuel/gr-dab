@@ -23,7 +23,8 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, trellis, dab_swig
+from gnuradio import gr, trellis
+import dab_swig
 
 """
 DAB FIC layer

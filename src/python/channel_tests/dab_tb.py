@@ -37,7 +37,7 @@ class dab_ofdm_testbench(gr.top_block):
 		self.source    = gr.vector_source_b(self.random_bytes, False)
 		self.trig      = gr.vector_source_b(self.frame_start, False)
 		if self.ber_sink:
-			self.sink = dab.measure_ber_b()
+			self.sink = dab.blocks.measure_ber_b()
 		else:
 			self.sink = gr.vector_sink_b()
 		self.trig_sink = gr.null_sink(gr.sizeof_char)

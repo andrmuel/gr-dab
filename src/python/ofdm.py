@@ -27,11 +27,11 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, dab_swig
+from gnuradio import gr
+import dab_swig
 import ofdm_sync_dab, ofdm_sync_dab2
 import detect_null
-import threading
-import time
+import threading, time
 from math import pi
 
 """

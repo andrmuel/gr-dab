@@ -36,23 +36,37 @@ grdabpython_PYTHON =   \
 	ofdm_sync_dab.py       \
 	ofdm_sync_dab2.py      \
 	detect_null.py         \
-	parameters.py          \
-	estimate_samplerate.py
+	parameters.py
 
-noinst_PYTHON = 			\
+bin_SCRIPTS = \
+	usrp_dab_rx.py \
+	usrp_dab_tx.py \
+	dab_rx_constellation.py
+
+noinst_PYTHON =       \
+	qa_block_partitioning_vbb.py                   \
+	qa_concatenate_signals.py                      \
 	qa_correct_individual_phase_offset_vff.py      \
 	qa_diff_phasor_vcc.py                          \
 	qa_estimate_sample_rate.py                     \
 	qa_fractional_interpolator_triggered_update.py \
 	qa_frequency_interleaving.py                   \
 	qa_insert_null_symbol.py                       \
+	qa_measure_ber.py                              \
+	qa_measure_processing_rate.py                  \
+	qa_module_ff.py                                \
 	qa_moving_sum.py                               \
 	qa_ofdm_coarse_frequency_correct.py            \
+	qa_ofdm_ffe_all_in_one.py                      \
 	qa_ofdm_ffs_sample.py                          \
 	qa_ofdm_insert_pilot.py                        \
 	qa_ofdm_move_and_insert_zero.py                \
 	qa_ofdm_remove_first_symbol.py                 \
 	qa_ofdm_sampler.py                             \
+	qa_puncture_vbb.py                             \
 	qa_qpsk_demapper_vcb.py                        \
 	qa_qpsk_mapper_vbc.py                          \
-	qa_sum_phasor_trig_vcc.py
+	qa_select_vectors_vbb.py                       \
+	qa_sum_elements_vff.py                         \
+	qa_sum_phasor_trig_vcc.py                      \
+	qa_unpuncture_vbb.py

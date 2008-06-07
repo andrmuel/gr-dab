@@ -25,8 +25,8 @@ include $(top_srcdir)/Makefile.common
 # This usually ends up at:
 #   ${prefix}/lib/python${python_version}/site-packages/gnuradio
 
-ourpythondir = $(grpythondir)
-ourlibdir    = $(grpyexecdir)
+ourpythondir = $(grpythondir)/dab
+ourlibdir    = $(grpyexecdir)/dab
 
 AM_CPPFLAGS = $(STD_DEFINES_AND_INCLUDES) $(PYTHON_CPPFLAGS) $(WITH_INCLUDES)
 
