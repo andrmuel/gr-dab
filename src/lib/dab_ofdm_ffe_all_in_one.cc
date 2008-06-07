@@ -49,6 +49,7 @@ dab_ofdm_ffe_all_in_one::dab_ofdm_ffe_all_in_one (unsigned int symbol_length, un
              gr_make_io_signature (1, 1, sizeof(float))),
   d_symbol_length(symbol_length), d_fft_length(fft_length), d_num_symbols(num_symbols), d_alpha(alpha), d_sample_rate(sample_rate), d_cur_symbol(num_symbols), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0), d_estimated_error_per_sample(0)
 {
+  assert(symbol_length<=2*fft_length); /* cyclic prefix can not be longer than fft_length .. */
   set_history(symbol_length+1);
 }
 
@@ -57,9 +58,8 @@ dab_ofdm_ffe_all_in_one::calc_ffe_estimate(const gr_complex *in) {
   gr_complex sum = 0;
   int cp_length = d_symbol_length - d_fft_length;
 
-  for (int i=-cp_length;i<0;i++) {
+  for (int i=-cp_length;i<0;i++)
     sum += in[i-d_fft_length] * conj(in[i]);
-  }
 
   return gr_fast_atan2f(sum);
 }
@@ -87,8 +87,6 @@ dab_ofdm_ffe_all_in_one::work (int noutput_items,
       d_ffs_error_sum = 0;
     } 
     
-    d_cur_sample++;
-
     if (d_cur_sample==d_symbol_length) { /* new symbol starts */
       d_cur_sample = 0;
 
@@ -139,6 +137,8 @@ dab_ofdm_ffe_all_in_one::work (int noutput_items,
 
       d_cur_symbol++;
     } 
+
+    d_cur_sample++;
 
     *optr++ = d_estimated_error_per_sample;
     iptr++;

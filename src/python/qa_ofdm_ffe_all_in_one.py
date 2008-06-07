@@ -3,6 +3,7 @@
 from gnuradio import gr, gr_unittest
 import dab_swig
 import cmath
+from math import pi
 
 class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 	"""
@@ -18,24 +19,23 @@ class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 		self.tb = None
 
 	def test_001_ofdm_ffs_sample(self):
-		symbol_length = 3
+		symbol_length = 5
 		num_symbols = 2
-		fft_length = 2
+		fft_length = 3
 		alpha = 0.1
-		src_data0 = (0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0)
-		src_data0 = (0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0,1,2,3,0)
-		src_data0 = [cmath.exp(1j*x) for x in src_data0]
-		src_data1 = (0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0)
-		a = (3./2) / fft_length
-		b = 0.9*a + (0.1*3./2) / fft_length
-		expected_result = (0,0,0,0,0,0,0,a,a,a,a,a,a,a,a,a,a,a,a,b,b)
+		src_data0 = [77*cmath.exp(2j*pi*x/20) for x in range(0,20)]
+		src_data0[4] = 100 # should not matter, as this area of the symbol is not evaluated
+		src_data0[12:19] = [100] * 7 # should not matter, as only the first two symbols are evaluated
+		src_data1 =       (0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+		d = -2*pi/20 # phase diff between two consective samples
+		expected_result = (0,0,0,0,0,0,0,0,0,0,0,0,d,d,d,d,d,d,d,d)
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
-		ofdm_ffs_sample = dab_swig.ofdm_ffs_sample_arg(symbol_length, fft_length, num_symbols, alpha, 10)
+		ffe = dab_swig.ofdm_ffe_all_in_one(symbol_length, fft_length, num_symbols, alpha, 10)
 		dst0 = gr.vector_sink_f()
-		self.tb.connect(src0, (ofdm_ffs_sample,0))
-		self.tb.connect(src1, (ofdm_ffs_sample,1))
-		self.tb.connect(ofdm_ffs_sample, dst0)
+		self.tb.connect(src0, (ffe,0))
+		self.tb.connect(src1, (ffe,1))
+		self.tb.connect(ffe, dst0)
 		self.tb.run()
 		result_data0 = dst0.data()
 		# print expected_result
