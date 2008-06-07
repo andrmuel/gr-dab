@@ -403,7 +403,7 @@ class receiver_parameters:
 
 	# OFDM stuff
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
-	__symbols_for_ffs_estimation__ = [10,10,20,10] # number of symbols to evaluate for fine frequency error estimation
+	__symbols_for_ffs_estimation__ = [8,8,16,8] # number of symbols to evaluate for fine frequency error estimation
 	ffs_alpha = 0.5
 
 	# phase variance estimation
