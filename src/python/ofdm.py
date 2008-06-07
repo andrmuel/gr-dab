@@ -231,10 +231,8 @@ class ofdm_demod(gr.hier_block2):
 			self.connect((self.remove_pilot,0), self.deinterleave)
 		if self.rp.softbits:
 			if verbose: print "--> using soft bits"
-			self.softbit_interlaver = gr.interleave(gr.sizeof_float)
-			self.connect(self.deinterleave, gr.vector_to_stream(gr.sizeof_gr_complex, self.dp.num_carriers), gr.complex_to_real(), (self.softbit_interlaver,0))
-			self.connect(self.deinterleave, gr.vector_to_stream(gr.sizeof_gr_complex, self.dp.num_carriers), gr.complex_to_imag(), (self.softbit_interlaver,1))
-			self.connect(self.softbit_interlaver, gr.stream_to_vector(gr.sizeof_float, self.dp.num_carriers*2), (self,0))
+			self.softbit_interlaver = dab_swig.complex_to_interleaved_float_vcf(self.dp.num_carriers)
+			self.connect(self.deinterleave, self.softbit_interlaver, (self,0))
 		else:
 			self.connect(self.deinterleave, self.demapper, (self,0))
 
