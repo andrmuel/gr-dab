@@ -404,18 +404,19 @@ class receiver_parameters:
 	# OFDM stuff
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
 	__symbols_for_ffs_estimation__ = [8,8,16,8] # number of symbols to evaluate for fine frequency error estimation
+	__symbols_for_magnitude_equalization__ = [3,3,6,3] # how many symbols should be used to estimate magnitude equalizer?
 	ffs_alpha = 0.5
 
 	# phase variance estimation
 	phase_var_estimate_alpha = 0.01
-	phase_var_estimate_downsample = 50 # 50 -> uses about 1% of the CPU time
+	phase_var_estimate_downsample = 100 # 50 -> uses about 1% of the CPU time
 
 	# for USRP
 	usrp_ffc_retune_frequency = 5  # how often should the USRP be retuned at most?
 	usrp_ffc_min_deviation = 5 # how far off does the FFE have to be to retune the USRP?
 	usrp_ffc_adapt_factor = 0.5 # how much to adapt the correction?
 
-	def __init__(self, mode, sample_rate=2048000, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, correct_ffe=True, verbose=True):
+	def __init__(self, mode, sample_rate=2048000, softbits=False, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=1, correct_ffe=True, equalize_magnitude=True, verbose=True):
 		"""
 		Create new instance.
 		
@@ -433,13 +434,16 @@ class receiver_parameters:
 
 		self.set_mode(mode)
 		self.sample_rate = sample_rate
+		self.softbits = softbits
 		self.input_fft_filter = input_fft_filter
 		self.autocorrect_sample_rate = autocorrect_sample_rate
 		self.sample_rate_correction_factor = sample_rate_correction_factor
 		self.correct_ffe = correct_ffe
+		self.equalize_magnitude = equalize_magnitude
 		self.verbose = verbose
 
 	def set_mode(self, mode):
 		self.mode = mode
 		self.cp_gap = self.__cp_gap__[mode-1]
 		self.symbols_for_ffs_estimation = self.__symbols_for_ffs_estimation__[mode-1]
+		self.symbols_for_magnitude_equalization = self.__symbols_for_magnitude_equalization__[mode-1]

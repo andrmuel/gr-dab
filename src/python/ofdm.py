@@ -133,9 +133,14 @@ class ofdm_demod(gr.hier_block2):
 		self.rp = rp = rx_params
 		self.verbose = verbose
 
-		gr.hier_block2.__init__(self,"ofdm_demod",
-		                        gr.io_signature (1, 1, gr.sizeof_gr_complex), # input signature
-					gr.io_signature2(2, 2, gr.sizeof_char*self.dp.num_carriers/4, gr.sizeof_char)) # output signature
+		if self.rp.softbits:
+			gr.hier_block2.__init__(self,"ofdm_demod",
+						gr.io_signature (1, 1, gr.sizeof_gr_complex), # input signature
+						gr.io_signature2(2, 2, gr.sizeof_float*self.dp.num_carriers*2, gr.sizeof_char)) # output signature
+		else:
+			gr.hier_block2.__init__(self,"ofdm_demod",
+						gr.io_signature (1, 1, gr.sizeof_gr_complex), # input signature
+						gr.io_signature2(2, 2, gr.sizeof_char*self.dp.num_carriers/4, gr.sizeof_char)) # output signature
 
 		
 
@@ -193,12 +198,13 @@ class ofdm_demod(gr.hier_block2):
 		# remove pilot symbol
 		self.remove_pilot = dab_swig.ofdm_remove_first_symbol_vcc(dp.num_carriers)
 
+		# magnitude equalisation
+		if self.rp.equalize_magnitude:
+			if verbose: print "--> magnitude equalization enabled"
+			self.equalizer = dab_swig.magnitude_equalizer_vcc(dp.num_carriers, rp.symbols_for_magnitude_equalization)
+
 		# frequency deinterleaving
 		self.deinterleave = dab_swig.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
-
-		# correct frequency dependent phase offset
-		# self.correct_phase_offset = dab_swig.correct_individual_phase_offset_vff(dp.num_carriers,0.01)
-		self.correct_phase_offset = gr.add_const_vff([0]*dp.num_carriers)
 		
 		# symbol demapping
 		self.demapper = dab_swig.qpsk_demapper_vcb(dp.num_carriers)
@@ -218,11 +224,26 @@ class ofdm_demod(gr.hier_block2):
 			self.connect(self.input2, self.sync)
 
 		# data stream
-		self.connect((self.sync, 0), (self.sampler, 0), self.fft, (self.cfs, 0), self.phase_diff, 
-				(self.remove_pilot,0), self.deinterleave, self.demapper, (self,0))
+		self.connect((self.sync, 0), (self.sampler, 0), self.fft, (self.cfs, 0), self.phase_diff, (self.remove_pilot,0))
+		if self.rp.equalize_magnitude:
+			self.connect((self.remove_pilot,0), (self.equalizer,0), self.deinterleave)
+		else:
+			self.connect((self.remove_pilot,0), self.deinterleave)
+		if self.rp.softbits:
+			if verbose: print "--> using soft bits"
+			self.softbit_interlaver = gr.interleave(gr.sizeof_float)
+			self.connect(self.deinterleave, gr.vector_to_stream(gr.sizeof_gr_complex, self.dp.num_carriers), gr.complex_to_real(), (self.softbit_interlaver,0))
+			self.connect(self.deinterleave, gr.vector_to_stream(gr.sizeof_gr_complex, self.dp.num_carriers), gr.complex_to_imag(), (self.softbit_interlaver,1))
+			self.connect(self.softbit_interlaver, gr.stream_to_vector(gr.sizeof_float, self.dp.num_carriers*2), (self,0))
+		else:
+			self.connect(self.deinterleave, self.demapper, (self,0))
 
 		# control stream
-		self.connect((self.sync, 1), (self.sampler, 1), (self.cfs, 1), (self.remove_pilot,1), (self,1))
+		self.connect((self.sync, 1), (self.sampler, 1), (self.cfs, 1), (self.remove_pilot,1))
+		if self.rp.equalize_magnitude:
+			self.connect((self.remove_pilot,1), (self.equalizer,1), (self,1))
+		else:
+			self.connect((self.remove_pilot,1), (self,1))
 			
 		# calculate an estimate of the SNR
 		self.phase_var_decim   = gr.keep_one_in_n(gr.sizeof_gr_complex*self.dp.num_carriers, self.rp.phase_var_estimate_downsample)

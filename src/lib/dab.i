@@ -35,6 +35,7 @@
 #include "dab_puncture_vbb.h"
 #include "dab_unpuncture_vbb.h"
 #include "dab_magnitude_equalizer_vcc.h"
+#include "dab_complex_to_interleaved_float_vcf.h"
 #include <stdexcept>
 %}
 
@@ -420,5 +421,17 @@ class dab_magnitude_equalizer_vcc : public gr_sync_block
 {
   private:
     dab_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,complex_to_interleaved_float_vcf);
+
+dab_complex_to_interleaved_float_vcf_sptr dab_make_complex_to_interleaved_float_vcf (unsigned int length);
+
+class dab_complex_to_interleaved_float_vcf : public gr_sync_block
+{
+  private:
+    dab_complex_to_interleaved_float_vcf (unsigned int length);
 };
 

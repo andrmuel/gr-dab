@@ -21,17 +21,30 @@ class usrp_dab_rx(gr.top_block):
         
 		
 		parser = OptionParser(option_class=eng_option, usage="%prog: [options] output-filename")
+  		parser.add_option("-m", "--dab-mode", type="int", default=1,
+        	     	help="DAB mode [default=%default]")
+		parser.add_option("-F", "--filter-input", action="store_true", default=False,
+                          help="Enable FFT filter at input")
+		parser.add_option('-c', '--correct-ffe', action="store_true", default=False,
+		     help="do fine frequency correction")
+		parser.add_option('-u', '--correct-ffe-usrp', action="store_true", default=False,
+		     help="do fine frequency correction by retuning the USRP instead of in software")
+		parser.add_option('-e', '--equalize-magnitude', action="store_true", default=False,
+		     help="do magnitude equalization")
+  		parser.add_option("-s", "--resample-fixed", type="eng_float", default=1,
+			help="resample by a fixed factor (fractional interpolation)")
+		parser.add_option("-S", "--autocorrect-sample-rate", action="store_true", default=False,
+                          help="Estimate sample rate offset and resample (dynamic fractional interpolation)")
 		parser.add_option("-R", "--rx-subdev-spec", type="subdev", default=(0, 0),
 		     help="select USRP Rx side A or B [default=A]")
 		parser.add_option("-f", "--freq", type="eng_float", default=227.36e6,
 		     help="set frequency to FREQ [default=%default]")
+		parser.add_option("-r", "--sample-rate", type="int", default=2000000,
+		     help="set sample rate to SAMPLE_RATE [default=%default]")
 		parser.add_option("-g", "--rx-gain", type="eng_float", default=None,
 		     help="set receive gain in dB (default is midpoint)")
-		parser.add_option('-u', '--correct-ffe-usrp', action="store_true", default=False,
-		     help="do fine frequency correction by retuning the USRP instead of in software")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
 		     help="verbose output")
-
         	(options, args) = parser.parse_args ()
 		if len(args)!=1:
 			parser.print_help()
@@ -45,8 +58,8 @@ class usrp_dab_rx(gr.top_block):
 		decim = 32
 		self.verbose = options.verbose
 
-		self.dab_params = dab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=1, sample_rate=2000000, input_fft_filter=False, correct_ffe = not options.correct_ffe_usrp)
+		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=options.sample_rate, verbose=options.verbose)
+		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
 
 		self.src = usrp.source_c(decim_rate=decim)
         	self.src.set_mux(usrp.determine_rx_mux_value(self.src, options.rx_subdev_spec))

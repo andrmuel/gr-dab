@@ -31,13 +31,13 @@ typedef boost::shared_ptr<dab_magnitude_equalizer_vcc> dab_magnitude_equalizer_v
 dab_magnitude_equalizer_vcc_sptr dab_make_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols);
 
 /*!
- * \brief Removes the first symbol of each frame
+ * \brief equalization for each individual subcarrion
  * \ingroup DAB
  * \param vlen length of the symbol vectors
+ * \param num_symbols how many symbols to use to estimate the magnitude
  *
  * input: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
  * output: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
- *
  *
  * this block introduces a delay of num_symbols-1 on both the data and trigger signal
  */

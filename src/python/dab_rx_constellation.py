@@ -34,6 +34,8 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		     help="do fine frequency correction")
 		parser.add_option('-u', '--correct-ffe-usrp', action="store_true", default=False,
 		     help="do fine frequency correction by retuning the USRP instead of in software")
+		parser.add_option('-e', '--equalize-magnitude', action="store_true", default=False,
+		     help="do magnitude equalization")
   		parser.add_option("-s", "--resample-fixed", type="eng_float", default=1,
 			help="resample by a fixed factor (fractional interpolation)")
 		parser.add_option("-S", "--autocorrect-sample-rate", action="store_true", default=False,
@@ -51,7 +53,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		(options, args) = parser.parse_args()
 
 		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=options.sample_rate, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe)
+		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
 		
 		self.decim = 32
 		self.verbose = options.verbose
@@ -87,14 +89,15 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		self.scope = scopesink2.constellation_sink(self.panel, title="DAB constellation sink", sample_rate=self.dab_params.sample_rate, frame_decim=2)
 		self.scope.win.set_marker("plus")
 
-		self.sink = gr.null_sink(gr.sizeof_char*self.dab_params.num_carriers/4)
+		# self.sink = gr.null_sink(gr.sizeof_char*self.dab_params.num_carriers/4)
 		self.trigsink = gr.null_sink(gr.sizeof_char)
+		self.sink = gr.null_sink(gr.sizeof_float*self.dab_params.num_carriers*2)
 
 		self.connect(self.src, self.demod, self.sink)
 		self.connect((self.demod,1), self.trigsink)
         
 		# build GUI
-		self.connect(self.demod.remove_pilot, self.v2s, self.scope)
+		self.connect(self.demod.deinterleave, self.v2s, self.scope)
 		vbox.Add(self.scope.win, 10, wx.EXPAND)
 		
 		# retune USRP to correct FFE?
