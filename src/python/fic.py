@@ -46,7 +46,7 @@ class fic_decode(gr.hier_block2):
 		@param dab_params DAB parameter object (dab.parameters.dab_parameters)
 		"""
 		gr.hier_block2.__init__(self,"fic",
-					gr.io_signature2(2, 2, gr.sizeof_char*dab_params.num_carriers/4, gr.sizeof_char)) # input
+					gr.io_signature2(2, 2, gr.sizeof_char*dab_params.num_carriers/4, gr.sizeof_char), # input
 					gr.io_signature(0, 0, 0)) # output signature
 
 		self.dp = dab_params

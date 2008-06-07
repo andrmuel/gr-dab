@@ -28,7 +28,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr, dab_swig
-import ofdm_sync_dab
+import ofdm_sync_dab, ofdm_sync_dab2
 import detect_null
 import threading
 import time
@@ -176,7 +176,7 @@ class ofdm_demod(gr.hier_block2):
 				self.resample = gr.fractional_interpolator_cc(0, self.rp.sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
-		self.sync = ofdm_sync_dab.ofdm_sync_dab(self.dp, self.rp, debug)
+		self.sync = ofdm_sync_dab2.ofdm_sync_dab(self.dp, self.rp, debug)
 
 		# ofdm symbol sampler
 		self.sampler = dab_swig.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)

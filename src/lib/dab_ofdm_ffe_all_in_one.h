@@ -19,19 +19,19 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_OFDM_FFS_SAMPLE_ARG_H
-#define INCLUDED_DAB_OFDM_FFS_SAMPLE_ARG_H
+#ifndef INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H
+#define INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H
 
 #include <gr_sync_block.h>
 
-class dab_ofdm_ffs_sample_arg;
+class dab_ofdm_ffe_all_in_one;
 
-typedef boost::shared_ptr<dab_ofdm_ffs_sample_arg> dab_ofdm_ffs_sample_arg_sptr;
+typedef boost::shared_ptr<dab_ofdm_ffe_all_in_one> dab_ofdm_ffe_all_in_one_sptr;
 
-dab_ofdm_ffs_sample_arg_sptr dab_make_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
+dab_ofdm_ffe_all_in_one_sptr dab_make_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
 
 /*!
- * \brief samples FFS error estimation at the correct time and averages it - does the complex_to_arg calculation after the sampling
+ * \brief calculates fine frequency error estimation and averages it
  * \ingroup DAB
  * \param symbol_length number of samples in an OFDM symbol
  * \param fft_length number of samples in an OFDM symbol without the cyclic prefix
@@ -41,16 +41,19 @@ dab_ofdm_ffs_sample_arg_sptr dab_make_ofdm_ffs_sample_arg (unsigned int symbol_l
  *
  * input: port 0: complex - actual data; port 1: byte - trigger signal indicating the start of a frame
  * output: float fine frequency offset estimation (in radian per sample)
+ *
+ * this is an all in one version of ffe in ofdm_sync_dab.py, because the flow graph does not allow to only calculate the estimation when its needed
  */
-class dab_ofdm_ffs_sample_arg : public gr_sync_block
+class dab_ofdm_ffe_all_in_one : public gr_sync_block
 {
   private:
-    // The friend declaration allows dab_make_ofdm_ffs_sample_arg to
+    // The friend declaration allows dab_make_ofdm_ffe_all_in_one to
     // access the private constructor.
 
-    friend dab_ofdm_ffs_sample_arg_sptr dab_make_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
+    friend dab_ofdm_ffe_all_in_one_sptr dab_make_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
 
-    dab_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);    // private constructor
+    float calc_ffe_estimate(const gr_complex *iptr);
+    dab_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);    // private constructor
 
     unsigned int d_symbol_length;   // length of a symbol in samples
     unsigned int d_fft_length;      // length of a symbol without cyclic prefix in samples
@@ -72,4 +75,4 @@ class dab_ofdm_ffs_sample_arg : public gr_sync_block
               gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_OFDM_FFS_SAMPLE_ARG_H */
+#endif /* INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H */

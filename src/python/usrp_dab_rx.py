@@ -97,7 +97,7 @@ class usrp_dab_rx(gr.top_block):
 			q = int(50*(math.sqrt(var)/(math.pi/2)))
 			print "--> Phase variance: " + str(var) +"\n"
 			print "--> Signal quality: " + '='*(50-q) + '>' + '-'*q + "\n"
-			time.sleep(0.1)
+			time.sleep(0.3)
 	
 	def correct_ffe(self):
 		while self.run_correct_ffe_thread:

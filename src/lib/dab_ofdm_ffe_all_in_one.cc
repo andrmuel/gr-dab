@@ -29,32 +29,44 @@
 #include "config.h"
 #endif
 
-#include <dab_ofdm_ffs_sample_arg.h>
+#include <dab_ofdm_ffe_all_in_one.h>
 #include <gr_io_signature.h>
 #include <gr_math.h>
 
 /*
- * Create a new instance of dab_ofdm_ffs_sample_arg and return
+ * Create a new instance of dab_ofdm_ffe_all_in_one and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_ofdm_ffs_sample_arg_sptr 
-dab_make_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
+dab_ofdm_ffe_all_in_one_sptr 
+dab_make_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
 {
-  return dab_ofdm_ffs_sample_arg_sptr (new dab_ofdm_ffs_sample_arg (symbol_length, fft_length, num_symbols, alpha, sample_rate));
+  return dab_ofdm_ffe_all_in_one_sptr (new dab_ofdm_ffe_all_in_one (symbol_length, fft_length, num_symbols, alpha, sample_rate));
 }
 
-dab_ofdm_ffs_sample_arg::dab_ofdm_ffs_sample_arg (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate) : 
-  gr_sync_block ("ofdm_ffs_sample_arg",
+dab_ofdm_ffe_all_in_one::dab_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate) : 
+  gr_sync_block ("ofdm_ffe_all_in_one",
              gr_make_io_signature2 (2, 2, sizeof(gr_complex), sizeof(char)),
              gr_make_io_signature (1, 1, sizeof(float))),
   d_symbol_length(symbol_length), d_fft_length(fft_length), d_num_symbols(num_symbols), d_alpha(alpha), d_sample_rate(sample_rate), d_cur_symbol(num_symbols), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0), d_estimated_error_per_sample(0)
 {
+  set_history(symbol_length+1);
+}
+
+float 
+dab_ofdm_ffe_all_in_one::calc_ffe_estimate(const gr_complex *in) {
+  gr_complex sum = 0;
+  int cp_length = d_symbol_length - d_fft_length;
+
+  for (int i=-cp_length;i<0;i++) {
+    sum += in[i-d_fft_length] * conj(in[i]);
+  }
+
+  return gr_fast_atan2f(sum);
 }
 
 
-
 int 
-dab_ofdm_ffs_sample_arg::work (int noutput_items,
+dab_ofdm_ffe_all_in_one::work (int noutput_items,
       gr_vector_const_void_star &input_items,
       gr_vector_void_star &output_items)
 {
@@ -62,6 +74,10 @@ dab_ofdm_ffs_sample_arg::work (int noutput_items,
   const char *trigger = (const char *) input_items[1];
   float *optr = (float *) output_items[0];
 
+  /* go to the first new sample (we get d_symbol_length old samples because of set_history() above) */
+  iptr += d_symbol_length;
+  trigger += d_symbol_length;
+  
   float new_estimate;
 
   for (int i=0; i<noutput_items; i++) {
@@ -77,7 +93,8 @@ dab_ofdm_ffs_sample_arg::work (int noutput_items,
       d_cur_sample = 0;
 
       if (d_cur_symbol<d_num_symbols) {
-        new_estimate = gr_fast_atan2f(*iptr);
+        // new_estimate = gr_fast_atan2f(*iptr);
+        new_estimate = calc_ffe_estimate(iptr);
 
         if (d_cur_symbol>0) {
           if (d_ffs_error_sum < 0 && new_estimate > 0 && new_estimate - d_ffs_error_sum/d_cur_symbol > M_PI)
@@ -101,10 +118,10 @@ dab_ofdm_ffs_sample_arg::work (int noutput_items,
          * note: if there is an offset of one subcarrier bandwidth, the phase
          * offset in fft_length samples is 2pi */
         if (d_estimated_error < 0 && d_ffs_error_sum > 0 && d_ffs_error_sum - d_estimated_error > M_PI) {
-          fprintf(stderr, "ofdm_ffs_sample_arg: switch detected: neg -> pos\n");
+          fprintf(stderr, "ofdm_ffe_all_in_one: switch detected: neg -> pos\n");
           d_estimated_error += 2*M_PI; 
         } else if (d_estimated_error > 0 && d_ffs_error_sum < 0 && d_estimated_error - d_ffs_error_sum > M_PI) {
-          fprintf(stderr, "ofdm_ffs_sample_arg: switch detected: pos -> neg\n");
+          fprintf(stderr, "ofdm_ffe_all_in_one: switch detected: pos -> neg\n");
           d_estimated_error -= 2*M_PI; 
         }
 
@@ -117,7 +134,7 @@ dab_ofdm_ffs_sample_arg::work (int noutput_items,
           d_estimated_error = d_alpha*d_ffs_error_sum + (1-d_alpha)*d_estimated_error; /* slow adjustment */
 
         d_estimated_error_per_sample = d_estimated_error / (float)d_fft_length;
-        fprintf(stderr, "ofdm_ffs_sample_arg: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error_per_sample*d_sample_rate/(2*M_PI));
+        fprintf(stderr, "ofdm_ffe_all_in_one: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error_per_sample*d_sample_rate/(2*M_PI));
       }
 
       d_cur_symbol++;
