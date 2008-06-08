@@ -25,13 +25,12 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, blks2
+from gnuradio import gr
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 import ofdm
 import parameters
 import random
-import os
 
 class test_ofdm(gr.top_block):
 	"""
@@ -79,10 +78,6 @@ class test_ofdm(gr.top_block):
 			filename = args[0]
 			if options.verbose: print "-> using samples from file " + filename
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
-
-		
-		if options.usrp_source:
-			self.resample = blks2.rational_resampler_ccc(128,125) #2048:2000
 
 		self.dab_demod = ofdm.ofdm_demod(dp, rp, debug=options.debug, verbose=options.verbose)
 		
