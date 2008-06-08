@@ -87,7 +87,7 @@ _dab_swig_la_SOURCES = 			        \
 	dab_select_vectors.cc                   \
 	dab_repartition_vectors.cc              \
 	dab_puncture_vbb.cc                     \
-	dab_unpuncture_vbb.cc                   \
+	dab_unpuncture_vff.cc                   \
 	dab_magnitude_equalizer_vcc.cc          \
 	dab_complex_to_interleaved_float_vcf.cc
 
@@ -131,7 +131,7 @@ grinclude_HEADERS =			        \
 	dab_select_vectors.h                    \
 	dab_repartition_vectors.h               \
 	dab_puncture_vbb.h                      \
-	dab_unpuncture_vbb.h                    \
+	dab_unpuncture_vff.h                    \
 	dab_magnitude_equalizer_vcc.h           \
 	dab_complex_to_interleaved_float_vcf.h
 

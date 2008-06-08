@@ -33,7 +33,7 @@
 #include "dab_select_vectors.h"
 #include "dab_repartition_vectors.h"
 #include "dab_puncture_vbb.h"
-#include "dab_unpuncture_vbb.h"
+#include "dab_unpuncture_vff.h"
 #include "dab_magnitude_equalizer_vcc.h"
 #include "dab_complex_to_interleaved_float_vcf.h"
 #include <stdexcept>
@@ -401,14 +401,14 @@ class dab_puncture_vbb : public gr_sync_block
 
 // ----------------------------------------------------------------
 
-GR_SWIG_BLOCK_MAGIC(dab,unpuncture_vbb);
+GR_SWIG_BLOCK_MAGIC(dab,unpuncture_vff);
 
-dab_unpuncture_vbb_sptr dab_make_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval = 0);
+dab_unpuncture_vff_sptr dab_make_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval = 0);
 
-class dab_unpuncture_vbb : public gr_sync_block
+class dab_unpuncture_vff : public gr_sync_block
 {
   private:
-    dab_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval);
+    dab_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval);
 };
 
 // ----------------------------------------------------------------

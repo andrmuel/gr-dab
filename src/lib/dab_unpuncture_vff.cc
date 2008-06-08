@@ -29,20 +29,20 @@
 #include "config.h"
 #endif
 
-#include <dab_unpuncture_vbb.h>
+#include <dab_unpuncture_vff.h>
 #include <gr_io_signature.h>
 
 /*
- * Create a new instance of dab_unpuncture_vbb and return
+ * Create a new instance of dab_unpuncture_vff and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_unpuncture_vbb_sptr 
-dab_make_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval)
+dab_unpuncture_vff_sptr 
+dab_make_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval)
 {
-  return dab_unpuncture_vbb_sptr (new dab_unpuncture_vbb (puncturing_vector, fillval));
+  return dab_unpuncture_vff_sptr (new dab_unpuncture_vff (puncturing_vector, fillval));
 }
 
-unsigned int dab_unpuncture_vbb::ones (const std::vector<unsigned char> &puncturing_vector) {
+unsigned int dab_unpuncture_vff::ones (const std::vector<unsigned char> &puncturing_vector) {
   unsigned int onescount = 0;
   for (unsigned int i=0; i<puncturing_vector.size(); i++) {
     if (puncturing_vector[i]==1)
@@ -51,10 +51,10 @@ unsigned int dab_unpuncture_vbb::ones (const std::vector<unsigned char> &punctur
   return onescount;
 }
 
-dab_unpuncture_vbb::dab_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval) : 
-  gr_sync_block ("unpuncture_vbb",
-             gr_make_io_signature (1, 1, sizeof(char)*ones(puncturing_vector)),
-             gr_make_io_signature (1, 1, sizeof(char)*puncturing_vector.size())),
+dab_unpuncture_vff::dab_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval) : 
+  gr_sync_block ("unpuncture_vff",
+             gr_make_io_signature (1, 1, sizeof(float)*ones(puncturing_vector)),
+             gr_make_io_signature (1, 1, sizeof(float)*puncturing_vector.size())),
   d_puncturing_vector(puncturing_vector), d_fillval(fillval)
 {
   d_vlen_in  = ones(puncturing_vector);
@@ -62,15 +62,15 @@ dab_unpuncture_vbb::dab_unpuncture_vbb (const std::vector<unsigned char> &punctu
 }
 
 int 
-dab_unpuncture_vbb::work (int noutput_items,
+dab_unpuncture_vff::work (int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
   int i;
   unsigned int j;
   
-  const char *in = (const char *) input_items[0];
-  char *out = (char *) output_items[0];
+  const float *in = (const float *) input_items[0];
+  float *out = (float *) output_items[0];
 
   for (i=0; i<noutput_items; i++) {
     for (j=0;j<d_vlen_out;j++) {

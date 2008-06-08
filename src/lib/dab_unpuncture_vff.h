@@ -19,17 +19,17 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_UNPUNCTURE_VBB_H
-#define INCLUDED_DAB_UNPUNCTURE_VBB_H
+#ifndef INCLUDED_DAB_UNPUNCTURE_VFF_H
+#define INCLUDED_DAB_UNPUNCTURE_VFF_H
 
 #include <gr_sync_block.h>
 
-class dab_unpuncture_vbb;
+class dab_unpuncture_vff;
 
-typedef boost::shared_ptr<dab_unpuncture_vbb> dab_unpuncture_vbb_sptr;
+typedef boost::shared_ptr<dab_unpuncture_vff> dab_unpuncture_vff_sptr;
 
-dab_unpuncture_vbb_sptr 
-dab_make_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval = 0);
+dab_unpuncture_vff_sptr 
+dab_make_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval = 0);
 
 /*!
  * \brief Unpuncturing - reinsert bits that were removed when doing puncturing
@@ -40,16 +40,16 @@ dab_make_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, ch
  * input: byte vector whose length equals the number of ones in the puncturing vector
  * output: byte vector whose length equeals the length of the puncturing vector
  */
-class dab_unpuncture_vbb : public gr_sync_block
+class dab_unpuncture_vff : public gr_sync_block
 {
   private:
-    friend dab_unpuncture_vbb_sptr
-    dab_make_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval);
+    friend dab_unpuncture_vff_sptr
+    dab_make_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval);
     unsigned int ones (const std::vector<unsigned char> &puncturing_vector);
-    dab_unpuncture_vbb (const std::vector<unsigned char> &puncturing_vector, char fillval);    // private constructor
+    dab_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval);    // private constructor
 
     std::vector<unsigned char> d_puncturing_vector;
-    char d_fillval;
+    float d_fillval;
     unsigned int d_vlen_in;
     unsigned int d_vlen_out;
 
@@ -59,4 +59,4 @@ class dab_unpuncture_vbb : public gr_sync_block
               gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_UNPUNCTURE_VBB_H */
+#endif /* INCLUDED_DAB_UNPUNCTURE_VFF_H */

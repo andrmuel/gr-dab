@@ -55,13 +55,8 @@ class fic_decode(gr.hier_block2):
 		
 		
 		# FIB selection and block partitioning
-		self.select_fics = dab_swig.select_vectors_vbb(self.dp.num_carriers/4, self.dp.num_fic_syms, 0)
-		self.repartition_fic = dab_swig.block_partitioning_vbb(self.dp.num_carriers/4, self.dp.fic_punctured_codeword_length, self.dp.num_fic_syms, self.dp.num_cifs)
-
-		# convert byte vectors to bit vectors
-		self.v2s    = gr.vector_to_stream(gr.sizeof_char, )
-		self.unpack = gr.packed_to_unpacked_bb(8,gr.GR_MSB_FIRST)
-		self.s2v    = gr.stream_to_vector(gr.sizeof_char, *8)
+		self.select_fics = dab_swig.select_vectors(gr.sizeof_float, self.dp.num_carriers*2, self.dp.num_fic_syms, 0)
+		self.repartition_fic = dab_swig.repartition_vectors(self.dp.num_carriers*2, self.dp.fic_punctured_codeword_length, self.dp.num_fic_syms, self.dp.num_cifs)
 
 		# unpuncturing
 		self.unpuncture = dab_swig.unpuncture_vbb(self.dp.assembled_fic_puncturing_sequence)
