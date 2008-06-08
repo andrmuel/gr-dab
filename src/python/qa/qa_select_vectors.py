@@ -5,7 +5,7 @@ import dab_swig
 
 class qa_select_vectors(gr_unittest.TestCase):
 	"""
-	@brief QA for the vector element adder block.
+	@brief QA for the vector select block
 
 	This class implements a test bench to verify the corresponding C++ class.
 	"""

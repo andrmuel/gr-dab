@@ -84,8 +84,8 @@ _dab_swig_la_SOURCES = 			        \
 	dab_sum_elements_vff.cc                 \
 	dab_modulo_ff.cc                        \
 	dab_measure_ber_b.cc                    \
-	dab_select_vectors.cc               \
-	dab_block_partitioning_vbb.cc           \
+	dab_select_vectors.cc                   \
+	dab_repartition_vectors.cc              \
 	dab_puncture_vbb.cc                     \
 	dab_unpuncture_vbb.cc                   \
 	dab_magnitude_equalizer_vcc.cc          \
@@ -128,8 +128,8 @@ grinclude_HEADERS =			        \
 	dab_sum_elements_vff.h                  \
 	dab_modulo_ff.h                         \
 	dab_measure_ber_b.h                     \
-	dab_select_vectors.h                \
-	dab_block_partitioning_vbb.h            \
+	dab_select_vectors.h                    \
+	dab_repartition_vectors.h               \
 	dab_puncture_vbb.h                      \
 	dab_unpuncture_vbb.h                    \
 	dab_magnitude_equalizer_vcc.h           \

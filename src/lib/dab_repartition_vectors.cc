@@ -29,31 +29,31 @@
 #include "config.h"
 #endif
 
-#include <dab_block_partitioning_vbb.h>
+#include <dab_repartition_vectors.h>
 #include <gr_io_signature.h>
 
 /*
- * Create a new instance of dab_block_partitioning_vbb and return
+ * Create a new instance of dab_repartition_vectors and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_block_partitioning_vbb_sptr 
-dab_make_block_partitioning_vbb (unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide)
+dab_repartition_vectors_sptr 
+dab_make_repartition_vectors (size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide)
 {
-  return dab_block_partitioning_vbb_sptr (new dab_block_partitioning_vbb (vlen_in, vlen_out, multiply, divide));
+  return dab_repartition_vectors_sptr (new dab_repartition_vectors (itemsize, vlen_in, vlen_out, multiply, divide));
 }
 
-dab_block_partitioning_vbb::dab_block_partitioning_vbb (unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide) : 
-  gr_block ("block_partitioning_vbb",
-             gr_make_io_signature2 (2, 2, sizeof(char)*vlen_in, sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(char)*vlen_out, sizeof(char))),
-  d_vlen_in(vlen_in), d_vlen_out(vlen_out), d_multiply(multiply), d_divide(divide), d_synced(0)
+dab_repartition_vectors::dab_repartition_vectors (size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide) : 
+  gr_block ("repartition_vectors",
+             gr_make_io_signature2 (2, 2, itemsize*vlen_in, sizeof(char)),
+             gr_make_io_signature2 (2, 2, itemsize*vlen_out, sizeof(char))),
+  d_itemsize(itemsize), d_vlen_in(vlen_in), d_vlen_out(vlen_out), d_multiply(multiply), d_divide(divide), d_synced(0)
 {
   assert(vlen_in * multiply == vlen_out * divide);
   set_output_multiple(divide);
 }
 
 void 
-dab_block_partitioning_vbb::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+dab_repartition_vectors::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   int in_req  = noutput_items / d_divide * d_multiply;
 
@@ -63,7 +63,7 @@ dab_block_partitioning_vbb::forecast (int noutput_items, gr_vector_int &ninput_i
 }
 
 int 
-dab_block_partitioning_vbb::general_work (int noutput_items,
+dab_repartition_vectors::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
@@ -82,7 +82,7 @@ dab_block_partitioning_vbb::general_work (int noutput_items,
       d_synced=1;
     } else {
       n_consumed++;
-      iptr += d_vlen_in;
+      iptr += d_vlen_in*d_itemsize;
       trigger++;
     }
   }
@@ -111,10 +111,10 @@ dab_block_partitioning_vbb::general_work (int noutput_items,
     triggerout += d_divide;
 
     /* data */
-    memcpy(optr, iptr, d_multiply*d_vlen_in);
+    memcpy(optr, iptr, d_multiply*d_itemsize*d_vlen_in);
 
-    iptr += d_multiply*d_vlen_in;
-    optr += d_divide*d_vlen_out;
+    iptr += d_multiply * d_itemsize * d_vlen_in;
+    optr += d_divide * d_itemsize * d_vlen_out;
 
     n_consumed += d_multiply;
     n_produced += d_divide;

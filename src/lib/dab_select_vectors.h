@@ -38,12 +38,12 @@ dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_
  * \param itemsize size of vector elements
  * \param length vector length
  * \param num_select number of vectors to select
- * \param num_skip number of vectors to skip at the start
+ * \param num_skip number of vectors to skip at the start of the frame
  *
  * select some vectors depending on their position relative to the frame start, which is indicatied by the trigger signal
  *
- * input: port 0: byte vectors; port 1: new trigger signal (char)
- * output: port 0: selected byte vectors; port 1: new trigger signal (char)
+ * input: port 0: vectors; port 1: new trigger signal (char)
+ * output: port 0: selected vectors; port 1: new trigger signal (char)
  */
 class dab_select_vectors : public gr_block
 {

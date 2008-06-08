@@ -31,7 +31,7 @@
 #include "dab_modulo_ff.h"
 #include "dab_measure_ber_b.h"
 #include "dab_select_vectors.h"
-#include "dab_block_partitioning_vbb.h"
+#include "dab_repartition_vectors.h"
 #include "dab_puncture_vbb.h"
 #include "dab_unpuncture_vbb.h"
 #include "dab_magnitude_equalizer_vcc.h"
@@ -377,14 +377,14 @@ class dab_select_vectors : public gr_block
 
 // ----------------------------------------------------------------
 
-GR_SWIG_BLOCK_MAGIC(dab,block_partitioning_vbb);
+GR_SWIG_BLOCK_MAGIC(dab,repartition_vectors);
 
-dab_block_partitioning_vbb_sptr dab_make_block_partitioning_vbb (unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide);
+dab_repartition_vectors_sptr dab_make_repartition_vectors (size_t d_itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide);
 
-class dab_block_partitioning_vbb : public gr_block
+class dab_repartition_vectors : public gr_block
 {
   private:
-    dab_block_partitioning_vbb (unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide);
+    dab_repartition_vectors (size_t d_itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide);
 };
 
 // ----------------------------------------------------------------
