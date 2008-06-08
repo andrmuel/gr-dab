@@ -32,7 +32,7 @@ dab_complex_to_interleaved_float_vcf_sptr
 dab_make_complex_to_interleaved_float_vcf (unsigned int length);
 
 /*!
- * \brief interlaves real and imag part of the elements of a vector
+ * \brief deinterleaves [(i0,q0),(i1,q1),(i2,q2)] to [i0,i1,i2,..., q0,q1,q2,...]
  * \ingroup math
  *
  * \param length vector length at input

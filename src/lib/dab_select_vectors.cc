@@ -46,7 +46,7 @@ dab_select_vectors::dab_select_vectors (size_t itemsize, unsigned int length, un
   gr_block ("select_vectors",
              gr_make_io_signature2 (2, 2, itemsize*length, sizeof(char)),
              gr_make_io_signature2 (2, 2, itemsize*length, sizeof(char))),
-  d_itemsize(itemsize), d_length(length), d_num_select(num_select), d_num_skip(num_skip), d_index(0)
+  d_itemsize(itemsize), d_length(length), d_num_select(num_select), d_num_skip(num_skip), d_index(num_select+num_skip) /* <- dont output anything before 1st trigger */
 {
   assert(d_num_select!=0);
   assert(d_length!=0);

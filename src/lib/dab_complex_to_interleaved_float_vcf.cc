@@ -59,9 +59,13 @@ dab_complex_to_interleaved_float_vcf::work (int noutput_items,
   gr_complex const *in = (const gr_complex *) input_items[0];
   float *out = (float *) output_items[0];
 
-  for (unsigned int i=0; i<noutput_items*d_length; i++) {
-    out[2*i] = in[i].real();
-    out[2*i+1] = in[i].imag();
+  for (unsigned int i=0; i<noutput_items; i++) {
+    for (unsigned int j=0;j<d_length;j++) {
+      out[j] = in[j].real();
+      out[j+d_length] = in[j].imag();
+    }
+    in += d_length;
+    out+= 2*d_length;
   }
     
   return noutput_items;

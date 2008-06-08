@@ -62,7 +62,8 @@ dab_magnitude_equalizer_vcc::~dab_magnitude_equalizer_vcc (void)
   delete [] d_equalizer;
 }
 
-void dab_magnitude_equalizer_vcc::update_equalizer(const gr_complex *in) {
+void dab_magnitude_equalizer_vcc::update_equalizer(const gr_complex *in) 
+{
   for (unsigned int i=0; i<d_vlen; i++) 
     d_equalizer[i] = std::abs(in[i]);
 
@@ -78,7 +79,7 @@ void dab_magnitude_equalizer_vcc::update_equalizer(const gr_complex *in) {
     d_equalizer[i] = (float)d_num_symbols/d_equalizer[i];
   
   // for (unsigned int i=0; i<d_vlen; i++) 
-    // printf("%f, ", d_equalizer[i]);
+    // printf("%e, ", d_equalizer[i]);
   // printf(" <-- equalizer\n");
 }
 

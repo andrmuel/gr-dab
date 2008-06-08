@@ -31,7 +31,8 @@ from gnuradio import gr
 import dab_swig
 import ofdm_sync_dab, ofdm_sync_dab2
 import detect_null
-import threading, time
+from threading import Timer
+from time import sleep
 from math import pi
 
 """
@@ -169,7 +170,7 @@ class ofdm_demod(gr.hier_block2):
 			# self.resample = gr.fractional_interpolator_cc(0, 1)
 			self.resample = dab_swig.fractional_interpolator_triggered_update_cc(0,1)
 			self.connect(self.rate_detect_ns, (self.resample,1))
-			self.updater = threading.Timer(0.1,self.update_correction)
+			self.updater = Timer(0.1,self.update_correction)
 			# self.updater = threading.Thread(target=self.update_correction)
 			self.run_interpolater_update_thread = True
 			self.updater.setDaemon(True)
@@ -231,8 +232,8 @@ class ofdm_demod(gr.hier_block2):
 			self.connect((self.remove_pilot,0), self.deinterleave)
 		if self.rp.softbits:
 			if verbose: print "--> using soft bits"
-			self.softbit_interlaver = dab_swig.complex_to_interleaved_float_vcf(self.dp.num_carriers)
-			self.connect(self.deinterleave, self.softbit_interlaver, (self,0))
+			self.softbit_interleaver = dab_swig.complex_to_interleaved_float_vcf(self.dp.num_carriers)
+			self.connect(self.deinterleave, self.softbit_interleaver, (self,0))
 		else:
 			self.connect(self.deinterleave, self.demapper, (self,0))
 
@@ -263,8 +264,13 @@ class ofdm_demod(gr.hier_block2):
 			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))
 			self.connect((self.cfs,0), gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_after_cfs.dat"))
 			self.connect(self.phase_diff, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_diff_phasor.dat"))
-			# self.connect(self.correct_phase_offset, gr.file_sink(gr.sizeof_float*dp.num_carriers, "debug/ofdm_phase_offset_corrected.dat"))
+			self.connect((self.remove_pilot,0), gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_pilot_removed.dat"))
 			self.connect((self.remove_pilot,1), gr.file_sink(gr.sizeof_char, "debug/ofdm_after_cfs_trigger.dat"))
+			self.connect(self.deinterleave, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_deinterleaved.dat"))
+			if self.rp.equalize_magnitude:
+				self.connect(self.equalizer, gr.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/ofdm_equalizer.dat"))
+			if self.rp.softbits:
+				self.connect(self.softbit_interleaver, gr.file_sink(gr.sizeof_float*dp.num_carriers*2, "debug/softbits.dat"))
 	
 	def clear_state(self):
 		self.sync.clear_state()
@@ -276,7 +282,7 @@ class ofdm_demod(gr.hier_block2):
 			if rate!=0:
 				# print "resampling: "+str(rate)
 				self.resample.set_interp_ratio(rate/self.dp.sample_rate)
-			time.sleep(0.1)
+			sleep(0.1)
 	
 	def stop(self):
 		if self.run_interpolater_update_thread:

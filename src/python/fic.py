@@ -25,6 +25,7 @@
 
 from gnuradio import gr, trellis
 import dab_swig
+from math import sqrt
 
 """
 DAB FIC layer
@@ -47,7 +48,7 @@ class fic_decode(gr.hier_block2):
 		@param dab_params DAB parameter object (dab.parameters.dab_parameters)
 		"""
 		gr.hier_block2.__init__(self,"fic",
-					gr.io_signature2(2, 2, gr.sizeof_char*dab_params.num_carriers/4, gr.sizeof_char), # input
+					gr.io_signature2(2, 2, gr.sizeof_float*dab_params.num_carriers*2, gr.sizeof_char), # input
 					gr.io_signature(0, 0, 0)) # output signature
 
 		self.dp = dab_params
@@ -55,30 +56,30 @@ class fic_decode(gr.hier_block2):
 		
 		
 		# FIB selection and block partitioning
-		self.select_fics = dab_swig.select_vectors(gr.sizeof_float, self.dp.num_carriers*2, self.dp.num_fic_syms, 0)
-		self.repartition_fic = dab_swig.repartition_vectors(self.dp.num_carriers*2, self.dp.fic_punctured_codeword_length, self.dp.num_fic_syms, self.dp.num_cifs)
+		self.select_fic_syms = dab_swig.select_vectors(gr.sizeof_float, self.dp.num_carriers*2, self.dp.num_fic_syms, 0)
+		self.repartition_fic = dab_swig.repartition_vectors(gr.sizeof_float, self.dp.num_carriers*2, self.dp.fic_punctured_codeword_length, self.dp.num_fic_syms, self.dp.num_cifs)
 
 		# unpuncturing
-		self.unpuncture = dab_swig.unpuncture_vbb(self.dp.assembled_fic_puncturing_sequence)
+		self.unpuncture = dab_swig.unpuncture_vff(self.dp.assembled_fic_puncturing_sequence)
 
 		# convolutional coding
 		self.fsm = trellis.fsm(self.dp.conv_code_in_bits, self.dp.conv_code_out_bits, self.dp.conv_code_generator_polynomials)
-		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, ?, 0, 0, 1, [1,-1] , trellis.TRELLIS_EUCLIDEAN)
+		self.conv_v2s = gr.vector_to_stream(gr.sizeof_float, self.dp.fic_conv_codeword_length)
+		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, self.dp.fic_conv_codeword_length, 0, 0, 1, [1./sqrt(2),-1/sqrt(2)] , trellis.TRELLIS_EUCLIDEAN)
+		self.conv_s2v = gr.stream_to_vector(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length)
 
 		# energy dispersal
-		self.prbs_src   = gr.vector_source_b(self.dp.prbs(self.dp.energy_dispersal_fic_vector_length), repeat=True)
-		self.energy_v2s = gr.stream_to_vector(self.dp.energy_dispersal_fic_vector_length)
+		self.prbs_src   = gr.vector_source_b(self.dp.prbs(self.dp.energy_dispersal_fic_vector_length), True)
+		self.energy_v2s = gr.vector_to_stream(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length)
 		self.add_mod_2  = gr.xor_bb()
-		self.energy_s2v = gr.stream_to_vector(self.dp.energy_dispersal_fic_vector_length)
-		self.cut_into_fibs = dab_swig.block_partitioning_vbb(self.dp.energy_dispersal_fic_vector_length, self.dp.fib_bits, 1, self.dp.energy_dispersal_fic_fibs_per_vector)
+		self.energy_s2v = gr.stream_to_vector(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length)
+		self.cut_into_fibs = dab_swig.repartition_vectors(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length, self.dp.fib_bits, 1, self.dp.energy_dispersal_fic_fibs_per_vector)
 		
 		
 		# connect all
 		self.nullsink = gr.null_sink(gr.sizeof_char)
 		self.filesink = gr.file_sink(gr.sizeof_char, "debug/fic.dat")
 		
-		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_decode, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), self.filesink)
+		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), gr.vector_to_stream(1,256), gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), self.filesink)
 		self.connect(self.prbs_src, (self.add_mod_2,1))
 		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1), (self.cut_into_fibs,1), self.nullsink)
-
-

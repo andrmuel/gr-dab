@@ -18,7 +18,7 @@ class qa_complex_to_interleaved_float_vcf(gr_unittest.TestCase):
 
 	def test_001_complex_to_interleaved_float_vcf(self):
 		src_data        = (1+2j,3+4j,5+6j,7+8j)
-		expected_result = (1,2,3,4,5,6,7,8)
+		expected_result = (1,3,2,4,5,7,6,8)
 		src = gr.vector_source_c(src_data)
 		s2v = gr.stream_to_vector(gr.sizeof_gr_complex, 2)
 		complex_to_interleaved_float_vcf = dab_swig.complex_to_interleaved_float_vcf(2)
