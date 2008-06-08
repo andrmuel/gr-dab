@@ -71,8 +71,8 @@ class test_fic(gr.top_block):
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
 		
-		self.dab_demod = dab.ofdm_demod(dp, rp, debug=options.debug, verbose=options.verbose)
-		self.fic_dec   = dab.fic_decode(dp, verbose=options.verbose)
+		self.dab_demod = dab.ofdm_demod(dp, rp, verbose=options.verbose, debug=options.debug)
+		self.fic_dec   = dab.fic_decode(dp, verbose=options.verbose, debug=options.debug)
 		
 		self.connect(self.src, self.dab_demod, self.fic_dec)
 		self.connect((self.dab_demod,1), (self.fic_dec,1))

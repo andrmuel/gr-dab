@@ -41,7 +41,7 @@ class fic_decode(gr.hier_block2):
 	- get FIC information
 	"""
 	
-	def __init__(self, dab_params, verbose=True):
+	def __init__(self, dab_params, verbose=True, debug=False):
 		"""
 		Hierarchical block for FIC decoding
 		
@@ -53,6 +53,7 @@ class fic_decode(gr.hier_block2):
 
 		self.dp = dab_params
 		self.verbose = verbose
+		self.debug = debug
 		
 		
 		# FIB selection and block partitioning
@@ -63,9 +64,31 @@ class fic_decode(gr.hier_block2):
 		self.unpuncture = dab_swig.unpuncture_vff(self.dp.assembled_fic_puncturing_sequence)
 
 		# convolutional coding
-		self.fsm = trellis.fsm(self.dp.conv_code_in_bits, self.dp.conv_code_out_bits, self.dp.conv_code_generator_polynomials)
+		# self.fsm = trellis.fsm(self.dp.conv_code_in_bits, self.dp.conv_code_out_bits, self.dp.conv_code_generator_polynomials)
+		self.fsm = trellis.fsm(1, 4, [0133, 0171, 0145, 0133]) # OK (dumped to text and verified partially)
 		self.conv_v2s = gr.vector_to_stream(gr.sizeof_float, self.dp.fic_conv_codeword_length)
-		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, self.dp.fic_conv_codeword_length, 0, 0, 1, [1./sqrt(2),-1/sqrt(2)] , trellis.TRELLIS_EUCLIDEAN)
+		# self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 20, 0, 0, 1, [1./sqrt(2),-1/sqrt(2)] , trellis.TRELLIS_EUCLIDEAN)
+		table = [ 
+			  0,0,0,0,
+			  0,0,0,1,
+			  0,0,1,0,
+			  0,0,1,1,
+			  0,1,0,0,
+			  0,1,0,1,
+			  0,1,1,0,
+			  0,1,1,1,
+			  1,0,0,0,
+			  1,0,0,1,
+			  1,0,1,0,
+			  1,0,1,1,
+			  1,1,0,0,
+			  1,1,0,1,
+			  1,1,1,0,
+			  1,1,1,1
+			]
+		assert(len(table)/4==self.fsm.O())
+		table = [(1-2*x)/sqrt(2) for x in table]
+		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 774, 0, 0, 4, table, trellis.TRELLIS_EUCLIDEAN)
 		self.conv_s2v = gr.stream_to_vector(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length)
 
 		# energy dispersal
@@ -83,3 +106,9 @@ class fic_decode(gr.hier_block2):
 		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), gr.vector_to_stream(1,256), gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), self.filesink)
 		self.connect(self.prbs_src, (self.add_mod_2,1))
 		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1), (self.cut_into_fibs,1), self.nullsink)
+
+		if self.debug:
+			self.connect(self.select_fic_syms, gr.file_sink(gr.sizeof_float*self.dp.num_carriers*2, "debug/fic_select_syms.dat"))
+			self.connect(self.repartition_fic, gr.file_sink(gr.sizeof_float*self.dp.fic_punctured_codeword_length, "debug/fic_repartitioned.dat"))
+			self.connect(self.unpuncture, gr.file_sink(gr.sizeof_float*self.dp.fic_conv_codeword_length, "debug/fic_unpunctured.dat"))
+			self.connect(self.conv_decode, gr.file_sink(gr.sizeof_char, "debug/fic_decoded.dat"))

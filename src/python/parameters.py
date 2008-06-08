@@ -404,8 +404,7 @@ class receiver_parameters:
 	# OFDM stuff
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
 	__symbols_for_ffs_estimation__ = [8,8,16,8] # number of symbols to evaluate for fine frequency error estimation
-	# __symbols_for_magnitude_equalization__ = [3,3,6,3] # how many symbols should be used to estimate magnitude equalizer?
-	__symbols_for_magnitude_equalization__ = [1,1,1,1] # how many symbols should be used to estimate magnitude equalizer?
+	__symbols_for_magnitude_equalization__ = [6,6,12,6] # how many symbols should be used to estimate magnitude equalizer?
 	ffs_alpha = 0.5
 
 	# phase variance estimation
