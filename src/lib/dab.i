@@ -36,6 +36,7 @@
 #include "dab_unpuncture_vff.h"
 #include "dab_magnitude_equalizer_vcc.h"
 #include "dab_complex_to_interleaved_float_vcf.h"
+#include "dab_prune_vectors.h"
 #include <stdexcept>
 %}
 
@@ -433,5 +434,17 @@ class dab_complex_to_interleaved_float_vcf : public gr_sync_block
 {
   private:
     dab_complex_to_interleaved_float_vcf (unsigned int length);
+};
+
+// ----------------------------------------------------------------
+
+GR_SWIG_BLOCK_MAGIC(dab,prune_vectors);
+
+dab_prune_vectors_sptr dab_make_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end);
+
+class dab_prune_vectors : public gr_sync_block
+{
+  private:
+    dab_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end);
 };
 

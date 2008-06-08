@@ -112,3 +112,4 @@ class fic_decode(gr.hier_block2):
 			self.connect(self.repartition_fic, gr.file_sink(gr.sizeof_float*self.dp.fic_punctured_codeword_length, "debug/fic_repartitioned.dat"))
 			self.connect(self.unpuncture, gr.file_sink(gr.sizeof_float*self.dp.fic_conv_codeword_length, "debug/fic_unpunctured.dat"))
 			self.connect(self.conv_decode, gr.file_sink(gr.sizeof_char, "debug/fic_decoded.dat"))
+			self.connect(self.energy_s2v, gr.file_sink(gr.sizeof_char*self.dp.energy_dispersal_fic_vector_length, "debug/fic_energy_dispersal_undone.dat"))

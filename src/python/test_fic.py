@@ -77,24 +77,11 @@ class test_fic(gr.top_block):
 		self.connect(self.src, self.dab_demod, self.fic_dec)
 		self.connect((self.dab_demod,1), (self.fic_dec,1))
 
-		# debug
-
-		self.debug = gr.vector_sink_c()
-		self.connect(self.dab_demod.remove_pilot, gr.vector_to_stream(gr.sizeof_gr_complex,1536), self.debug)
-		# self.connect(self.fic_dec.select_fic_syms, gr.vector_to_stream(gr.sizeof_float,1536*2), self.debug)
-
 if __name__=='__main__':
 	try:
 		tf = test_fic()
 		tf.run()
 		tf.dab_demod.stop()
-
-		# debug
-		data = tf.debug.data()
-		# n=0
-		# print "%1.2f\t"*3072 % data[n*3072:(n+1)*3072]
-		print len(data)
-
 	except KeyboardInterrupt:
 		pass
 
