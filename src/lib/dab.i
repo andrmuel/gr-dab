@@ -30,7 +30,7 @@
 #include "dab_sum_elements_vff.h"
 #include "dab_modulo_ff.h"
 #include "dab_measure_ber_b.h"
-#include "dab_select_vectors_vbb.h"
+#include "dab_select_vectors.h"
 #include "dab_block_partitioning_vbb.h"
 #include "dab_puncture_vbb.h"
 #include "dab_unpuncture_vbb.h"
@@ -365,14 +365,14 @@ class dab_measure_ber_b : public gr_sync_block
 
 // ----------------------------------------------------------------
 
-GR_SWIG_BLOCK_MAGIC(dab,select_vectors_vbb);
+GR_SWIG_BLOCK_MAGIC(dab,select_vectors);
 
-dab_select_vectors_vbb_sptr dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+dab_select_vectors_sptr dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);
 
-class dab_select_vectors_vbb : public gr_block
+class dab_select_vectors : public gr_block
 {
   private:
-    dab_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+    dab_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);
 };
 
 // ----------------------------------------------------------------

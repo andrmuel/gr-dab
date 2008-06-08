@@ -107,7 +107,7 @@ class usrp_dab_rx(gr.top_block):
 	def update_ui_function(self):
 		while self.run_ui_update_thread:
 			var = self.demod.probe_phase_var.level()
-			q = int(50*(math.sqrt(var)/(math.pi/2)))
+			q = int(50*(math.sqrt(var)/(math.pi/4)))
 			print "--> Phase variance: " + str(var) +"\n"
 			print "--> Signal quality: " + '='*(50-q) + '>' + '-'*q + "\n"
 			time.sleep(0.3)

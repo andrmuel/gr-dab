@@ -68,7 +68,7 @@ class fic_decode(gr.hier_block2):
 
 		# convolutional coding
 		self.fsm = trellis.fsm(self.dp.conv_code_in_bits, self.dp.conv_code_out_bits, self.dp.conv_code_generator_polynomials)
-		self.conv_decode = trellis
+		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, ?, 0, 0, 1, [1,-1] , trellis.TRELLIS_EUCLIDEAN)
 
 		# energy dispersal
 		self.prbs_src   = gr.vector_source_b(self.dp.prbs(self.dp.energy_dispersal_fic_vector_length), repeat=True)

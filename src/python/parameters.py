@@ -204,8 +204,8 @@ class dab_parameters:
 		0145,
 		0133
 	]
-	conv_code_encoder_initial_state = 0
-	conv_code_encoder_final_state = 0
+	conv_code_initial_state = 0
+	conv_code_final_state = 0
 	conv_code_constraint_length = 7
 	conv_code_in_bits = 1
 	conv_code_add_bits_input = 6

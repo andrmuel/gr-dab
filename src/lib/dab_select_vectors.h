@@ -19,45 +19,47 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_SELECT_VECTORS_VBB_H
-#define INCLUDED_DAB_SELECT_VECTORS_VBB_H
+#ifndef INCLUDED_DAB_SELECT_VECTORS_H
+#define INCLUDED_DAB_SELECT_VECTORS_H
 
 #include <gr_block.h>
 
-class dab_select_vectors_vbb;
+class dab_select_vectors;
 
-typedef boost::shared_ptr<dab_select_vectors_vbb> dab_select_vectors_vbb_sptr;
+typedef boost::shared_ptr<dab_select_vectors> dab_select_vectors_sptr;
 
-dab_select_vectors_vbb_sptr 
-dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+dab_select_vectors_sptr 
+dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);
 
 /*!
  * \brief select some vectors from a vector stream
  * \ingroup DAB
- * 
- * \param vlen vector length
- * \param num number of vectors to select
- * \param skip number of vectors to skip at the start
+ *
+ * \param itemsize size of vector elements
+ * \param length vector length
+ * \param num_select number of vectors to select
+ * \param num_skip number of vectors to skip at the start
  *
  * select some vectors depending on their position relative to the frame start, which is indicatied by the trigger signal
  *
  * input: port 0: byte vectors; port 1: new trigger signal (char)
  * output: port 0: selected byte vectors; port 1: new trigger signal (char)
  */
-class dab_select_vectors_vbb : public gr_block
+class dab_select_vectors : public gr_block
 {
   private:
-    // The friend declaration allows dab_make_select_vectors_vbb to
+    // The friend declaration allows dab_make_select_vectors to
     // access the private constructor.
 
-    friend dab_select_vectors_vbb_sptr
-    dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);
+    friend dab_select_vectors_sptr
+    dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);
 
-    dab_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip);    // private constructor
+    dab_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);    // private constructor
 
-    unsigned int d_vlen;
-    unsigned int d_num;
-    unsigned int d_skip;
+    size_t       d_itemsize;
+    unsigned int d_length;
+    unsigned int d_num_select;
+    unsigned int d_num_skip;
     unsigned int d_index;
 
   public:
@@ -68,4 +70,4 @@ class dab_select_vectors_vbb : public gr_block
                       gr_vector_void_star &output_items);
 };
 
-#endif /* INCLUDED_DAB_SELECT_VECTORS_VBB_H */
+#endif /* INCLUDED_DAB_SELECT_VECTORS_H */

@@ -29,33 +29,33 @@
 #include "config.h"
 #endif
 
-#include <dab_select_vectors_vbb.h>
+#include <dab_select_vectors.h>
 #include <gr_io_signature.h>
 
 /*
- * Create a new instance of dab_select_vectors_vbb and return
+ * Create a new instance of dab_select_vectors and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_select_vectors_vbb_sptr 
-dab_make_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip)
+dab_select_vectors_sptr 
+dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip)
 {
-  return dab_select_vectors_vbb_sptr (new dab_select_vectors_vbb (vlen, num, skip));
+  return dab_select_vectors_sptr (new dab_select_vectors (itemsize, length, num_select, num_skip));
 }
 
-dab_select_vectors_vbb::dab_select_vectors_vbb (unsigned int vlen, unsigned int num, unsigned int skip) : 
-  gr_block ("select_vectors_vbb",
-             gr_make_io_signature2 (2, 2, sizeof(char)*vlen, sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(char)*vlen, sizeof(char))),
-  d_vlen(vlen), d_num(num), d_skip(skip), d_index(0)
+dab_select_vectors::dab_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip) : 
+  gr_block ("select_vectors",
+             gr_make_io_signature2 (2, 2, itemsize*length, sizeof(char)),
+             gr_make_io_signature2 (2, 2, itemsize*length, sizeof(char))),
+  d_itemsize(itemsize), d_length(length), d_num_select(num_select), d_num_skip(num_skip), d_index(0)
 {
-  assert(d_num!=0);
-  assert(d_vlen!=0);
+  assert(d_num_select!=0);
+  assert(d_length!=0);
 }
 
 void 
-dab_select_vectors_vbb::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+dab_select_vectors::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
-  int in_req  = noutput_items * (d_skip+d_num)/d_num; /* very coarse .. */
+  int in_req  = noutput_items * (d_num_skip+d_num_select)/d_num_select; /* very coarse .. */
 
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned i = 0; i < ninputs; i++)
@@ -63,7 +63,7 @@ dab_select_vectors_vbb::forecast (int noutput_items, gr_vector_int &ninput_items
 }
 
 int 
-dab_select_vectors_vbb::general_work (int noutput_items,
+dab_select_vectors::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
@@ -85,19 +85,19 @@ dab_select_vectors_vbb::general_work (int noutput_items,
       d_index=0;
     
     /* select this vector? */
-    if (d_index >= d_skip && d_index < d_num + d_skip) {
+    if (d_index >= d_num_skip && d_index < d_num_select + d_num_skip) {
       /* trigger signal */
-      if (d_index == d_skip)
+      if (d_index == d_num_skip)
         *triggerout++ = 1;
       else
         *triggerout++ = 0;
       /* data */
-      memcpy(optr, iptr, d_vlen);
-      iptr += d_vlen;
-      optr += d_vlen;
+      memcpy(optr, iptr, d_length*d_itemsize);
+      iptr += d_length*d_itemsize;
+      optr += d_length*d_itemsize;
       n_produced++;
     } else {
-      iptr += d_vlen;
+      iptr += d_length*d_itemsize;
     }
   
     d_index++;
