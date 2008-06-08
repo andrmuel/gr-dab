@@ -19,7 +19,7 @@ class dab_ofdm_testbench(gr.top_block):
 	def __init__(self, autocorrect_sample_rate=False, input_filter=True, ber_sink=False):
 		gr.top_block.__init__(self)
 		self.dp = dab.dab_parameters(1)
-		self.rp = dab.receiver_parameters(1, input_fft_filter=input_filter, autocorrect_sample_rate=autocorrect_sample_rate)
+		self.rp = dab.receiver_parameters(1, softbits=False, input_fft_filter=input_filter, autocorrect_sample_rate=autocorrect_sample_rate, equalize_magnitude=False)
 		self.ber_sink = ber_sink
 
 	def setup_flowgraph(self, mode, ber_skipbytes=0):
