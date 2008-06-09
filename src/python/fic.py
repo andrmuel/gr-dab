@@ -89,7 +89,8 @@ class fic_decode(gr.hier_block2):
 		assert(len(table)/4==self.fsm.O())
 		table = [(1-2*x)/sqrt(2) for x in table]
 		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 774, 0, 0, 4, table, trellis.TRELLIS_EUCLIDEAN)
-		self.conv_s2v = gr.stream_to_vector(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length)
+		self.conv_s2v = gr.stream_to_vector(gr.sizeof_char, 774)
+		self.conv_prune = dab_swig.prune_vectors(gr.sizeof_char, self.dp.fic_conv_codeword_length/4, 0, self.dp.conv_code_add_bits_input)
 
 		# energy dispersal
 		self.prbs_src   = gr.vector_source_b(self.dp.prbs(self.dp.energy_dispersal_fic_vector_length), True)
@@ -98,12 +99,11 @@ class fic_decode(gr.hier_block2):
 		self.energy_s2v = gr.stream_to_vector(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length)
 		self.cut_into_fibs = dab_swig.repartition_vectors(gr.sizeof_char, self.dp.energy_dispersal_fic_vector_length, self.dp.fib_bits, 1, self.dp.energy_dispersal_fic_fibs_per_vector)
 		
-		
 		# connect all
 		self.nullsink = gr.null_sink(gr.sizeof_char)
 		self.filesink = gr.file_sink(gr.sizeof_char, "debug/fic.dat")
 		
-		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), gr.vector_to_stream(1,256), gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), self.filesink)
+		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.conv_prune, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), gr.vector_to_stream(1,256), gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), self.filesink)
 		self.connect(self.prbs_src, (self.add_mod_2,1))
 		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1), (self.cut_into_fibs,1), self.nullsink)
 
