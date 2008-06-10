@@ -258,7 +258,11 @@ class ofdm_demod(gr.hier_block2):
 		self.connect(self.phase_var_mod, self.phase_var_avg_mod, (self.phase_var_sub_avg,1))
 		self.connect(self.phase_var_sub_avg, (self.phase_var_sqr,1))
 		self.connect(self.phase_var_sqr, self.phase_var_avg, self.probe_phase_var)
-		
+
+		# measure processing rate
+		self.measure_rate = dab_swig.measure_processing_rate(gr.sizeof_gr_complex, 2000000) 
+		self.connect(self.input, self.measure_rate)
+
 		# debugging
 		if debug:
 			self.connect(self.fft, gr.file_sink(gr.sizeof_gr_complex*dp.fft_length, "debug/ofdm_after_fft.dat"))

@@ -82,6 +82,8 @@ if __name__=='__main__':
 		tf = test_fic()
 		tf.run()
 		tf.dab_demod.stop()
+		print "processing rate: " + str(tf.dab_demod.measure_rate.processing_rate())
+		print "bitrate: " + str(tf.dab_demod.measure_rate.bitrate())
 	except KeyboardInterrupt:
 		pass
 
