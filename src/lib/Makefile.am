@@ -90,7 +90,8 @@ _dab_swig_la_SOURCES = 			        \
 	dab_unpuncture_vff.cc                   \
 	dab_magnitude_equalizer_vcc.cc          \
 	dab_complex_to_interleaved_float_vcf.cc \
-	dab_prune_vectors.cc
+	dab_prune_vectors.cc                    \
+	dab_fib_sink_b.cc
 
 # magic flags
 _dab_swig_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
@@ -135,7 +136,8 @@ grinclude_HEADERS =			        \
 	dab_unpuncture_vff.h                    \
 	dab_magnitude_equalizer_vcc.h           \
 	dab_complex_to_interleaved_float_vcf.h  \
-	dab_prune_vectors.h
+	dab_prune_vectors.h                     \
+	dab_fib_sink_b.h
 
 
 # These swig headers get installed in ${prefix}/include/gnuradio/swig

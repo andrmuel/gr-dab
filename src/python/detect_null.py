@@ -22,7 +22,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr
-import dab_swig
+from gnuradio.dab import dab_swig
 
 class detect_null(gr.hier_block2):
 	"""

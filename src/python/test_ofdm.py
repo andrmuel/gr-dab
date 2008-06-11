@@ -28,7 +28,7 @@
 from gnuradio import gr
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
-import ofdm
+from gnuradio.dab import ofdm
 import parameters
 import random
 
@@ -46,24 +46,23 @@ class test_ofdm(gr.top_block):
         	     	help="DAB mode [default=%default]")
 		parser.add_option("-F", "--filter-input", action="store_true", default=False,
                           help="Enable FFT filter at input")
-  		parser.add_option("-s", "--resample-fixed", type="eng_float", default=1,
+  		parser.add_option("-s", "--resample-fixed", type="float", default=1,
 			help="resample by a fixed factor (fractional interpolation)")
 		parser.add_option("-S", "--autocorrect-sample-rate", action="store_true", default=False,
                           help="Estimate sample rate offset and resample (dynamic fractional interpolation)")
-  		parser.add_option('-u', '--usrp-source', action="store_true", default=False,
-	     		help="Samples from USRP (-> resample from 2 MSPS to 2.048 MSPS)")
+  		parser.add_option('-r', '--sample-rate', type="int", default=2048000,
+	     		help="Use non-standard sample rate (default=%default)")
+  		parser.add_option('-e', '--equalize-magnitude', action="store_true", default=False,
+	     		help="Enable individual carrier magnitude equalizer")
   		parser.add_option('-d', '--debug', action="store_true", default=False,
 	     		help="Write output to files")
   		parser.add_option('-v', '--verbose', action="store_true", default=False,
 	     		help="Print status messages")
 		(options, args) = parser.parse_args ()
 	
-		if options.usrp_source:
-			dp = parameters.dab_parameters(options.dab_mode, verbose=options.verbose, sample_rate=2000000)
-		else:
-			dp = parameters.dab_parameters(options.dab_mode, verbose=options.verbose)
+		dp = parameters.dab_parameters(options.dab_mode, verbose=options.verbose, sample_rate=options.sample_rate)
 
-		rp = parameters.receiver_parameters(options.dab_mode, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose)
+		rp = parameters.receiver_parameters(options.dab_mode, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, equalize_magnitude=options.equalize_magnitude, verbose=options.verbose)
 
 		if len(args)<1:
 			if options.verbose: print "-> using repeating random vector as source"
@@ -92,7 +91,9 @@ class test_ofdm(gr.top_block):
 if __name__=='__main__':
 	try:
 		to = test_ofdm()
+		# to.run()
 		to.run()
+		to.dump()
 		to.dab_demod.stop()
 		
 	except KeyboardInterrupt:

@@ -39,44 +39,44 @@ class usrp_dab_rx(gr.top_block):
 		     help="select USRP Rx side A or B [default=A]")
 		parser.add_option("-f", "--freq", type="eng_float", default=227.36e6,
 		     help="set frequency to FREQ [default=%default]")
-		parser.add_option("-r", "--sample-rate", type="int", default=2000000,
-		     help="set sample rate to SAMPLE_RATE [default=%default]")
+		parser.add_option("-d", "--decim", type="intx", default=32,
+		     help="set decimation rate to DECIM [default=%default]")
 		parser.add_option("-g", "--rx-gain", type="eng_float", default=None,
 		     help="set receive gain in dB (default is midpoint)")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
 		     help="verbose output")
         	(options, args) = parser.parse_args ()
-		if len(args)!=1:
-			parser.print_help()
-			sys.exit(1)
-		else:
-			self.filename = args[0]
+
+		# if len(args)!=1:
+			# parser.print_help()
+			# sys.exit(1)
+		# else:
+			# self.filename = args[0]
 
 		# if gr.enable_realtime_scheduling() != gr.RT_OK:
 		#       print "-> failed to enable realtime scheduling"
 
-		decim = 32
 		self.verbose = options.verbose
 
-		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=options.sample_rate, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
-
-		self.src = usrp.source_c(decim_rate=decim)
+		self.src = usrp.source_c(decim_rate=options.decim)
         	self.src.set_mux(usrp.determine_rx_mux_value(self.src, options.rx_subdev_spec))
         	self.subdev = usrp.selected_subdev(self.src, options.rx_subdev_spec)
-        	print "-> using RX dboard " + self.subdev.side_and_name()
-
-		self.sample_rate = self.src.adc_rate()/decim
-		print self.sample_rate
+        	print "--> using RX dboard " + self.subdev.side_and_name()
+		
+		self.sample_rate = self.src.adc_rate()/options.decim
+		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
+		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
 
 		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
 
-		self.sink = gr.file_sink(gr.sizeof_char*384, self.filename)
-
-		self.trigsink = gr.null_sink(gr.sizeof_char)
-
-		self.connect(self.src, self.demod, self.sink)
-		self.connect((self.demod,1), self.trigsink)
+		# self.sink = gr.file_sink(gr.sizeof_char*384, self.filename)
+		# self.trigsink = gr.null_sink(gr.sizeof_char)
+		# self.connect(self.src, self.demod, self.sink)
+		# self.connect((self.demod,1), self.trigsink)
+		
+		self.fic_dec = dab.fic_decode(self.dab_params)
+		self.connect(self.src, self.demod, (self.fic_dec,0))
+		self.connect((self.demod,1), (self.fic_dec,1))
 
 		# tune frequency
 		self.frequency = options.freq
@@ -132,7 +132,8 @@ class usrp_dab_rx(gr.top_block):
         
 if __name__=='__main__':
 	try:
-		usrp_dab_rx().run()
+		rx = usrp_dab_rx()
+		rx.run()
 	except KeyboardInterrupt:
 		pass
 

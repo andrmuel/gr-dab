@@ -46,22 +46,21 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		     help="set frequency to FREQ [default=%default]")
 		parser.add_option("-r", "--sample-rate", type="int", default=2000000,
 		     help="set sample rate to SAMPLE_RATE [default=%default]")
+		parser.add_option("-d", "--decim", type="intx", default=32,
+		     help="set decimation rate to DECIM [default=%default]")
 		parser.add_option("-g", "--rx-gain", type="eng_float", default=None,
 		     help="set receive gain in dB (default is midpoint)")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
 		     help="verbose output")
 		(options, args) = parser.parse_args()
 
-		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=options.sample_rate, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
 		
-		self.decim = 32
 		self.verbose = options.verbose
 
 		if len(args) == 0:
 			if self.verbose:
 				print "--> receiving from USRP"
-			self.src = usrp.source_c(decim_rate=self.decim)
+			self.src = usrp.source_c(decim_rate=options.decim)
 			self.src.set_mux(usrp.determine_rx_mux_value(self.src, options.rx_subdev_spec))
 			self.subdev = usrp.selected_subdev(self.src, options.rx_subdev_spec)
 			if self.verbose:
@@ -76,11 +75,17 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 				g = self.subdev.gain_range()
 				options.rx_gain = float(g[0]+g[1])/2
 			self.subdev.set_gain(options.rx_gain)
+			self.sample_rate = self.src.adc_rate()/options.decim
 		else:
 			if self.verbose:
 				print "--> receiving from file: " + args[0]
 			self.filename = args[0]
 			self.src = gr.file_source(gr.sizeof_gr_complex, self.filename, False)
+			self.sample_rate = options.sample_rate
+		
+		
+		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
+		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
 	
 		
 		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=self.verbose) 
