@@ -398,8 +398,8 @@ class receiver_parameters:
 	@brief Parameters for the receiver, independent of the DAB standard
 	"""
 	# filter at input
-	filt_bw = (768+10)*1e3
-	filt_tb = 10e3
+	filt_bw = (768+100)*1e3
+	filt_tb = 50e3
 
 	# OFDM stuff
 	__cp_gap__ = [30, 10, 5, 20] # gap for ofdm_sampler to leave before the start of the next symbol
