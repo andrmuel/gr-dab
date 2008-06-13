@@ -124,7 +124,7 @@ dab_ofdm_ffe_all_in_one::work (int noutput_items,
         }
 
         /* the following distinction is not really needed; but without it,
-         * simulation would need to run much longer, becuase the
+         * simulation would need to run much longer, because the
          * synchronisation would need time to adjust to the offset */
         if (d_estimated_error == 0)
           d_estimated_error = d_ffs_error_sum; /* first time -> fast adjustment */

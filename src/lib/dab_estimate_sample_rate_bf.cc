@@ -90,7 +90,7 @@ dab_estimate_sample_rate_bf::work (int noutput_items,
       d_zeros++;
       if (*in == 1) {
         d_real_sample_rate = (float)d_zeros / (float)d_frame_length * d_expected_sample_rate;
-        printf("estimated sample rate: %f\n", d_real_sample_rate);
+        fprintf(stderr,"estimated sample rate: %f\n", d_real_sample_rate);
         d_zeros = 0;
       }
       in++;
