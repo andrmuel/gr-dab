@@ -67,7 +67,7 @@ class test_fic(gr.top_block):
 			sys.exit(1)
 		else:
 			filename = args[0]
-			if options.verbose: print "-> using samples from file " + filename
+			if options.verbose: print "--> using samples from file " + filename
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
 		
