@@ -233,7 +233,7 @@ class dab_parameters:
 		@param sample_rate sampling frequency
 		"""
 		if verbose:
-			print "--> creating DAB parametor object" # should not be seen more than once
+			print "--> creating DAB parameter object" # should not be seen more than once
 
 		assert(mode>=1 and mode <=4)
 		self.mode = mode

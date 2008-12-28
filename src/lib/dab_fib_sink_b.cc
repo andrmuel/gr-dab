@@ -36,7 +36,7 @@ dab_make_fib_sink_b ()
 
 dab_fib_sink_b::dab_fib_sink_b()
   : gr_sync_block ("fib_sink_b",
-		   gr_make_io_signature(1, 1, sizeof(char)*256),
+		   gr_make_io_signature(1, 1, sizeof(char)*32),
 		   gr_make_io_signature(0, 0, 0))
 {
 }
@@ -58,6 +58,7 @@ dab_fib_sink_b::work (int noutput_items,
       label[16]=0;
       printf("%s\n",label);
     }
+    in+=32;
 
   }
 

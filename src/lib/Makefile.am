@@ -91,7 +91,8 @@ _dab_swig_la_SOURCES = 			        \
 	dab_magnitude_equalizer_vcc.cc          \
 	dab_complex_to_interleaved_float_vcf.cc \
 	dab_prune_vectors.cc                    \
-	dab_fib_sink_b.cc
+	dab_fib_sink_b.cc                       \
+	crc16.cc
 
 # magic flags
 _dab_swig_la_LDFLAGS = $(NO_UNDEFINED) -module -avoid-version
