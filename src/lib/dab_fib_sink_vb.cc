@@ -24,25 +24,25 @@
 #include "config.h"
 #endif
 
-#include <dab_fib_sink_b.h>
+#include <dab_fib_sink_vb.h>
 #include <gr_io_signature.h>
 #include <stdexcept>
 
-dab_fib_sink_b_sptr
-dab_make_fib_sink_b ()
+dab_fib_sink_vb_sptr
+dab_make_fib_sink_vb ()
 {
-  return dab_fib_sink_b_sptr (new dab_fib_sink_b ());
+  return dab_fib_sink_vb_sptr (new dab_fib_sink_vb ());
 }
 
-dab_fib_sink_b::dab_fib_sink_b()
-  : gr_sync_block ("fib_sink_b",
+dab_fib_sink_vb::dab_fib_sink_vb()
+  : gr_sync_block ("fib_sink_vb",
 		   gr_make_io_signature(1, 1, sizeof(char)*32),
 		   gr_make_io_signature(0, 0, 0))
 {
 }
 
 int 
-dab_fib_sink_b::work (int noutput_items,
+dab_fib_sink_vb::work (int noutput_items,
 		    gr_vector_const_void_star &input_items,
 		    gr_vector_void_star &output_items)
 {

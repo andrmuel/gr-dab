@@ -25,10 +25,10 @@
 
 #include <gr_sync_block.h>
 
-class dab_fib_sink_b;
-typedef boost::shared_ptr<dab_fib_sink_b> dab_fib_sink_b_sptr;
+class dab_fib_sink_vb;
+typedef boost::shared_ptr<dab_fib_sink_vb> dab_fib_sink_vb_sptr;
 
-dab_fib_sink_b_sptr dab_make_fib_sink_b();
+dab_fib_sink_vb_sptr dab_make_fib_sink_vb();
 
 /*!
  * \brief sink for DAB FIBs
@@ -37,15 +37,15 @@ dab_fib_sink_b_sptr dab_make_fib_sink_b();
  *
  * \ingroup sink
  */
-class dab_fib_sink_b : public gr_sync_block
+class dab_fib_sink_vb : public gr_sync_block
 {
-  friend dab_fib_sink_b_sptr dab_make_fib_sink_b();
+  friend dab_fib_sink_vb_sptr dab_make_fib_sink_vb();
 
  private:
   unsigned long d_fibs; 
 
  protected:
-  dab_fib_sink_b();
+  dab_fib_sink_vb();
 
  public:
   int work(int noutput_items,

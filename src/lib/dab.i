@@ -37,7 +37,7 @@
 #include "dab_magnitude_equalizer_vcc.h"
 #include "dab_complex_to_interleaved_float_vcf.h"
 #include "dab_prune_vectors.h"
-#include "dab_fib_sink_b.h"
+#include "dab_fib_sink_vb.h"
 #include <stdexcept>
 %}
 
@@ -451,13 +451,13 @@ class dab_prune_vectors : public gr_sync_block
 
 // ----------------------------------------------------------------
 
-GR_SWIG_BLOCK_MAGIC(dab,fib_sink_b);
+GR_SWIG_BLOCK_MAGIC(dab,fib_sink_vb);
 
-dab_fib_sink_b_sptr dab_make_fib_sink_b ();
+dab_fib_sink_vb_sptr dab_make_fib_sink_vb ();
 
-class dab_fib_sink_b : public gr_sync_block
+class dab_fib_sink_vb : public gr_sync_block
 {
   private:
-    dab_fib_sink_b ();
+    dab_fib_sink_vb ();
 };
 
