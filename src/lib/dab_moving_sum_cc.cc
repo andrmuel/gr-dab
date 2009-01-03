@@ -63,7 +63,7 @@ dab_moving_sum_cc::dab_moving_sum_cc (int length)
   : gr_sync_block ("moving_sum_cc",
        gr_make_io_signature (MIN_IN, MAX_IN, sizeof (gr_complex)),
        gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (gr_complex))),
-    d_length(length), d_sum(0)
+    d_sum(0), d_length(length)
 {
   assert(length>=0);
   set_history(length+1);

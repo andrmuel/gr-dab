@@ -60,7 +60,7 @@ dab_prune_vectors::work (int noutput_items,
   char const *in = (const char *) input_items[0];
   char *out = (char *) output_items[0];
 
-  for(unsigned int i = 0; i < noutput_items; i++){
+  for(int i = 0; i < noutput_items; i++){
     memcpy(out,in+d_prune_start*d_itemsize,(d_length-d_prune_start-d_prune_end)*d_itemsize);
     in  += d_length*d_itemsize;
     out += (d_length-d_prune_start-d_prune_end)*d_itemsize;

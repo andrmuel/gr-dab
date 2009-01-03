@@ -43,6 +43,9 @@ class dab_fib_sink_vb : public gr_sync_block
 
  private:
   unsigned long d_fibs; 
+  void dump_fib(const char *fib);
+  int process_fib(const char *fib);
+  int process_fig(uint8_t type, const char *data, uint8_t length);
 
  protected:
   dab_fib_sink_vb();

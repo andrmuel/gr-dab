@@ -61,7 +61,7 @@ dab_sum_elements_vff::work (int noutput_items,
 
   float sum;
 
-  for (unsigned int i = 0; i < noutput_items; i++){
+  for (int i = 0; i < noutput_items; i++){
     sum = 0;
     for (unsigned int j = 0; j < d_length; j++)
       sum += *in++;
