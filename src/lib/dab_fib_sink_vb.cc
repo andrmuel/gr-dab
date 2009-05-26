@@ -80,10 +80,10 @@ dab_fib_sink_vb::process_fig(uint8_t type, const char *data, uint8_t length) {
   uint8_t fidc_extension;
   // fprintf(stderr,"processing FIG, type %d, length %d\n", type, length);
   switch (type) {
-    case FIB_TYPE_MCI:
+    case FIB_FIG_TYPE_MCI:
       break;
-    case FIB_TYPE_LABEL1:
-    case FIB_TYPE_LABEL2:
+    case FIB_FIG_TYPE_LABEL1:
+    case FIB_FIG_TYPE_LABEL2:
       label_charset = (uint8_t)(data[0]>>4);
       label_other_ensemble = (uint8_t)((data[0]>>3) & 1);
       label_extension = (uint8_t)(data[0]&0x7);
@@ -91,7 +91,7 @@ dab_fib_sink_vb::process_fig(uint8_t type, const char *data, uint8_t length) {
       label[16]=0;
       printf("Label: %s\n",label);
       break;
-    case FIB_TYPE_FIDC:
+    case FIB_FIG_TYPE_FIDC:
       fidc_extension = (uint8_t)(data[0]&0x7);
       switch (fidc_extension) {
         case FIB_FIDC_EXTENSION_PAGING:
@@ -107,7 +107,7 @@ dab_fib_sink_vb::process_fig(uint8_t type, const char *data, uint8_t length) {
           printf("unknown FIB FIDC extension\n");
       }
       break;
-    case FIB_TYPE_CA:
+    case FIB_FIG_TYPE_CA:
       printf("FIB type CA (conditional access) not supported yet\n");
       break;
     default:
