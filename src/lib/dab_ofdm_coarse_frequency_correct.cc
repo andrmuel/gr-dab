@@ -29,6 +29,8 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
+
 #include <dab_ofdm_coarse_frequency_correct.h>
 #include <gr_io_signature.h>
 #include <gr_expj.h>

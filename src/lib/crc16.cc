@@ -1,4 +1,5 @@
 #include <inttypes.h>
+#include <stdio.h>
 #include <iostream>
 
 uint16_t crc16(const char *bytestream, int length, uint16_t generator, uint16_t initial_state) {

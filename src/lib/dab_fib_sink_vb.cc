@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
+
 #include <dab_fib_sink_vb.h>
 #include <gr_io_signature.h>
 #include <stdexcept>

@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
+
 #include <dab_measure_processing_rate.h>
 #include <gr_io_signature.h>
 #include <stdexcept>

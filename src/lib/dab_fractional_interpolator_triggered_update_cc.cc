@@ -24,6 +24,8 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
+
 #include <gr_io_signature.h>
 #include <dab_fractional_interpolator_triggered_update_cc.h>
 #include <gri_mmse_fir_interpolator_cc.h>

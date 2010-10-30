@@ -29,6 +29,8 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
+
 #include <dab_estimate_sample_rate_bf.h>
 #include <gr_io_signature.h>
 

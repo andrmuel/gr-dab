@@ -29,6 +29,8 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
+
 #include <dab_ofdm_ffe_all_in_one.h>
 #include <gr_io_signature.h>
 #include <gr_math.h>
