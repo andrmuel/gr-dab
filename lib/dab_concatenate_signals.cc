@@ -24,6 +24,9 @@
 #include "config.h"
 #endif
 
+#include <pthread.h>
+#include <stdio.h>
+
 #include <dab_concatenate_signals.h>
 #include <gr_io_signature.h>
 
@@ -44,15 +47,15 @@ dab_concatenate_signals::dab_concatenate_signals (size_t itemsize)
 void 
 dab_concatenate_signals::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
-  int in_req  = noutput_items;
-  unsigned int ninputs = ninput_items_required.size ();
+  unsigned int ninputs = ninput_items_required.size();
+  // printf("noutput_items: %d\n", noutput_items);
 
   if (d_current_signal<ninputs) {
     for (unsigned i = 0; i < ninputs; i++)
-        ninput_items_required[i] = (i==d_current_signal)?in_req-1:0; /* must be -1, so we get to zero at the end of the stream */
+      ninput_items_required[i] = (i==d_current_signal)?noutput_items-1:0; /* must be -1, so we get to zero at the end of the stream */
   } else { /* no more streams left -> make sure the scheduler notices it */
     for (unsigned i = 0; i < ninputs; i++)
-        ninput_items_required[i] = noutput_items;
+      ninput_items_required[i] = noutput_items;
   }
 }
 
@@ -74,10 +77,11 @@ dab_concatenate_signals::general_work(int noutput_items,
     return -1;
 
   if (ninput_items[d_current_signal]==0) { /* no more input - go to next stream */
-    if (d_callmetwice == 0) /* workaround: general_work gets called with no inputs rigth at the start in any case */
+    if (d_callmetwice == 0) /* workaround: general_work gets called with no inputs right at the start in any case */
       d_current_signal++;
     else 
       d_callmetwice--;
+    // sched_yield(); [> let other threads run .. <]
     return 0;
   }
 

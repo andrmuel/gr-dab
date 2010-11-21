@@ -21,6 +21,7 @@ class dab_ofdm_testbench(gr.top_block):
 		self.dp = dab.dab_parameters(1)
 		self.rp = dab.receiver_parameters(1, softbits=False, input_fft_filter=input_filter, autocorrect_sample_rate=autocorrect_sample_rate, correct_ffe=True, equalize_magnitude=False)
 		self.ber_sink = ber_sink
+		os.environ['GR_SCHEDULER'] = "STS" # need single threaded scheduler for use with concatenate_signals
 
 	def setup_flowgraph(self, mode, ber_skipbytes=0):
 		# parameters

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 from gnuradio import gr, gr_unittest
 import dab_swig
 
@@ -12,6 +13,7 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 
 	def setUp(self):
 		self.tb = gr.top_block()
+		os.environ['GR_SCHEDULER'] = "STS" # need single threaded scheduler for use with concatenate_signals
 
 	def tearDown(self):
 		self.tb = None
