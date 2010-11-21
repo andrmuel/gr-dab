@@ -39,7 +39,7 @@
 dab_select_vectors_sptr 
 dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip)
 {
-  return dab_select_vectors_sptr (new dab_select_vectors (itemsize, length, num_select, num_skip));
+  return gnuradio::get_initial_sptr (new dab_select_vectors (itemsize, length, num_select, num_skip));
 }
 
 dab_select_vectors::dab_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip) : 

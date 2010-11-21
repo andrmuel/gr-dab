@@ -42,7 +42,7 @@ dab_make_ofdm_sampler (unsigned int fft_length,
                        unsigned int symbols_per_frame,
                        unsigned int gap)
 {
-  return dab_ofdm_sampler_sptr (new dab_ofdm_sampler (fft_length, cp_length, symbols_per_frame, gap));
+  return gnuradio::get_initial_sptr (new dab_ofdm_sampler (fft_length, cp_length, symbols_per_frame, gap));
 }
 
 dab_ofdm_sampler::dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap) : 

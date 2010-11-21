@@ -39,7 +39,7 @@
 dab_prune_vectors_sptr 
 dab_make_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end)
 {
-  return dab_prune_vectors_sptr (new dab_prune_vectors (itemsize, length, prune_start, prune_end));
+  return gnuradio::get_initial_sptr (new dab_prune_vectors (itemsize, length, prune_start, prune_end));
 }
 
 dab_prune_vectors::dab_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end) : 

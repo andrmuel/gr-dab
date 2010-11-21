@@ -39,7 +39,7 @@
 dab_moving_sum_cc_sptr 
 dab_make_moving_sum_cc (int length)
 {
-  return dab_moving_sum_cc_sptr (new dab_moving_sum_cc (length));
+  return gnuradio::get_initial_sptr (new dab_moving_sum_cc (length));
 }
 
 /*

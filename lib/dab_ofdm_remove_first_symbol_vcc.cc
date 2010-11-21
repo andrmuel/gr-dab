@@ -39,7 +39,7 @@
 dab_ofdm_remove_first_symbol_vcc_sptr 
 dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen)
 {
-  return dab_ofdm_remove_first_symbol_vcc_sptr (new dab_ofdm_remove_first_symbol_vcc (vlen));
+  return gnuradio::get_initial_sptr (new dab_ofdm_remove_first_symbol_vcc (vlen));
 }
 
 dab_ofdm_remove_first_symbol_vcc::dab_ofdm_remove_first_symbol_vcc (unsigned int vlen) : 

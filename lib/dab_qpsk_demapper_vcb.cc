@@ -39,7 +39,7 @@
 dab_qpsk_demapper_vcb_sptr 
 dab_make_qpsk_demapper_vcb (int symbol_length)
 {
-  return dab_qpsk_demapper_vcb_sptr (new dab_qpsk_demapper_vcb (symbol_length));
+  return gnuradio::get_initial_sptr (new dab_qpsk_demapper_vcb (symbol_length));
 }
 
 dab_qpsk_demapper_vcb::dab_qpsk_demapper_vcb (int symbol_length) : 

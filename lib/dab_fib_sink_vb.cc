@@ -36,7 +36,7 @@
 dab_fib_sink_vb_sptr
 dab_make_fib_sink_vb ()
 {
-  return dab_fib_sink_vb_sptr (new dab_fib_sink_vb ());
+  return gnuradio::get_initial_sptr (new dab_fib_sink_vb ());
 }
 
 dab_fib_sink_vb::dab_fib_sink_vb()

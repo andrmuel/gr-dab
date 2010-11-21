@@ -39,7 +39,7 @@
 dab_moving_sum_ff_sptr 
 dab_make_moving_sum_ff (int length)
 {
-  return dab_moving_sum_ff_sptr (new dab_moving_sum_ff (length));
+  return gnuradio::get_initial_sptr (new dab_moving_sum_ff (length));
 }
 
 /*

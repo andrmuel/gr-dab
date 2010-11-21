@@ -40,7 +40,7 @@
 dab_modulo_ff_sptr 
 dab_make_modulo_ff (float div)
 {
-  return dab_modulo_ff_sptr (new dab_modulo_ff (div));
+  return gnuradio::get_initial_sptr (new dab_modulo_ff (div));
 }
 
 /*

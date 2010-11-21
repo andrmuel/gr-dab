@@ -30,7 +30,7 @@
 dab_concatenate_signals_sptr
 dab_make_concatenate_signals (size_t itemsize)
 {
-  return dab_concatenate_signals_sptr (new dab_concatenate_signals (itemsize));
+  return gnuradio::get_initial_sptr (new dab_concatenate_signals (itemsize));
 }
 
 dab_concatenate_signals::dab_concatenate_signals (size_t itemsize)

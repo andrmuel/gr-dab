@@ -39,7 +39,7 @@
 dab_diff_phasor_vcc_sptr 
 dab_make_diff_phasor_vcc (unsigned int length)
 {
-  return dab_diff_phasor_vcc_sptr (new dab_diff_phasor_vcc (length));
+  return gnuradio::get_initial_sptr (new dab_diff_phasor_vcc (length));
 }
 
 dab_diff_phasor_vcc::dab_diff_phasor_vcc (unsigned int length) : 

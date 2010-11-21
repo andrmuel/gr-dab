@@ -41,7 +41,7 @@
 dab_estimate_sample_rate_bf_sptr 
 dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length)
 {
-  return dab_estimate_sample_rate_bf_sptr (new dab_estimate_sample_rate_bf (expected_sample_rate, frame_length));
+  return gnuradio::get_initial_sptr (new dab_estimate_sample_rate_bf (expected_sample_rate, frame_length));
 }
 
 /*

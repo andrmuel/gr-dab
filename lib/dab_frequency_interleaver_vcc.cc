@@ -39,7 +39,7 @@
 dab_frequency_interleaver_vcc_sptr 
 dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence)
 {
-  return dab_frequency_interleaver_vcc_sptr (new dab_frequency_interleaver_vcc (interleaving_sequence));
+  return gnuradio::get_initial_sptr (new dab_frequency_interleaver_vcc (interleaving_sequence));
 }
 
 dab_frequency_interleaver_vcc::dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence) : 

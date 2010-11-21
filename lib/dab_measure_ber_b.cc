@@ -31,7 +31,7 @@
 dab_measure_ber_b_sptr
 dab_make_measure_ber_b ()
 {
-  return dab_measure_ber_b_sptr (new dab_measure_ber_b ());
+  return gnuradio::get_initial_sptr (new dab_measure_ber_b ());
 }
 
 dab_measure_ber_b::dab_measure_ber_b()

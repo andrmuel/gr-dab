@@ -39,7 +39,7 @@
 dab_ofdm_insert_pilot_vcc_sptr 
 dab_make_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot)
 {
-  return dab_ofdm_insert_pilot_vcc_sptr (new dab_ofdm_insert_pilot_vcc (pilot));
+  return gnuradio::get_initial_sptr (new dab_ofdm_insert_pilot_vcc (pilot));
 }
 
 dab_ofdm_insert_pilot_vcc::dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot) : 

@@ -39,7 +39,7 @@
 dab_sum_phasor_trig_vcc_sptr 
 dab_make_sum_phasor_trig_vcc (unsigned int length)
 {
-  return dab_sum_phasor_trig_vcc_sptr (new dab_sum_phasor_trig_vcc (length));
+  return gnuradio::get_initial_sptr (new dab_sum_phasor_trig_vcc (length));
 }
 
 dab_sum_phasor_trig_vcc::dab_sum_phasor_trig_vcc (unsigned int length) : 

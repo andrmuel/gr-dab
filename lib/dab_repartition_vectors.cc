@@ -39,7 +39,7 @@
 dab_repartition_vectors_sptr 
 dab_make_repartition_vectors (size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide)
 {
-  return dab_repartition_vectors_sptr (new dab_repartition_vectors (itemsize, vlen_in, vlen_out, multiply, divide));
+  return gnuradio::get_initial_sptr (new dab_repartition_vectors (itemsize, vlen_in, vlen_out, multiply, divide));
 }
 
 dab_repartition_vectors::dab_repartition_vectors (size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide) : 

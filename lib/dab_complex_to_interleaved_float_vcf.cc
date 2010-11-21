@@ -39,7 +39,7 @@
 dab_complex_to_interleaved_float_vcf_sptr 
 dab_make_complex_to_interleaved_float_vcf (unsigned int length)
 {
-  return dab_complex_to_interleaved_float_vcf_sptr (new dab_complex_to_interleaved_float_vcf (length));
+  return gnuradio::get_initial_sptr (new dab_complex_to_interleaved_float_vcf (length));
 }
 
 dab_complex_to_interleaved_float_vcf::dab_complex_to_interleaved_float_vcf (unsigned int length) : 

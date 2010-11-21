@@ -39,7 +39,7 @@
 dab_puncture_vbb_sptr 
 dab_make_puncture_vbb (const std::vector<unsigned char> &puncturing_vector)
 {
-  return dab_puncture_vbb_sptr (new dab_puncture_vbb (puncturing_vector));
+  return gnuradio::get_initial_sptr (new dab_puncture_vbb (puncturing_vector));
 }
 
 unsigned int dab_puncture_vbb::ones (const std::vector<unsigned char> &puncturing_vector) {

@@ -39,7 +39,7 @@
 dab_sum_elements_vff_sptr 
 dab_make_sum_elements_vff (unsigned int length)
 {
-  return dab_sum_elements_vff_sptr (new dab_sum_elements_vff (length));
+  return gnuradio::get_initial_sptr (new dab_sum_elements_vff (length));
 }
 
 dab_sum_elements_vff::dab_sum_elements_vff (unsigned int length) : 

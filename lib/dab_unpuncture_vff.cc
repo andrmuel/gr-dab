@@ -39,7 +39,7 @@
 dab_unpuncture_vff_sptr 
 dab_make_unpuncture_vff (const std::vector<unsigned char> &puncturing_vector, float fillval)
 {
-  return dab_unpuncture_vff_sptr (new dab_unpuncture_vff (puncturing_vector, fillval));
+  return gnuradio::get_initial_sptr (new dab_unpuncture_vff (puncturing_vector, fillval));
 }
 
 unsigned int dab_unpuncture_vff::ones (const std::vector<unsigned char> &puncturing_vector) {

@@ -44,7 +44,7 @@
 dab_ofdm_coarse_frequency_correct_sptr 
 dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length)
 {
-  return dab_ofdm_coarse_frequency_correct_sptr (new dab_ofdm_coarse_frequency_correct (fft_length, num_carriers, cp_length));
+  return gnuradio::get_initial_sptr (new dab_ofdm_coarse_frequency_correct (fft_length, num_carriers, cp_length));
 }
 
 dab_ofdm_coarse_frequency_correct::dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length) : 

@@ -43,7 +43,7 @@
 dab_correct_individual_phase_offset_vff_sptr 
 dab_make_correct_individual_phase_offset_vff (unsigned int vlen, float alpha)
 {
-  return dab_correct_individual_phase_offset_vff_sptr (new dab_correct_individual_phase_offset_vff (vlen, alpha));
+  return gnuradio::get_initial_sptr (new dab_correct_individual_phase_offset_vff (vlen, alpha));
 }
 
 dab_correct_individual_phase_offset_vff::dab_correct_individual_phase_offset_vff (unsigned int vlen, float alpha) : 

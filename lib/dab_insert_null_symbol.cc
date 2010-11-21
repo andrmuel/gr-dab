@@ -39,7 +39,7 @@
 dab_insert_null_symbol_sptr 
 dab_make_insert_null_symbol (int ns_length, int symbol_length)
 {
-  return dab_insert_null_symbol_sptr (new dab_insert_null_symbol (ns_length, symbol_length));
+  return gnuradio::get_initial_sptr (new dab_insert_null_symbol (ns_length, symbol_length));
 }
 
 dab_insert_null_symbol::dab_insert_null_symbol (int ns_length, int symbol_length) : 

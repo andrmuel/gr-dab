@@ -39,7 +39,7 @@
 dab_magnitude_equalizer_vcc_sptr 
 dab_make_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols)
 {
-  return dab_magnitude_equalizer_vcc_sptr (new dab_magnitude_equalizer_vcc (vlen, num_symbols));
+  return gnuradio::get_initial_sptr (new dab_magnitude_equalizer_vcc (vlen, num_symbols));
 }
 
 dab_magnitude_equalizer_vcc::dab_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols) : 

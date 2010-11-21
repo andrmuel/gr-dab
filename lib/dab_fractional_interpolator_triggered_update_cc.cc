@@ -34,7 +34,7 @@
 // Public constructor
 dab_fractional_interpolator_triggered_update_cc_sptr dab_make_fractional_interpolator_triggered_update_cc(float phase_shift, float interp_ratio)
 {
-  return dab_fractional_interpolator_triggered_update_cc_sptr(new dab_fractional_interpolator_triggered_update_cc(phase_shift, interp_ratio));
+  return gnuradio::get_initial_sptr (new dab_fractional_interpolator_triggered_update_cc(phase_shift, interp_ratio));
 }
 
 dab_fractional_interpolator_triggered_update_cc::dab_fractional_interpolator_triggered_update_cc(float phase_shift, float interp_ratio)

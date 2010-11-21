@@ -34,7 +34,7 @@
 dab_measure_processing_rate_sptr
 dab_make_measure_processing_rate (size_t itemsize, int samples_to_count)
 {
-  return dab_measure_processing_rate_sptr (new dab_measure_processing_rate (itemsize, samples_to_count));
+  return gnuradio::get_initial_sptr (new dab_measure_processing_rate (itemsize, samples_to_count));
 }
 
 dab_measure_processing_rate::dab_measure_processing_rate(size_t itemsize, int samples_to_count)

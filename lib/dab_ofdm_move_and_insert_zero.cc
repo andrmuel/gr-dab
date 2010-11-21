@@ -39,7 +39,7 @@
 dab_ofdm_move_and_insert_zero_sptr 
 dab_make_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers)
 {
-  return dab_ofdm_move_and_insert_zero_sptr (new dab_ofdm_move_and_insert_zero (fft_length, num_carriers));
+  return gnuradio::get_initial_sptr (new dab_ofdm_move_and_insert_zero (fft_length, num_carriers));
 }
 
 dab_ofdm_move_and_insert_zero::dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers) : 

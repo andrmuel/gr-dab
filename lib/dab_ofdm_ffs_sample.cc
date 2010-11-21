@@ -41,7 +41,7 @@
 dab_ofdm_ffs_sample_sptr 
 dab_make_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
 {
-  return dab_ofdm_ffs_sample_sptr (new dab_ofdm_ffs_sample (symbol_length, fft_length, num_symbols, alpha, sample_rate));
+  return gnuradio::get_initial_sptr (new dab_ofdm_ffs_sample (symbol_length, fft_length, num_symbols, alpha, sample_rate));
 }
 
 dab_ofdm_ffs_sample::dab_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate) : 
