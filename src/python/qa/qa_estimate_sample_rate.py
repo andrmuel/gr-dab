@@ -26,7 +26,7 @@ class qa_estimate_sample_rate(gr_unittest.TestCase):
 		self.tb.connect(estimate_sample_rate, dst)
 		self.tb.run()
 		result_data = dst.data()
-		self.assertFloatTuplesAlmostEqual(expected_result, result_data, 6)
+		self.assertFloatTuplesAlmostEqual(expected_result, result_data, 5)
 
 
 if __name__ == '__main__':

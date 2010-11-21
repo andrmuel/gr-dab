@@ -11,8 +11,8 @@ uint16_t crc16(const char *bytestream, int length, uint16_t generator, uint16_t 
   for (int i=2; i<length; i++) {
     byte = bytestream[i];
     for (int j=7; j>=0; j--) {
-      if (state>>15&1==1)
-        state = ((state<<1) + ((byte>>j)&1) ^ generator);
+      if (((state>>15)&1) == 1)
+        state = ((state<<1) + (((byte>>j)&1) ^ generator));
       else
         state = (state<<1) + ((byte>>j)&1);
     }
