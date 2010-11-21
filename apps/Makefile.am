@@ -1,5 +1,5 @@
 #
-# Copyright 2004,2005,2007 Free Software Foundation, Inc.
+# Copyright 2009 Free Software Foundation, Inc.
 # 
 # This file is part of GNU Radio
 # 
@@ -19,15 +19,16 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-TARGETS = 
+include $(top_srcdir)/Makefile.common
 
+if PYTHON
 
-# To avoid build problems for folks who don't have xmlto installed, we
-# don't build the docs by default.
+dist_bin_SCRIPTS = \
+	usrp_dab_rx.py \
+	usrp_dab_tx.py \
+	dab_rx_constellation.py
 
-# html: $(TARGETS)
-all: $(TARGETS)
+# EXTRA_DIST = \
+#     howto_square.grc
 
-clean:
-	-${RM} -f $(TARGETS) $(BUILT_XML_FILES)
-
+endif

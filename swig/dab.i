@@ -1,12 +1,8 @@
 /* -*- c++ -*- */
 
-%feature("autodoc", "1");    // generate python docstrings
-
-%include "exception.i"
-%import "gnuradio.i"      // the common stuff
+%include "gnuradio.i"      // the common stuff
 
 %{
-#include "gnuradio_swig_bug_workaround.h"  // mandatory bug fix
 #include "dab_moving_sum_ff.h"
 #include "dab_moving_sum_cc.h"
 #include "dab_ofdm_sampler.h"
@@ -38,7 +34,6 @@
 #include "dab_complex_to_interleaved_float_vcf.h"
 #include "dab_prune_vectors.h"
 #include "dab_fib_sink_vb.h"
-#include <stdexcept>
 %}
 
 // ----------------------------------------------------------------
@@ -66,13 +61,6 @@ class dab_moving_sum_ff : public gr_sync_block
 
 // ----------------------------------------------------------------
 
-/*
- * First arg is the package prefix.
- * Second arg is the name of the class minus the prefix.
- *
- * This does some behind-the-scenes magic so we can
- * access howto_square_ff from python as howto.square_ff
- */
 GR_SWIG_BLOCK_MAGIC(dab,moving_sum_cc);
 
 dab_moving_sum_cc_sptr dab_make_moving_sum_cc (int length);

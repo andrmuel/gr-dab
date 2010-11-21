@@ -22,14 +22,9 @@
 include $(top_srcdir)/Makefile.common
 
 EXTRA_DIST = run_tests.in
+TESTS = run_tests
 
-
-TESTS = 				\
-	run_tests
-
-grdabpythondir = $(grpythondir)/dab
-
-grdabpython_PYTHON =   \
+modpython_PYTHON = \
 	__init__.py            \
 	fic.py                 \
 	ofdm.py                \
@@ -37,11 +32,6 @@ grdabpython_PYTHON =   \
 	ofdm_sync_dab2.py      \
 	detect_null.py         \
 	parameters.py
-
-bin_SCRIPTS = \
-	usrp_dab_rx.py \
-	usrp_dab_tx.py \
-	dab_rx_constellation.py
 
 noinst_PYTHON =       \
 	qa_block_partitioning_vbb.py                   \

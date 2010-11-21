@@ -1,5 +1,5 @@
 dnl 
-dnl  Copyright 2004,2005,2007 Free Software Foundation, Inc.
+dnl  Copyright 2004,2005,2007,2008,2009 Free Software Foundation, Inc.
 dnl  
 dnl  This file is part of GNU Radio
 dnl  
@@ -19,87 +19,70 @@ dnl  the Free Software Foundation, Inc., 51 Franklin Street,
 dnl  Boston, MA 02110-1301, USA.
 dnl 
 
+
 AC_INIT
 AC_PREREQ(2.57)
-AC_CONFIG_SRCDIR([src/lib/dab.i])
-AM_CONFIG_HEADER(config.h)
-AC_CANONICAL_TARGET([])
-AM_INIT_AUTOMAKE(gr-dab,3.1.svn)
+AC_CONFIG_AUX_DIR([.])	
 
-GR_X86_64
-dnl LF_CONFIGURE_CC
-LF_CONFIGURE_CXX
-LF_SET_WARNINGS
-GR_SET_GPROF
-GR_SET_PROF
-AM_PROG_AS
-AC_PROG_LN_S
-AC_PROG_MAKE_SET
-AC_PROG_INSTALL
-AC_PATH_PROG([RM_PROG], [rm])
+AC_CANONICAL_BUILD
+AC_CANONICAL_HOST
+AC_CANONICAL_TARGET
 
-AC_LIBTOOL_WIN32_DLL
-AC_ENABLE_SHARED	dnl do build shared libraries
-AC_DISABLE_STATIC	dnl don't build static libraries
-AC_PROG_LIBTOOL
+GR_VERSION
+dnl ustar required to have pathnames > 99 chars
+_AM_SET_OPTION([tar-ustar])
+AM_INIT_AUTOMAKE(gr-howto-write-a-block,$RELEASE)
 
-dnl Locate python, SWIG, etc
-GR_NO_UNDEFINED
-GR_SCRIPTING
+dnl This is kind of non-standard, but it sure shortens up this file :-)
+m4_include([config/gr_standalone.m4])
+GR_STANDALONE
 
-dnl Checks for libraries.
+dnl Check for any libraries you need
+dnl AC_CHECK_LIBRARY
 
-dnl check for threads (mandatory)
-GR_OMNITHREAD
-
-CFLAGS="${CFLAGS} $PTHREAD_CFLAGS"
-CXXFLAGS="${CXXFLAGS} $PTHREAD_CFLAGS"
-
-if test "x$CXX_FOR_BUILD" = x
-then
-  CXX_FOR_BUILD=${CXX}
-fi
-AC_SUBST(CXX_FOR_BUILD)
-
-dnl Checks for header files.
-AC_HEADER_STDC
-AC_HEADER_SYS_WAIT
-AC_CHECK_HEADERS(fcntl.h limits.h strings.h sys/ioctl.h sys/time.h unistd.h)
-AC_CHECK_HEADERS(sys/mman.h)
-
-dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
-AC_C_INLINE
-AC_TYPE_SIZE_T
-AC_HEADER_TIME
+dnl Check for header files you need
+dnl AC_CHECK_HEADERS(fcntl.h limits.h strings.h sys/ioctl.h sys/time.h unistd.h)
+dnl AC_CHECK_HEADERS(sys/mman.h)
 
 dnl Checks for library functions.
-AC_CHECK_FUNCS([])
+dnl AC_CHECK_FUNCS([])
 
-dnl Check for Mingw support
-GR_PWIN32
+dnl We pick up the boost cppflags, cxxflags and thread lib via GNURADIO_CORE
+dnl
+dnl If you need additional boost libraries, you'll need to
+dnl uncomment AX_BOOST_BASE, plus some of the following:
+dnl
+dnl calls AC_SUBST(BOOST_CPPFLAGS), AC_SUBST(BOOST_LDFLAGS) and defines HAVE_BOOST
+dnl AX_BOOST_BASE([1.35])
+dnl
+dnl All the rest of these call AC_SUBST(BOOST_<foo>_LIB) and define HAVE_BOOST_<foo>
+dnl
+dnl AX_BOOST_DATE_TIME
+dnl AX_BOOST_FILESYSTEM
+dnl AX_BOOST_IOSTREAMS
+dnl AX_BOOST_PROGRAM_OPTIONS
+dnl AX_BOOST_REGEX
+dnl AX_BOOST_SERIALIZATION
+dnl AX_BOOST_SIGNALS
+dnl AX_BOOST_SYSTEM
+dnl AX_BOOST_TEST_EXEC_MONITOR
+dnl AX_BOOST_UNIT_TEST_FRAMEWORK
+dnl AX_BOOST_WSERIALIZATION
 
-PKG_CHECK_MODULES(GNURADIO_CORE, gnuradio-core >= 2)
-LIBS="$LIBS $GNURADIO_CORE_LIBS"
-
-dnl Define where to find boost includes
-dnl defines BOOST_CFLAGS
-GR_REQUIRE_BOOST_INCLUDES
-
-STD_DEFINES_AND_INCLUDES="$GNURADIO_CORE_CFLAGS $BOOST_CFLAGS"
-AC_SUBST(STD_DEFINES_AND_INCLUDES)
- 
 AC_CONFIG_FILES([\
 	  Makefile \
+	  apps/Makefile \
 	  config/Makefile \
-	  doc/Makefile \
-	  src/Makefile \
-	  src/lib/Makefile \
-	  src/python/Makefile \
-	  src/python/run_tests \
+	  grc/Makefile \
+	  lib/Makefile \
+	  python/Makefile \
+	  python/run_tests \
+	  swig/Makefile \
 	])
 
 dnl run_tests is created from run_tests.in.  Make it executable.
-AC_CONFIG_COMMANDS([run_tests], [chmod +x src/python/run_tests])
+AC_CONFIG_COMMANDS([run_tests], [chmod +x python/run_tests])
 
 AC_OUTPUT
+
+echo Configured gr-howto-write-a-block release $RELEASE for build.

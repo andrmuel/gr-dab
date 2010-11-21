@@ -1,5 +1,5 @@
 #
-# Copyright 2004 Free Software Foundation, Inc.
+# Copyright 2009 Free Software Foundation, Inc.
 # 
 # This file is part of GNU Radio
 # 
@@ -19,4 +19,11 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-SUBDIRS = lib python
+include $(top_srcdir)/Makefile.common
+
+grcblocksdir = $(grc_blocksdir)
+
+# dist_grcblocks_DATA = \
+#     howto_square_ff.xml \
+#     howto_square2_ff.xml
+

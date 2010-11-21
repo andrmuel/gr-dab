@@ -1,5 +1,4 @@
-dnl
-dnl Copyright 2005 Free Software Foundation, Inc.
+dnl Copyright 2001,2002,2003,2004,2005,2006 Free Software Foundation, Inc.
 dnl 
 dnl This file is part of GNU Radio
 dnl 
@@ -17,23 +16,18 @@ dnl You should have received a copy of the GNU General Public License
 dnl along with GNU Radio; see the file COPYING.  If not, write to
 dnl the Free Software Foundation, Inc., 51 Franklin Street,
 dnl Boston, MA 02110-1301, USA.
-dnl 
 
-# GR_X86_64()
-#
-# Checks to see if we're on a x86_64 machine, and if so, ensure
-# that libdir ends in "64"
-#
-AC_DEFUN([GR_X86_64],[
-  AC_REQUIRE([AC_CANONICAL_HOST])
-  if test "$host_cpu" = "x86_64"; then
-    AC_MSG_CHECKING([libdir for lib64 suffix])
-    t=${libdir##*/lib}
-    if test "$t" != 64 && test -d /lib64 && ! test -L /lib64; then
-      libdir=${libdir}64
-      AC_MSG_RESULT([no. Setting libdir to $libdir])
-    else
-      AC_MSG_RESULT([yes])
+AC_DEFUN([GR_FORTRAN],[
+    dnl if you want to generate a different table of interpolator taps, you need fortran.
+    dnl we default to off, since almost no one wants to do this.
+    AC_ARG_ENABLE(fortran, AC_HELP_STRING([--enable-fortran],[enable fortran (no)]),
+		  [], [enable_fortran=no])
+    AM_CONDITIONAL(ENABLE_FORTRAN, test "x$enable_fortran" = xyes)
+
+    if test "x$enable_fortran" = xyes
+    then
+        AC_PROG_F77
+        AC_F77_LIBRARY_LDFLAGS
     fi
-  fi
+    AC_PROG_CC dnl bug fix to restore $ac_ext
 ])
