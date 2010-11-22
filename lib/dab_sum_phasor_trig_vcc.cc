@@ -29,6 +29,8 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
+#include <stddef.h>
 #include <dab_sum_phasor_trig_vcc.h>
 #include <gr_io_signature.h>
 
@@ -58,6 +60,7 @@ dab_sum_phasor_trig_vcc::work (int noutput_items,
 {
   gr_complex const *in = (const gr_complex *) input_items[0];
   gr_complex *out = (gr_complex *) output_items[0];
+  gr_complex *lastout;
   const char *frame_start = (const char *) input_items[1];
   char *o_frame_start = (char *) output_items[1];
   
@@ -70,8 +73,12 @@ dab_sum_phasor_trig_vcc::work (int noutput_items,
         for (unsigned int j=0; j<d_length; j++)
           out[j] = in[j] * d_last_symbol[j];
       } else {
-        for (unsigned int j=0; j<d_length; j++)
-          out[j] = in[j] * out[j-d_length];
+        for (unsigned int j=0; j<d_length; j++) {
+          // printf("%p\n", &lastout[j]);
+          // printf("%p\n", &out[j+ptrdiff_t(-d_length)]);
+          out[j] = in[j] * lastout[j];
+          // out[j] = in[j] * (&out[j-d_length])[0];
+        }
       }
 
     }
@@ -84,6 +91,7 @@ dab_sum_phasor_trig_vcc::work (int noutput_items,
           d_last_symbol[j] = out[j];
     }
 
+    lastout = out;
     out+=d_length;
     in+=d_length;
 

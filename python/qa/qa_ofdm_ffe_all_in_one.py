@@ -18,7 +18,7 @@ class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 	def tearDown(self):
 		self.tb = None
 
-	def test_001_ofdm_ffs_sample(self):
+	def test_001_ofdm_ffe_all_in_one(self):
 		symbol_length = 5
 		num_symbols = 2
 		fft_length = 3

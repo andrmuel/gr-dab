@@ -59,13 +59,13 @@ dab_sum_elements_vff::work (int noutput_items,
   const float *in = (const float *) input_items[0];
   float *out = (float *) output_items[0];
 
-  float sum;
+  double sum;
 
   for (int i = 0; i < noutput_items; i++){
     sum = 0;
     for (unsigned int j = 0; j < d_length; j++)
       sum += *in++;
-    *out++ = sum;
+    *out++ = (float)sum;
   }
     
   return noutput_items;

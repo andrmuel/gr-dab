@@ -86,13 +86,12 @@ dab_estimate_sample_rate_bf::work (int noutput_items,
   float *out = (float *) output_items[0];
 
   int i=0;
-
   if (d_found_first_frame) {
     for(i=0; i<noutput_items; i++) {
       d_zeros++;
       if (*in == 1) {
         d_real_sample_rate = (float)d_zeros / (float)d_frame_length * d_expected_sample_rate;
-        fprintf(stderr,"estimated sample rate: %f\n", d_real_sample_rate);
+        // fprintf(stderr,"estimated sample rate: %f\n", d_real_sample_rate);
         d_zeros = 0;
       }
       in++;

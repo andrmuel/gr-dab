@@ -61,7 +61,7 @@ dab_ofdm_ffe_all_in_one::calc_ffe_estimate(const gr_complex *in) {
   int cp_length = d_symbol_length - d_fft_length;
 
   for (int i=-cp_length;i<0;i++)
-    sum += in[i-d_fft_length] * conj(in[i]);
+    sum += in[i-d_fft_length+d_symbol_length] * conj(in[i+d_symbol_length]);
 
   return gr_fast_atan2f(sum);
 }
@@ -76,8 +76,6 @@ dab_ofdm_ffe_all_in_one::work (int noutput_items,
   const char *trigger = (const char *) input_items[1];
   float *optr = (float *) output_items[0];
 
-  /* go to the first new sample (we get d_symbol_length old samples because of set_history() above) */
-  iptr += d_symbol_length;
   trigger += d_symbol_length;
   
   float new_estimate;
@@ -93,7 +91,6 @@ dab_ofdm_ffe_all_in_one::work (int noutput_items,
       d_cur_sample = 0;
 
       if (d_cur_symbol<d_num_symbols) {
-        // new_estimate = gr_fast_atan2f(*iptr);
         new_estimate = calc_ffe_estimate(iptr);
 
         if (d_cur_symbol>0) {

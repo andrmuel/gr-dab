@@ -127,7 +127,7 @@ dab_ofdm_coarse_frequency_correct::work (int noutput_items,
     frame_start_out[0] = 1;
     correlate_energy(iptr);
     d_delta_f = d_freq_offset+d_num_carriers/2-d_fft_length/2;
-    fprintf(stderr, "cfs: coarse freq. offset (subcarriers): %d\n", d_delta_f);
+    // fprintf(stderr, "cfs: coarse freq. offset (subcarriers): %d\n", d_delta_f);
     d_symbol_num = 0;
   } else {
     frame_start_out[0] = 0;

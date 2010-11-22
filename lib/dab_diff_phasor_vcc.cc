@@ -29,6 +29,7 @@
 #include "config.h"
 #endif
 
+#include <stdio.h>
 #include <dab_diff_phasor_vcc.h>
 #include <gr_io_signature.h>
 
@@ -59,10 +60,9 @@ dab_diff_phasor_vcc::work (int noutput_items,
 {
   gr_complex const *in = (const gr_complex *) input_items[0];
   gr_complex *out = (gr_complex *) output_items[0];
-  in += d_length; /* we are now at the actual start; history ensures that we get d_length (1 vector) old samples */
 
   for(unsigned int i = 0; i < noutput_items*d_length; i++){
-    out[i] = in[i] * conj(in[i-d_length]);
+    out[i] = in[i+d_length] * conj(in[i]);
   }
     
   return noutput_items;
