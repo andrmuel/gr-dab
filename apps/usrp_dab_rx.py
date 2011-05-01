@@ -10,8 +10,9 @@
 receive DAB with USRP
 """
 
-from gnuradio import gr, usrp, blks2, dab
+from gnuradio import gr, usrp, blks2
 from gnuradio.eng_option import eng_option
+import dab
 from optparse import OptionParser
 import sys, time, threading, math
 

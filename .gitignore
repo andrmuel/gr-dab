@@ -26,3 +26,4 @@
 /install-sh
 tags
 cscope.out
+.*.swp

@@ -25,8 +25,9 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, blks2, dab
+from gnuradio import gr, blks2
 from gnuradio.eng_option import eng_option
+import dab
 from optparse import OptionParser
 import sys
 

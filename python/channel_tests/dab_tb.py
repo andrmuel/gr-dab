@@ -10,7 +10,8 @@
 Complete DAB TX and RX with a software channel to simulate noise, frequency offset, etc.
 """
 
-from gnuradio import gr, blks2, dab
+from gnuradio import gr, blks2
+import dab
 import math, random
 
 DAB_SAMPLE_RATE=2048000

@@ -27,8 +27,9 @@
 estimate the sample rate of DAB samples by looking at the Null symbols
 """
 
-from gnuradio import gr, blks2, dab
+from gnuradio import gr, blks2
 from gnuradio.eng_option import eng_option
+import dab
 from optparse import OptionParser
 
 class estimate_samplerate(gr.top_block):

@@ -28,7 +28,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr
-from gnuradio.dab import dab_swig
+from dab import dab_swig
 import ofdm_sync_dab, ofdm_sync_dab2
 import detect_null
 from threading import Timer

@@ -25,7 +25,8 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr, dab_swig
+from gnuradio import gr
+import dab_swig
 import sys
 from math import pi
 import parameters, detect_null

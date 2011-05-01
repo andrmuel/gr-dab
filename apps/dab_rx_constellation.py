@@ -10,10 +10,11 @@
 demodulate DAB signal and ouput to constellation sink
 """
 
-from gnuradio import gr, dab, usrp
+from gnuradio import gr, usrp
 from gnuradio import eng_notation
 from gnuradio.eng_option import eng_option
 from gnuradio.wxgui import stdgui2, fftsink2, scopesink2
+import dab
 from optparse import OptionParser
 import wx
 import sys, threading, time
@@ -91,10 +92,8 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=self.verbose) 
 
 		self.v2s = gr.vector_to_stream(gr.sizeof_gr_complex, self.dab_params.num_carriers)
-		self.scope = scopesink2.constellation_sink(self.panel, title="DAB constellation sink", sample_rate=self.dab_params.sample_rate, frame_decim=3)
-		self.scope.win.set_marker("plus")
+		self.scope = scopesink2.scope_sink_c(self.panel, title="DAB constellation sink", sample_rate=self.dab_params.sample_rate, xy_mode=True)
 
-		# self.sink = gr.null_sink(gr.sizeof_char*self.dab_params.num_carriers/4)
 		self.trigsink = gr.null_sink(gr.sizeof_char)
 		self.sink = gr.null_sink(gr.sizeof_float*self.dab_params.num_carriers*2)
 
