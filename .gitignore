@@ -24,3 +24,5 @@
 /depcomp
 /ltmain.sh
 /install-sh
+tags
+cscope.out
