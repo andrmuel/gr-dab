@@ -60,8 +60,10 @@ dab_ofdm_ffe_all_in_one::calc_ffe_estimate(const gr_complex *in) {
   gr_complex sum = 0;
   int cp_length = d_symbol_length - d_fft_length;
 
-  for (int i=-cp_length;i<0;i++)
-    sum += in[i-d_fft_length+d_symbol_length] * conj(in[i+d_symbol_length]);
+  // for (int i=-cp_length;i<0;i++)
+  //   sum += in[i-d_fft_length+d_symbol_length] * conj(in[i+d_symbol_length]);
+  for (int i=0;i<cp_length;i++)
+    sum += in[i] * conj(in[i+d_fft_length]);
 
   return gr_fast_atan2f(sum);
 }
