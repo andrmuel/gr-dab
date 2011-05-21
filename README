@@ -1,30 +1,22 @@
-#
-# Copyright 2005,2006,2009 Free Software Foundation, Inc.
-# 
-# This file is part of GNU Radio
-# 
-# GNU Radio is free software; you can redistribute it and/or modify
+# gr-dab - GNU Radio Digital Audio Broadcasting module
+# Copyright (C) Andreas Müller, 2011
+
+# This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3, or (at your option)
-# any later version.
-# 
-# GNU Radio is distributed in the hope that it will be useful,
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
-# You should have received a copy of the GNU General Public License
-# along with GNU Radio; see the file COPYING.  If not, write to
-# the Free Software Foundation, Inc., 51 Franklin Street,
-# Boston, MA 02110-1301, USA.
-# 
 
-This directory (and the resulting tarball) contains a build tree with
-examples, Makefiles, etc that demonstrate how to write signal
-processing blocks for the GNU Radio system.  This directory is
-intentionally distributed separately from the unified tarball of the
-rest of GNU Radio in order to avoid problems for people who have begun
-to write blocks with a modified copy of gr-howto-write-a-block.
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+This directory (and the resulting tarball) contains a build tree for
+gr-dab.
 
 This package requires that gnuradio-core is already installed.  It
 also depends on some GNU Radio prerequisites, such as Boost and
@@ -35,6 +27,7 @@ To build the examples from the tarball use the normal recipe:
   $ ./configure
   $ make
   $ make check
+  $ sudo make install
 
 If you're building from git, you'll need to use this sequence, since
 git doesn't contain configure or the generated Makefiles.
@@ -43,6 +36,7 @@ git doesn't contain configure or the generated Makefiles.
   $ ./configure
   $ make
   $ make check
+  $ sudo make install
 
 Additional notes
 ----------------
@@ -54,3 +48,10 @@ To build gr-dab, please take into account:
 
 * the patch in patches/not_applied_in_trunk/gr_peak_detector_XX.cc.t.diff must
   be applied to the GNU Radio trunk before building
+
+* for the simulations in python/channel_tests/, you need the following
+  additional dependencies:
+   * the patches in the patches directory (except for the patches in
+     'applied_in_trunk') must be applied to the GNU Radio trunk
+   * Scipy (available from http://scipy.sourceforge.net)
+   * Matplotlib (available from http://matplotlib.sourceforge.net)
