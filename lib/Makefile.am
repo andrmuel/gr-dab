@@ -135,4 +135,4 @@ noinst_PROGRAMS = \
 	test_all
 
 test_all_SOURCES = test_all.cc
-test_all_LDADD   = libgnuradio-dab-qa.la
+test_all_LDADD   = libgnuradio-dab-qa.la -lboost_system -lboost_filesystem
