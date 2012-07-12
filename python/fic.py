@@ -24,6 +24,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr, trellis
+from gnuradio import digital
 import dab_swig
 from math import sqrt
 
@@ -88,7 +89,7 @@ class fic_decode(gr.hier_block2):
 			]
 		assert(len(table)/4==self.fsm.O())
 		table = [(1-2*x)/sqrt(2) for x in table]
-		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 774, 0, 0, 4, table, trellis.TRELLIS_EUCLIDEAN)
+		self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 774, 0, 0, 4, table, digital.TRELLIS_EUCLIDEAN)
 		self.conv_s2v = gr.stream_to_vector(gr.sizeof_char, 774)
 		self.conv_prune = dab_swig.prune_vectors(gr.sizeof_char, self.dp.fic_conv_codeword_length/4, 0, self.dp.conv_code_add_bits_input)
 
