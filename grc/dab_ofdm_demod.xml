@@ -55,8 +55,10 @@
   </sink>
   <source>
     <name>dat</name>
+    <!-- TODO handle initial set --> 
     <type>#if $soft_bits() then 'complex' else 'byte'#</type>
-    <vlen>#if $soft_bits() then 1536 else 1536/4</vlen> <!-- TODO adapt to mode -->
+    <!-- TODO adapt to mode -->
+    <vlen>#if $soft_bits() then 1536 else 1536/4</vlen>
   </source>
   <source>
     <name>ctrl</name>
