@@ -12,7 +12,7 @@
           ),
           dab.parameters.receiver_parameters(
             mode=$dab_mode,
-            softbits=$soft_bits,
+            softbits=$soft_bits.soft,
             input_fft_filter=True,
             autocorrect_sample_rate=True,
             sample_rate_correction_factor=1,
@@ -38,14 +38,21 @@
     <name>Soft Bits</name>
     <key>soft_bits</key>
     <value>True</value>
-    <type>bool</type>
+    <type>enum</type>
+    <!-- TODO depend on DAB mode -->
     <option>
       <name>Soft Bits</name>
-      <key>True</key>
+      <key>soft</key>
+      <opt>type:complex</opt>
+      <opt>vlen:1536</opt>
+      <opt>soft:True</opt>
     </option>
     <option>
       <name>Hard Bits</name>
-      <key>False</key>
+      <key>hard</key>
+      <opt>type:byte</opt>
+      <opt>vlen:384</opt>
+      <opt>soft:True</opt>
     </option>
   </param>
   <check>1 &lt;= $dab_mode &lt;= 4</check>
@@ -55,10 +62,8 @@
   </sink>
   <source>
     <name>dat</name>
-    <!-- TODO handle initial set --> 
-    <type>#if $soft_bits() then 'complex' else 'byte'#</type>
-    <!-- TODO adapt to mode -->
-    <vlen>#if $soft_bits() then 1536 else 1536/4</vlen>
+    <type>$soft_bits.type</type>
+    <vlen>$soft_bits.vlen</vlen>
   </source>
   <source>
     <name>ctrl</name>
