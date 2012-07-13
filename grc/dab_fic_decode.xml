@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<block>
+  <name>DAB: FIC decoder</name>
+  <key>dab_fic_decode</key>
+  <category>DAB</category>
+  <import>import dab</import>
+  <make>dab.fic_decode(
+          dab.parameters.dab_parameters(
+            mode=$dab_mode,
+            sample_rate=$samp_rate,
+            verbose=False
+          )
+        )
+  </make>
+  <param>
+    <name>DAB Mode</name>
+    <key>dab_mode</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Sampling Rate</name>
+    <key>samp_rate</key>
+    <value></value>
+    <type>int</type>
+  </param>
+  <check>1 &lt;= $dab_mode &lt;= 4</check>
+  <sink>
+    <name>in0</name>
+    <type>complex</type>
+    <vlen>1536</vlen> <!-- TODO adapt to mode -->
+  </sink>
+  <sink>
+    <name>in1</name>
+    <type>byte</type>
+  </sink>
+  <doc>
+    Decodes FIBs in FICs of DAB signal.
+  </doc>
+</block>
