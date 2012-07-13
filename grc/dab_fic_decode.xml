@@ -26,12 +26,12 @@
   </param>
   <check>1 &lt;= $dab_mode &lt;= 4</check>
   <sink>
-    <name>in0</name>
+    <name>dat</name>
     <type>complex</type>
     <vlen>1536</vlen> <!-- TODO adapt to mode -->
   </sink>
   <sink>
-    <name>in1</name>
+    <name>ctrl</name>
     <type>byte</type>
   </sink>
   <doc>

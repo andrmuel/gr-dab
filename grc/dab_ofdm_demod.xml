@@ -54,12 +54,12 @@
     <type>complex</type>
   </sink>
   <source>
-    <name>out0</name>
+    <name>dat</name>
     <type>#if $soft_bits() then 'complex' else 'byte'#</type>
     <vlen>#if $soft_bits() then 1536 else 1536/4</vlen> <!-- TODO adapt to mode -->
   </source>
   <source>
-    <name>out1</name>
+    <name>ctrl</name>
     <type>byte</type>
   </source>
   <doc>
