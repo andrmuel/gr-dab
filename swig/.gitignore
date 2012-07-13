@@ -4,3 +4,8 @@
 /Makefile
 /howto_swig.cc
 /howto_swig.py
+/dab_swig.cc
+/dab_swig.py
+/dab_swig.pyc
+/*.la
+/*.lo
