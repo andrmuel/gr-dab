@@ -39,8 +39,8 @@ class rtl_sdr_dab_rx(gr.top_block):
                           help="Estimate sample rate offset and resample (dynamic fractional interpolation)")
 		parser.add_option("-f", "--freq", type="eng_float", default=227.36e6,
 		     help="set frequency to FREQ [default=%default]")
-		parser.add_option("-d", "--decim", type="intx", default=32,
-		     help="set decimation rate to DECIM [default=%default]")
+		parser.add_option("-r", "--sample-rate", type="int", default=2000000,
+		     help="set sample rate to SAMPLE_RATE [default=%default]")
 		parser.add_option("-g", "--rx-gain", type="eng_float", default=None,
 		     help="set receive gain in dB (default is midpoint)")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
@@ -58,7 +58,7 @@ class rtl_sdr_dab_rx(gr.top_block):
 
 		self.verbose = options.verbose
 
-		self.sample_rate = sample_rate = int(2.4e6)
+		self.sample_rate = sample_rate = options.sample_rate
 
                 self.src = osmosdr.source_c( args="nchan=" + str(1) + " " + ""  )
 		self.src.set_sample_rate(sample_rate)
@@ -67,14 +67,28 @@ class rtl_sdr_dab_rx(gr.top_block):
 		self.src.set_gain_mode(1, 0)
 		self.src.set_gain(0, 0)
 
-		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
+		self.dab_params = dab.parameters.dab_parameters(
+                        mode=options.dab_mode,
+                        sample_rate=self.sample_rate,
+                        verbose=options.verbose
+                        )
+		self.rx_params = dab.parameters.receiver_parameters(
+                        mode=options.dab_mode,
+                        softbits=True,
+                        input_fft_filter=options.filter_input,
+                        autocorrect_sample_rate=options.autocorrect_sample_rate,
+                        sample_rate_correction_factor=options.resample_fixed,
+                        verbose=options.verbose,
+                        correct_ffe=options.correct_ffe,
+                        equalize_magnitude=options.equalize_magnitude
+                        )
 
 		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
 
                 if len(args) >= 1:
                         self.filename = args[0]
                         self.sink = gr.file_sink(gr.sizeof_char*12288, self.filename)
+                        #self.sink = gr.file_sink(gr.sizeof_char*3072, self.filename)
                         self.connect(self.demod, self.sink)
 
 		# self.trigsink = gr.null_sink(gr.sizeof_char)
