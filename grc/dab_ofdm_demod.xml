@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<block>
+  <name>DAB: OFDM Demodulator</name>
+  <key>dab_ofdm_demod</key>
+  <category>DAB</category>
+  <import>import dab</import>
+  <make>dab.ofdm_demod(
+          dab.parameters.dab_parameters(
+            mode=$dab_mode,
+            sample_rate=$samp_rate,
+            verbose=False
+          ),
+          dab.parameters.receiver_parameters(
+            mode=$dab_mode,
+            softbits=$soft_bits,
+            input_fft_filter=True,
+            autocorrect_sample_rate=True,
+            sample_rate_correction_factor=1,
+            verbose=False,
+            correct_ffe=True,
+            equalize_magnitude=True
+          )
+        )
+  </make>
+  <param>
+    <name>DAB Mode</name>
+    <key>dab_mode</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Sampling Rate</name>
+    <key>samp_rate</key>
+    <value></value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Soft Bits</name>
+    <key>soft_bits</key>
+    <value>True</value>
+    <type>bool</type>
+    <option>
+      <name>Soft Bits</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>Hard Bits</name>
+      <key>False</key>
+    </option>
+  </param>
+  <check>1 &lt;= $dab_mode &lt;= 4</check>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+  <source>
+    <name>out0</name>
+    <type>#if $soft_bits() then 'complex' else 'byte'#</type>
+    <vlen>#if $soft_bits() then 1536 else 1536/4</vlen> <!-- TODO adapt to mode -->
+  </source>
+  <source>
+    <name>out1</name>
+    <type>byte</type>
+  </source>
+  <doc>
+    Demodulates a whole DAB signal.
+  </doc>
+</block>
