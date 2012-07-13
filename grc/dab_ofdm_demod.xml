@@ -37,21 +37,20 @@
   <param>
     <name>Soft Bits</name>
     <key>soft_bits</key>
-    <value>True</value>
+    <value>soft</value>
     <type>enum</type>
-    <!-- TODO depend on DAB mode -->
     <option>
       <name>Soft Bits</name>
       <key>soft</key>
       <opt>type:complex</opt>
-      <opt>vlen:1536</opt>
+      <opt>vlenfrac:1</opt>
       <opt>soft:True</opt>
     </option>
     <option>
       <name>Hard Bits</name>
       <key>hard</key>
       <opt>type:byte</opt>
-      <opt>vlen:384</opt>
+      <opt>vlenfrac:4</opt>
       <opt>soft:True</opt>
     </option>
   </param>
@@ -63,7 +62,8 @@
   <source>
     <name>dat</name>
     <type>$soft_bits.type</type>
-    <vlen>$soft_bits.vlen</vlen>
+    <!-- TODO depend on DAB mode -->
+    <vlen>1536 / $soft_bits.vlenfrac</vlen>
   </source>
   <source>
     <name>ctrl</name>
