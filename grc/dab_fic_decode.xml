@@ -34,6 +34,11 @@
     <name>sync</name>
     <type>byte</type>
   </sink>
+  <source>
+    <name>FIB</name>
+    <type>byte</type>
+    <vlen>32</vlen>
+  </source>
   <doc>
     Decodes FIBs in FICs of DAB signal.
   </doc>

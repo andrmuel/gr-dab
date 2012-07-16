@@ -50,7 +50,7 @@ class fic_decode(gr.hier_block2):
 		"""
 		gr.hier_block2.__init__(self,"fic",
 					gr.io_signature2(2, 2, gr.sizeof_float*dab_params.num_carriers*2, gr.sizeof_char), # input
-					gr.io_signature(0, 0, 0)) # output signature
+					gr.io_signature(1, 1, gr.sizeof_char*32)) # output signature
 
 		self.dp = dab_params
 		self.verbose = verbose
@@ -102,11 +102,28 @@ class fic_decode(gr.hier_block2):
 		
 		# connect all
 		self.nullsink = gr.null_sink(gr.sizeof_char)
+                self.fibout = gr.stream_to_vector(1,32)
 		# self.filesink = gr.file_sink(gr.sizeof_char, "debug/fic.dat")
 		self.fibsink = dab_swig.fib_sink_vb()
 		
 		# self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.conv_prune, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), gr.vector_to_stream(1,256), gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), self.filesink)
-		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.conv_prune, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), gr.vector_to_stream(1,256), gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), gr.stream_to_vector(1,32), self.fibsink)
+		self.connect((self,0),
+                             (self.select_fic_syms,0),
+                             (self.repartition_fic,0),
+                             self.unpuncture,
+                             self.conv_v2s,
+                             self.conv_decode,
+                             self.conv_s2v,
+                             self.conv_prune,
+                             self.energy_v2s,
+                             self.add_mod_2,
+                             self.energy_s2v,
+                             (self.cut_into_fibs,0),
+                             gr.vector_to_stream(1,256),
+                             gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST),
+                             self.fibout,
+                             self.fibsink)
+                self.connect(self.fibout, self)
 		self.connect(self.prbs_src, (self.add_mod_2,1))
 		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1), (self.cut_into_fibs,1), self.nullsink)
 
