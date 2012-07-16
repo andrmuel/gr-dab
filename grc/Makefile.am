@@ -23,7 +23,7 @@ include $(top_srcdir)/Makefile.common
 
 grcblocksdir = $(grc_blocksdir)
 
-# dist_grcblocks_DATA = \
-#     howto_square_ff.xml \
-#     howto_square2_ff.xml
+dist_grcblocks_DATA = \
+	dab_fic_decode.xml \
+	dab_ofdm_demod.xml
 

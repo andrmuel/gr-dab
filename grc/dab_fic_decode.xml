@@ -31,7 +31,7 @@
     <vlen>1536</vlen> <!-- TODO adapt to mode -->
   </sink>
   <sink>
-    <name>ctrl</name>
+    <name>sync</name>
     <type>byte</type>
   </sink>
   <doc>
