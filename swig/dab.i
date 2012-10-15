@@ -97,6 +97,8 @@ class dab_ofdm_coarse_frequency_correct : public gr_sync_block
 {
   private:
     dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length);
+  public:
+    int get_delta_f() { return d_delta_f; };
 };
 
 // ----------------------------------------------------------------
