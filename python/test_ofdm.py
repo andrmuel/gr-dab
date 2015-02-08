@@ -25,7 +25,7 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr
+from gnuradio import gr, blocks
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 from dab import ofdm
@@ -66,25 +66,25 @@ class test_ofdm(gr.top_block):
 
 		if len(args)<1:
 			if options.verbose: print "-> using repeating random vector as source"
-			self.sigsrc = gr.vector_source_c([10e6*(random.random() + 1j*random.random()) for i in range(0,100000)],True)
-			self.ns_simulate = gr.vector_source_c([0.01]*dp.ns_length+[1]*dp.symbols_per_frame*dp.symbol_length,1)
-			self.mult = gr.multiply_cc() # simulate null symbols ...
-			self.src = gr.throttle( gr.sizeof_gr_complex,2048000)
+			self.sigsrc = blocks.vector_source_c([10e6*(random.random() + 1j*random.random()) for i in range(0,100000)],True)
+			self.ns_simulate = blocks.vector_source_c([0.01]*dp.ns_length+[1]*dp.symbols_per_frame*dp.symbol_length,1)
+			self.mult = blocks.multiply_cc() # simulate null symbols ...
+			self.src = blocks.throttle( gr.sizeof_gr_complex,2048000)
 			self.connect(self.sigsrc, (self.mult, 0))
 			self.connect(self.ns_simulate, (self.mult, 1))
 			self.connect(self.mult, self.src)
 		else:
 			filename = args[0]
 			if options.verbose: print "-> using samples from file " + filename
-			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
+			self.src = blocks.file_source(gr.sizeof_gr_complex, filename, False)
 
 		self.dab_demod = ofdm.ofdm_demod(dp, rp, debug=options.debug, verbose=options.verbose)
 		
 		self.connect(self.src, self.dab_demod)
 
 		# sink output to nowhere 
-		self.nop0 = gr.nop(gr.sizeof_char*dp.num_carriers/4)
-		self.nop1 = gr.nop(gr.sizeof_char)
+		self.nop0 = blocks.nop(gr.sizeof_char*dp.num_carriers/4)
+		self.nop1 = blocks.nop(gr.sizeof_char)
 		self.connect((self.dab_demod,0),self.nop0)
 		self.connect((self.dab_demod,1),self.nop1)
 			

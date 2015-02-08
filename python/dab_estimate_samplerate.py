@@ -27,7 +27,7 @@
 estimate the sample rate of DAB samples by looking at the Null symbols
 """
 
-from gnuradio import gr, blks2
+from gnuradio import gr, blocks
 from gnuradio.eng_option import eng_option
 import dab
 from optparse import OptionParser
@@ -53,13 +53,13 @@ class estimate_samplerate(gr.top_block):
 		dp = dab.dab_parameters(options.dab_mode)
 		filename = args[0]
 
-		self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
-		self.resample = blks2.rational_resampler_ccc(2048,2000)
+		self.src = blocks.file_source(gr.sizeof_gr_complex, filename, False)
+		self.resample = blocks.rational_resampler_ccc(2048,2000)
 		self.rate_detect_ns = dab.detect_null.detect_null(dp.ns_length, False)
 		self.rate_estimator = dab.blocks.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
-		self.decimate = gr.keep_one_in_n(gr.sizeof_float, dp.frame_length)
-		self.ignore_first = gr.skiphead(gr.sizeof_float, 1)
-		self.sink = gr.vector_sink_f()
+		self.decimate = blocks.keep_one_in_n(gr.sizeof_float, dp.frame_length)
+		self.ignore_first = blocks.skiphead(gr.sizeof_float, 1)
+		self.sink = blocks.vector_sink_f()
 
 		if options.usrp_source:
 			self.connect(self.src, self.resample, self.rate_detect_ns, self.rate_estimator, self.decimate, self.ignore_first, self.sink)
