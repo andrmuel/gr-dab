@@ -19,45 +19,30 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_H
-#define INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_H
+#ifndef INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_IMPL_H
+#define INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/frequency_interleaver_vcc.h>
 
-class dab_frequency_interleaver_vcc;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_frequency_interleaver_vcc> dab_frequency_interleaver_vcc_sptr;
-
-dab_frequency_interleaver_vcc_sptr 
-dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
-
-/*!
- * \brief Interleaves vector elements according to the interleaving sequence: out[sequence[i]] = in[i]
- * \ingroup misc
- * \param interleaving_sequence interleaving sequence, according to which the vector elements are mapped
- *
- * input: complex vectors
- * output: complex vectors with reordered elements
- */
-class dab_frequency_interleaver_vcc : public gr_sync_block
+class frequency_interleaver_vcc_impl : public frequency_interleaver_vcc
 {
   private:
-    // The friend declaration allows dab_make_frequency_interleaver_vcc to
-    // access the private constructor.
-
-    friend dab_frequency_interleaver_vcc_sptr
-    dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);
-
-    dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence);    // private constructor
 
     std::vector<short> d_interleaving_sequence;
     unsigned int d_length;
 
   public:
+    frequency_interleaver_vcc_impl(const std::vector<short> &interleaving_sequence);
     void set_sequence(const std::vector<short> &interleaving_sequence) { d_interleaving_sequence = interleaving_sequence; }
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_H */

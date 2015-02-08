@@ -29,23 +29,23 @@
 #include "config.h"
 #endif
 
-#include <dab_repartition_vectors.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "repartition_vectors_impl.h"
 
-/*
- * Create a new instance of dab_repartition_vectors and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_repartition_vectors_sptr 
-dab_make_repartition_vectors (size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide)
+namespace gr {
+  namespace dab {
+
+repartition_vectors::sptr
+repartition_vectors::make(size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide)
 {
-  return gnuradio::get_initial_sptr (new dab_repartition_vectors (itemsize, vlen_in, vlen_out, multiply, divide));
+  return gnuradio::get_initial_sptr
+    (new repartition_vectors_impl(itemsize, vlen_in, vlen_out, multiply, divide));
 }
 
-dab_repartition_vectors::dab_repartition_vectors (size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide) : 
-  gr_block ("repartition_vectors",
-             gr_make_io_signature2 (2, 2, itemsize*vlen_in, sizeof(char)),
-             gr_make_io_signature2 (2, 2, itemsize*vlen_out, sizeof(char))),
+repartition_vectors_impl::repartition_vectors_impl(size_t itemsize, unsigned int vlen_in, unsigned int vlen_out, unsigned int multiply, unsigned int divide)
+  : gr::block("repartition_vectors",
+             gr::io_signature::make2 (2, 2, itemsize*vlen_in, sizeof(char)),
+             gr::io_signature::make2 (2, 2, itemsize*vlen_out, sizeof(char))),
   d_itemsize(itemsize), d_vlen_in(vlen_in), d_vlen_out(vlen_out), d_multiply(multiply), d_divide(divide), d_synced(0)
 {
   assert(vlen_in * multiply == vlen_out * divide);
@@ -53,7 +53,7 @@ dab_repartition_vectors::dab_repartition_vectors (size_t itemsize, unsigned int 
 }
 
 void 
-dab_repartition_vectors::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+repartition_vectors_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   int in_req  = noutput_items / d_divide * d_multiply;
 
@@ -63,7 +63,7 @@ dab_repartition_vectors::forecast (int noutput_items, gr_vector_int &ninput_item
 }
 
 int 
-dab_repartition_vectors::general_work (int noutput_items,
+repartition_vectors_impl::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
@@ -124,3 +124,5 @@ dab_repartition_vectors::general_work (int noutput_items,
   return n_produced;
 }
 
+}
+}

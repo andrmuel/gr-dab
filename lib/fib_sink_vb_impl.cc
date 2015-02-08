@@ -26,28 +26,32 @@
 
 #include <stdio.h>
 
-#include <dab_fib_sink_vb.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "fib_sink_vb_impl.h"
 #include <stdexcept>
-#include "dab_fib_sink_vb.h"
 #include "crc16.h"
 #include "FIC.h"
 
-dab_fib_sink_vb_sptr
-dab_make_fib_sink_vb ()
+namespace gr {
+  namespace dab {
+
+fib_sink_vb::sptr
+fib_sink_vb::make()
 {
-  return gnuradio::get_initial_sptr (new dab_fib_sink_vb ());
+  return gnuradio::get_initial_sptr
+    (new fib_sink_vb_impl());
 }
 
-dab_fib_sink_vb::dab_fib_sink_vb()
-  : gr_sync_block ("fib_sink_vb",
-		   gr_make_io_signature(1, 1, sizeof(char)*32),
-		   gr_make_io_signature(0, 0, 0))
+
+fib_sink_vb_impl::fib_sink_vb_impl()
+  : gr::sync_block("fib_sink_vb",
+		   gr::io_signature::make(1, 1, sizeof(char)*32),
+		   gr::io_signature::make(0, 0, 0))
 {
 }
 
 void
-dab_fib_sink_vb::dump_fib(const char *fib) {
+fib_sink_vb_impl::dump_fib(const char *fib) {
   printf("FIB dump: ");
   for (int i=0; i<FIB_LENGTH; i++)
     printf("%.2x ",(uint8_t)fib[i]);
@@ -55,7 +59,7 @@ dab_fib_sink_vb::dump_fib(const char *fib) {
 }
 
 int 
-dab_fib_sink_vb::process_fib(const char *fib) {
+fib_sink_vb_impl::process_fib(const char *fib) {
   uint8_t type, length, pos;
   if (crc16(fib,FIB_LENGTH,FIB_CRC_POLY,FIB_CRC_INITSTATE)!=0) {
     fprintf(stderr,"FIB CRC error\n");
@@ -74,7 +78,7 @@ dab_fib_sink_vb::process_fib(const char *fib) {
 }
 
 int
-dab_fib_sink_vb::process_fig(uint8_t type, const char *data, uint8_t length) {
+fib_sink_vb_impl::process_fig(uint8_t type, const char *data, uint8_t length) {
   char label[17];
   uint8_t label_charset;
   uint8_t label_other_ensemble;
@@ -120,7 +124,7 @@ dab_fib_sink_vb::process_fig(uint8_t type, const char *data, uint8_t length) {
 }
 
 int 
-dab_fib_sink_vb::work (int noutput_items,
+fib_sink_vb_impl::work(int noutput_items,
 		    gr_vector_const_void_star &input_items,
 		    gr_vector_void_star &output_items)
 {
@@ -133,4 +137,7 @@ dab_fib_sink_vb::work (int noutput_items,
   }
 
   return noutput_items;
+}
+
+}
 }

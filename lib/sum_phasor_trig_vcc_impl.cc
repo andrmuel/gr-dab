@@ -31,30 +31,30 @@
 
 #include <stdio.h>
 #include <stddef.h>
-#include <dab_sum_phasor_trig_vcc.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "sum_phasor_trig_vcc_impl.h"
 
-/*
- * Create a new instance of dab_sum_phasor_trig_vcc and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_sum_phasor_trig_vcc_sptr 
-dab_make_sum_phasor_trig_vcc (unsigned int length)
+namespace gr {
+  namespace dab {
+
+sum_phasor_trig_vcc::sptr
+sum_phasor_trig_vcc::make(unsigned int length)
 {
-  return gnuradio::get_initial_sptr (new dab_sum_phasor_trig_vcc (length));
+  return gnuradio::get_initial_sptr
+    (new sum_phasor_trig_vcc_impl(length));
 }
 
-dab_sum_phasor_trig_vcc::dab_sum_phasor_trig_vcc (unsigned int length) : 
-  gr_sync_block ("sum_phasor_trig_vcc",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*length, sizeof(char)), 
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*length, sizeof(char))),
+sum_phasor_trig_vcc_impl::sum_phasor_trig_vcc_impl(unsigned int length)
+  : gr::sync_block("sum_phasor_trig_vcc",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*length, sizeof(char)), 
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*length, sizeof(char))),
   d_length(length), d_last_symbol(length,0)
 {
 }
 
 
 int 
-dab_sum_phasor_trig_vcc::work (int noutput_items,
+sum_phasor_trig_vcc_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -98,4 +98,6 @@ dab_sum_phasor_trig_vcc::work (int noutput_items,
   }
 
   return noutput_items;
+}
+}
 }

@@ -19,34 +19,20 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_IMPL_H
+#define INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_IMPL_H
 
-#ifndef INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_H
-#define INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_H
+#include <dab/fractional_interpolator_triggered_update_cc.h>
+#include <gnuradio/filter/mmse_fir_interpolator_cc.h>
 
-#include <gr_block.h>
+namespace gr {
+  namespace dab {
 
-class gri_mmse_fir_interpolator_cc;
-
-class dab_fractional_interpolator_triggered_update_cc;
-typedef boost::shared_ptr<dab_fractional_interpolator_triggered_update_cc> dab_fractional_interpolator_triggered_update_cc_sptr;
-
-// public constructor
-dab_fractional_interpolator_triggered_update_cc_sptr dab_make_fractional_interpolator_triggered_update_cc (float phase_shift, float interp_ratio);
-
-/*!
- * \brief Interpolating mmse filter with gr_complex input, gr_complex output
- *
- * Taken from the GNU Radio code base and adapted to allow updating of the interpolation ratio at triggered instants.
- * (subclassing gr_fractional_interpolator_cc gets me into a mess ..)
- *
- * This is most probably overkill, as the changes in the sample rate are usually very small.
- *
- * \ingroup filter
- */
-class dab_fractional_interpolator_triggered_update_cc : public gr_block
+class fractional_interpolator_triggered_update_cc_impl : public fractional_interpolator_triggered_update_cc
 {
   public:
-    ~dab_fractional_interpolator_triggered_update_cc ();
+    fractional_interpolator_triggered_update_cc_impl(float phase_shift, float interp_ratio);
+    ~fractional_interpolator_triggered_update_cc_impl();
     void forecast(int noutput_items, gr_vector_int &ninput_items_required);
     int general_work (int noutput_items,
                       gr_vector_int &ninput_items,
@@ -58,17 +44,16 @@ class dab_fractional_interpolator_triggered_update_cc : public gr_block
     void set_mu (float mu) { d_mu = mu; }
     void set_interp_ratio (float interp_ratio) { d_next_mu_inc = interp_ratio; }
 
-  protected:
-    dab_fractional_interpolator_triggered_update_cc (float phase_shift, float interp_ratio);
 
   private:
     float d_mu;
     float d_mu_inc;
     float d_next_mu_inc;
-    gri_mmse_fir_interpolator_cc *d_interp;
+    gr::filter::mmse_fir_interpolator_cc *d_interp;
 
-    friend dab_fractional_interpolator_triggered_update_cc_sptr
-    dab_make_fractional_interpolator_triggered_update_cc (float phase_shift, float interp_ratio);
 };
+
+}
+}
 
 #endif

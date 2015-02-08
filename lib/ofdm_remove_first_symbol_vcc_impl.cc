@@ -29,29 +29,29 @@
 #include "config.h"
 #endif
 
-#include <dab_ofdm_remove_first_symbol_vcc.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "ofdm_remove_first_symbol_vcc_impl.h"
 
-/*
- * Create a new instance of dab_ofdm_remove_first_symbol_vcc and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_ofdm_remove_first_symbol_vcc_sptr 
-dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen)
+namespace gr {
+  namespace dab {
+
+ofdm_remove_first_symbol_vcc::sptr
+ofdm_remove_first_symbol_vcc::make(unsigned int vlen)
 {
-  return gnuradio::get_initial_sptr (new dab_ofdm_remove_first_symbol_vcc (vlen));
+  return gnuradio::get_initial_sptr
+    (new ofdm_remove_first_symbol_vcc_impl(vlen));
 }
 
-dab_ofdm_remove_first_symbol_vcc::dab_ofdm_remove_first_symbol_vcc (unsigned int vlen) : 
-  gr_block ("ofdm_remove_first_symbol_vcc",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
+ofdm_remove_first_symbol_vcc_impl::ofdm_remove_first_symbol_vcc_impl(unsigned int vlen)
+  : gr::block("ofdm_remove_first_symbol_vcc",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
   d_vlen(vlen), d_start(0)
 {
 }
 
 void 
-dab_ofdm_remove_first_symbol_vcc::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+ofdm_remove_first_symbol_vcc_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   //int in_req  = noutput_items; + 1 + noutput_items/76; // at most every 76th symbol is thrown away (depends on the DAB mode)
   int in_req = noutput_items; // altough more may be needed, try to produce output even with only one input - if it's a pilot, we can just consume it ...
@@ -62,7 +62,7 @@ dab_ofdm_remove_first_symbol_vcc::forecast (int noutput_items, gr_vector_int &ni
 
 
 int 
-dab_ofdm_remove_first_symbol_vcc::general_work (int noutput_items,
+ofdm_remove_first_symbol_vcc_impl::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
@@ -94,4 +94,7 @@ dab_ofdm_remove_first_symbol_vcc::general_work (int noutput_items,
 
   consume_each(n_consumed);
   return n_produced;
+}
+
+}
 }

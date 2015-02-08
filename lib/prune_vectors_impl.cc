@@ -29,23 +29,23 @@
 #include "config.h"
 #endif
 
-#include <dab_prune_vectors.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "prune_vectors_impl.h"
 
-/*
- * Create a new instance of dab_prune_vectors and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_prune_vectors_sptr 
-dab_make_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end)
+namespace gr {
+  namespace dab {
+
+prune_vectors::sptr
+prune_vectors::make(size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end)
 {
-  return gnuradio::get_initial_sptr (new dab_prune_vectors (itemsize, length, prune_start, prune_end));
+  return gnuradio::get_initial_sptr
+    (new prune_vectors_impl(itemsize, length, prune_start, prune_end));
 }
 
-dab_prune_vectors::dab_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end) : 
-  gr_sync_block ("prune_vectors",
-             gr_make_io_signature (1, 1, itemsize*length),
-             gr_make_io_signature (1, 1, itemsize*(length-prune_start-prune_end))),
+prune_vectors_impl::prune_vectors_impl(size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end)
+  : gr::sync_block("prune_vectors",
+             gr::io_signature::make (1, 1, itemsize*length),
+             gr::io_signature::make (1, 1, itemsize*(length-prune_start-prune_end))),
   d_itemsize(itemsize), d_length(length), d_prune_start(prune_start), d_prune_end(prune_end)
 {
   assert(prune_start+prune_end < length);
@@ -53,7 +53,7 @@ dab_prune_vectors::dab_prune_vectors (size_t itemsize, unsigned int length, unsi
 
 
 int 
-dab_prune_vectors::work (int noutput_items,
+prune_vectors_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -67,4 +67,7 @@ dab_prune_vectors::work (int noutput_items,
   }
     
   return noutput_items;
+}
+
+}
 }

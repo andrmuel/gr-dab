@@ -29,23 +29,24 @@
 #include "config.h"
 #endif
 
-#include <dab_insert_null_symbol.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "insert_null_symbol_impl.h"
 
-/*
- * Create a new instance of dab_insert_null_symbol and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_insert_null_symbol_sptr 
-dab_make_insert_null_symbol (int ns_length, int symbol_length)
+namespace gr {
+  namespace dab {
+
+insert_null_symbol::sptr
+insert_null_symbol::make(int ns_length, int symbol_length)
 {
-  return gnuradio::get_initial_sptr (new dab_insert_null_symbol (ns_length, symbol_length));
+  return gnuradio::get_initial_sptr
+    (new insert_null_symbol_impl(ns_length, symbol_length));
 }
 
-dab_insert_null_symbol::dab_insert_null_symbol (int ns_length, int symbol_length) : 
-  gr_block ("insert_null_symbol",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*symbol_length, sizeof(char)),
-             gr_make_io_signature (1, 1, sizeof(gr_complex))),
+
+insert_null_symbol_impl::insert_null_symbol_impl(int ns_length, int symbol_length)
+  : gr::block("insert_null_symbol",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*symbol_length, sizeof(char)),
+             gr::io_signature::make (1, 1, sizeof(gr_complex))),
   d_ns_length(ns_length), d_symbol_length(symbol_length), d_ns_added(0)
 {
   /* note: setting output_multiple to a high value without setting the relative rate produces
@@ -62,7 +63,7 @@ dab_insert_null_symbol::dab_insert_null_symbol (int ns_length, int symbol_length
 }
 
 void 
-dab_insert_null_symbol::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+insert_null_symbol_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   int in_req  = noutput_items / d_symbol_length;
   unsigned ninputs = ninput_items_required.size ();
@@ -72,7 +73,7 @@ dab_insert_null_symbol::forecast (int noutput_items, gr_vector_int &ninput_items
 
 
 int 
-dab_insert_null_symbol::general_work (int noutput_items,
+insert_null_symbol_impl::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
@@ -105,4 +106,7 @@ dab_insert_null_symbol::general_work (int noutput_items,
 
   consume_each(consumed_items);
   return produced_items;
+}
+
+}
 }

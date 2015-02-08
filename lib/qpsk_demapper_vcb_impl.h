@@ -19,47 +19,27 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_QPSK_DEMAPPER_VCB_H
-#define INCLUDED_DAB_QPSK_DEMAPPER_VCB_H
+#ifndef INCLUDED_DAB_QPSK_DEMAPPER_VCB_IMPL_H
+#define INCLUDED_DAB_QPSK_DEMAPPER_VCB_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/qpsk_demapper_vcb.h>
 
-class dab_qpsk_demapper_vcb;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_qpsk_demapper_vcb> dab_qpsk_demapper_vcb_sptr;
-
-dab_qpsk_demapper_vcb_sptr 
-dab_make_qpsk_demapper_vcb (int symbol_length);
-
-/*!
- * \brief QPSK demapper - maps QPSK symbol vectors to byte vectors.
- *
- * value < 0 -> bit=1
- *
- * \ingroup DAB
- * 
- * \param symbol_length length of the symbol vector (i.e. number of occupied carriers)
- *
- * input: symbol vectors
- * output: byte vectors
- */
-class dab_qpsk_demapper_vcb : public gr_sync_block
+class qpsk_demapper_vcb_impl : public qpsk_demapper_vcb
 {
   private:
-    // The friend declaration allows dab_make_qpsk_demapper_vcb to
-    // access the private constructor.
-
-    friend dab_qpsk_demapper_vcb_sptr
-    dab_make_qpsk_demapper_vcb (int symbol_length);
-
-    dab_qpsk_demapper_vcb (int symbol_length);    // private constructor
 
     int d_symbol_length;
 
   public:
+    qpsk_demapper_vcb_impl(int symbol_length);
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+}
+}
 
 #endif /* INCLUDED_DAB_QPSK_DEMAPPER_VCB_H */

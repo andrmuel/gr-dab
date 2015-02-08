@@ -19,42 +19,17 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_PRUNE_VECTORS_H
-#define INCLUDED_DAB_PRUNE_VECTORS_H
+#ifndef INCLUDED_DAB_PRUNE_VECTORS_IMPL_H
+#define INCLUDED_DAB_PRUNE_VECTORS_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/prune_vectors.h>
 
-class dab_prune_vectors;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_prune_vectors> dab_prune_vectors_sptr;
-
-dab_prune_vectors_sptr 
-dab_make_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end);
-
-/*!
- * \brief Cuts away elements at the top and bottom of the vectors 
- * \ingroup misc
- *
- * input: vectors
- * output: pruned vectors
- * 
- * \param itemsize vector element size
- * \param length length of the vector
- * \param prune_start how many elements to cut away at the beginning of the vector
- * \param prune_end how many elements to cut away at the end of the vector
- *
- * constraint: prune_start + prune_end < length
- */
-class dab_prune_vectors : public gr_sync_block
+class prune_vectors_impl : public prune_vectors
 {
   private:
-    // The friend declaration allows dab_make_prune_vectors to
-    // access the private constructor.
-
-    friend dab_prune_vectors_sptr
-    dab_make_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end);
-
-    dab_prune_vectors (size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end);    // private constructor
 
     size_t       d_itemsize;
     unsigned int d_length;
@@ -62,9 +37,14 @@ class dab_prune_vectors : public gr_sync_block
     unsigned int d_prune_end;
 
   public:
+    prune_vectors_impl(size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end);
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
 
+}
+}
+
 #endif /* INCLUDED_DAB_PRUNE_VECTORS_H */
+

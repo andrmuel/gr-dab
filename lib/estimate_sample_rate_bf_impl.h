@@ -19,54 +19,18 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_H
-#define INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_H
 
-#include <gr_sync_block.h>
+#ifndef INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_IMPL_H
+#define INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_IMPL_H
 
-class dab_estimate_sample_rate_bf;
+#include <dab/estimate_sample_rate_bf.h>
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
-typedef boost::shared_ptr<dab_estimate_sample_rate_bf> dab_estimate_sample_rate_bf_sptr;
+namespace gr {
+  namespace dab {
 
-/*!
- * \brief Return a shared_ptr to a new instance of dab_estimate_sample_rate_bf.
- *
- * To avoid accidental use of raw pointers, dab_estimate_sample_rate_bf's
- * constructor is private.  dab_make_estimate_sample_rate_bf is the public
- * interface for creating new instances.
- */
-dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
-
-/*!
- * \brief Estimate the sample rate of a DAB stream from the detected frame starts
- * \ingroup DAB
- *
- * \param expected_sample_rate exact value of the sample rate if there are no inaccuracies
- * \param frame_length length of a DAB frame in samples
- *
- * input: byte stream with frame starts
- * output: float stream with sample rate estimation
- */
-class dab_estimate_sample_rate_bf : public gr_sync_block
+class estimate_sample_rate_bf_impl : public estimate_sample_rate_bf
 {
   private:
-    // The friend declaration allows dab_make_estimate_sample_rate_bf to
-    // access the private constructor.
-
-    friend dab_estimate_sample_rate_bf_sptr dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);
-
-    dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length);    // private constructor
 
     int d_zeros;
     float d_expected_sample_rate;
@@ -75,7 +39,8 @@ class dab_estimate_sample_rate_bf : public gr_sync_block
     int d_frame_length;
 
   public:
-    ~dab_estimate_sample_rate_bf ();  // public destructor
+    estimate_sample_rate_bf_impl(float expected_sample_rate, int frame_length);
+    ~estimate_sample_rate_bf_impl ();  // public destructor
 
     // Where all the action really happens
 
@@ -83,5 +48,7 @@ class dab_estimate_sample_rate_bf : public gr_sync_block
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
-
+}
+}
 #endif /* INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_H */
+

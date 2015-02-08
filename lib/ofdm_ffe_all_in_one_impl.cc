@@ -31,24 +31,27 @@
 
 #include <stdio.h>
 
-#include <dab_ofdm_ffe_all_in_one.h>
-#include <gr_io_signature.h>
-#include <gr_math.h>
+#include <gnuradio/io_signature.h>
+#include "ofdm_ffe_all_in_one_impl.h"
+#include <gnuradio/math.h>
 
+namespace gr {
+  namespace dab {
 /*
  * Create a new instance of dab_ofdm_ffe_all_in_one and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_ofdm_ffe_all_in_one_sptr 
-dab_make_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
+ofdm_ffe_all_in_one::sptr
+ofdm_ffe_all_in_one::make(unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
 {
-  return gnuradio::get_initial_sptr (new dab_ofdm_ffe_all_in_one (symbol_length, fft_length, num_symbols, alpha, sample_rate));
+  return gnuradio::get_initial_sptr
+    (new ofdm_ffe_all_in_one_impl(symbol_length, fft_length, num_symbols, alpha, sample_rate));
 }
 
-dab_ofdm_ffe_all_in_one::dab_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate) : 
-  gr_sync_block ("ofdm_ffe_all_in_one",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex), sizeof(char)),
-             gr_make_io_signature (1, 1, sizeof(float))),
+ofdm_ffe_all_in_one_impl::ofdm_ffe_all_in_one_impl(unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
+  : gr::sync_block("ofdm_ffe_all_in_one",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex), sizeof(char)),
+             gr::io_signature::make (1, 1, sizeof(float))),
   d_symbol_length(symbol_length), d_fft_length(fft_length), d_num_symbols(num_symbols), d_alpha(alpha), d_sample_rate(sample_rate), d_cur_symbol(num_symbols), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0), d_estimated_error_per_sample(0)
 {
   assert(symbol_length<=2*fft_length); /* cyclic prefix can not be longer than fft_length .. */
@@ -56,7 +59,7 @@ dab_ofdm_ffe_all_in_one::dab_ofdm_ffe_all_in_one (unsigned int symbol_length, un
 }
 
 float 
-dab_ofdm_ffe_all_in_one::calc_ffe_estimate(const gr_complex *in) {
+ofdm_ffe_all_in_one_impl::calc_ffe_estimate(const gr_complex *in) {
   gr_complex sum = 0;
   int cp_length = d_symbol_length - d_fft_length;
 
@@ -65,14 +68,14 @@ dab_ofdm_ffe_all_in_one::calc_ffe_estimate(const gr_complex *in) {
   for (int i=0;i<cp_length;i++)
     sum += in[i] * conj(in[i+d_fft_length]);
 
-  return gr_fast_atan2f(sum);
+  return gr::fast_atan2f(sum);
 }
 
 
-int 
-dab_ofdm_ffe_all_in_one::work (int noutput_items,
-      gr_vector_const_void_star &input_items,
-      gr_vector_void_star &output_items)
+int
+ofdm_ffe_all_in_one_impl::work(int noutput_items,
+          gr_vector_const_void_star &input_items,
+          gr_vector_void_star &output_items)
 {
   const gr_complex *iptr = (const gr_complex *) input_items[0];
   const char *trigger = (const char *) input_items[1];
@@ -146,4 +149,7 @@ dab_ofdm_ffe_all_in_one::work (int noutput_items,
   }
 
   return noutput_items;
+}
+
+}
 }

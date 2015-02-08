@@ -26,22 +26,25 @@
 
 #include <stdio.h>
 
-#include <gr_io_signature.h>
-#include <dab_fractional_interpolator_triggered_update_cc.h>
-#include <gri_mmse_fir_interpolator_cc.h>
+#include <gnuradio/io_signature.h>
+#include "fractional_interpolator_triggered_update_cc_impl.h"
 #include <stdexcept>
 
-// Public constructor
-dab_fractional_interpolator_triggered_update_cc_sptr dab_make_fractional_interpolator_triggered_update_cc(float phase_shift, float interp_ratio)
+namespace gr {
+  namespace dab {
+
+fractional_interpolator_triggered_update_cc::sptr
+fractional_interpolator_triggered_update_cc::make(float phase_shift, float interp_ratio)
 {
-  return gnuradio::get_initial_sptr (new dab_fractional_interpolator_triggered_update_cc(phase_shift, interp_ratio));
+  return gnuradio::get_initial_sptr
+    (new fractional_interpolator_triggered_update_cc_impl(phase_shift, interp_ratio));
 }
 
-dab_fractional_interpolator_triggered_update_cc::dab_fractional_interpolator_triggered_update_cc(float phase_shift, float interp_ratio)
-  : gr_block ("fractional_interpolator_triggered_update_cc",
-        gr_make_io_signature2 (2, 2, sizeof (gr_complex), sizeof(char)),
-        gr_make_io_signature (1, 1, sizeof (gr_complex))),
-    d_mu (phase_shift), d_mu_inc (interp_ratio), d_next_mu_inc(interp_ratio), d_interp(new gri_mmse_fir_interpolator_cc())
+fractional_interpolator_triggered_update_cc_impl::fractional_interpolator_triggered_update_cc_impl(float phase_shift, float interp_ratio)
+  : gr::block("fractional_interpolator_triggered_update_cc",
+        gr::io_signature::make2 (2, 2, sizeof (gr_complex), sizeof(char)),
+        gr::io_signature::make (1, 1, sizeof (gr_complex))),
+    d_mu (phase_shift), d_mu_inc (interp_ratio), d_next_mu_inc(interp_ratio), d_interp(new gr::filter::mmse_fir_interpolator_cc())
 {
   if (interp_ratio <=  0)
     throw std::out_of_range ("interpolation ratio must be > 0");
@@ -51,13 +54,13 @@ dab_fractional_interpolator_triggered_update_cc::dab_fractional_interpolator_tri
   set_relative_rate (1.0 / interp_ratio);
 }
 
-dab_fractional_interpolator_triggered_update_cc::~dab_fractional_interpolator_triggered_update_cc()
+fractional_interpolator_triggered_update_cc_impl::~fractional_interpolator_triggered_update_cc_impl()
 {
   delete d_interp;
 }
 
 void
-dab_fractional_interpolator_triggered_update_cc::forecast(int noutput_items, gr_vector_int &ninput_items_required)
+fractional_interpolator_triggered_update_cc_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   unsigned ninputs = ninput_items_required.size();
   for (unsigned i=0; i < ninputs; i++)
@@ -67,7 +70,7 @@ dab_fractional_interpolator_triggered_update_cc::forecast(int noutput_items, gr_
 }
 
 int
-dab_fractional_interpolator_triggered_update_cc::general_work(int noutput_items,
+fractional_interpolator_triggered_update_cc_impl::general_work (int noutput_items,
               gr_vector_int &ninput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items)
@@ -103,4 +106,6 @@ dab_fractional_interpolator_triggered_update_cc::general_work(int noutput_items,
   consume_each (ii);
 
   return noutput_items;
+}
+}
 }

@@ -30,23 +30,23 @@
 #endif
 
 #include <stdio.h>
-#include <dab_diff_phasor_vcc.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "diff_phasor_vcc_impl.h"
 
-/*
- * Create a new instance of dab_diff_phasor_vcc and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_diff_phasor_vcc_sptr 
-dab_make_diff_phasor_vcc (unsigned int length)
+namespace gr {
+  namespace dab {
+
+diff_phasor_vcc::sptr
+diff_phasor_vcc::make(unsigned int length)
 {
-  return gnuradio::get_initial_sptr (new dab_diff_phasor_vcc (length));
+  return gnuradio::get_initial_sptr
+    (new diff_phasor_vcc_impl(length));
 }
 
-dab_diff_phasor_vcc::dab_diff_phasor_vcc (unsigned int length) : 
-  gr_sync_block ("diff_phasor_vcc",
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*length),
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*length)),
+diff_phasor_vcc_impl::diff_phasor_vcc_impl(unsigned int length)
+  : gr::sync_block("diff_phasor_vcc",
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*length),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*length)),
   d_length(length)
 {
   set_history(2);
@@ -54,7 +54,7 @@ dab_diff_phasor_vcc::dab_diff_phasor_vcc (unsigned int length) :
 
 
 int 
-dab_diff_phasor_vcc::work (int noutput_items,
+diff_phasor_vcc_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -66,4 +66,7 @@ dab_diff_phasor_vcc::work (int noutput_items,
   }
     
   return noutput_items;
+}
+
+}
 }

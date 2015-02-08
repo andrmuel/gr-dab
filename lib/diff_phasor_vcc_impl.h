@@ -19,44 +19,28 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_DIFF_PHASOR_VCC_H
-#define INCLUDED_DAB_DIFF_PHASOR_VCC_H
+#ifndef INCLUDED_DAB_DIFF_PHASOR_VCC_IMPL_H
+#define INCLUDED_DAB_DIFF_PHASOR_VCC_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/diff_phasor_vcc.h>
 
-class dab_diff_phasor_vcc;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_diff_phasor_vcc> dab_diff_phasor_vcc_sptr;
-
-dab_diff_phasor_vcc_sptr 
-dab_make_diff_phasor_vcc (unsigned int length);
-
-/*!
- * \brief Outputs the phase difference of consecutive vectors: \f[\vec y[i] = \vec x[i] \cdot conj(\vec x[i-1])\f]
- * \ingroup math
- *
- * input: complex vector
- * output: complex vector
- * 
- * \param length length of the vector
- */
-class dab_diff_phasor_vcc : public gr_sync_block
+class diff_phasor_vcc_impl : public diff_phasor_vcc
 {
   private:
-    // The friend declaration allows dab_make_diff_phasor_vcc to
-    // access the private constructor.
-
-    friend dab_diff_phasor_vcc_sptr
-    dab_make_diff_phasor_vcc (unsigned int length);
-
-    dab_diff_phasor_vcc (unsigned int length);    // private constructor
 
     unsigned int d_length;
 
   public:
+    diff_phasor_vcc_impl(unsigned int length);
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_DIFF_PHASOR_VCC_H */

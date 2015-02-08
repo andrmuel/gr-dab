@@ -29,29 +29,29 @@
 #include "config.h"
 #endif
 
-#include <dab_ofdm_insert_pilot_vcc.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "ofdm_insert_pilot_vcc_impl.h"
 
-/*
- * Create a new instance of dab_ofdm_insert_pilot_vcc and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_ofdm_insert_pilot_vcc_sptr 
-dab_make_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot)
+namespace gr {
+  namespace dab {
+
+ofdm_insert_pilot_vcc::sptr
+ofdm_insert_pilot_vcc::make(const std::vector<gr_complex> &pilot)
 {
-  return gnuradio::get_initial_sptr (new dab_ofdm_insert_pilot_vcc (pilot));
+  return gnuradio::get_initial_sptr
+    (new ofdm_insert_pilot_vcc_impl(pilot));
 }
 
-dab_ofdm_insert_pilot_vcc::dab_ofdm_insert_pilot_vcc (const std::vector<gr_complex> &pilot) : 
-  gr_block ("ofdm_insert_pilot_vcc",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*pilot.size(), sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*pilot.size(), sizeof(char))),
+ofdm_insert_pilot_vcc_impl::ofdm_insert_pilot_vcc_impl(const std::vector<gr_complex> &pilot)
+  : gr::block("ofdm_insert_pilot_vcc",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*pilot.size(), sizeof(char)),
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*pilot.size(), sizeof(char))),
   d_pilot(pilot), d_start(0)
 {
 }
 
 void 
-dab_ofdm_insert_pilot_vcc::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+ofdm_insert_pilot_vcc_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned int i = 0; i < ninputs; i++)
@@ -60,7 +60,7 @@ dab_ofdm_insert_pilot_vcc::forecast (int noutput_items, gr_vector_int &ninput_it
 
 
 int 
-dab_ofdm_insert_pilot_vcc::general_work (int noutput_items,
+ofdm_insert_pilot_vcc_impl::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
@@ -93,4 +93,7 @@ dab_ofdm_insert_pilot_vcc::general_work (int noutput_items,
   // printf("ninput_items: %d, noutput_items: %d, consumed: %d, produced: %d\n",ninput_items[0],noutput_items, n_consumed, n_produced);
 
   return n_produced;
+}
+
+}
 }

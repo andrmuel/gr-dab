@@ -19,44 +19,19 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_H
-#define INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_H
+#ifndef INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_IMPL_H
+#define INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/ofdm_coarse_frequency_correct.h>
 
-class dab_ofdm_coarse_frequency_correct;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_ofdm_coarse_frequency_correct> dab_ofdm_coarse_frequency_correct_sptr;
-
-dab_ofdm_coarse_frequency_correct_sptr 
-dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length);
-
-/*!
- * \brief Corrects coarse frequency offset in the frequency spectrum.
- * \ingroup DAB
- * 
- * \param fft_length total number of fft bins
- * \param num_carriers number of carriers with OFDM symbols, not including the zero carrier
- * \param cp_length length of the cyclic prefix in samples
- *
- * This block detects where the signal is (coarse frequency offset) by looking
- * at the energy and returns only the carriers containing information (i.e. it
- * removes the zeros on the left, the zeros on the right and the one zero
- * carrier in the middle). 
- *
- * Additionally, this block corrects the phase jump introduced by removing the cyclic prefix.
- */
-class dab_ofdm_coarse_frequency_correct : public gr_sync_block
+class ofdm_coarse_frequency_correct_impl : public ofdm_coarse_frequency_correct
 {
   private:
-    // The friend declaration allows dab_make_ofdm_coarse_frequency_correct to
-    // access the private constructor.
-
-    friend dab_ofdm_coarse_frequency_correct_sptr
-    dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length);
 
     float mag_squared(const gr_complex sample);
-    dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length);    // private constructor
     void correlate_energy(const gr_complex *symbol);
 
     unsigned int d_fft_length;
@@ -68,9 +43,13 @@ class dab_ofdm_coarse_frequency_correct : public gr_sync_block
     int          d_delta_f;
 
   public:
+   ofdm_coarse_frequency_correct_impl(unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length);
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_H */

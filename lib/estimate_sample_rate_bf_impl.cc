@@ -31,17 +31,17 @@
 
 #include <stdio.h>
 
-#include <dab_estimate_sample_rate_bf.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "estimate_sample_rate_bf_impl.h"
 
-/*
- * Create a new instance of dab_estimate_sample_rate_bf and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_estimate_sample_rate_bf_sptr 
-dab_make_estimate_sample_rate_bf (float expected_sample_rate, int frame_length)
+namespace gr {
+  namespace dab {
+
+estimate_sample_rate_bf::sptr
+estimate_sample_rate_bf::make(float expected_sample_rate, int frame_length)
 {
-  return gnuradio::get_initial_sptr (new dab_estimate_sample_rate_bf (expected_sample_rate, frame_length));
+  return gnuradio::get_initial_sptr
+    (new estimate_sample_rate_bf_impl(expected_sample_rate, frame_length));
 }
 
 /*
@@ -58,13 +58,10 @@ static const int MAX_IN = 1;  // maximum number of input streams
 static const int MIN_OUT = 1;  // minimum number of output streams
 static const int MAX_OUT = 1;  // maximum number of output streams
 
-/*
- * The private constructor
- */
-dab_estimate_sample_rate_bf::dab_estimate_sample_rate_bf (float expected_sample_rate, int frame_length)
-  : gr_sync_block ("estimate_sample_rate_bf",
-       gr_make_io_signature (MIN_IN, MAX_IN, sizeof (char)),
-       gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
+estimate_sample_rate_bf_impl::estimate_sample_rate_bf_impl(float expected_sample_rate, int frame_length)
+  : gr::sync_block("estimate_sample_rate_bf",
+       gr::io_signature::make (MIN_IN, MAX_IN, sizeof (char)),
+       gr::io_signature::make (MIN_OUT, MAX_OUT, sizeof (float))),
     d_zeros(0), d_expected_sample_rate(expected_sample_rate), d_real_sample_rate(expected_sample_rate), d_found_first_frame(0), d_frame_length(frame_length)
 {
 }
@@ -72,13 +69,13 @@ dab_estimate_sample_rate_bf::dab_estimate_sample_rate_bf (float expected_sample_
 /*
  * Our virtual destructor.
  */
-dab_estimate_sample_rate_bf::~dab_estimate_sample_rate_bf ()
+estimate_sample_rate_bf_impl::~estimate_sample_rate_bf_impl()
 {
   // nothing else required in this example
 }
 
 int 
-dab_estimate_sample_rate_bf::work (int noutput_items,
+estimate_sample_rate_bf_impl::work(int noutput_items,
       gr_vector_const_void_star &input_items,
       gr_vector_void_star &output_items)
 {
@@ -109,4 +106,7 @@ dab_estimate_sample_rate_bf::work (int noutput_items,
 
   // Tell runtime system how many output items we produced.
   return i;
+}
+
+}
 }

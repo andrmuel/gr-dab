@@ -29,23 +29,23 @@
 #include "config.h"
 #endif
 
-#include <dab_magnitude_equalizer_vcc.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "magnitude_equalizer_vcc_impl.h"
 
-/*
- * Create a new instance of dab_magnitude_equalizer_vcc and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_magnitude_equalizer_vcc_sptr 
-dab_make_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols)
+namespace gr {
+  namespace dab {
+
+magnitude_equalizer_vcc::sptr
+magnitude_equalizer_vcc::make(unsigned int vlen, unsigned int num_symbols)
 {
-  return gnuradio::get_initial_sptr (new dab_magnitude_equalizer_vcc (vlen, num_symbols));
+  return gnuradio::get_initial_sptr
+    (new magnitude_equalizer_vcc_impl(vlen, num_symbols));
 }
 
-dab_magnitude_equalizer_vcc::dab_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols) : 
-  gr_sync_block ("magnitude_equalizer_vcc",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
+magnitude_equalizer_vcc_impl::magnitude_equalizer_vcc_impl(unsigned int vlen, unsigned int num_symbols)
+  : gr::sync_block("magnitude_equalizer_vcc",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
   d_vlen(vlen), d_num_symbols(num_symbols)
 {
   assert(d_num_symbols>0);
@@ -57,12 +57,12 @@ dab_magnitude_equalizer_vcc::dab_magnitude_equalizer_vcc (unsigned int vlen, uns
   set_history(d_num_symbols);
 }
 
-dab_magnitude_equalizer_vcc::~dab_magnitude_equalizer_vcc (void)
+magnitude_equalizer_vcc_impl::~magnitude_equalizer_vcc_impl(void)
 {
   delete [] d_equalizer;
 }
 
-void dab_magnitude_equalizer_vcc::update_equalizer(const gr_complex *in) 
+void magnitude_equalizer_vcc_impl::update_equalizer(const gr_complex *in) 
 {
   for (unsigned int i=0; i<d_vlen; i++) 
     d_equalizer[i] = std::abs(in[i]);
@@ -84,7 +84,7 @@ void dab_magnitude_equalizer_vcc::update_equalizer(const gr_complex *in)
 }
 
 int 
-dab_magnitude_equalizer_vcc::work (int noutput_items,
+magnitude_equalizer_vcc_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -110,4 +110,7 @@ dab_magnitude_equalizer_vcc::work (int noutput_items,
   }
     
   return noutput_items;
+}
+
+}
 }

@@ -29,30 +29,30 @@
 #include "config.h"
 #endif
 
-#include <dab_ofdm_move_and_insert_zero.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "ofdm_move_and_insert_zero_impl.h"
 
-/*
- * Create a new instance of dab_ofdm_move_and_insert_zero and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_ofdm_move_and_insert_zero_sptr 
-dab_make_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers)
+namespace gr {
+  namespace dab {
+
+ofdm_move_and_insert_zero::sptr
+ofdm_move_and_insert_zero::make(unsigned int fft_length,unsigned int num_carriers)
 {
-  return gnuradio::get_initial_sptr (new dab_ofdm_move_and_insert_zero (fft_length, num_carriers));
+  return gnuradio::get_initial_sptr
+    (new ofdm_move_and_insert_zero_impl(fft_length, num_carriers));
 }
 
-dab_ofdm_move_and_insert_zero::dab_ofdm_move_and_insert_zero (unsigned int fft_length, unsigned int num_carriers) : 
-  gr_sync_block ("ofdm_move_and_insert_zero",
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*num_carriers),
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*fft_length)),
+ofdm_move_and_insert_zero_impl::ofdm_move_and_insert_zero_impl(unsigned int fft_length,unsigned int num_carriers)
+  : gr::sync_block("ofdm_move_and_insert_zero",
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*num_carriers),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*fft_length)),
   d_fft_length(fft_length), d_num_carriers(num_carriers)
 {
   d_zeros_on_left = (d_fft_length-d_num_carriers)/2;
 }
 
 int 
-dab_ofdm_move_and_insert_zero::work (int noutput_items,
+ofdm_move_and_insert_zero_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -83,4 +83,7 @@ dab_ofdm_move_and_insert_zero::work (int noutput_items,
   }
 
   return noutput_items;
+}
+
+}
 }

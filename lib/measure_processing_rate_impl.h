@@ -19,30 +19,16 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef INCLUDED_DAB_MEASURE_PROCESSING_RATE_IMPL_H
+#define INCLUDED_DAB_MEASURE_PROCESSING_RATE_IMPL_H
 
-#ifndef INCLUDED_DAB_MEASURE_PROCESSING_RATE_H
-#define INCLUDED_DAB_MEASURE_PROCESSING_RATE_H
+#include <dab/measure_processing_rate.h>
 
-#include <gr_sync_block.h>
+namespace gr {
+  namespace dab {
 
-class dab_measure_processing_rate;
-typedef boost::shared_ptr<dab_measure_processing_rate> dab_measure_processing_rate_sptr;
-
-dab_measure_processing_rate_sptr dab_make_measure_processing_rate(size_t itemsize, int samples_to_count);
-
-/*!
- * \brief Measure processing rate of a stream
- *
- * \param itemsize size of items (gr.sizeof_foo)
- * \param samples_to_count number of samples until updating the value - for good estimations, use at least the number of samples expected in one second
- *
- * input: sample stream
- *
- * \ingroup sink
- */
-class dab_measure_processing_rate : public gr_sync_block
+class measure_processing_rate_impl : public measure_processing_rate
 {
-  friend dab_measure_processing_rate_sptr dab_make_measure_processing_rate(size_t itemsize, int samples_to_count);
 
  private:
   size_t	d_itemsize;
@@ -51,10 +37,8 @@ class dab_measure_processing_rate : public gr_sync_block
   struct timeval d_time;
   float d_processing_rate;
 
- protected:
-  dab_measure_processing_rate(size_t itemsize, int samples_to_count);
-
  public:
+  measure_processing_rate_impl(size_t itemsize, int samples_to_count);
   void set_samples_to_count(int samples_to_count) { d_samples_to_count=samples_to_count; }
   /*! \return processing rate in samples per second */
   float processing_rate() { return d_processing_rate; }
@@ -65,5 +49,8 @@ class dab_measure_processing_rate : public gr_sync_block
 	   gr_vector_const_void_star &input_items,
 	   gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_MEASURE_PROCESSING_RATE_H */

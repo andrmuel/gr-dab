@@ -26,21 +26,25 @@
 
 #include <stdio.h>
 
-#include <dab_measure_processing_rate.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "measure_processing_rate_impl.h"
 #include <stdexcept>
 #include <sys/time.h>
 
-dab_measure_processing_rate_sptr
-dab_make_measure_processing_rate (size_t itemsize, int samples_to_count)
+namespace gr {
+  namespace dab {
+
+measure_processing_rate::sptr
+measure_processing_rate::make(size_t itemsize, int samples_to_count)
 {
-  return gnuradio::get_initial_sptr (new dab_measure_processing_rate (itemsize, samples_to_count));
+  return gnuradio::get_initial_sptr
+    (new measure_processing_rate_impl(itemsize, samples_to_count));
 }
 
-dab_measure_processing_rate::dab_measure_processing_rate(size_t itemsize, int samples_to_count)
-  : gr_sync_block ("measure_processing_rate",
-		   gr_make_io_signature(1, 1, itemsize),
-		   gr_make_io_signature(0, 0, 0)),
+measure_processing_rate_impl::measure_processing_rate_impl(size_t itemsize, int samples_to_count)
+  : gr::sync_block("measure_processing_rate",
+		   gr::io_signature::make(1, 1, itemsize),
+		   gr::io_signature::make(0, 0, 0)),
     d_itemsize(itemsize), d_samples_to_count(samples_to_count), d_count(0), d_processing_rate(0)
 {
   if (gettimeofday(&d_time, NULL) != 0) {
@@ -50,7 +54,7 @@ dab_measure_processing_rate::dab_measure_processing_rate(size_t itemsize, int sa
 }
 
 int 
-dab_measure_processing_rate::work (int noutput_items,
+measure_processing_rate_impl::work(int noutput_items,
 		    gr_vector_const_void_star &input_items,
 		    gr_vector_void_star &output_items)
 {
@@ -70,4 +74,7 @@ dab_measure_processing_rate::work (int noutput_items,
   }
   
   return noutput_items;
+}
+
+}
 }

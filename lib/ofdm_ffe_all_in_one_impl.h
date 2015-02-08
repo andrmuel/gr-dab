@@ -19,16 +19,13 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H
-#define INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H
+#ifndef INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_IMPL_H
+#define INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/ofdm_ffe_all_in_one.h>
 
-class dab_ofdm_ffe_all_in_one;
-
-typedef boost::shared_ptr<dab_ofdm_ffe_all_in_one> dab_ofdm_ffe_all_in_one_sptr;
-
-dab_ofdm_ffe_all_in_one_sptr dab_make_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
+namespace gr {
+  namespace dab {
 
 /*!
  * \brief calculates fine frequency error estimation and averages it
@@ -44,16 +41,11 @@ dab_ofdm_ffe_all_in_one_sptr dab_make_ofdm_ffe_all_in_one (unsigned int symbol_l
  *
  * this is an all in one version of ffe in ofdm_sync_dab.py, because the flow graph does not allow to only calculate the estimation when its needed
  */
-class dab_ofdm_ffe_all_in_one : public gr_sync_block
+class ofdm_ffe_all_in_one_impl : public ofdm_ffe_all_in_one
 {
   private:
-    // The friend declaration allows dab_make_ofdm_ffe_all_in_one to
-    // access the private constructor.
-
-    friend dab_ofdm_ffe_all_in_one_sptr dab_make_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
 
     float calc_ffe_estimate(const gr_complex *iptr);
-    dab_ofdm_ffe_all_in_one (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);    // private constructor
 
     unsigned int d_symbol_length;   // length of a symbol in samples
     unsigned int d_fft_length;      // length of a symbol without cyclic prefix in samples
@@ -68,11 +60,15 @@ class dab_ofdm_ffe_all_in_one : public gr_sync_block
     float d_estimated_error_per_sample; // total estimated error / fft_length
 
   public:
+    ofdm_ffe_all_in_one_impl (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
     /*! \return fine frequency error estimate in Hz */
     float ffe_estimate() { return d_estimated_error_per_sample*d_sample_rate/(2*M_PI); }
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H */

@@ -19,42 +19,18 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_SELECT_VECTORS_H
-#define INCLUDED_DAB_SELECT_VECTORS_H
+#ifndef INCLUDED_DAB_SELECT_VECTORS_IMPL_H
+#define INCLUDED_DAB_SELECT_VECTORS_IMPL_H
 
-#include <gr_block.h>
+#include <dab/select_vectors.h>
 
-class dab_select_vectors;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_select_vectors> dab_select_vectors_sptr;
-
-dab_select_vectors_sptr 
-dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);
-
-/*!
- * \brief select some vectors from a vector stream
- * \ingroup DAB
- *
- * \param itemsize size of vector elements
- * \param length vector length
- * \param num_select number of vectors to select
- * \param num_skip number of vectors to skip at the start of the frame
- *
- * select some vectors depending on their position relative to the frame start, which is indicatied by the trigger signal
- *
- * input: port 0: vectors; port 1: new trigger signal (char)
- * output: port 0: selected vectors; port 1: new trigger signal (char)
- */
-class dab_select_vectors : public gr_block
+class select_vectors_impl : public select_vectors
 {
   private:
-    // The friend declaration allows dab_make_select_vectors to
-    // access the private constructor.
 
-    friend dab_select_vectors_sptr
-    dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);
-
-    dab_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);    // private constructor
 
     size_t       d_itemsize;
     unsigned int d_length;
@@ -63,11 +39,15 @@ class dab_select_vectors : public gr_block
     unsigned int d_index;
 
   public:
+    select_vectors_impl(size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip);
     void forecast (int noutput_items, gr_vector_int &ninput_items_required);
     int general_work (int noutput_items,
                       gr_vector_int &ninput_items,
                       gr_vector_const_void_star &input_items,
                       gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_SELECT_VECTORS_H */

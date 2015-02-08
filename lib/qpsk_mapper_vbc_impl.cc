@@ -29,23 +29,23 @@
 #include "config.h"
 #endif
 
-#include <dab_qpsk_mapper_vbc.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "qpsk_mapper_vbc_impl.h"
 
-/*
- * Create a new instance of dab_qpsk_mapper_vbc and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_qpsk_mapper_vbc_sptr 
-dab_make_qpsk_mapper_vbc (int symbol_length)
+namespace gr {
+  namespace dab {
+
+qpsk_mapper_vbc::sptr
+qpsk_mapper_vbc::make(int symbol_length)
 {
-  return gnuradio::get_initial_sptr (new dab_qpsk_mapper_vbc (symbol_length));
+  return gnuradio::get_initial_sptr
+    (new qpsk_mapper_vbc_impl(symbol_length));
 }
 
-dab_qpsk_mapper_vbc::dab_qpsk_mapper_vbc (int symbol_length) : 
-  gr_sync_block ("qpsk_mapper_vbc",
-             gr_make_io_signature (1, 1, sizeof(char)*symbol_length/4),
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*symbol_length)),
+qpsk_mapper_vbc_impl::qpsk_mapper_vbc_impl(int symbol_length)
+  : gr::sync_block("qpsk_mapper_vbc",
+             gr::io_signature::make (1, 1, sizeof(char)*symbol_length/4),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*symbol_length)),
   d_symbol_length(symbol_length)
 {
   assert(symbol_length>0);
@@ -54,7 +54,7 @@ dab_qpsk_mapper_vbc::dab_qpsk_mapper_vbc (int symbol_length) :
 
 
 int 
-dab_qpsk_mapper_vbc::work (int noutput_items,
+qpsk_mapper_vbc_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -77,4 +77,6 @@ dab_qpsk_mapper_vbc::work (int noutput_items,
   }
  
   return noutput_items;
+}
+}
 }

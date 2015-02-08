@@ -31,26 +31,26 @@
 
 #include <stdio.h>
 
-#include <dab_ofdm_coarse_frequency_correct.h>
-#include <gr_io_signature.h>
-#include <gr_expj.h>
+#include <gnuradio/io_signature.h>
+#include "ofdm_coarse_frequency_correct_impl.h"
+#include <gnuradio/expj.h>
 
 #define M_TWOPI (2*M_PI)
 
-/*
- * Create a new instance of dab_ofdm_coarse_frequency_correct and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_ofdm_coarse_frequency_correct_sptr 
-dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length)
+namespace gr {
+  namespace dab {
+
+ofdm_coarse_frequency_correct::sptr
+ofdm_coarse_frequency_correct::make(unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length)
 {
-  return gnuradio::get_initial_sptr (new dab_ofdm_coarse_frequency_correct (fft_length, num_carriers, cp_length));
+  return gnuradio::get_initial_sptr
+    (new ofdm_coarse_frequency_correct_impl(fft_length, num_carriers, cp_length));
 }
 
-dab_ofdm_coarse_frequency_correct::dab_ofdm_coarse_frequency_correct (unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length) : 
-  gr_sync_block ("ofdm_coarse_frequency_correct",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*num_carriers, sizeof(char))),
+ofdm_coarse_frequency_correct_impl::ofdm_coarse_frequency_correct_impl(unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length)
+  : gr::sync_block("ofdm_coarse_frequency_correct",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char)),
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*num_carriers, sizeof(char))),
   d_fft_length(fft_length), d_num_carriers(num_carriers), d_cp_length(cp_length), 
   d_symbol_num(0), d_freq_offset(0), d_delta_f(0)
 {
@@ -58,14 +58,14 @@ dab_ofdm_coarse_frequency_correct::dab_ofdm_coarse_frequency_correct (unsigned i
 }
 
 float
-dab_ofdm_coarse_frequency_correct::mag_squared(const gr_complex sample) {
+ofdm_coarse_frequency_correct_impl::mag_squared(const gr_complex sample) {
     const float __x = sample.real();
     const float __y = sample.imag();
     return __x * __x + __y * __y;
 }
 
 void
-dab_ofdm_coarse_frequency_correct::correlate_energy(const gr_complex *symbol)
+ofdm_coarse_frequency_correct_impl::correlate_energy(const gr_complex *symbol)
 {
   unsigned int i, index;
  
@@ -103,7 +103,7 @@ dab_ofdm_coarse_frequency_correct::correlate_energy(const gr_complex *symbol)
 }
 
 int 
-dab_ofdm_coarse_frequency_correct::work (int noutput_items,
+ofdm_coarse_frequency_correct_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -146,4 +146,7 @@ dab_ofdm_coarse_frequency_correct::work (int noutput_items,
   }
 
   return 1;
+}
+
+}
 }

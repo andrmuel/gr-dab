@@ -29,30 +29,30 @@
 #include "config.h"
 #endif
 
-#include <dab_complex_to_interleaved_float_vcf.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "complex_to_interleaved_float_vcf_impl.h"
 
-/*
- * Create a new instance of dab_complex_to_interleaved_float_vcf and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_complex_to_interleaved_float_vcf_sptr 
-dab_make_complex_to_interleaved_float_vcf (unsigned int length)
+namespace gr {
+  namespace dab {
+
+complex_to_interleaved_float_vcf::sptr
+complex_to_interleaved_float_vcf::make(unsigned int length)
 {
-  return gnuradio::get_initial_sptr (new dab_complex_to_interleaved_float_vcf (length));
+  return gnuradio::get_initial_sptr
+    (new complex_to_interleaved_float_vcf_impl(length));
 }
 
-dab_complex_to_interleaved_float_vcf::dab_complex_to_interleaved_float_vcf (unsigned int length) : 
-  gr_sync_block ("complex_to_interleaved_float_vcf",
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*length),
-             gr_make_io_signature (1, 1, sizeof(float)*length*2)),
+complex_to_interleaved_float_vcf_impl::complex_to_interleaved_float_vcf_impl(unsigned int length)
+  : gr::sync_block("complex_to_interleaved_float_vcf",
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*length),
+             gr::io_signature::make (1, 1, sizeof(float)*length*2)),
   d_length(length)
 {
 }
 
 
 int 
-dab_complex_to_interleaved_float_vcf::work (int noutput_items,
+complex_to_interleaved_float_vcf_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -69,4 +69,7 @@ dab_complex_to_interleaved_float_vcf::work (int noutput_items,
   }
     
   return noutput_items;
+}
+
+}
 }

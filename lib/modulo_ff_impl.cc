@@ -29,18 +29,18 @@
 #include "config.h"
 #endif
 
-#include <dab_modulo_ff.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "modulo_ff_impl.h"
 #include <math.h>
 
-/*
- * Create a new instance of dab_modulo_ff and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_modulo_ff_sptr 
-dab_make_modulo_ff (float div)
+namespace gr {
+  namespace dab {
+
+modulo_ff::sptr
+modulo_ff::make(float div)
 {
-  return gnuradio::get_initial_sptr (new dab_modulo_ff (div));
+  return gnuradio::get_initial_sptr
+    (new modulo_ff_impl(div));
 }
 
 /*
@@ -60,10 +60,10 @@ static const int MAX_OUT = 1; // maximum number of output streams
 /*
  * The private constructor
  */
-dab_modulo_ff::dab_modulo_ff (float div)
-  : gr_sync_block ("modulo_ff",
-       gr_make_io_signature (MIN_IN, MAX_IN, sizeof (float)),
-       gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
+modulo_ff_impl::modulo_ff_impl(float div)
+  : gr::sync_block("modulo_ff",
+       gr::io_signature::make (MIN_IN, MAX_IN, sizeof (float)),
+       gr::io_signature::make (MIN_OUT, MAX_OUT, sizeof (float))),
     d_div(div)
 {
 }
@@ -71,13 +71,13 @@ dab_modulo_ff::dab_modulo_ff (float div)
 /*
  * Our virtual destructor.
  */
-dab_modulo_ff::~dab_modulo_ff ()
+modulo_ff_impl::~modulo_ff_impl()
 {
   // nothing else required in this example
 }
 
 int 
-dab_modulo_ff::work (int noutput_items,
+modulo_ff_impl::work(int noutput_items,
       gr_vector_const_void_star &input_items,
       gr_vector_void_star &output_items)
 {
@@ -91,4 +91,7 @@ dab_modulo_ff::work (int noutput_items,
 
   // Tell runtime system how many output items we produced.
   return noutput_items;
+}
+
+}
 }

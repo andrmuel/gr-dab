@@ -19,71 +19,30 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_H
-#define INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_H
+#ifndef INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_IMPL_H
+#define INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/sum_phasor_trig_vcc.h>
 
-class dab_sum_phasor_trig_vcc;
+namespace gr {
+  namespace dab {
 
-/*
- * We use boost::shared_ptr's instead of raw pointers for all access
- * to gr_blocks (and many other data structures).  The shared_ptr gets
- * us transparent reference counting, which greatly simplifies storage
- * management issues.  This is especially helpful in our hybrid
- * C++ / Python system.
- *
- * See http://www.boost.org/libs/smart_ptr/smart_ptr.htm
- *
- * As a convention, the _sptr suffix indicates a boost::shared_ptr
- */
-typedef boost::shared_ptr<dab_sum_phasor_trig_vcc> dab_sum_phasor_trig_vcc_sptr;
-
-/*!
- * \brief Return a shared_ptr to a new instance of dab_sum_phasor_trig_vcc.
- *
- * To avoid accidental use of raw pointers, dab_sum_phasor_trig_vcc's
- * constructor is private.  dab_make_sum_phasor_trig_vcc is the public
- * interface for creating new instances.
- */
-dab_sum_phasor_trig_vcc_sptr 
-dab_make_sum_phasor_trig_vcc (unsigned int length);
-
-/*!
- * \brief Sums up the phase of consecutive symbol vectors.
- * \ingroup DAB
- * \param length length of the vector
- *
- * input: port 0: symbol vectors; port 1: byte stream indicating frame start
- * output: port 0: phase diff vectors; port 1: byte stream indicating frame start
- *
- * When a new frame starts (trig == 1), the pilot symbol is produced directly, without any summing up:
- *  \f[\vec y[i] = \vec x[i]\f]
- * 
- * Otherwise:
- *  \f[\vec y[i] = \vec x[i]\cdot\vec y[i-1]\f]
- *
- *  NOTE: This means it's important that the absolute value of the symbols is 1.
- */
-class dab_sum_phasor_trig_vcc : public gr_sync_block
+class sum_phasor_trig_vcc_impl : public sum_phasor_trig_vcc
 {
   private:
-    // The friend declaration allows dab_make_sum_phasor_trig_vcc to
-    // access the private constructor.
-
-    friend dab_sum_phasor_trig_vcc_sptr
-    dab_make_sum_phasor_trig_vcc (unsigned int length);
-
-    dab_sum_phasor_trig_vcc (unsigned int length);    // private constructor
 
     unsigned int d_length;
     std::vector<gr_complex> d_last_symbol;
 
 
   public:
+    sum_phasor_trig_vcc_impl(unsigned int length);
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_H */

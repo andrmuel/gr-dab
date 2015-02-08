@@ -19,39 +19,22 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_H
-#define INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_H
+#ifndef INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_IMPL_H
+#define INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_IMPL_H
 
-#include <gr_block.h>
+#include <dab/ofdm_remove_first_symbol_vcc.h>
 
-class dab_ofdm_remove_first_symbol_vcc;
-
-typedef boost::shared_ptr<dab_ofdm_remove_first_symbol_vcc> dab_ofdm_remove_first_symbol_vcc_sptr;
-
-dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen);
-
-/*!
- * \brief Removes the first symbol of each frame
- * \ingroup DAB
- * \param vlen length of the symbol vectors
- *
- * input: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
- * output: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
- */
-class dab_ofdm_remove_first_symbol_vcc : public gr_block
+namespace gr {
+  namespace dab {
+class ofdm_remove_first_symbol_vcc_impl : public ofdm_remove_first_symbol_vcc
 {
   private:
-    // The friend declaration allows dab_make_ofdm_remove_first_symbol_vcc to
-    // access the private constructor.
-
-    friend dab_ofdm_remove_first_symbol_vcc_sptr dab_make_ofdm_remove_first_symbol_vcc (unsigned int vlen);
-
-    dab_ofdm_remove_first_symbol_vcc (unsigned int vlen);    // private constructor
 
     unsigned int d_vlen;
     char d_start;
 
   public:
+    ofdm_remove_first_symbol_vcc_impl(unsigned int vlen);
     void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
     int general_work (int noutput_items,
@@ -60,4 +43,7 @@ class dab_ofdm_remove_first_symbol_vcc : public gr_block
                       gr_vector_void_star &output_items);
 };
 
+}
+}
 #endif /* INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_H */
+

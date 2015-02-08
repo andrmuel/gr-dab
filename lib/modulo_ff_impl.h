@@ -19,44 +19,31 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_MODULO_FF_H
-#define INCLUDED_DAB_MODULO_FF_H
+#ifndef INCLUDED_DAB_MODULO_FF_IMPL_H
+#define INCLUDED_DAB_MODULO_FF_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/modulo_ff.h>
 
-class dab_modulo_ff;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_modulo_ff> dab_modulo_ff_sptr;
-
-dab_modulo_ff_sptr dab_make_modulo_ff (float div);
-
-/*!
- * \brief Modulo operation: y[i] = x[i] mod div
- * \ingroup math
- * \param div divisor
- *
- * input: float
- * output: float
- */
-class dab_modulo_ff : public gr_sync_block
+class modulo_ff_impl : public modulo_ff
 {
 private:
-  // The friend declaration allows dab_make_modulo_ff to
-  // access the private constructor.
-
-  friend dab_modulo_ff_sptr dab_make_modulo_ff (float div);
-
-  dab_modulo_ff (float div);    // private constructor
 
   float d_div;
 
  public:
-  ~dab_modulo_ff ();  // public destructor
+  modulo_ff_impl(float div);
+  ~modulo_ff_impl();  // public destructor
 
   // Where all the action really happens
   int work (int noutput_items,
             gr_vector_const_void_star &input_items,
             gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_MODULO_FF_H */

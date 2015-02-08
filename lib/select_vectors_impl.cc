@@ -29,23 +29,23 @@
 #include "config.h"
 #endif
 
-#include <dab_select_vectors.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "select_vectors_impl.h"
 
-/*
- * Create a new instance of dab_select_vectors and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_select_vectors_sptr 
-dab_make_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip)
+namespace gr {
+  namespace dab {
+
+select_vectors::sptr
+select_vectors::make(size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip)
 {
-  return gnuradio::get_initial_sptr (new dab_select_vectors (itemsize, length, num_select, num_skip));
+  return gnuradio::get_initial_sptr
+    (new select_vectors_impl(itemsize, length, num_select, num_skip));
 }
 
-dab_select_vectors::dab_select_vectors (size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip) : 
-  gr_block ("select_vectors",
-             gr_make_io_signature2 (2, 2, itemsize*length, sizeof(char)),
-             gr_make_io_signature2 (2, 2, itemsize*length, sizeof(char))),
+select_vectors_impl::select_vectors_impl(size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip)
+  : gr::block("select_vectors",
+             gr::io_signature::make2 (2, 2, itemsize*length, sizeof(char)),
+             gr::io_signature::make2 (2, 2, itemsize*length, sizeof(char))),
   d_itemsize(itemsize), d_length(length), d_num_select(num_select), d_num_skip(num_skip), d_index(num_select+num_skip) /* <- dont output anything before 1st trigger */
 {
   assert(d_num_select!=0);
@@ -53,7 +53,7 @@ dab_select_vectors::dab_select_vectors (size_t itemsize, unsigned int length, un
 }
 
 void 
-dab_select_vectors::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+select_vectors_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   int in_req  = noutput_items * (d_num_skip+d_num_select)/d_num_select; /* very coarse .. */
 
@@ -63,7 +63,7 @@ dab_select_vectors::forecast (int noutput_items, gr_vector_int &ninput_items_req
 }
 
 int 
-dab_select_vectors::general_work (int noutput_items,
+select_vectors_impl::general_work (int noutput_items,
                         gr_vector_int &ninput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
@@ -106,5 +106,8 @@ dab_select_vectors::general_work (int noutput_items,
 
   consume_each(n_consumed);
   return n_produced;
+}
+
+}
 }
 

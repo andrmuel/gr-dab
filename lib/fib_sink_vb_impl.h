@@ -19,27 +19,16 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
+#ifndef INCLUDED_DAB_FIB_SINK_VB_IMPL_H
+#define INCLUDED_DAB_FIB_SINK_VB_IMPL_H
 
-#ifndef INCLUDED_DAB_FIB_SINK_B_H
-#define INCLUDED_DAB_FIB_SINK_B_H
+#include <dab/fib_sink_vb.h>
 
-#include <gr_sync_block.h>
+namespace gr {
+  namespace dab {
 
-class dab_fib_sink_vb;
-typedef boost::shared_ptr<dab_fib_sink_vb> dab_fib_sink_vb_sptr;
-
-dab_fib_sink_vb_sptr dab_make_fib_sink_vb();
-
-/*!
- * \brief sink for DAB FIBs
- *
- * input: port 0: fibs
- *
- * \ingroup sink
- */
-class dab_fib_sink_vb : public gr_sync_block
+class fib_sink_vb_impl : public fib_sink_vb
 {
-  friend dab_fib_sink_vb_sptr dab_make_fib_sink_vb();
 
  private:
   unsigned long d_fibs; 
@@ -47,13 +36,15 @@ class dab_fib_sink_vb : public gr_sync_block
   int process_fib(const char *fib);
   int process_fig(uint8_t type, const char *data, uint8_t length);
 
- protected:
-  dab_fib_sink_vb();
 
  public:
+  fib_sink_vb_impl();
   int work(int noutput_items,
 	   gr_vector_const_void_star &input_items,
 	   gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_FIB_SINK_B_H */

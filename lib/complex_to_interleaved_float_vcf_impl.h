@@ -19,44 +19,29 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_COMPLEX_TO_INTERLEAVED_FLOAT_VCF_H
-#define INCLUDED_DAB_COMPLEX_TO_INTERLEAVED_FLOAT_VCF_H
+#ifndef INCLUDED_DAB_COMPLEX_TO_INTERLEAVED_FLOAT_VCF_IMPL_H
+#define INCLUDED_DAB_COMPLEX_TO_INTERLEAVED_FLOAT_VCF_IMPL_H
 
-#include <gr_sync_block.h>
+#include <dab/complex_to_interleaved_float_vcf.h>
 
-class dab_complex_to_interleaved_float_vcf;
+namespace gr {
+  namespace dab {
 
-typedef boost::shared_ptr<dab_complex_to_interleaved_float_vcf> dab_complex_to_interleaved_float_vcf_sptr;
-
-dab_complex_to_interleaved_float_vcf_sptr 
-dab_make_complex_to_interleaved_float_vcf (unsigned int length);
-
-/*!
- * \brief deinterleaves [(i0,q0),(i1,q1),(i2,q2)] to [i0,i1,i2,..., q0,q1,q2,...]
- * \ingroup math
- *
- * \param length vector length at input
- *
- * input: complex vector
- * output: float vector
- */
-class dab_complex_to_interleaved_float_vcf : public gr_sync_block
+class complex_to_interleaved_float_vcf_impl : public complex_to_interleaved_float_vcf
 {
   private:
-    // The friend declaration allows dab_make_complex_to_interleaved_float_vcf to
-    // access the private constructor.
 
-    friend dab_complex_to_interleaved_float_vcf_sptr
-    dab_make_complex_to_interleaved_float_vcf (unsigned int length);
-
-    dab_complex_to_interleaved_float_vcf (unsigned int length);    // private constructor
 
     unsigned int d_length;
 
   public:
+    complex_to_interleaved_float_vcf_impl(unsigned int length);
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_COMPLEX_TO_INTERLEAVED_FLOAT_VCF_H */

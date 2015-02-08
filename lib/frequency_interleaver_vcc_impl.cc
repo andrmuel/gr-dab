@@ -29,23 +29,23 @@
 #include "config.h"
 #endif
 
-#include <dab_frequency_interleaver_vcc.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "frequency_interleaver_vcc_impl.h"
 
-/*
- * Create a new instance of dab_frequency_interleaver_vcc and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_frequency_interleaver_vcc_sptr 
-dab_make_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence)
+namespace gr {
+  namespace dab {
+
+frequency_interleaver_vcc::sptr
+frequency_interleaver_vcc::make(const std::vector<short> &interleaving_sequence)
 {
-  return gnuradio::get_initial_sptr (new dab_frequency_interleaver_vcc (interleaving_sequence));
+  return gnuradio::get_initial_sptr
+    (new frequency_interleaver_vcc_impl(interleaving_sequence));
 }
 
-dab_frequency_interleaver_vcc::dab_frequency_interleaver_vcc (const std::vector<short> &interleaving_sequence) : 
-  gr_sync_block ("frequency_interleaver_vcc",
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*interleaving_sequence.size()),
-             gr_make_io_signature (1, 1, sizeof(gr_complex)*interleaving_sequence.size())),
+frequency_interleaver_vcc_impl::frequency_interleaver_vcc_impl(const std::vector<short> &interleaving_sequence)
+  : gr::sync_block("frequency_interleaver_vcc",
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*interleaving_sequence.size()),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*interleaving_sequence.size())),
   d_interleaving_sequence(interleaving_sequence), d_length(interleaving_sequence.size())
 {
   for (unsigned int i=0; i<d_length; i++) 
@@ -54,7 +54,7 @@ dab_frequency_interleaver_vcc::dab_frequency_interleaver_vcc (const std::vector<
 
 
 int 
-dab_frequency_interleaver_vcc::work (int noutput_items,
+frequency_interleaver_vcc_impl::work(int noutput_items,
                         gr_vector_const_void_star &input_items,
                         gr_vector_void_star &output_items)
 {
@@ -69,5 +69,8 @@ dab_frequency_interleaver_vcc::work (int noutput_items,
   }
     
   return noutput_items;
+}
+
+}
 }
 

@@ -29,26 +29,23 @@
 #include "config.h"
 #endif
 
-#include <dab_ofdm_sampler.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "ofdm_sampler_impl.h"
 
-/*
- * Create a new instance of dab_ofdm_sampler and return
- * a boost shared_ptr.  This is effectively the public constructor.
- */
-dab_ofdm_sampler_sptr 
-dab_make_ofdm_sampler (unsigned int fft_length, 
-                       unsigned int cp_length, 
-                       unsigned int symbols_per_frame,
-                       unsigned int gap)
+namespace gr {
+  namespace dab {
+
+ofdm_sampler::sptr
+ofdm_sampler::make(unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame,unsigned int gap)
 {
-  return gnuradio::get_initial_sptr (new dab_ofdm_sampler (fft_length, cp_length, symbols_per_frame, gap));
+  return gnuradio::get_initial_sptr
+    (new ofdm_sampler_impl(fft_length, cp_length, symbols_per_frame, gap));
 }
 
-dab_ofdm_sampler::dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap) : 
-  gr_block ("ofdm_sampler",
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex), sizeof(char)),
-             gr_make_io_signature2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
+ofdm_sampler_impl::ofdm_sampler_impl(unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame,unsigned int gap)
+  : gr::block("ofdm_sampler",
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex), sizeof(char)),
+             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
   d_state(STATE_NS), d_pos(0), d_fft_length(fft_length), d_cp_length(cp_length), d_symbols_per_frame(symbols_per_frame), d_sym_nr(0), d_gap(gap), d_gap_left(0)
 {
   assert(gap<=cp_length);
@@ -56,7 +53,7 @@ dab_ofdm_sampler::dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_len
 }
 
 void 
-dab_ofdm_sampler::forecast (int noutput_items, gr_vector_int &ninput_items_required)
+ofdm_sampler_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
   int in_req  = noutput_items * (d_fft_length+d_cp_length-d_gap);
   // int in_req  = noutput_items * d_fft_length;
@@ -67,11 +64,11 @@ dab_ofdm_sampler::forecast (int noutput_items, gr_vector_int &ninput_items_requi
 }
 
 
-int 
-dab_ofdm_sampler::general_work (int noutput_items,
-                        gr_vector_int &ninput_items,
-                        gr_vector_const_void_star &input_items,
-                        gr_vector_void_star &output_items)
+int
+ofdm_sampler_impl::general_work (int noutput_items,
+                   gr_vector_int &ninput_items,
+                   gr_vector_const_void_star &input_items,
+                   gr_vector_void_star &output_items)
 {
   /* partially adapted from gr_ofdm_sampler.cc */
   const gr_complex *iptr = (const gr_complex *) input_items[0];
@@ -132,4 +129,8 @@ dab_ofdm_sampler::general_work (int noutput_items,
   }
   consume_each(index);
   return out;
+}
+
+}
+
 }

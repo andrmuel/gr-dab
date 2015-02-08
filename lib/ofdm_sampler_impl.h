@@ -19,16 +19,13 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_OFDM_SAMPLER_H
-#define INCLUDED_DAB_OFDM_SAMPLER_H
+#ifndef INCLUDED_DAB_OFDM_SAMPLER_IMPL_H
+#define INCLUDED_DAB_OFDM_SAMPLER_IMPL_H
 
-#include <gr_block.h>
+#include <dab/ofdm_sampler.h>
 
-class dab_ofdm_sampler;
-
-typedef boost::shared_ptr<dab_ofdm_sampler> dab_ofdm_sampler_sptr;
-
-dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
+namespace gr {
+  namespace dab {
 
 /*!
  * \brief cuts stream of DAB samples into symbol vectors
@@ -41,15 +38,9 @@ dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned i
  * input: port 0: complex - actual data; port 1: byte stream with trigger signal indicating the start of a frame
  * output: port 0: complex vectors - sampled data; port 1: byte stream with trigger signal indicating the start of a frame
  */
-class dab_ofdm_sampler : public gr_block
+class ofdm_sampler_impl : public ofdm_sampler
 {
   private:
-    // The friend declaration allows dab_make_ofdm_sampler to
-    // access the private constructor.
-
-    friend dab_ofdm_sampler_sptr dab_make_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);
-
-    dab_ofdm_sampler (unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame, unsigned int gap);    // private constructor
 
     enum state_t {STATE_NS, STATE_CP, STATE_SYM};
 
@@ -63,6 +54,7 @@ class dab_ofdm_sampler : public gr_block
     unsigned int d_gap_left;                // gap left to next symbol?
 
   public:
+    ofdm_sampler_impl(unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame,unsigned int gap);
     void forecast (int noutput_items, gr_vector_int &ninput_items_required);
 
     int general_work (int noutput_items,
@@ -70,5 +62,8 @@ class dab_ofdm_sampler : public gr_block
                       gr_vector_const_void_star &input_items,
                       gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_OFDM_SAMPLER_H */

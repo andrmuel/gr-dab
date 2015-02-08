@@ -19,37 +19,18 @@
  * the Free Software Foundation, Inc., 51 Franklin Street,
  * Boston, MA 02110-1301, USA.
  */
-#ifndef INCLUDED_DAB_MAGNITUDE_EQUALIZER_VCC_H
-#define INCLUDED_DAB_MAGNITUDE_EQUALIZER_VCC_H
 
-#include <gr_sync_block.h>
+#ifndef INCLUDED_DAB_MAGNITUDE_EQUALIZER_VCC_IMPL_H
+#define INCLUDED_DAB_MAGNITUDE_EQUALIZER_VCC_IMPL_H
 
-class dab_magnitude_equalizer_vcc;
+#include <dab/magnitude_equalizer_vcc.h>
 
-typedef boost::shared_ptr<dab_magnitude_equalizer_vcc> dab_magnitude_equalizer_vcc_sptr;
+namespace gr {
+  namespace dab {
 
-dab_magnitude_equalizer_vcc_sptr dab_make_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols);
-
-/*!
- * \brief equalization for each individual subcarrion
- * \ingroup DAB
- * \param vlen length of the symbol vectors
- * \param num_symbols how many symbols to use to estimate the magnitude
- *
- * input: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
- * output: port 0: complex vectors; port 1: byte stream - trigger signal indicating the start of a frame
- *
- * this block introduces a delay of num_symbols-1 on both the data and trigger signal
- */
-class dab_magnitude_equalizer_vcc : public gr_sync_block
+class magnitude_equalizer_vcc_impl : public magnitude_equalizer_vcc
 {
   private:
-    // The friend declaration allows dab_make_magnitude_equalizer_vcc to
-    // access the private constructor.
-
-    friend dab_magnitude_equalizer_vcc_sptr dab_make_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols);
-
-    dab_magnitude_equalizer_vcc (unsigned int vlen, unsigned int num_symbols);    // private constructor
     void update_equalizer(const gr_complex *in);
 
     unsigned int d_vlen;
@@ -57,10 +38,14 @@ class dab_magnitude_equalizer_vcc : public gr_sync_block
     float *d_equalizer;
 
   public:
-    ~dab_magnitude_equalizer_vcc (void);
+    magnitude_equalizer_vcc_impl(unsigned int vlen, unsigned int num_symbols);
+    ~magnitude_equalizer_vcc_impl(void);
     int work (int noutput_items,
               gr_vector_const_void_star &input_items,
               gr_vector_void_star &output_items);
 };
+
+}
+}
 
 #endif /* INCLUDED_DAB_MAGNITUDE_EQUALIZER_VCC_H */

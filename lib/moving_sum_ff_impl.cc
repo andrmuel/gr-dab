@@ -29,17 +29,20 @@
 #include "config.h"
 #endif
 
-#include <dab_moving_sum_ff.h>
-#include <gr_io_signature.h>
+#include <gnuradio/io_signature.h>
+#include "moving_sum_ff_impl.h"
 
+namespace gr {
+  namespace dab {
 /*
  * Create a new instance of dab_moving_sum_ff and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_moving_sum_ff_sptr 
-dab_make_moving_sum_ff (int length)
+moving_sum_ff::sptr
+moving_sum_ff::make(int length)
 {
-  return gnuradio::get_initial_sptr (new dab_moving_sum_ff (length));
+  return gnuradio::get_initial_sptr
+    (new moving_sum_ff_impl(length));
 }
 
 /*
@@ -59,10 +62,10 @@ static const int MAX_OUT = 1; // maximum number of output streams
 /*
  * The private constructor
  */
-dab_moving_sum_ff::dab_moving_sum_ff (int length)
-  : gr_sync_block ("moving_sum_ff",
-       gr_make_io_signature (MIN_IN, MAX_IN, sizeof (float)),
-       gr_make_io_signature (MIN_OUT, MAX_OUT, sizeof (float))),
+moving_sum_ff_impl::moving_sum_ff_impl(int length)
+  : gr::sync_block("moving_sum_ff",
+       gr::io_signature::make (MIN_IN, MAX_IN, sizeof (float)),
+       gr::io_signature::make (MIN_OUT, MAX_OUT, sizeof (float))),
     d_sum(0), d_length(length)
 {
   assert(length>=0);
@@ -72,15 +75,15 @@ dab_moving_sum_ff::dab_moving_sum_ff (int length)
 /*
  * Our virtual destructor.
  */
-dab_moving_sum_ff::~dab_moving_sum_ff ()
+moving_sum_ff_impl::~moving_sum_ff_impl()
 {
   // nothing else required in this example
 }
 
 int 
-dab_moving_sum_ff::work (int noutput_items,
-      gr_vector_const_void_star &input_items,
-      gr_vector_void_star &output_items)
+moving_sum_ff_impl::work(int noutput_items,
+          gr_vector_const_void_star &input_items,
+          gr_vector_void_star &output_items)
 {
   const float *in = (const float *) input_items[0];
   float *out = (float *) output_items[0];
@@ -95,4 +98,7 @@ dab_moving_sum_ff::work (int noutput_items,
 
   // Tell runtime system how many output items we produced.
   return noutput_items;
+}
+
+}
 }
