@@ -22,21 +22,14 @@ This package requires that gnuradio-core is already installed.  It
 also depends on some GNU Radio prerequisites, such as Boost and
 cppunit.
 
-To build the examples from the tarball use the normal recipe:
+To build the examples from the tarball run these commands:
 
-  $ ./configure
+  $ mkdir build
+  $ cd build
+  $ cmake .
   $ make
-  $ make check
   $ sudo make install
-
-If you're building from git, you'll need to use this sequence, since
-git doesn't contain configure or the generated Makefiles.
-
-  $ ./bootstrap
-  $ ./configure
-  $ make
-  $ make check
-  $ sudo make install
+  $ sudo ldconfig
 
 Additional notes
 ----------------
