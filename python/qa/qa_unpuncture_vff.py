@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import gr, gr_unittest, blocks
+import dab
 import cmath
 
 class qa_unpuncture_vff(gr_unittest.TestCase):
@@ -21,11 +21,11 @@ class qa_unpuncture_vff(gr_unittest.TestCase):
 		src_data = (0,1,2,3,4,5,6,7,8,9)
 		punc_seq = (1,0,0,0,1,0,1,1,1)
 		exp_res  = (0,77,77,77,1,77,2,3,4,5,77,77,77,6,77,7,8,9)
-		src = gr.vector_source_f(src_data)
-		s2v = gr.stream_to_vector(gr.sizeof_float, 5)
-		unpuncture_vff = dab_swig.unpuncture_vff(punc_seq, 77)
-		v2s = gr.vector_to_stream(gr.sizeof_float, 9)
-		dst = gr.vector_sink_f()
+		src = blocks.vector_source_f(src_data)
+		s2v = blocks.stream_to_vector(gr.sizeof_float, 5)
+		unpuncture_vff = dab.unpuncture_vff(punc_seq, 77)
+		v2s = blocks.vector_to_stream(gr.sizeof_float, 9)
+		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, unpuncture_vff, v2s, dst)
 		self.tb.run()
 		result_data = dst.data()
@@ -35,11 +35,11 @@ class qa_unpuncture_vff(gr_unittest.TestCase):
 		src_data = (0,1,2,3,4,5,6,7,8,9)
 		punc_seq = (1,0,0,0,1,0,1,1,1)
 		exp_res  = (0,0,0,0,1,0,2,3,4,5,0,0,0,6,0,7,8,9)
-		src = gr.vector_source_f(src_data)
-		s2v = gr.stream_to_vector(gr.sizeof_float, 5)
-		unpuncture_vff = dab_swig.unpuncture_vff(punc_seq)
-		v2s = gr.vector_to_stream(gr.sizeof_float, 9)
-		dst = gr.vector_sink_f()
+		src = blocks.vector_source_f(src_data)
+		s2v = blocks.stream_to_vector(gr.sizeof_float, 5)
+		unpuncture_vff = dab.unpuncture_vff(punc_seq)
+		v2s = blocks.vector_to_stream(gr.sizeof_float, 9)
+		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, unpuncture_vff, v2s, dst)
 		self.tb.run()
 		result_data = dst.data()

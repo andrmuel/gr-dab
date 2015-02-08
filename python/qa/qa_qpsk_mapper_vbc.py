@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import gr, gr_unittest, blocks
+import dab
 import math
 
 class qa_qpsk_mapper_vbc(gr_unittest.TestCase):
@@ -21,11 +21,11 @@ class qa_qpsk_mapper_vbc(gr_unittest.TestCase):
 		src_data        = [10,128]
 		expected_result = [1+1j,1+1j,-1+1j,-1+1j,-1+1j,1+1j,1+1j,1+1j]
 		expected_result = [x/math.sqrt(2) for x in expected_result]
-		src = gr.vector_source_b(src_data)
-		s2v = gr.stream_to_vector(gr.sizeof_char, 1)
-		qpsk_mapper_vbc = dab_swig.qpsk_mapper_vbc(4)
-		v2s = gr.vector_to_stream(gr.sizeof_gr_complex, 4)
-		dst = gr.vector_sink_c()
+		src = blocks.vector_source_b(src_data)
+		s2v = blocks.stream_to_vector(gr.sizeof_char, 1)
+		qpsk_mapper_vbc = dab.qpsk_mapper_vbc(4)
+		v2s = blocks.vector_to_stream(gr.sizeof_gr_complex, 4)
+		dst = blocks.vector_sink_c()
 		self.tb.connect(src, s2v, qpsk_mapper_vbc, v2s, dst)
 		self.tb.run()
 		result_data = dst.data()

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import gr, gr_unittest, blocks
+import dab
 
 class qa_sum_phasor_trig_vcc(gr_unittest.TestCase):
 	"""
@@ -21,13 +21,13 @@ class qa_sum_phasor_trig_vcc(gr_unittest.TestCase):
 		src_data1        = (0,   1,   0,     0,     1,   0)
 		expected_result0 = (0,0, 1,1j,1j,-1,-1j,-1j,1,1j,1,-1)
 		expected_result0 = [x+0j for x in expected_result0]
-		src0 = gr.vector_source_c(src_data0)
-		src1 = gr.vector_source_b(src_data1)
-		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex,2)
-		sum_phasor_trig_vcc = dab_swig.sum_phasor_trig_vcc(2)
-		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,2)
-		dst0 = gr.vector_sink_c()
-		dst1 = gr.vector_sink_b()
+		src0 = blocks.vector_source_c(src_data0)
+		src1 = blocks.vector_source_b(src_data1)
+		s2v0 = blocks.stream_to_vector(gr.sizeof_gr_complex,2)
+		sum_phasor_trig_vcc = dab.sum_phasor_trig_vcc(2)
+		v2s0 = blocks.vector_to_stream(gr.sizeof_gr_complex,2)
+		dst0 = blocks.vector_sink_c()
+		dst1 = blocks.vector_sink_b()
 		self.tb.connect(src0, s2v0, (sum_phasor_trig_vcc,0))
 		self.tb.connect(src1, (sum_phasor_trig_vcc,1))
 		self.tb.connect((sum_phasor_trig_vcc,0), v2s0, dst0)
@@ -45,13 +45,13 @@ class qa_sum_phasor_trig_vcc(gr_unittest.TestCase):
 		src_data1        = (1,0,0,1,0)*50
 		expected_result0 = (1,1j,-1j,1,1)*50
 		expected_result0 = [x+0j for x in expected_result0]
-		src0 = gr.vector_source_c(src_data0)
-		src1 = gr.vector_source_b(src_data1)
-		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex,1)
-		sum_phasor_trig_vcc = dab_swig.sum_phasor_trig_vcc(1)
-		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,1)
-		dst0 = gr.vector_sink_c()
-		dst1 = gr.vector_sink_b()
+		src0 = blocks.vector_source_c(src_data0)
+		src1 = blocks.vector_source_b(src_data1)
+		s2v0 = blocks.stream_to_vector(gr.sizeof_gr_complex,1)
+		sum_phasor_trig_vcc = dab.sum_phasor_trig_vcc(1)
+		v2s0 = blocks.vector_to_stream(gr.sizeof_gr_complex,1)
+		dst0 = blocks.vector_sink_c()
+		dst1 = blocks.vector_sink_b()
 		self.tb.connect(src0, s2v0, (sum_phasor_trig_vcc,0))
 		self.tb.connect(src1, (sum_phasor_trig_vcc,1))
 		self.tb.connect((sum_phasor_trig_vcc,0), v2s0, dst0)

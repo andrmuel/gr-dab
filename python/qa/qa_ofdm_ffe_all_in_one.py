@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import blocks
+import dab
 import cmath
 from math import pi
 
@@ -29,10 +30,10 @@ class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 		src_data1 =       (0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 		d = -2*pi/20 # phase diff between two consective samples
 		expected_result = (0,0,0,0,0,0,0,0,0,0,0,0,d,d,d,d,d,d,d,d)
-		src0 = gr.vector_source_c(src_data0)
-		src1 = gr.vector_source_b(src_data1)
-		ffe = dab_swig.ofdm_ffe_all_in_one(symbol_length, fft_length, num_symbols, alpha, 10)
-		dst0 = gr.vector_sink_f()
+		src0 = blocks.vector_source_c(src_data0)
+		src1 = blocks.vector_source_b(src_data1)
+		ffe = dab.ofdm_ffe_all_in_one(symbol_length, fft_length, num_symbols, alpha, 10)
+		dst0 = blocks.vector_sink_f()
 		self.tb.connect(src0, (ffe,0))
 		self.tb.connect(src1, (ffe,1))
 		self.tb.connect(ffe, dst0)

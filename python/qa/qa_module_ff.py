@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import blocks
+import dab
 
 class qa_modulo_ff(gr_unittest.TestCase):
 	"""
@@ -21,9 +22,9 @@ class qa_modulo_ff(gr_unittest.TestCase):
 		src_data = range(-1000,1000)
 		src_data = [float(x) / float(7) for x in src_data]
 		expected_result = [x % div for x in src_data]
-		src = gr.vector_source_f(src_data)
-		modulo = dab_swig.modulo_ff(div)
-		dst = gr.vector_sink_f()
+		src = blocks.vector_source_f(src_data)
+		modulo = dab.modulo_ff(div)
+		dst = blocks.vector_sink_f()
 		self.tb.connect(src, modulo, dst)
 		self.tb.run()
 		result_data = dst.data()
