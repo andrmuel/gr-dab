@@ -78,7 +78,7 @@ class rtl_sdr_dab_cal(gr.top_block):
 			if self.verbose:
 				print "--> receiving from file: " + args[0]
 			self.filename = args[0]
-			self.src = gr.file_source(gr.sizeof_gr_complex, self.filename, False)
+			self.src = blocks.file_source(gr.sizeof_gr_complex, self.filename, False)
 		
 		
 		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
@@ -86,10 +86,10 @@ class rtl_sdr_dab_cal(gr.top_block):
 
 		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=self.verbose) 
 
-		self.v2s = gr.vector_to_stream(gr.sizeof_gr_complex, self.dab_params.num_carriers)
+		self.v2s = blocks.vector_to_stream(gr.sizeof_gr_complex, self.dab_params.num_carriers)
 
-		self.trigsink = gr.null_sink(gr.sizeof_char)
-		self.sink = gr.null_sink(gr.sizeof_float*self.dab_params.num_carriers*2)
+		self.trigsink = blocks.null_sink(gr.sizeof_char)
+		self.sink = blocks.null_sink(gr.sizeof_float*self.dab_params.num_carriers*2)
 
 		self.connect(self.src, self.demod, self.sink)
 		self.connect((self.demod,1), self.trigsink)

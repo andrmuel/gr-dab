@@ -10,7 +10,7 @@
 receive DAB with USRP
 """
 
-from gnuradio import gr, blks2
+from gnuradio import gr, blocks
 import osmosdr
 from gnuradio.eng_option import eng_option
 import dab
@@ -87,7 +87,7 @@ class rtl_sdr_dab_rx(gr.top_block):
 
                 if len(args) >= 1:
                         self.filename = args[0]
-                        self.sink = gr.file_sink(gr.sizeof_char*12288, self.filename)
+                        self.sink = blocks.file_sink(gr.sizeof_char*12288, self.filename)
                         #self.sink = gr.file_sink(gr.sizeof_char*3072, self.filename)
                         self.connect(self.demod, self.sink)
 
