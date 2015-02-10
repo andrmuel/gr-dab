@@ -21,7 +21,7 @@
   <param>
     <name>Sampling Rate</name>
     <key>samp_rate</key>
-    <value></value>
+    <value>samp_rate</value>
     <type>int</type>
   </param>
   <check>1 &lt;= $dab_mode &lt;= 4</check>
