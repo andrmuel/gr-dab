@@ -127,8 +127,8 @@ class fic_decode(gr.hier_block2):
 		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1), (self.cut_into_fibs,1), self.nullsink)
 
 		if self.debug:
-			self.connect(self.select_fic_syms, gr.file_sink(gr.sizeof_float*self.dp.num_carriers*2, "debug/fic_select_syms.dat"))
-			self.connect(self.repartition_fic, gr.file_sink(gr.sizeof_float*self.dp.fic_punctured_codeword_length, "debug/fic_repartitioned.dat"))
-			self.connect(self.unpuncture, gr.file_sink(gr.sizeof_float*self.dp.fic_conv_codeword_length, "debug/fic_unpunctured.dat"))
-			self.connect(self.conv_decode, gr.file_sink(gr.sizeof_char, "debug/fic_decoded.dat"))
-			self.connect(self.energy_s2v, gr.file_sink(gr.sizeof_char*self.dp.energy_dispersal_fic_vector_length, "debug/fic_energy_dispersal_undone.dat"))
+			self.connect(self.select_fic_syms, blocks.file_sink(gr.sizeof_float*self.dp.num_carriers*2, "debug/fic_select_syms.dat"))
+			self.connect(self.repartition_fic, blocks.file_sink(gr.sizeof_float*self.dp.fic_punctured_codeword_length, "debug/fic_repartitioned.dat"))
+			self.connect(self.unpuncture, blocks.file_sink(gr.sizeof_float*self.dp.fic_conv_codeword_length, "debug/fic_unpunctured.dat"))
+			self.connect(self.conv_decode, blocks.file_sink(gr.sizeof_char, "debug/fic_decoded.dat"))
+			self.connect(self.energy_s2v, blocks.file_sink(gr.sizeof_char*self.dp.energy_dispersal_fic_vector_length, "debug/fic_energy_dispersal_undone.dat"))

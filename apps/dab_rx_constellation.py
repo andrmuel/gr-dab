@@ -85,7 +85,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 			if self.verbose:
 				print "--> receiving from file: " + args[0]
 			self.filename = args[0]
-			self.src = gr.file_source(gr.sizeof_gr_complex, self.filename, False)
+			self.src = blocks.file_source(gr.sizeof_gr_complex, self.filename, False)
 			self.sample_rate = options.sample_rate
 		
 		
