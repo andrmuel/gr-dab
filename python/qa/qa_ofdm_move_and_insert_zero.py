@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import gr, gr_unittest, blocks
+import dab
 
 class qa_ofdm_move_and_insert_zero(gr_unittest.TestCase):
 	"""
@@ -23,11 +23,11 @@ class qa_ofdm_move_and_insert_zero(gr_unittest.TestCase):
 		src_data0        = range(0,8)
 		expected_result0 = [0,0,0]+[0,1]+[0]+[2,3]+[0,0]+[0,0,0]+[4,5]+[0]+[6,7]+[0,0]
 		expected_result0 = [complex(x) for x in expected_result0]
-		src0 = gr.vector_source_c(src_data0)
-		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex, num_carriers)
-		ofdm_move_and_insert_zero = dab_swig.ofdm_move_and_insert_zero(fft_length,num_carriers)
-		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex, fft_length)
-		dst0 = gr.vector_sink_c()
+		src0 = blocks.vector_source_c(src_data0)
+		s2v0 = blocks.stream_to_vector(gr.sizeof_gr_complex, num_carriers)
+		ofdm_move_and_insert_zero = dab.ofdm_move_and_insert_zero(fft_length,num_carriers)
+		v2s0 = blocks.vector_to_stream(gr.sizeof_gr_complex, fft_length)
+		dst0 = blocks.vector_sink_c()
 		self.tb.connect(src0, s2v0, ofdm_move_and_insert_zero, v2s0, dst0)
 		self.tb.run()
 		result_data0 = dst0.data()

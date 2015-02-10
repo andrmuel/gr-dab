@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import gr, gr_unittest, blocks
+import dab
 
 class qa_repartition_vectors(gr_unittest.TestCase):
 	"""
@@ -25,13 +25,13 @@ class qa_repartition_vectors(gr_unittest.TestCase):
 		trig            = (0,    1,    0,    0,       0,       0,    0,    0,    1,     1,    0)
 		expected_data   = (3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,1,2,3,4,5,6)
 		expected_trig   = (1,  0,  0,  0,    0,    0,    0,  0,  0,  1,  0,  0)
-		src = gr.vector_source_b(src_data)
-		trigsrc = gr.vector_source_b(trig)
-		s2v = gr.stream_to_vector(gr.sizeof_char, ilen)
-		repartition_vectors = dab_swig.repartition_vectors(gr.sizeof_char,ilen,olen,mult,div)
-		v2s = gr.vector_to_stream(gr.sizeof_char, olen)
-		dst = gr.vector_sink_b()
-		trigdst = gr.vector_sink_b()
+		src = blocks.vector_source_b(src_data)
+		trigsrc = blocks.vector_source_b(trig)
+		s2v = blocks.stream_to_vector(gr.sizeof_char, ilen)
+		repartition_vectors = dab.repartition_vectors(gr.sizeof_char,ilen,olen,mult,div)
+		v2s = blocks.vector_to_stream(gr.sizeof_char, olen)
+		dst = blocks.vector_sink_b()
+		trigdst = blocks.vector_sink_b()
 		self.tb.connect(src, s2v, repartition_vectors, v2s, dst)
 		self.tb.connect(trigsrc, (repartition_vectors,1), trigdst)
 		self.tb.run()
@@ -49,13 +49,13 @@ class qa_repartition_vectors(gr_unittest.TestCase):
 		trig            = (0,    1,    0,    0,       0,       0,    0,    0,    1,     1,    0)
 		expected_data   = (3,4,5,6,7,8,9,10,11,12,13,14,15,0,1,2,3,4,1,2,3,4,5,6)
 		expected_trig   = (1,  0,  0,  0,    0,    0,    0,  0,  0,  1,  0,  0)
-		src = gr.vector_source_f(src_data)
-		trigsrc = gr.vector_source_b(trig)
-		s2v = gr.stream_to_vector(gr.sizeof_float, ilen)
-		repartition_vectors = dab_swig.repartition_vectors(gr.sizeof_float,ilen,olen,mult,div)
-		v2s = gr.vector_to_stream(gr.sizeof_float, olen)
-		dst = gr.vector_sink_f()
-		trigdst = gr.vector_sink_b()
+		src = blocks.vector_source_f(src_data)
+		trigsrc = blocks.vector_source_b(trig)
+		s2v = blocks.stream_to_vector(gr.sizeof_float, ilen)
+		repartition_vectors = dab.repartition_vectors(gr.sizeof_float,ilen,olen,mult,div)
+		v2s = blocks.vector_to_stream(gr.sizeof_float, olen)
+		dst = blocks.vector_sink_f()
+		trigdst = blocks.vector_sink_b()
 		self.tb.connect(src, s2v, repartition_vectors, v2s, dst)
 		self.tb.connect(trigsrc, (repartition_vectors,1), trigdst)
 		self.tb.run()

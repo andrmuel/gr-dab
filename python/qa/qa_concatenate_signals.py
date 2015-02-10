@@ -2,7 +2,8 @@
 
 import os
 from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import blocks
+import dab
 
 class qa_concatenate_signals(gr_unittest.TestCase):
 	"""
@@ -23,11 +24,11 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 		src_data1       = [6j,7j,8j]
 		src_data2       = [9j,10j,11j,12j,13j,14j]
 		expected_result = src_data0 + src_data1 + src_data2
-		src0 = gr.vector_source_c(src_data0)
-		src1 = gr.vector_source_c(src_data1)
-		src2 = gr.vector_source_c(src_data2)
-		concatenate_signals = dab_swig.concatenate_signals(gr.sizeof_gr_complex)
-		dst = gr.vector_sink_c()
+		src0 = blocks.vector_source_c(src_data0)
+		src1 = blocks.vector_source_c(src_data1)
+		src2 = blocks.vector_source_c(src_data2)
+		concatenate_signals = dab.concatenate_signals(gr.sizeof_gr_complex)
+		dst = blocks.vector_sink_c()
 		self.tb.connect(src0, (concatenate_signals,0))
 		self.tb.connect(src1, (concatenate_signals,1))
 		self.tb.connect(src2, (concatenate_signals,2))
@@ -42,12 +43,12 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 		src_data2       = [7j]
 		src_data3       = [8j,9j,10j,11j]*3000
 		expected_result = src_data0 + src_data1 + src_data2 + src_data3
-		src0 = gr.vector_source_c(src_data0)
-		src1 = gr.vector_source_c(src_data1)
-		src2 = gr.vector_source_c(src_data2)
-		src3 = gr.vector_source_c(src_data3)
-		concatenate_signals = dab_swig.concatenate_signals(gr.sizeof_gr_complex)
-		dst = gr.vector_sink_c()
+		src0 = blocks.vector_source_c(src_data0)
+		src1 = blocks.vector_source_c(src_data1)
+		src2 = blocks.vector_source_c(src_data2)
+		src3 = blocks.vector_source_c(src_data3)
+		concatenate_signals = dab.concatenate_signals(gr.sizeof_gr_complex)
+		dst = blocks.vector_sink_c()
 		self.tb.connect(src0, (concatenate_signals,0))
 		self.tb.connect(src1, (concatenate_signals,1))
 		self.tb.connect(src2, (concatenate_signals,2))
@@ -63,12 +64,12 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 		src_data2       = [7]
 		src_data3       = [8,9,10,11]
 		expected_result = src_data0 + src_data1 + src_data2 + src_data3
-		src0 = gr.vector_source_b(src_data0)
-		src1 = gr.vector_source_b(src_data1)
-		src2 = gr.vector_source_b(src_data2)
-		src3 = gr.vector_source_b(src_data3)
-		concatenate_signals = dab_swig.concatenate_signals(gr.sizeof_char)
-		dst = gr.vector_sink_b()
+		src0 = blocks.vector_source_b(src_data0)
+		src1 = blocks.vector_source_b(src_data1)
+		src2 = blocks.vector_source_b(src_data2)
+		src3 = blocks.vector_source_b(src_data3)
+		concatenate_signals = dab.concatenate_signals(gr.sizeof_char)
+		dst = blocks.vector_sink_b()
 		self.tb.connect(src0, (concatenate_signals,0))
 		self.tb.connect(src1, (concatenate_signals,1))
 		self.tb.connect(src2, (concatenate_signals,2))

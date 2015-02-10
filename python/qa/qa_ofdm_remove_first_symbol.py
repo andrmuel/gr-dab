@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import gr, gr_unittest, blocks
+import dab
 
 class qa_ofdm_remove_first_symbol_vcc(gr_unittest.TestCase):
 	"""
@@ -22,12 +22,12 @@ class qa_ofdm_remove_first_symbol_vcc(gr_unittest.TestCase):
 		expected_result0 = (0,1,  3,4,5,6,  8,9,0,1,2,3,  5,6,  8,9)
 		expected_result0 = [x+0j for x in expected_result0]
 		expected_result1 = (0,0,  1,0,0,0,  1,0,0,0,0,0,  1,0,  1,0)
-		src0 = gr.vector_source_c(src_data0)
-		src1 = gr.vector_source_b(src_data1)
-		ofdm_remove_first_symbol = dab_swig.ofdm_remove_first_symbol_vcc(1)
-		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,1)
-		dst0 = gr.vector_sink_c()
-		dst1 = gr.vector_sink_b()
+		src0 = blocks.vector_source_c(src_data0)
+		src1 = blocks.vector_source_b(src_data1)
+		ofdm_remove_first_symbol = dab.ofdm_remove_first_symbol_vcc(1)
+		v2s0 = blocks.vector_to_stream(gr.sizeof_gr_complex,1)
+		dst0 = blocks.vector_sink_c()
+		dst1 = blocks.vector_sink_b()
 		self.tb.connect(src0, (ofdm_remove_first_symbol,0))
 		self.tb.connect(src1, (ofdm_remove_first_symbol,1))
 		self.tb.connect((ofdm_remove_first_symbol,0), v2s0, dst0)
@@ -44,13 +44,13 @@ class qa_ofdm_remove_first_symbol_vcc(gr_unittest.TestCase):
 		expected_result0 = (3,4,5,6,7,8,2,3,4,5,6,7)
 		expected_result0 = [x+0j for x in expected_result0]
 		expected_result1 = (1,0,1,0)
-		src0 = gr.vector_source_c(src_data0)
-		src1 = gr.vector_source_b(src_data1)
-		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex,3)
-		ofdm_remove_first_symbol = dab_swig.ofdm_remove_first_symbol_vcc(3)
-		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex,3)
-		dst0 = gr.vector_sink_c()
-		dst1 = gr.vector_sink_b()
+		src0 = blocks.vector_source_c(src_data0)
+		src1 = blocks.vector_source_b(src_data1)
+		s2v0 = blocks.stream_to_vector(gr.sizeof_gr_complex,3)
+		ofdm_remove_first_symbol = dab.ofdm_remove_first_symbol_vcc(3)
+		v2s0 = blocks.vector_to_stream(gr.sizeof_gr_complex,3)
+		dst0 = blocks.vector_sink_c()
+		dst1 = blocks.vector_sink_b()
 		self.tb.connect(src0, s2v0, (ofdm_remove_first_symbol,0))
 		self.tb.connect(src1, (ofdm_remove_first_symbol,1))
 		self.tb.connect((ofdm_remove_first_symbol,0), v2s0, dst0)

@@ -23,12 +23,12 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr
-import dab_swig, detect_null
+from gnuradio import gr, blocks, analog
+import dab
 import sys
 from math import pi
 
-class ofdm_sync_dab(gr.hier_block2):
+class ofdm_sync_dab2(gr.hier_block2):
 	"""
 	@brief OFDM Energy based time synchronisation and coarse frequency synchronisation for DAB signals
 
@@ -53,7 +53,8 @@ class ofdm_sync_dab(gr.hier_block2):
 					gr.io_signature2(2, 2, gr.sizeof_gr_complex, gr.sizeof_char)) # output signature
 
 		# workaround for a problem that prevents connecting more than one block directly (see trac ticket #161)
-		self.input = gr.kludge_copy(gr.sizeof_gr_complex)
+		#self.input = gr.kludge_copy(gr.sizeof_gr_complex)
+		self.input = blocks.multiply_const_cc(1) # FIXME
 		self.connect(self, self.input)
 
 		#
@@ -61,7 +62,7 @@ class ofdm_sync_dab(gr.hier_block2):
 		#
 		# (outsourced to detect_zero.py)
 		
-		self.ns_detect = detect_null.detect_null(dp.ns_length, debug)
+		self.ns_detect = dab.detect_null(dp.ns_length, debug)
 		self.connect(self.input, self.ns_detect)
 
 		#
@@ -75,12 +76,12 @@ class ofdm_sync_dab(gr.hier_block2):
 		# Magnus Sandell, Per Ola Börjesson, see
 		# http://www.sm.luth.se/csee/sp/research/report/bsb96r.html
 
-		self.ffe = dab_swig.ofdm_ffe_all_in_one(dp.symbol_length, dp.fft_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha, dp.sample_rate)
+		self.ffe = dab.ofdm_ffe_all_in_one(dp.symbol_length, dp.fft_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha, int(dp.sample_rate))
 		if rp.correct_ffe:
-			self.ffs_delay_input_for_correction = gr.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
-			self.ffs_delay_frame_start = gr.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
-			self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
-			self.ffs_mixer = gr.multiply_cc()
+			self.ffs_delay_input_for_correction = blocks.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
+			self.ffs_delay_frame_start = blocks.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
+			self.ffs_nco = analog.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
+			self.ffs_mixer = blocks.multiply_cc()
 
 		# calculate fine frequency error
 		self.connect(self.input, (self.ffe, 0))
@@ -95,14 +96,14 @@ class ofdm_sync_dab(gr.hier_block2):
 			self.connect(self.ns_detect, self.ffs_delay_frame_start, (self, 1))
 		else: 
 			# just patch the signal through
-			self.connect(self.ffe, gr.null_sink(gr.sizeof_float))
+			self.connect(self.ffe, blocks.null_sink(gr.sizeof_float))
 			self.connect(self.input, (self,0))
 			# frame start still needed ..
 			self.connect(self.ns_detect, (self,1))
 
 		if debug:
-			self.connect(self.ffe, gr.multiply_const_ff(1./(dp.T*2*pi)), gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_fine_freq_err_f.dat"))
-			self.connect(self.ffs_mixer, gr.file_sink(gr.sizeof_gr_complex, "debug/ofdm_sync_dab_fine_freq_corrected_c.dat"))
+			self.connect(self.ffe, blocks.multiply_const_ff(1./(dp.T*2*pi)), blocks.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_fine_freq_err_f.dat"))
+			#self.connect(self.ffs_mixer, blocks.file_sink(gr.sizeof_gr_complex, "debug/ofdm_sync_dab_fine_freq_corrected_c.dat"))
 	
 	def clear_state(self):
 		self.ns_detect.clear_state()

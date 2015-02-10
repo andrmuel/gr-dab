@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# _*_ coding: utf8 _*_
+#!/usr/bin/env python2
+# -*- coding: utf8 -*-
 
 # Andreas Müller, 2008
 # andrmuel@ee.ethz.ch
@@ -10,7 +10,7 @@
 demodulate DAB signal and ouput to constellation sink
 """
 
-from gnuradio import gr, usrp
+from gnuradio import gr, uhd, blocks
 from gnuradio import eng_notation
 from gnuradio.eng_option import eng_option
 from gnuradio.wxgui import stdgui2, fftsink2, scopesink2
@@ -53,6 +53,8 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		     help="set receive gain in dB (default is midpoint)")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
 		     help="verbose output")
+		parser.add_option('-a', '--antenna', type="string", default="TX/RX",
+		     help="select antenna")
 		(options, args) = parser.parse_args()
 
 		
@@ -61,11 +63,11 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		if len(args) == 0:
 			if self.verbose:
 				print "--> receiving from USRP"
-			self.src = usrp.source_c(decim_rate=options.decim)
-			self.src.set_mux(usrp.determine_rx_mux_value(self.src, options.rx_subdev_spec))
-			self.subdev = usrp.selected_subdev(self.src, options.rx_subdev_spec)
-			if self.verbose:
-				print "--> using RX dboard " + self.subdev.side_and_name()
+			self.src = uhd.usrp_source("",uhd.io_type.COMPLEX_FLOAT32,1)
+			#self.src.set_mux(usrp.determine_rx_mux_value(self.src, options.rx_subdev_spec))
+			#self.subdev = usrp.selected_subdev(self.src, options.rx_subdev_spec)
+			#if self.verbose:
+			#	print "--> using RX dboard " + self.subdev.side_and_name()
 			# tune frequency
 			self.frequency = options.freq
 			self.set_freq(options.freq)
@@ -73,10 +75,12 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 			# set gain      
 			if options.rx_gain is None:
 				# if no gain was specified, use the mid-point in dB
-				g = self.subdev.gain_range()
-				options.rx_gain = float(g[0]+g[1])/2
-			self.subdev.set_gain(options.rx_gain)
-			self.sample_rate = self.src.adc_rate()/options.decim
+				g = self.src.get_gain_range()
+				options.rx_gain = float(g.start()+g.stop())/2
+			self.src.set_gain(options.rx_gain)
+			self.sample_rate = 2e6#self.src.adc_rate()/options.decim
+			self.src.set_samp_rate(self.sample_rate)
+			self.src.set_antenna(options.antenna)
 		else:
 			if self.verbose:
 				print "--> receiving from file: " + args[0]
@@ -91,11 +95,11 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		
 		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=self.verbose) 
 
-		self.v2s = gr.vector_to_stream(gr.sizeof_gr_complex, self.dab_params.num_carriers)
+		self.v2s = blocks.vector_to_stream(gr.sizeof_gr_complex, self.dab_params.num_carriers)
 		self.scope = scopesink2.scope_sink_c(self.panel, title="DAB constellation sink", sample_rate=self.dab_params.sample_rate, xy_mode=True)
 
-		self.trigsink = gr.null_sink(gr.sizeof_char)
-		self.sink = gr.null_sink(gr.sizeof_float*self.dab_params.num_carriers*2)
+		self.trigsink = blocks.null_sink(gr.sizeof_char)
+		self.sink = blocks.null_sink(gr.sizeof_float*self.dab_params.num_carriers*2)
 
 		self.connect(self.src, self.demod, self.sink)
 		self.connect((self.demod,1), self.trigsink)
@@ -124,7 +128,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 
 
 	def set_freq(self, freq):
-		if self.src.tune(0, self.subdev, freq):
+		if self.src.set_center_freq(freq): #src.tune(0, self.subdev, freq):
 			if self.verbose:
 				print "--> retuned to " + str(freq) + " Hz"
 			return True

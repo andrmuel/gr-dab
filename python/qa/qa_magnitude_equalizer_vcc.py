@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
+from gnuradio import blocks
 from math import pi
-import dab_swig
+import dab
 
 class qa_magnitude_equalizer_vcc(gr_unittest.TestCase):
 	"""
@@ -21,13 +22,13 @@ class qa_magnitude_equalizer_vcc(gr_unittest.TestCase):
 		src_data        = (7j,1j,2j,1j,2j,3j,3j,3j,3j,4j,5j,6j,4j+8,2j,4j)
 		expected_result = (7j,1j,2j,1j,1j,1j,3j,3j/2.,1j,4j,5j/2.,2j,0.4472135955j+0.894427191,1j,1j)
 		trigger         = (0,1,0,0,1)
-		src0 = gr.vector_source_c(src_data)
-		src1 = gr.vector_source_b(trigger)
-		s2v = gr.stream_to_vector(gr.sizeof_gr_complex, 3)
-		equ = dab_swig.magnitude_equalizer_vcc(3, 1)
-		v2s = gr.vector_to_stream(gr.sizeof_gr_complex, 3)
-		dst0 = gr.vector_sink_c()
-		dst1 = gr.vector_sink_b()
+		src0 = blocks.vector_source_c(src_data)
+		src1 = blocks.vector_source_b(trigger)
+		s2v = blocks.stream_to_vector(gr.sizeof_gr_complex, 3)
+		equ = dab.magnitude_equalizer_vcc(3, 1)
+		v2s = blocks.vector_to_stream(gr.sizeof_gr_complex, 3)
+		dst0 = blocks.vector_sink_c()
+		dst1 = blocks.vector_sink_b()
 		self.tb.connect(src0, s2v, equ, v2s, dst0)
 		self.tb.connect(src1, (equ,1), dst1)
 		self.tb.run()
@@ -45,13 +46,13 @@ class qa_magnitude_equalizer_vcc(gr_unittest.TestCase):
 		# scale: 1/2, 1/4
 		expected_result = (0j,0j,0j,0j) + (7j,7j,1j/2,1j/2,1j,1j,3j/2,3j/2,1j/2,1j/4)
 		expected_trigger = (0,0) + (0,1,0,0,0)
-		src0 = gr.vector_source_c(src_data)
-		src1 = gr.vector_source_b(trigger)
-		s2v = gr.stream_to_vector(gr.sizeof_gr_complex, 2)
-		equ = dab_swig.magnitude_equalizer_vcc(2, 3)
-		v2s = gr.vector_to_stream(gr.sizeof_gr_complex, 2)
-		dst0 = gr.vector_sink_c()
-		dst1 = gr.vector_sink_b()
+		src0 = blocks.vector_source_c(src_data)
+		src1 = blocks.vector_source_b(trigger)
+		s2v = blocks.stream_to_vector(gr.sizeof_gr_complex, 2)
+		equ = dab.magnitude_equalizer_vcc(2, 3)
+		v2s = blocks.vector_to_stream(gr.sizeof_gr_complex, 2)
+		dst0 = blocks.vector_sink_c()
+		dst1 = blocks.vector_sink_b()
 		self.tb.connect(src0, s2v, equ, v2s, dst0)
 		self.tb.connect(src1, (equ,1), dst1)
 		self.tb.run()

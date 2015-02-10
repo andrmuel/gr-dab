@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import gr, gr_unittest, blocks
+import dab
 
 class qa_sum_elements_vff(gr_unittest.TestCase):
 	"""
@@ -21,10 +21,10 @@ class qa_sum_elements_vff(gr_unittest.TestCase):
 		b = [-1000,1000,0,-1000,1000]
 		src_data        = a+b
 		expected_result = [sum(a),sum(b)]
-		src = gr.vector_source_f(src_data)
-		s2v = gr.stream_to_vector(gr.sizeof_float, 5)
-		sum_elements_vff = dab_swig.sum_elements_vff(5)
-		dst = gr.vector_sink_f()
+		src = blocks.vector_source_f(src_data)
+		s2v = blocks.stream_to_vector(gr.sizeof_float, 5)
+		sum_elements_vff = dab.sum_elements_vff(5)
+		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, sum_elements_vff, dst)
 		self.tb.run()
 		result_data = dst.data()
@@ -37,10 +37,10 @@ class qa_sum_elements_vff(gr_unittest.TestCase):
 		b = range(10000,14096)
 		src_data        = a+b
 		expected_result = [sum(a),sum(b)]
-		src = gr.vector_source_f(src_data)
-		s2v = gr.stream_to_vector(gr.sizeof_float, 4096)
-		sum_elements_vff = dab_swig.sum_elements_vff(4096)
-		dst = gr.vector_sink_f()
+		src = blocks.vector_source_f(src_data)
+		s2v = blocks.stream_to_vector(gr.sizeof_float, 4096)
+		sum_elements_vff = dab.sum_elements_vff(4096)
+		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, sum_elements_vff, dst)
 		self.tb.run()
 		result_data = dst.data()

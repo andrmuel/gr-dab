@@ -24,8 +24,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr
-from dab import dab_swig
-import detect_null
+import dab
 import sys
 from math import pi
 

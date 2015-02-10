@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab_swig
+from gnuradio import blocks
+import dab
 
 class qa_measure_processing_rate(gr_unittest.TestCase):
 	"""
@@ -17,10 +18,10 @@ class qa_measure_processing_rate(gr_unittest.TestCase):
 		self.tb = None
 
 	def test_001_measure_processing_rate(self):
-		src = gr.null_source(gr.sizeof_gr_complex)
-		throttle = gr.throttle(gr.sizeof_gr_complex, 1000000)
-		head = gr.head(gr.sizeof_gr_complex, 200000)
-		sink = dab_swig.measure_processing_rate(gr.sizeof_gr_complex,100000)
+		src = blocks.null_source(gr.sizeof_gr_complex)
+		throttle = blocks.throttle(gr.sizeof_gr_complex, 1000000)
+		head = blocks.head(gr.sizeof_gr_complex, 200000)
+		sink = dab.measure_processing_rate(gr.sizeof_gr_complex,100000)
 		
 		self.tb.connect(src, throttle, head, sink)
 		self.tb.run()
@@ -29,10 +30,10 @@ class qa_measure_processing_rate(gr_unittest.TestCase):
 		assert(rate > 900000 and rate < 1100000)
 	
 	def test_002_measure_processing_rate(self):
-		src = gr.null_source(gr.sizeof_char)
-		throttle = gr.throttle(gr.sizeof_char, 10000000)
-		head = gr.head(gr.sizeof_char, 1000000)
-		sink = dab_swig.measure_processing_rate(gr.sizeof_char,1000000)
+		src = blocks.null_source(gr.sizeof_char)
+		throttle = blocks.throttle(gr.sizeof_char, 10000000)
+		head = blocks.head(gr.sizeof_char, 1000000)
+		sink = dab.measure_processing_rate(gr.sizeof_char,1000000)
 		
 		self.tb.connect(src, throttle, head, sink)
 		self.tb.run()

@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-# _*_ coding: utf8 _*_
+#!/usr/bin/env python2
+# -*- coding: utf8 -*-
 
 # Andreas Müller, 2008
 # andrmuel@ee.ethz.ch
@@ -10,7 +10,7 @@
 send DAB with USRP
 """
 
-from gnuradio import gr, usrp, blks2
+from gnuradio import gr, uhd, blocks
 from gnuradio.eng_option import eng_option
 import dab
 from optparse import OptionParser
@@ -30,6 +30,8 @@ class usrp_dab_tx(gr.top_block):
 		     help="set transmit gain in dB (default is midpoint)")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
 		     help="verbose output")
+		parser.add_option('-a', '--antenna', type="string", default="TX/RX",
+		     help="select antenna")
 
         	(options, args) = parser.parse_args ()
 		if len(args)!=1:
@@ -42,19 +44,22 @@ class usrp_dab_tx(gr.top_block):
 		#       print "-> failed to enable realtime scheduling"
 
 		interp = 64
+		self.sample_rate = 128e6/interp
 		self.dab_params = dab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=options.verbose)
 
-		self.src = gr.file_source(gr.sizeof_char, self.filename)
-		self.trigsrc = gr.vector_source_b([1]+[0]*(self.dab_params.symbols_per_frame-1),True)
+		self.src = blocks.file_source(gr.sizeof_char, self.filename)
+		self.trigsrc = blocks.vector_source_b([1]+[0]*(self.dab_params.symbols_per_frame-1),True)
 		
-		self.s2v = gr.stream_to_vector(gr.sizeof_char, 384)
+		self.s2v = blocks.stream_to_vector(gr.sizeof_char, 384)
 		
 		self.mod = dab.ofdm_mod(self.dab_params, verbose=options.verbose) 
 
-		self.sink = usrp.sink_c(interp_rate = interp)
-        	self.sink.set_mux(usrp.determine_tx_mux_value(self.sink, options.tx_subdev_spec))
-        	self.subdev = usrp.selected_subdev(self.sink, options.tx_subdev_spec)
-		self.sample_rate = self.sink.dac_rate()/interp
+		#self.sink = usrp.sink_c(interp_rate = interp)
+		self.sink = uhd.usrp_sink("",uhd.io_type.COMPLEX_FLOAT32,1)
+		self.sink.set_samp_rate(self.sample_rate)
+        	#self.sink.set_mux(usrp.determine_tx_mux_value(self.sink, options.tx_subdev_spec))
+        	#self.subdev = usrp.selected_subdev(self.sink, options.tx_subdev_spec)
+		self.sink.set_antenna(options.antenna)
 		
 		print "--> using sample rate: " + str(self.sample_rate)
 
@@ -63,14 +68,14 @@ class usrp_dab_tx(gr.top_block):
 		self.connect(self.trigsrc, (self.mod,1))
 
 		# tune frequency
-		self.sink.tune(0, self.subdev, options.freq)
+		self.sink.set_center_freq(options.freq)
 
 		# set gain      
 		if options.tx_gain is None:
 			# if no gain was specified, use the mid-point in dB
-			g = self.subdev.gain_range()
-			options.tx_gain = float(g[0]+g[1])/2
-		self.subdev.set_gain(options.tx_gain)
+			g = self.sink.get_gain_range()
+			options.tx_gain = float(g.start()+g.stop())/2
+		self.sink.set_gain(options.tx_gain)
 
 
 if __name__=='__main__':

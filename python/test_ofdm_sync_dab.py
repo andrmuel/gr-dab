@@ -25,7 +25,7 @@
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
 
-from gnuradio import gr
+from gnuradio import gr, blocks
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 from ofdm_sync_dab import ofdm_sync_dab
@@ -47,19 +47,19 @@ class dab_ofdm_sync_test(gr.top_block):
 			# print "using gaussian noise as source"
 			# self.sigsrc = gr.noise_source_c(gr.GR_GAUSSIAN,10e6)
 			print "using repeating random vector as source"
-			self.sigsrc = gr.vector_source_c([10e6*(random.random() + 1j*random.random()) for i in range(0,100000)],True)
-			self.src = gr.throttle( gr.sizeof_gr_complex,2048000)
+			self.sigsrc = blocks.vector_source_c([10e6*(random.random() + 1j*random.random()) for i in range(0,100000)],True)
+			self.src = blocks.throttle( gr.sizeof_gr_complex,2048000)
 			self.connect(self.sigsrc, self.src)
 		else:
 			filename = args[0]
 			print "using samples from file " + filename
-			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
+			self.src = blocks.file_source(gr.sizeof_gr_complex, filename, False)
 
 		dp = parameters.dab_parameters(1)
 		rp = parameters.receiver_parameters(1)
 		self.sync_dab = ofdm_sync_dab(dp, rp, False)
-		self.nop0 = gr.nop(gr.sizeof_gr_complex)
-		self.nop1 = gr.nop(gr.sizeof_char)
+		self.nop0 = blocks.nop(gr.sizeof_gr_complex)
+		self.nop1 = blocks.nop(gr.sizeof_char)
 		self.connect(self.src, self.sync_dab, self.nop0)
 		self.connect((self.sync_dab,1), self.nop1)
 
