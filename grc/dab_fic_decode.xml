@@ -1,38 +1,45 @@
 <?xml version="1.0"?>
 <block>
-  <name>fic_decode</name>
+  <name>DAB: FIC decoder</name>
   <key>dab_fic_decode</key>
-  <category>dab</category>
+  <category>DAB</category>
   <import>import dab</import>
-  <make>dab.fic_decode($dab_params, $verbose, $debug)</make>
-  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
-       Sub-nodes:
-       * name
-       * key (makes the value accessible as $keyname, e.g. in the make node)
-       * type -->
+  <make>dab.fic_decode(
+          dab.parameters.dab_parameters(
+            mode=$dab_mode,
+            sample_rate=$samp_rate,
+            verbose=False
+          )
+        )
+  </make>
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>DAB Mode</name>
+    <key>dab_mode</key>
+    <value>1</value>
+    <type>int</type>
   </param>
-
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
+  <param>
+    <name>Sampling Rate</name>
+    <key>samp_rate</key>
+    <value></value>
+    <type>int</type>
+  </param>
+  <check>1 &lt;= $dab_mode &lt;= 4</check>
   <sink>
-    <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <name>dat</name>
+    <type>complex</type>
+    <vlen>1536</vlen> <!-- TODO adapt to mode -->
   </sink>
-
-  <!-- Make one 'source' node per output. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>sync</name>
+    <type>byte</type>
+  </sink>
   <source>
-    <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <name>FIB</name>
+    <type>byte</type>
+    <vlen>32</vlen>
   </source>
+  <doc>
+    Decodes FIBs in FICs of DAB signal.
+  </doc>
 </block>

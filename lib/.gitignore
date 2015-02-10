@@ -7,6 +7,8 @@
 /*.la
 /*.lo
 /*.pyc
+/*.o
 /howto.cc
 /howto.py
 /test_all
+/.unittests
