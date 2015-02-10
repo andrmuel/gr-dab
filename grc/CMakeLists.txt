@@ -33,6 +33,7 @@ install(FILES
     dab_modulo_ff.xml
     dab_measure_processing_rate.xml
     dab_fic_decode.xml
+    dab_ofdm_demod.xml
     dab_select_vectors.xml
     dab_repartition_vectors.xml
     dab_unpuncture_vff.xml
