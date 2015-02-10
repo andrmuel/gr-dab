@@ -107,6 +107,24 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		# build GUI
 		self.connect(self.demod.deinterleave, self.v2s, self.scope)
 		vbox.Add(self.scope.win, 10, wx.EXPAND)
+
+		self.wxgui_fftsink2_0 = fftsink2.fft_sink_c(
+			self.panel,
+			baseband_freq=0,
+			y_per_div=10,
+			y_divs=10,
+			ref_level=0,
+			ref_scale=2.0,
+			sample_rate=self.sample_rate,
+			fft_size=1024,
+			fft_rate=15,
+			average=False,
+			avg_alpha=None,
+			title="FFT Plot",
+			peak_hold=False,
+		)
+		vbox.Add(self.wxgui_fftsink2_0.win)
+		self.connect((self.src, 0), (self.wxgui_fftsink2_0, 0))
 		
 		# retune USRP to correct FFE?
 		self.correct_ffe_usrp = options.correct_ffe_usrp
@@ -128,7 +146,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 
 
 	def set_freq(self, freq):
-		if self.src.set_center_freq(freq): #src.tune(0, self.subdev, freq):
+		if self.src.set_center_freq(freq):
 			if self.verbose:
 				print "--> retuned to " + str(freq) + " Hz"
 			return True
