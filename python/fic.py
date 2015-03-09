@@ -49,7 +49,7 @@ class fic_decode(gr.hier_block2):
 		"""
 		gr.hier_block2.__init__(self,"fic",
 					gr.io_signature2(2, 2, gr.sizeof_float*dab_params.num_carriers*2, gr.sizeof_char), # input
-					gr.io_signature(0, 0, 0)) # output signature
+					gr.io_signature(1, 1, gr.sizeof_char*32)) # output signature
 
 		self.dp = dab_params
 		self.verbose = verbose
@@ -101,17 +101,34 @@ class fic_decode(gr.hier_block2):
 		
 		# connect all
 		self.nullsink = blocks.null_sink(gr.sizeof_char)
+                self.fibout = blocks.stream_to_vector(1,32)
 		# self.filesink = gr.file_sink(gr.sizeof_char, "debug/fic.dat")
 		self.fibsink = dab.fib_sink_vb()
 		
 		# self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.conv_prune, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), gr.vector_to_stream(1,256), gr.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), self.filesink)
-		self.connect((self,0), (self.select_fic_syms,0), (self.repartition_fic,0), self.unpuncture, self.conv_v2s, self.conv_decode, self.conv_s2v, self.conv_prune, self.energy_v2s, self.add_mod_2, self.energy_s2v, (self.cut_into_fibs,0), blocks.vector_to_stream(1,256), blocks.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST), blocks.stream_to_vector(1,32), self.fibsink)
+		self.connect((self,0),
+                             (self.select_fic_syms,0),
+                             (self.repartition_fic,0),
+                             self.unpuncture,
+                             self.conv_v2s,
+                             self.conv_decode,
+                             self.conv_s2v,
+                             self.conv_prune,
+                             self.energy_v2s,
+                             self.add_mod_2,
+                             self.energy_s2v,
+                             (self.cut_into_fibs,0),
+                             blocks.vector_to_stream(1,256),
+                             blocks.unpacked_to_packed_bb(1,gr.GR_MSB_FIRST),
+                             self.fibout,
+                             self.fibsink)
+                self.connect(self.fibout, self)
 		self.connect(self.prbs_src, (self.add_mod_2,1))
 		self.connect((self,1), (self.select_fic_syms,1), (self.repartition_fic,1), (self.cut_into_fibs,1), self.nullsink)
 
 		if self.debug:
-			self.connect(self.select_fic_syms, gr.file_sink(gr.sizeof_float*self.dp.num_carriers*2, "debug/fic_select_syms.dat"))
-			self.connect(self.repartition_fic, gr.file_sink(gr.sizeof_float*self.dp.fic_punctured_codeword_length, "debug/fic_repartitioned.dat"))
-			self.connect(self.unpuncture, gr.file_sink(gr.sizeof_float*self.dp.fic_conv_codeword_length, "debug/fic_unpunctured.dat"))
-			self.connect(self.conv_decode, gr.file_sink(gr.sizeof_char, "debug/fic_decoded.dat"))
-			self.connect(self.energy_s2v, gr.file_sink(gr.sizeof_char*self.dp.energy_dispersal_fic_vector_length, "debug/fic_energy_dispersal_undone.dat"))
+			self.connect(self.select_fic_syms, blocks.file_sink(gr.sizeof_float*self.dp.num_carriers*2, "debug/fic_select_syms.dat"))
+			self.connect(self.repartition_fic, blocks.file_sink(gr.sizeof_float*self.dp.fic_punctured_codeword_length, "debug/fic_repartitioned.dat"))
+			self.connect(self.unpuncture, blocks.file_sink(gr.sizeof_float*self.dp.fic_conv_codeword_length, "debug/fic_unpunctured.dat"))
+			self.connect(self.conv_decode, blocks.file_sink(gr.sizeof_char, "debug/fic_decoded.dat"))
+			self.connect(self.energy_s2v, blocks.file_sink(gr.sizeof_char*self.dp.energy_dispersal_fic_vector_length, "debug/fic_energy_dispersal_undone.dat"))

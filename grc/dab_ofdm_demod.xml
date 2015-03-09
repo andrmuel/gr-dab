@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<block>
+  <name>DAB: OFDM Demodulator</name>
+  <key>dab_ofdm_demod</key>
+  <category>DAB</category>
+  <import>import dab</import>
+  <make>dab.ofdm_demod(
+          dab.parameters.dab_parameters(
+            mode=$dab_mode,
+            sample_rate=$samp_rate,
+            verbose=False
+          ),
+          dab.parameters.receiver_parameters(
+            mode=$dab_mode,
+            softbits=$soft_bits.soft,
+            input_fft_filter=True,
+            autocorrect_sample_rate=True,
+            sample_rate_correction_factor=1,
+            verbose=False,
+            correct_ffe=True,
+            equalize_magnitude=True
+          )
+        )
+  </make>
+  <param>
+    <name>DAB Mode</name>
+    <key>dab_mode</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Sampling Rate</name>
+    <key>samp_rate</key>
+    <value>samp_rate</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Soft Bits</name>
+    <key>soft_bits</key>
+    <value>soft</value>
+    <type>enum</type>
+    <option>
+      <name>Soft Bits</name>
+      <key>soft</key>
+      <opt>type:complex</opt>
+      <opt>vlenfrac:1</opt>
+      <opt>soft:True</opt>
+    </option>
+    <option>
+      <name>Hard Bits</name>
+      <key>hard</key>
+      <opt>type:byte</opt>
+      <opt>vlenfrac:4</opt>
+      <opt>soft:True</opt>
+    </option>
+  </param>
+  <check>1 &lt;= $dab_mode &lt;= 4</check>
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+  <source>
+    <name>dat</name>
+    <type>$soft_bits.type</type>
+    <!-- TODO depend on DAB mode -->
+    <vlen>1536 / $soft_bits.vlenfrac</vlen>
+  </source>
+  <source>
+    <name>sync</name>
+    <type>byte</type>
+  </source>
+  <doc>
+    Demodulates a whole DAB signal.
+  </doc>
+</block>

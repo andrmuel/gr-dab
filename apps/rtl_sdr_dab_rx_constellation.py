@@ -1,5 +1,5 @@
-#!/usr/bin/env python2
-# -*- coding: utf8 -*-
+#!/usr/bin/env python
+# _*_ coding: utf8 _*_
 
 # Andreas Müller, 2008
 # andrmuel@ee.ethz.ch
@@ -10,7 +10,8 @@
 demodulate DAB signal and ouput to constellation sink
 """
 
-from gnuradio import gr, uhd, blocks
+from gnuradio import gr
+import osmosdr
 from gnuradio import eng_notation
 from gnuradio.eng_option import eng_option
 from gnuradio.wxgui import stdgui2, fftsink2, scopesink2
@@ -53,40 +54,33 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		     help="set receive gain in dB (default is midpoint)")
 		parser.add_option('-v', '--verbose', action="store_true", default=False,
 		     help="verbose output")
-		parser.add_option('-a', '--antenna', type="string", default="TX/RX",
-		     help="select antenna")
 		(options, args) = parser.parse_args()
 
 		
 		self.verbose = options.verbose
+                self.sample_rate = options.sample_rate
 
 		if len(args) == 0:
 			if self.verbose:
 				print "--> receiving from USRP"
-			self.src = uhd.usrp_source("",uhd.io_type.COMPLEX_FLOAT32,1)
-			#self.src.set_mux(usrp.determine_rx_mux_value(self.src, options.rx_subdev_spec))
-			#self.subdev = usrp.selected_subdev(self.src, options.rx_subdev_spec)
-			#if self.verbose:
-			#	print "--> using RX dboard " + self.subdev.side_and_name()
+                        self.src = osmosdr.source_c( args="nchan=" + str(1) + " " + ""  )
+                        self.src.set_sample_rate(self.sample_rate)
 			# tune frequency
 			self.frequency = options.freq
 			self.set_freq(options.freq)
 
 			# set gain      
-			if options.rx_gain is None:
-				# if no gain was specified, use the mid-point in dB
-				g = self.src.get_gain_range()
-				options.rx_gain = float(g.start()+g.stop())/2
-			self.src.set_gain(options.rx_gain)
-			self.sample_rate = 2e6#self.src.adc_rate()/options.decim
-			self.src.set_samp_rate(self.sample_rate)
-			self.src.set_antenna(options.antenna)
+                        if options.rx_gain is None:
+                                # if no gain was specified, use AGC
+                                self.src.set_gain_mode(1, 0)
+                        else:
+                                self.src.set_gain(options.rx_gain, 0)
+
 		else:
 			if self.verbose:
 				print "--> receiving from file: " + args[0]
 			self.filename = args[0]
 			self.src = blocks.file_source(gr.sizeof_gr_complex, self.filename, False)
-			self.sample_rate = options.sample_rate
 		
 		
 		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
@@ -108,6 +102,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		self.connect(self.demod.deinterleave, self.v2s, self.scope)
 		vbox.Add(self.scope.win, 10, wx.EXPAND)
 
+                # FFT Sink
 		self.wxgui_fftsink2_0 = fftsink2.fft_sink_c(
 			self.panel,
 			baseband_freq=0,
@@ -146,13 +141,14 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 
 
 	def set_freq(self, freq):
-		if self.src.set_center_freq(freq):
+		if self.src.set_center_freq(freq, 0):
 			if self.verbose:
 				print "--> retuned to " + str(freq) + " Hz"
 			return True
 		else:
 			print "-> error - cannot tune to " + str(freq) + " Hz"
 			return False
+
 
 if __name__ == '__main__':
 	app = stdgui2.stdapp(usrp_dab_gui_rx, "usrp_dab_gui_rx", nstatus=1)

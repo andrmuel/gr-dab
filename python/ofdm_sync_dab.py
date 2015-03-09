@@ -24,6 +24,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr
+from gnuradio import blocks, analog
 import dab
 import sys
 from math import pi
@@ -75,17 +76,17 @@ class ofdm_sync_dab(gr.hier_block2):
 		# Magnus Sandell, Per Ola Börjesson, see
 		# http://www.sm.luth.se/csee/sp/research/report/bsb96r.html
 
-		self.ffs_delay = gr.delay(gr.sizeof_gr_complex, dp.fft_length)
-		self.ffs_conj = gr.conjugate_cc()
-		self.ffs_mult = gr.multiply_cc()
+		self.ffs_delay = blocks.delay(gr.sizeof_gr_complex, dp.fft_length)
+		self.ffs_conj = blocks.conjugate_cc()
+		self.ffs_mult = blocks.multiply_cc()
 		self.ffs_moving_sum = dab_swig.moving_sum_cc(dp.cp_length)
-		self.ffs_arg = gr.complex_to_arg()
+		self.ffs_arg = blocks.complex_to_arg()
 		self.ffs_sample_and_average = dab_swig.ofdm_ffs_sample(dp.symbol_length, dp.fft_length, rp.symbols_for_ffs_estimation, rp.ffs_alpha, dp.sample_rate)
 		if rp.correct_ffe:
-			self.ffs_delay_input_for_correction = gr.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
-			self.ffs_delay_frame_start = gr.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
-			self.ffs_nco = gr.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
-			self.ffs_mixer = gr.multiply_cc()
+			self.ffs_delay_input_for_correction = blocks.delay(gr.sizeof_gr_complex, dp.symbol_length*rp.symbols_for_ffs_estimation) # by delaying the input, we can use the ff offset estimation from the first symbol to correct the first symbol itself
+			self.ffs_delay_frame_start = blocks.delay(gr.sizeof_char, dp.symbol_length*rp.symbols_for_ffs_estimation) # sample the value at the end of the symbol ..
+			self.ffs_nco = analog.frequency_modulator_fc(1) # ffs_sample_and_hold directly outputs phase error per sample
+			self.ffs_mixer = blocks.multiply_cc()
 
 		# calculate fine frequency error
 		self.connect(self.input, self.ffs_conj, self.ffs_mult)
@@ -102,14 +103,14 @@ class ofdm_sync_dab(gr.hier_block2):
 			self.connect(self.ns_detect, self.ffs_delay_frame_start, (self, 1))
 		else: 
 			# just patch the signal through
-			self.connect(self.ffs_sample_and_average, gr.null_sink(gr.sizeof_float))
+			self.connect(self.ffs_sample_and_average, blocks.null_sink(gr.sizeof_float))
 			self.connect(self.input, (self,0))
 			# frame start still needed ..
 			self.connect(self.ns_detect, (self,1))
 
 		if debug:
-			self.connect(self.ffs_sample_and_average, gr.multiply_const_ff(1./(dp.T*2*pi)), gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_fine_freq_err_f.dat"))
-			self.connect(self.ffs_mixer, gr.file_sink(gr.sizeof_gr_complex, "debug/ofdm_sync_dab_fine_freq_corrected_c.dat"))
+			self.connect(self.ffs_sample_and_average, blocks.multiply_const_ff(1./(dp.T*2*pi)), gr.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_fine_freq_err_f.dat"))
+			self.connect(self.ffs_mixer, blocks.file_sink(gr.sizeof_gr_complex, "debug/ofdm_sync_dab_fine_freq_corrected_c.dat"))
 	
 	def clear_state(self):
 		self.ffs_moving_sum.reset()

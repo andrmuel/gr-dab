@@ -136,7 +136,7 @@ ofdm_ffe_all_in_one_impl::work(int noutput_items,
           d_estimated_error = d_alpha*d_ffs_error_sum + (1-d_alpha)*d_estimated_error; /* slow adjustment */
 
         d_estimated_error_per_sample = d_estimated_error / (float)d_fft_length;
-        fprintf(stderr, "ofdm_ffe_all_in_one: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error_per_sample*d_sample_rate/(2*M_PI));
+//        fprintf(stderr, "ofdm_ffe_all_in_one: d_estimated_error: %f (%3.2f Hz)\n", d_estimated_error, d_estimated_error_per_sample*d_sample_rate/(2*M_PI));
       }
 
       d_cur_symbol++;
