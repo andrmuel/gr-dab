@@ -10,7 +10,7 @@
 demodulate DAB signal and use it for calibration purposes
 """
 
-from gnuradio import gr
+from gnuradio import gr, blocks
 import osmosdr
 from gnuradio.eng_option import eng_option
 import dab
@@ -57,7 +57,7 @@ class rtl_sdr_dab_cal(gr.top_block):
 		if len(args) == 0:
 			if self.verbose:
 				print "--> receiving from USRP"
-			self.src = osmosdr.source_c( args="nchan=" + str(1) + " " + "offset_tune=1" )
+			self.src = osmosdr.source()
 			self.src.set_sample_rate(self.sample_rate)
 			self.src.set_freq_corr(0)
 			# tune frequency

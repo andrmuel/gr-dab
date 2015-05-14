@@ -10,7 +10,7 @@
 demodulate DAB signal and ouput to constellation sink
 """
 
-from gnuradio import gr
+from gnuradio import gr, blocks
 import osmosdr
 from gnuradio import eng_notation
 from gnuradio.eng_option import eng_option
@@ -63,8 +63,8 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		if len(args) == 0:
 			if self.verbose:
 				print "--> receiving from USRP"
-                        self.src = osmosdr.source_c( args="nchan=" + str(1) + " " + ""  )
-                        self.src.set_sample_rate(self.sample_rate)
+			self.src = osmosdr.source()
+			self.src.set_sample_rate(self.sample_rate)
 			# tune frequency
 			self.frequency = options.freq
 			self.set_freq(options.freq)

@@ -60,7 +60,7 @@ class rtl_sdr_dab_rx(gr.top_block):
 
 		self.sample_rate = sample_rate = options.sample_rate
 
-                self.src = osmosdr.source_c( args="nchan=" + str(1) + " " + ""  )
+		self.src = osmosdr.source()
 		self.src.set_sample_rate(sample_rate)
 		#self.src.set_center_freq(209.936e6, 0)
 		self.src.set_freq_corr(0, 0)
