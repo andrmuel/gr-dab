@@ -60,7 +60,7 @@ if(NOT dab_sources)
 endif(NOT dab_sources)
 
 add_library(gnuradio-dab SHARED ${dab_sources})
-target_link_libraries(gnuradio-dab ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES})
+target_link_libraries(gnuradio-dab ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${GNURADIO_FILTER_LIBRARIES})
 set_target_properties(gnuradio-dab PROPERTIES DEFINE_SYMBOL "gnuradio_dab_EXPORTS")
 
 if(APPLE)
@@ -92,9 +92,11 @@ list(APPEND test_dab_sources
 
 add_executable(test-dab ${test_dab_sources})
 
+
 target_link_libraries(
   test-dab
   ${GNURADIO_RUNTIME_LIBRARIES}
+  ${GNURADIO_FILTER_LIBRARIES}
   ${Boost_LIBRARIES}
   ${CPPUNIT_LIBRARIES}
   gnuradio-dab

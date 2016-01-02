@@ -22,7 +22,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr, blocks
-import dab
+from dab import dab_swig
 
 class detect_null(gr.hier_block2):
 	"""
@@ -52,7 +52,7 @@ class detect_null(gr.hier_block2):
 		# this isn't better:
 		#self.ns_filter = gr.iir_filter_ffd([1]+[0]*(length-1)+[-1],[0,1])
 		# this does the same again, but is actually faster (outsourced to an independent block ..):
-		self.ns_moving_sum = dab.moving_sum_ff(length)
+		self.ns_moving_sum = dab_swig.moving_sum_ff(length)
 		self.ns_invert = blocks.multiply_const_ff(-1)
 
 		# peak detector on the inverted, summed up signal -> we get the nulls (i.e. the position of the start of a frame)
