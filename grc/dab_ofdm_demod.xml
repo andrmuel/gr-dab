@@ -13,12 +13,12 @@
           dab.parameters.receiver_parameters(
             mode=$dab_mode,
             softbits=$soft_bits.soft,
-            input_fft_filter=True,
-            autocorrect_sample_rate=True,
+            input_fft_filter=$input_fft,
+            autocorrect_sample_rate=$autocorr_sr,
             sample_rate_correction_factor=1,
             verbose=False,
-            correct_ffe=True,
-            equalize_magnitude=True
+            correct_ffe=$correct_ffe,
+            equalize_magnitude=$eq_mag
           )
         )
   </make>
@@ -26,7 +26,27 @@
     <name>DAB Mode</name>
     <key>dab_mode</key>
     <value>1</value>
-    <type>int</type>
+    <type>enum</type>
+    <option>
+      <name>1</name>
+      <key>1</key>
+      <opt>vlensize:1536</opt>
+    </option>
+    <option>
+      <name>2</name>
+      <key>2</key>
+      <opt>vlensize:384</opt>
+    </option>
+    <option>
+      <name>3</name>
+      <key>3</key>
+      <opt>vlensize:192</opt>
+    </option>
+    <option>
+      <name>4</name>
+      <key>4</key>
+      <opt>vlensize:768</opt>
+    </option>
   </param>
   <param>
     <name>Sampling Rate</name>
@@ -34,6 +54,67 @@
     <value>samp_rate</value>
     <type>int</type>
   </param>
+
+  <param>
+    <name>Input FFT Filter</name>
+    <key>input_fft</key>
+    <value>True</value>
+    <type>enum</type>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Auto-corr. samplerate</name>
+    <key>autocorr_sr</key>
+    <value>True</value>
+    <type>enum</type>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Fine-Freq. corr.</name>
+    <key>correct_ffe</key>
+    <value>True</value>
+    <type>enum</type>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+  </param>
+
+  <param>
+    <name>Equalize Magnitude</name>
+    <key>eq_mag</key>
+    <value>True</value>
+    <type>enum</type>
+    <option>
+      <name>Disable</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>Enable</name>
+      <key>True</key>
+    </option>
+  </param>
+
   <param>
     <name>Soft Bits</name>
     <key>soft_bits</key>
@@ -62,8 +143,7 @@
   <source>
     <name>dat</name>
     <type>$soft_bits.type</type>
-    <!-- TODO depend on DAB mode -->
-    <vlen>1536 / $soft_bits.vlenfrac</vlen>
+    <vlen>$dab_mode.vlensize / $soft_bits.vlenfrac</vlen>
   </source>
   <source>
     <name>sync</name>
@@ -71,5 +151,10 @@
   </source>
   <doc>
     Demodulates a whole DAB signal.
+    Output vector size depends on selected mode:
+    Mode I:   1536 complex samples or 384 bytes
+    Mode II:  384 complex samples or 96 bytes
+    Mode III: 192 complex samples or 48 bytes
+    Mode IV:  768 complex samples or 192 bytes
   </doc>
 </block>
