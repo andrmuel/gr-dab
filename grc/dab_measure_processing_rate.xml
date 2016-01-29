@@ -1,38 +1,44 @@
 <?xml version="1.0"?>
 <block>
-  <name>measure_processing_rate</name>
-  <key>dab_measure_processing_rate</key>
-  <category>dab</category>
+  <name>DAB Measure Proc. Rate</name>
+  <key>measure_processing_rate_x</key>
+  <category>DAB</category>
   <import>import dab</import>
-  <make>dab.measure_processing_rate($itemsize, $samples_to_count)</make>
-  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
-       Sub-nodes:
-       * name
-       * key (makes the value accessible as $keyname, e.g. in the make node)
-       * type -->
+  <make>dab.measure_processing_rate($in_type.in_len, $samples_to_count)</make>
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>Type</name>
+    <key>in_type</key>
+    <value>complex</value>
+    <type>enum</type>
+    <option>
+      <name>Complex</name>
+      <key>complex</key>
+      <opt>in_len:8</opt>
+    </option>
+    <option>
+      <name>Float</name>
+      <key>float</key>
+      <opt>in_len:4</opt>
+    </option>
+    <option>
+      <name>Short</name>
+      <key>short</key>
+      <opt>in_len:2</opt>
+    </option>
+    <option>
+      <name>Byte</name>
+      <key>byte</key>
+      <opt>in_len:1</opt>
+    </option>
   </param>
-
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
+  <param>
+    <name>Samp. to count</name>
+    <key>samples_to_count</key>
+    <value>2048000</value>
+    <type>int</type>
+  </param>
   <sink>
     <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>$in_type</type>
   </sink>
-
-  <!-- Make one 'source' node per output. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
-  <source>
-    <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
-  </source>
 </block>
