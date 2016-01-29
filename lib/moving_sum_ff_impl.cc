@@ -70,6 +70,7 @@ moving_sum_ff_impl::moving_sum_ff_impl(int length)
 {
   assert(length>=0);
   set_history(length+1);
+  set_output_multiple(length+1);
 }
 
 /*
