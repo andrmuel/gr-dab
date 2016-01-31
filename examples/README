@@ -1,4 +1,4 @@
-It is considered good practice to add examples in here to demonstrate the
-functionality of your OOT module. Python scripts, GRC flow graphs or other
-code can go here.
 
+simple_top.grc - all-in-one receiving block usage sample.
+dab_mer.grc - Hierarchical block, which counts MER.
+dab_measurement_graph_rtlsdr.grc - Top block to make measurements of DAB signal. Reception by RTL-SDR Stick.

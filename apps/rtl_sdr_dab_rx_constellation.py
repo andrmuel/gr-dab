@@ -46,6 +46,8 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		     help="select USRP Rx side A or B [default=A]")
 		parser.add_option("-f", "--freq", type="eng_float", default=227.36e6,
 		     help="set frequency to FREQ [default=%default]")
+		parser.add_option("-p", "--ppm", type="int", default=0,
+		     help="set frequency correction in ppm [default=%default]")
 		parser.add_option("-r", "--sample-rate", type="int", default=2000000,
 		     help="set sample rate to SAMPLE_RATE [default=%default]")
 		parser.add_option("-d", "--decim", type="intx", default=32,
@@ -62,9 +64,10 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 
 		if len(args) == 0:
 			if self.verbose:
-				print "--> receiving from USRP"
+				print "--> receiving from RTL-SDR"
 			self.src = osmosdr.source()
 			self.src.set_sample_rate(self.sample_rate)
+			self.src.set_freq_corr(options.ppm)
 			# tune frequency
 			self.frequency = options.freq
 			self.set_freq(options.freq)

@@ -55,7 +55,7 @@ ofdm_sampler_impl::ofdm_sampler_impl(unsigned int fft_length, unsigned int cp_le
 void 
 ofdm_sampler_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
 {
-  int in_req  = noutput_items * (d_fft_length+d_cp_length-d_gap);
+  int in_req  = d_fft_length+d_cp_length-d_gap;
   // int in_req  = noutput_items * d_fft_length;
   unsigned ninputs = ninput_items_required.size ();
   for (unsigned i = 0; i < ninputs; i++)

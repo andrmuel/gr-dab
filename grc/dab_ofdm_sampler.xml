@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <block>
-  <name>ofdm_sampler</name>
+  <name>OFDM Sampler</name>
   <key>dab_ofdm_sampler</key>
-  <category>dab</category>
+  <category>DAB</category>
   <import>import dab</import>
   <make>dab.ofdm_sampler($fft_length, $cp_length, $symbols_per_frame, $gap)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
@@ -11,19 +11,33 @@
        * key (makes the value accessible as $keyname, e.g. in the make node)
        * type -->
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>fft_length</name>
+    <key>fft_length</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>cp_length</name>
+    <key>cp_length</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>symbols_per_frame</name>
+    <key>symbols_per_frame</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>gap</name>
+    <key>gap</key>
+    <type>int</type>
   </param>
 
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
   <sink>
     <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
+  </sink>
+  <sink>
+    <name>sync</name>
+    <type>byte</type>
   </sink>
 
   <!-- Make one 'source' node per output. Sub-nodes:
@@ -33,6 +47,11 @@
        * optional (set to 1 for optional inputs) -->
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
+    <vlen>$fft_length</vlen>
+  </source>
+  <source>
+    <name>sync</name>
+    <type>byte</type>
   </source>
 </block>

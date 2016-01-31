@@ -39,6 +39,8 @@ class rtl_sdr_dab_rx(gr.top_block):
                           help="Estimate sample rate offset and resample (dynamic fractional interpolation)")
 		parser.add_option("-f", "--freq", type="eng_float", default=227.36e6,
 		     help="set frequency to FREQ [default=%default]")
+		parser.add_option("-p", "--ppm", type="int", default=0,
+		     help="set frequency correction in ppm [default=%default]")
 		parser.add_option("-r", "--sample-rate", type="int", default=2000000,
 		     help="set sample rate to SAMPLE_RATE [default=%default]")
 		parser.add_option("-g", "--rx-gain", type="eng_float", default=None,
@@ -63,7 +65,7 @@ class rtl_sdr_dab_rx(gr.top_block):
 		self.src = osmosdr.source()
 		self.src.set_sample_rate(sample_rate)
 		#self.src.set_center_freq(209.936e6, 0)
-		self.src.set_freq_corr(0, 0)
+		self.src.set_freq_corr(options.ppm)
 		self.src.set_gain_mode(1, 0)
 		self.src.set_gain(0, 0)
 

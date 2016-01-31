@@ -67,6 +67,7 @@ dab_moving_sum_cc::dab_moving_sum_cc (int length)
 {
   assert(length>=0);
   set_history(length+1);
+  set_output_multiple(length+1);
 }
 
 /*
