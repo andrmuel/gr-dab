@@ -166,6 +166,7 @@ class dab_parameters:
 
 	# transport mechanism parameters
 	__num_fic_syms__ = [3,3,8,3]  # number of OFDM symbols per frame belonging to the FIC
+	__num_msc_syms__ = [72, 72, 144, 72] # number of OFDM symbols per frame belonging to the MSC
 
 	# puncturing
 	puncturing_vectors = [ # table 29, page 131
@@ -340,6 +341,7 @@ class dab_parameters:
 
 		# block partitioning parameters (14.4)
 		self.num_fic_syms = self.__num_fic_syms__[mode-1]
+		self.num_msc_syms = self.__num_msc_syms__[mode-1]
 
 		# convolutional coding (11)
 		self.fic_conv_codeword_length = self.__fic_conv_codeword_length__[mode-1] # length after puncturing
