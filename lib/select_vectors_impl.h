@@ -26,7 +26,21 @@
 
 namespace gr {
   namespace dab {
-
+/*! \brief reorder vectors to new vector size in order to organize
+ *
+ * input1: vector stream with vector length vlen_in
+ * input2: trigger stream
+ *
+ * output1: vector streasm with vector length vlen_out
+ * output2: trigger stream
+ *
+ * @param itemsize sizeof input and outputstream of port 0
+ * @param vlen_in vector length of inputstream
+ * @param vlen_out vector length of outputstream (repartitioned)
+ * @param multiply number of input items which form one logical unit which will be divided afterwards
+ * @param divide number of output items in which the logical unit is divided to
+ *
+ */
 class select_vectors_impl : public select_vectors
 {
   private:
