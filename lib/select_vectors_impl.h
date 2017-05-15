@@ -26,19 +26,20 @@
 
 namespace gr {
   namespace dab {
-/*! \brief reorder vectors to new vector size in order to organize
+/*! \brief select a row of vectors
  *
- * input1: vector stream with vector length vlen_in
- * input2: trigger stream
+ * input1: vector of size length*itemsize
+ * input2: char stream with triggers for start of transmission frame
  *
- * output1: vector streasm with vector length vlen_out
- * output2: trigger stream
+ * output1: vector of size length*itemsize
+ * output2: same as input2
+ *
+ * selects a row of vectors of the transmission frame; start of a transmission frame is triggerd by input2
  *
  * @param itemsize sizeof input and outputstream of port 0
- * @param vlen_in vector length of inputstream
- * @param vlen_out vector length of outputstream (repartitioned)
- * @param multiply number of input items which form one logical unit which will be divided afterwards
- * @param divide number of output items in which the logical unit is divided to
+ * @param length vector length
+ * @param num_select number of vectors to select
+ * @param num_skip number of vectors to skip before selection of num_select vectors
  *
  */
 class select_vectors_impl : public select_vectors
