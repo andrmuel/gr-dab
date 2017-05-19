@@ -82,7 +82,7 @@ namespace gr {
             uint8_t cn, oe, pd, extension;
             switch (type){
                 case FIB_FIG_TYPE_MCI:
-                    printf("    FIG type 0: ");
+                    printf("\tFIG type 0: ");
                     extension = (uint8_t)(data[1] & 0x1f);
                     cn = (uint8_t)(data[1] & 0x80);
                     if(cn == 1) printf("[WARNING, INFO FOR FUTURE CONFIGURATION]: ");
@@ -113,7 +113,7 @@ namespace gr {
                             printf("subchannel orga: ");
                             do{
                                 uint8_t subchID = (uint8_t)((data[2+subch_counter]&0xfc)>>2);
-                                printf("subchID = %d ", subchID);
+                                printf("\n\t\t\t\tsubchID = %d ", subchID);
                                 uint16_t start_adress = (uint16_t)((data[2+subch_counter]&0x03)<<8) | (uint8_t)(data[3+subch_counter]);
                                 printf(", start adress = %d", start_adress);
                                 uint8_t sl_form = (uint8_t)(data[4]&0x80);
@@ -121,14 +121,14 @@ namespace gr {
                                     uint8_t table_switch = (uint8_t)(data[4+subch_counter]&0x40);
                                     if(table_switch != 0) printf(" [WARNING: OTHER TABLE USED] ");
                                     uint8_t table_index = (uint8_t)(data[4+subch_counter]&0x3f);
-                                    printf(", index %d | ", table_index);
+                                    printf(", index %d", table_index);
                                     subch_counter += 3;
                                 }
                                 else{
                                     uint8_t option = (uint8_t)(data[4+subch_counter]&0x70);
                                     uint8_t protect_level = (uint8_t)((data[4+subch_counter]&0x0c)>>2);
                                     uint16_t subch_size = (uint16_t)((data[4+subch_counter]&0x03)<<8) | (uint8_t)(data[5+subch_counter]);
-                                    printf(", option %d, protect level %d, subch size %d | ", option, protect_level, subch_size);
+                                    printf(", option %d, protect level %d, subch size %d", option, protect_level, subch_size);
                                     subch_counter += 4;
                                 }
                             }while(1 + subch_counter < length);
@@ -140,27 +140,26 @@ namespace gr {
                             printf("service orga: ");
                             do { //iterate over services
                                 uint16_t service_reference = (uint16_t)(data[service_counter+1]&0x0f)<<8 | (uint8_t)data[service_counter+2];
-                                printf("reference %d ", service_reference);
+                                printf("\n\t\treference %d ", service_reference);
                                 uint8_t local_flag = (uint8_t)((data[service_counter+3] & 0x80)>>7);
                                 if (local_flag == 1) printf(", [LOCAL FLAG SET] ");
                                 uint8_t ca = (uint8_t)((data[service_counter+3] & 0x70)>>4);
                                 if (ca != 0) printf(", [CONDITIONAL ACCESS USED] ");
                                 uint8_t num_service_comps = (uint8_t)(data[service_counter+3] & 0x0f);
-                                printf(" (%d components): ", num_service_comps);
+                                printf(" (%d components):", num_service_comps);
                                 for (int i = 0; i < num_service_comps; i++) { //iterate over service components
                                     uint8_t TMID = (uint8_t)((data[service_counter+4 + i * 2] & 0xc0)>>6);
                                     uint8_t comp_type = (uint8_t)(data[service_counter+4 + i * 2] & 0x3f);
                                     uint8_t subchID = (uint8_t)((data[service_counter+5 + i * 2] & 0xfc)>>2);
                                     uint8_t ps = (uint8_t)((data[service_counter+5 + i * 2 + 1] & 0x02)>>1);
                                     if (TMID == 0)
-                                        printf("(audio stream, type %d, subchID %d, primary %d)", comp_type, subchID, ps);
+                                        printf("\n\t\t\t\t(audio stream, type %d, subchID %d, primary %d)", comp_type, subchID, ps);
                                     else if (TMID == 1)
-                                        printf("(data stream, type %d, subchID %d, primary %d)", comp_type, subchID, ps);
+                                        printf("\n\t\t\t\t(data stream, type %d, subchID %d, primary %d)", comp_type, subchID, ps);
                                     else if (TMID == 2)
-                                        printf("(FIDC, type %d, subchID %d, primary %d)", comp_type, subchID, ps);
-                                    else printf("(data packed)");
+                                        printf("\n\t\t\t\t(FIDC, type %d, subchID %d, primary %d)", comp_type, subchID, ps);
+                                    else printf("\n\t\t\t\t[packed data]");
                                 }
-                                printf(" | ");
                                 service_counter += 3 + 2*num_service_comps;
                             }while(service_counter < length);
                             printf("\n");
@@ -225,7 +224,7 @@ namespace gr {
                     break;
                 case FIB_FIG_TYPE_LABEL1:
                 case FIB_FIG_TYPE_LABEL2:
-                    printf("    FIG type 2: ");
+                    printf("\tFIG type 2: ");
                     char label[16];
                     extension = (uint8_t)(data[1] & 0x07);
                     switch (extension){
@@ -253,7 +252,7 @@ namespace gr {
                     }
                     break;
                 case FIB_FIG_TYPE_FIDC:
-                    printf("    FIG type 5: ");
+                    printf("\tFIG type 5: ");
                     extension = (uint8_t)(data[1] & 0x07);
                     switch (extension) {
                         case FIB_FIDC_EXTENSION_PAGING:
@@ -270,10 +269,10 @@ namespace gr {
                     }
                     break;
                 case FIB_FIG_TYPE_CA:
-                    printf("    FIB type CA (conditional access) not supported yet\n");
+                    printf("\tFIB type CA (conditional access) not supported yet\n");
                     break;
                 default:
-                    printf("unsupported FIG type\n");
+                    printf("\tunsupported FIG type\n");
                     break;
             }
             return 0;

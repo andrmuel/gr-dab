@@ -1,0 +1,1693 @@
+/usr/bin/python2.7 /home/luca/pyCharm/pycharm-community-2016.3/helpers/pycharm/utrunner.py /home/luca/Documents/CEL/DAB/gr-dab/python/qa_fib_sink_vb.py::qa_fib_sink_vb::test_001_t true
+Testing started at 22:54 ...
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1036
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1040
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1044
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1048
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1052
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1056
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1060
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1064
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1068
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1072
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1076
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1080
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1084
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1088
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1092
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1096
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1100
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1104
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1108
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1112
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1116
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1120
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 1124
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 872
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 876
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 880
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 884
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 888
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 892
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 896
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: unsupported extension (10) 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 900
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 904
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 908
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: unsupported extension (24) 
+FIG type 0: unsupported extension (24) 
+FIG type 0: unsupported extension (24) 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 912
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 916
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 920
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 924
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �TPEG            
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3332): SWR4 HN          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3076): SWR4 MA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2052): SWR4 KA          
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 928
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2): SWRMaimarktradio 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 2308): SWR4 S           
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 932
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 0: user application info 
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIG type 0: service orga packet mode 
+FIB correct, reading FIGs..................................
+FIG type 0: service component global definition 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 936
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: prgramme type 
+FIG type 0: country LTO 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIG type 0: subchannel orga packet mode fec 
+FIB correct, reading FIGs..................................
+FIG type 2: [ensemble label]: SWR BW N         
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 934): SWR Aktuell      
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 769): SWR1 BW          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 930): SWR2             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: ensemble info: , reference 234 , CIF counter = 940
+FIG type 0: service orga: , reference 934 , includes 1 components: (audio stream, type 63, ID 1, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 0: announcment switching 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga packet mode fec 
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 931): SWR3             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga packet mode 
+FIG type 0: service orga: , reference 208 , [CONDITIONAL ACCESS USED] , includes 0 components: 
+service orga: , reference 2305 , [LOCAL FLAG SET] , [CONDITIONAL ACCESS USED] , includes 4 components: (audio stream, type 54, ID 56, primary 0)(data packed)(data packed)(data packed)
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 933): DASDING          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: subchannel orga 
+FIB correct, reading FIGs..................................
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIG type 0: announcement support 
+FIB correct, reading FIGs..................................
+FIG type 2: [programme service label] (reference 3588): SWR4 UL          
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 2308 , includes 1 components: (audio stream, type 63, ID 5, primary 0)
+service orga: , reference 2 , includes 1 components: (audio stream, type 63, ID 14, primary 0)
+service orga: , reference 2052 , includes 1 components: (audio stream, type 63, ID 9, primary 0)
+service orga: , reference 3076 , includes 1 components: (audio stream, type 63, ID 10, primary 0)
+service orga: , reference 3332 , includes 1 components: (audio stream, type 63, ID 8, primary 1)
+FIB correct, reading FIGs..................................
+FIG type 2: [data service label]: �EPG             
+FIG type 0: service component global definition 
+FIB correct, reading FIGs..................................
+FIG type 0: service orga: , reference 3588 , includes 1 components: (audio stream, type 63, ID 12, primary 1)
+service orga: , reference 933 , includes 1 components: (audio stream, type 63, ID 13, primary 1)
+service orga: , reference 931 , includes 1 components: (audio stream, type 63, ID 4, primary 1)
+service orga: , reference 930 , includes 1 components: (audio stream, type 63, ID 3, primary 1)
+service orga: , reference 769 , includes 1 components: (audio stream, type 63, ID 2, primary 1)
+
+Process finished with exit code 0
+

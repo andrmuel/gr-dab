@@ -37,8 +37,8 @@ namespace gr {
  * @param itemsize sizeof input and outputstream of port 0
  * @param vlen_in vector length of inputstream
  * @param vlen_out vector length of outputstream (repartitioned)
- * @param multiply number of input items which form one logical unit which will be divided afterwards
- * @param divide number of output items in which the logical unit is divided to
+ * @param multiply number of input items which form one logical unit
+ * @param divide number of input elements of size vlen_out which are passed through
  *
  */
 

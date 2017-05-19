@@ -26,6 +26,10 @@
 
 namespace gr {
   namespace dab {
+/*! \brief sink for DAB FIBs, interprets MSC and SI
+ *
+ *
+ */
 
 class fib_sink_vb_impl : public fib_sink_vb
 {
