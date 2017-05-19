@@ -33,7 +33,9 @@ class qa_fib_sink_vb (gr_unittest.TestCase):
 
 #manual check of print outs with reference data of debug file (SWR radio station)
     def test_001_t (self):
-        src = blocks.file_source_make(gr.sizeof_char, "debug/fic_with_crc16_packed.dat")
+        data01 = (0x05, 0x00, 0x10, 0xea, 0x04, 0x24, 0x06, 0x02, 0xd3, 0xa6, 0x01, 0x3f, 0x06, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4c, 0x89)
+        #src = blocks.file_source_make(gr.sizeof_char, "debug/fic_with_crc16_packed.dat")
+        src = blocks.vector_source_b(data01)
         fibout = blocks.stream_to_vector(1, 32)
         fibsink = dab.fib_sink_vb()
         self.tb.connect(src, fibout, fibsink)
