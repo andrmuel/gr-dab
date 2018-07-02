@@ -9,14 +9,19 @@
     <key>interleaving_sequence</key>
     <type>raw</type>
   </param>
+  <param>
+    <name>Size</name>
+    <key>size</key>
+    <type>int</type>
+  </param>
   <sink>
     <name>in</name>
     <type>complex</type>
-    <vlen>$interleaving_sequence.size()</vlen>
+    <vlen>$size</vlen>
   </sink>
   <source>
     <name>out</name>
     <type>complex</type>
-    <vlen>$interleaving_sequence.size()</vlen>
+    <vlen>$size</vlen>
   </source>
 </block>

@@ -4,17 +4,67 @@
   <key>dab_repartition_vectors</key>
   <category>dab</category>
   <import>import dab</import>
-  <make>dab.repartition_vectors($itemsize, $vlen_in, $vlen_out, $multiply, $divide)</make>
+  <make>dab.repartition_vectors($type.size, $vlen_in, $vlen_out, $multiply, $divide)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name
        * key (makes the value accessible as $keyname, e.g. in the make node)
        * type -->
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+      <name>IO Type</name>
+      <key>type</key>
+      <type>enum</type>
+      <option>
+          <name>Complex</name>
+          <key>complex</key>
+          <opt>size:gr.sizeof_gr_complex</opt>
+      </option>
+      <option>
+          <name>Float</name>
+          <key>float</key>
+          <opt>size:gr.sizeof_float</opt>
+      </option>
+      <option>
+          <name>Int</name>
+          <key>int</key>
+          <opt>size:gr.sizeof_int</opt>
+      </option>
+      <option>
+          <name>Short</name>
+          <key>short</key>
+          <opt>size:gr.sizeof_short</opt>
+      </option>
+      <option>
+          <name>Byte</name>
+          <key>byte</key>
+          <opt>size:gr.sizeof_char</opt>
+      </option>
   </param>
+
+  <param>
+    <name>Length in</name>
+    <key>vlen_in</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Length out</name>
+    <key>vlen_out</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Multiply</name>
+    <key>multiply</key>
+    <type>int</type>
+  </param>
+
+  <param>
+    <name>Divide</name>
+    <key>divide</key>
+    <type>int</type>
+  </param>
+
 
   <!-- Make one 'sink' node per input. Sub-nodes:
        * name (an identifier for the GUI)
@@ -23,7 +73,12 @@
        * optional (set to 1 for optional inputs) -->
   <sink>
     <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>$type</type>
+    <vlen>$vlen_in</vlen>
+  </sink>
+  <sink>
+    <name>trigger_in</name>
+    <type>byte</type>
   </sink>
 
   <!-- Make one 'source' node per output. Sub-nodes:
@@ -33,6 +88,11 @@
        * optional (set to 1 for optional inputs) -->
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>$type</type>
+    <vlen>$vlen_out</vlen>
+  </source>
+  <source>
+    <name>trigger_out</name>
+    <type>byte</type>
   </source>
 </block>
