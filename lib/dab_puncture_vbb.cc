@@ -36,47 +36,48 @@
  * Create a new instance of dab_puncture_vbb and return
  * a boost shared_ptr.  This is effectively the public constructor.
  */
-dab_puncture_vbb_sptr 
-dab_make_puncture_vbb (const std::vector<unsigned char> &puncturing_vector)
+dab_puncture_vbb_sptr
+dab_make_puncture_vbb(const std::vector<unsigned char> &puncturing_vector)
 {
-  return gnuradio::get_initial_sptr (new dab_puncture_vbb (puncturing_vector));
+  return gnuradio::get_initial_sptr(new dab_puncture_vbb(puncturing_vector));
 }
 
-unsigned int dab_puncture_vbb::ones (const std::vector<unsigned char> &puncturing_vector) {
+unsigned int dab_puncture_vbb::ones(const std::vector<unsigned char> &puncturing_vector)
+{
   unsigned int onescount = 0;
-  for (unsigned int i=0; i<puncturing_vector.size(); i++) {
-    if (puncturing_vector[i]==1)
+  for (unsigned int i = 0; i < puncturing_vector.size(); i++) {
+    if (puncturing_vector[i] == 1)
       onescount++;
   }
   return onescount;
 }
 
-dab_puncture_vbb::dab_puncture_vbb (const std::vector<unsigned char> &puncturing_vector) : 
-  gr_sync_block ("puncture_vbb",
-             gr_make_io_signature (1, 1, sizeof(char)*puncturing_vector.size()),
-             gr_make_io_signature (1, 1, sizeof(char)*ones(puncturing_vector))),
-  d_puncturing_vector(puncturing_vector)
+dab_puncture_vbb::dab_puncture_vbb(const std::vector<unsigned char> &puncturing_vector) :
+        gr_sync_block("puncture_vbb",
+                      gr_make_io_signature(1, 1, sizeof(char) * puncturing_vector.size()),
+                      gr_make_io_signature(1, 1, sizeof(char) * ones(puncturing_vector))),
+        d_puncturing_vector(puncturing_vector)
 {
   d_vlen_in = puncturing_vector.size();
-  d_vlen_out  = ones(puncturing_vector);
+  d_vlen_out = ones(puncturing_vector);
 }
 
-int 
-dab_puncture_vbb::work (int noutput_items,
-                        gr_vector_const_void_star &input_items,
-                        gr_vector_void_star &output_items)
+int
+dab_puncture_vbb::work(int noutput_items,
+                       gr_vector_const_void_star &input_items,
+                       gr_vector_void_star &output_items)
 {
   int i;
   unsigned int j;
-  
+
   const char *in = (const char *) input_items[0];
   char *out = (char *) output_items[0];
 
-  for (i=0; i<noutput_items; i++) {
-    for (j=0;j<d_vlen_in;j++) {
-      if (d_puncturing_vector[j]==1)
+  for (i = 0; i < noutput_items; i++) {
+    for (j = 0; j < d_vlen_in; j++) {
+      if (d_puncturing_vector[j] == 1) {
         *out++ = *in++;
-      else
+      } else
         in++;
     }
   }

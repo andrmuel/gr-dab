@@ -1,0 +1,25 @@
+<block>
+  <name>Unpuncture</name>
+  <key>dab_unpuncture_ff</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.unpuncture_ff($puncturing_vector, $fillval)</make>
+  <param>
+    <name>Puncturing vector</name>
+    <key>puncturing_vector</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Fillvalue</name>
+    <key>fillval</key>
+    <type>float</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

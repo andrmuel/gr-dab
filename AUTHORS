@@ -1,5 +1,6 @@
 Andreas Mueller <andrmuel@ee.ethz.ch>
+Moritz Luca Schmid <luca.m.schmid@gmail.com>
 Directory layout and build tools are adapted from gr-howto-write-a-block by
 Eric Blossom  <eb@comsec.com>
 Part of the code has been adapted from existing GNU Radio code.
-See http://gnuradio.org/svn/gnuradio/trunk/AUTHORS for a list of authors.
+See https://github.com/gnuradio/gnuradio for a list of authors.

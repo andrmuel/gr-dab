@@ -1,38 +1,22 @@
-<?xml version="1.0"?>
 <block>
-  <name>frequency_interleaver_vcc</name>
+  <name>Frequency interleaver</name>
   <key>dab_frequency_interleaver_vcc</key>
-  <category>dab</category>
+  <category>[DAB]</category>
   <import>import dab</import>
-  <make>dab.frequency_interleaver_vcc($&interleaving_sequence)</make>
-  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
-       Sub-nodes:
-       * name
-       * key (makes the value accessible as $keyname, e.g. in the make node)
-       * type -->
+  <make>dab.frequency_interleaver_vcc($interleaving_sequence)</make>
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>Interleaving sequence</name>
+    <key>interleaving_sequence</key>
+    <type>raw</type>
   </param>
-
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
   <sink>
     <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
+    <vlen>$interleaving_sequence.size()</vlen>
   </sink>
-
-  <!-- Make one 'source' node per output. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
+    <vlen>$interleaving_sequence.size()</vlen>
   </source>
 </block>

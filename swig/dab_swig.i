@@ -32,6 +32,18 @@
 #include "dab/sum_phasor_trig_vcc.h"
 #include "dab/ofdm_move_and_insert_zero.h"
 #include "dab/insert_null_symbol.h"
+#include "dab/time_deinterleave_ff.h"
+#include "dab/crc16_bb.h"
+#include "dab/select_subch_vfvf.h"
+#include "dab/unpuncture_ff.h"
+#include "dab/prune.h"
+#include "dab/firecode_check_bb.h"
+#include "dab/puncture_bb.h"
+#include "dab/mp2_decode_bs.h"
+#include "dab/mp4_decode_bs.h"
+#include "dab/reed_solomon_decode_bb.h"
+#include "dab/valve_ff.h"
+#include "dab/peak_detector_fb.h"
 %}
 
 
@@ -83,3 +95,31 @@ GR_SWIG_BLOCK_MAGIC2(dab, sum_phasor_trig_vcc);
 GR_SWIG_BLOCK_MAGIC2(dab, ofdm_move_and_insert_zero);
 %include "dab/insert_null_symbol.h"
 GR_SWIG_BLOCK_MAGIC2(dab, insert_null_symbol);
+%include "dab/time_deinterleave_ff.h"
+GR_SWIG_BLOCK_MAGIC2(dab, time_deinterleave_ff);
+%include "dab/crc16_bb.h"
+GR_SWIG_BLOCK_MAGIC2(dab, crc16_bb);
+%include "dab/select_subch_vfvf.h"
+GR_SWIG_BLOCK_MAGIC2(dab, select_subch_vfvf);
+%include "dab/unpuncture_ff.h"
+GR_SWIG_BLOCK_MAGIC2(dab, unpuncture_ff);
+%include "dab/prune.h"
+GR_SWIG_BLOCK_MAGIC2(dab, prune);
+%include "dab/firecode_check_bb.h"
+GR_SWIG_BLOCK_MAGIC2(dab, firecode_check_bb);
+%include "dab/puncture_bb.h"
+GR_SWIG_BLOCK_MAGIC2(dab, puncture_bb);
+
+%include "dab/mp2_decode_bs.h"
+GR_SWIG_BLOCK_MAGIC2(dab, mp2_decode_bs);
+
+%include "dab/mp4_decode_bs.h"
+GR_SWIG_BLOCK_MAGIC2(dab, mp4_decode_bs);
+%include "dab/reed_solomon_decode_bb.h"
+GR_SWIG_BLOCK_MAGIC2(dab, reed_solomon_decode_bb);
+
+
+%include "dab/valve_ff.h"
+GR_SWIG_BLOCK_MAGIC2(dab, valve_ff);
+%include "dab/peak_detector_fb.h"
+GR_SWIG_BLOCK_MAGIC2(dab, peak_detector_fb);

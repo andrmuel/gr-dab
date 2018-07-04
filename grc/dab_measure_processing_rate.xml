@@ -2,7 +2,7 @@
 <block>
   <name>DAB Measure Proc. Rate</name>
   <key>measure_processing_rate_x</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.measure_processing_rate($in_type.in_len, $samples_to_count)</make>
   <param>

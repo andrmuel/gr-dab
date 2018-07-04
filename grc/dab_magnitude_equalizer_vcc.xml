@@ -1,38 +1,39 @@
 <?xml version="1.0"?>
 <block>
-  <name>magnitude_equalizer_vcc</name>
+  <name>Magnitude Equalizer</name>
   <key>dab_magnitude_equalizer_vcc</key>
-  <category>dab</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.magnitude_equalizer_vcc($vlen, $num_symbols)</make>
-  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
-       Sub-nodes:
-       * name
-       * key (makes the value accessible as $keyname, e.g. in the make node)
-       * type -->
   <param>
-    <name>...</name>
-    <key>...</key>
-    <type>...</type>
+    <name>Length</name>
+    <key>vlen</key>
+    <type>int</type>
   </param>
-
-  <!-- Make one 'sink' node per input. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
+  <param>
+    <name>Number of carriers</name>
+    <key>num_carriers</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Symbols</name>
+    <key>symbols_for_magnitude_equalization</key>
+    <type>int</type>
+  </param>
   <sink>
     <name>in</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
   </sink>
-
-  <!-- Make one 'source' node per output. Sub-nodes:
-       * name (an identifier for the GUI)
-       * type
-       * vlen
-       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>trigger_in</name>
+    <type>byte</type>
+  </sink>
   <source>
     <name>out</name>
-    <type><!-- e.g. int, float, complex, byte, short, xxx_vector, ...--></type>
+    <type>complex</type>
+  </source>
+  <source>
+    <name>trigger out</name>
+    <type>byte</type>
   </source>
 </block>

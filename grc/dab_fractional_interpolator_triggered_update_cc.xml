@@ -2,7 +2,7 @@
 <block>
   <name>Frac. Interp. Trig. Update</name>
   <key>dab_fractional_interpolator_triggered_update_cc</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.fractional_interpolator_triggered_update_cc($phase_shift, $interp_ratio)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.

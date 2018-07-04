@@ -1,0 +1,20 @@
+<block>
+  <name>Firecode checker</name>
+  <key>dab_firecode_check_bb</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.firecode_check_bb($bit_rate_n)</make>
+  <param>
+    <name>Bit Rate/8kbits</name>
+    <key>bit_rate_n</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>

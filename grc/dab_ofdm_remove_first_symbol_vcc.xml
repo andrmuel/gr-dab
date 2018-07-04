@@ -2,7 +2,7 @@
 <block>
   <name>OFDM Remove First Symbol</name>
   <key>dab_ofdm_remove_first_symbol_vcc</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.ofdm_remove_first_symbol_vcc($num_carriers)</make>
   <param>

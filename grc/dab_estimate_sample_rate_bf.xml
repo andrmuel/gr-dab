@@ -2,7 +2,7 @@
 <block>
   <name>DAB Est Samp Rate</name>
   <key>estimate_sample_rate_bf</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.estimate_sample_rate_bf($exp_samp_rate, $frame_length)</make>
   <param>
