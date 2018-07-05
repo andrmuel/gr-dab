@@ -1,0 +1,37 @@
+<block>
+  <name>Select subchannel</name>
+  <key>dab_select_subch_vfvf</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.select_subch_vfvf($vlen_in, $vlen_out, $address, $total_size)</make>
+  <param>
+    <name>Vector length in</name>
+    <key>vlen_in</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Vector length out</name>
+    <key>vlen_out</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Address</name>
+    <key>address</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Total size</name>
+    <key>total_size</key>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+    <vlen>$vlen_in</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+    <vlen>$vlen_out</vlen>
+  </source>
+</block>

@@ -2,7 +2,7 @@
 <block>
   <name>Moving sum</name>
   <key>dab_moving_sum_ff</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.moving_sum_ff($length)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.

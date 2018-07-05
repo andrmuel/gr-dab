@@ -27,10 +27,10 @@
 
 class dab_puncture_vbb;
 
-typedef boost::shared_ptr<dab_puncture_vbb> dab_puncture_vbb_sptr;
+typedef boost::shared_ptr <dab_puncture_vbb> dab_puncture_vbb_sptr;
 
-dab_puncture_vbb_sptr 
-dab_make_puncture_vbb (const std::vector<unsigned char> &puncturing_vector);
+dab_puncture_vbb_sptr
+dab_make_puncture_vbb(const std::vector<unsigned char> &puncturing_vector);
 
 /*!
  * \brief Puncturing - remove bits, where the puncturing sequence is zero
@@ -40,22 +40,23 @@ dab_make_puncture_vbb (const std::vector<unsigned char> &puncturing_vector);
  * input: byte vector whose length equals the length of the puncturing vector
  * output: byte vector whose length equeals the number of ones in the puncturing vector
  */
-class dab_puncture_vbb : public gr_sync_block
-{
-  private:
-    friend dab_puncture_vbb_sptr
-    dab_make_puncture_vbb (const std::vector<unsigned char> &puncturing_vector);
-    unsigned int ones (const std::vector<unsigned char> &puncturing_vector);
-    dab_puncture_vbb (const std::vector<unsigned char> &puncturing_vector);    // private constructor
+class dab_puncture_vbb : public gr_sync_block {
+private:
+  friend dab_puncture_vbb_sptr
+  dab_make_puncture_vbb(const std::vector<unsigned char> &puncturing_vector);
 
-    std::vector<unsigned char> d_puncturing_vector;
-    unsigned int d_vlen_in;
-    unsigned int d_vlen_out;
+  unsigned int ones(const std::vector<unsigned char> &puncturing_vector);
 
-  public:
-    int work (int noutput_items,
-              gr_vector_const_void_star &input_items,
-              gr_vector_void_star &output_items);
+  dab_puncture_vbb(const std::vector<unsigned char> &puncturing_vector);    // private constructor
+
+  std::vector<unsigned char> d_puncturing_vector;
+  unsigned int d_vlen_in;
+  unsigned int d_vlen_out;
+
+public:
+  int work(int noutput_items,
+           gr_vector_const_void_star &input_items,
+           gr_vector_void_star &output_items);
 };
 
 #endif /* INCLUDED_DAB_PUNCTURE_VBB_H */

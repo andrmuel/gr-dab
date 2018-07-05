@@ -2,7 +2,7 @@
 <block>
   <name>DAB: FIC decoder</name>
   <key>dab_fic_decode</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.fic_decode(
           dab.parameters.dab_parameters(

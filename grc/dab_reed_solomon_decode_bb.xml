@@ -1,0 +1,20 @@
+<block>
+  <name>DAB: Reed Solomon Decoder</name>
+  <key>dab_reed_solomon_decode_bb</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.reed_solomon_decode_bb($bit_rate_n)</make>
+  <param>
+    <name>bit rate / 8 kbit/s</name>
+    <key>bit_rate_n</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>

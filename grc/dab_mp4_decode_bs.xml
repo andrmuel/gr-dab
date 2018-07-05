@@ -1,0 +1,21 @@
+<block>
+  <name>DAB: MP4 Decoder</name>
+  <key>dab_mp4_decode_bs</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.mp4_decode_bs($bit_rate_n)</make>
+  <param>
+    <name>Bitrate / 8kbit/s</name>
+    <key>bit_rate_n</key>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>raw</type>
+    <nports>2</nports>
+  </source>
+</block>

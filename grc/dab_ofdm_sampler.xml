@@ -2,7 +2,7 @@
 <block>
   <name>OFDM Sampler</name>
   <key>dab_ofdm_sampler</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.ofdm_sampler($fft_length, $cp_length, $symbols_per_frame, $gap)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.

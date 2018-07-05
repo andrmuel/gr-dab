@@ -36,8 +36,8 @@ install(FILES
     select_vectors.h
     repartition_vectors.h
     unpuncture_vff.h
-    prune_vectors.h
     fib_sink_vb.h
+    prune_vectors.h
     estimate_sample_rate_bf.h
     fractional_interpolator_triggered_update_cc.h
     magnitude_equalizer_vcc.h
@@ -45,5 +45,17 @@ install(FILES
     ofdm_insert_pilot_vcc.h
     sum_phasor_trig_vcc.h
     ofdm_move_and_insert_zero.h
-    insert_null_symbol.h DESTINATION include/dab
+    insert_null_symbol.h
+    time_deinterleave_ff.h
+    crc16_bb.h
+    select_subch_vfvf.h
+    unpuncture_ff.h
+    prune.h
+    firecode_check_bb.h
+    puncture_bb.h
+    mp2_decode_bs.h
+    mp4_decode_bs.h
+    reed_solomon_decode_bb.h
+    valve_ff.h
+    peak_detector_fb.h DESTINATION include/dab
 )

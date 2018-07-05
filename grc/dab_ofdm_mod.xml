@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<block>
+  <name>DAB: OFDM Modulator</name>
+  <key>dab_ofdm_mod</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.ofdm_mod(
+          dab.parameters.dab_parameters(
+            mode=$dab_mode,
+            sample_rate=$samp_rate,
+            verbose=False
+          )
+        )
+  </make>
+  <param>
+    <name>DAB Mode</name>
+    <key>dab_mode</key>
+    <value>1</value>
+    <type>enum</type>
+    <option>
+      <name>1</name>
+      <key>1</key>
+    </option>
+    <option>
+      <name>2</name>
+      <key>2</key>
+    </option>
+    <option>
+      <name>3</name>
+      <key>3</key>
+    </option>
+    <option>
+      <name>4</name>
+      <key>4</key>
+    </option>
+  </param>
+  <param>
+    <name>Sampling Rate</name>
+    <key>samp_rate</key>
+    <value>samp_rate</value>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>dat</name>
+    <type>byte</type>
+    <vlen>384</vlen>
+  </sink>
+  <sink>
+    <name>trigger</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>dat</name>
+    <type>complex</type>
+  </source>
+</block>

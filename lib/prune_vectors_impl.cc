@@ -35,39 +35,41 @@
 namespace gr {
   namespace dab {
 
-prune_vectors::sptr
-prune_vectors::make(size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end)
-{
-  return gnuradio::get_initial_sptr
-    (new prune_vectors_impl(itemsize, length, prune_start, prune_end));
-}
+    prune_vectors::sptr
+    prune_vectors::make(size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end)
+    {
+      return gnuradio::get_initial_sptr
+              (new prune_vectors_impl(itemsize, length, prune_start, prune_end));
+    }
 
-prune_vectors_impl::prune_vectors_impl(size_t itemsize, unsigned int length, unsigned int prune_start, unsigned int prune_end)
-  : gr::sync_block("prune_vectors",
-             gr::io_signature::make (1, 1, itemsize*length),
-             gr::io_signature::make (1, 1, itemsize*(length-prune_start-prune_end))),
-  d_itemsize(itemsize), d_length(length), d_prune_start(prune_start), d_prune_end(prune_end)
-{
-  assert(prune_start+prune_end < length);
-}
+    prune_vectors_impl::prune_vectors_impl(size_t itemsize, unsigned int length, unsigned int prune_start,
+                                           unsigned int prune_end)
+            : gr::sync_block("prune_vectors",
+                             gr::io_signature::make(1, 1, itemsize * length),
+                             gr::io_signature::make(1, 1, itemsize * (length - prune_start - prune_end))),
+              d_itemsize(itemsize), d_length(length), d_prune_start(prune_start), d_prune_end(prune_end)
+    {
+      if (prune_start + prune_end > length)
+        fprintf(stderr, "want to prune more than existing");
+    }
 
 
-int 
-prune_vectors_impl::work(int noutput_items,
-                        gr_vector_const_void_star &input_items,
-                        gr_vector_void_star &output_items)
-{
-  char const *in = (const char *) input_items[0];
-  char *out = (char *) output_items[0];
+    int
+    prune_vectors_impl::work(int noutput_items,
+                             gr_vector_const_void_star &input_items,
+                             gr_vector_void_star &output_items)
+    {
+      char const *in = (const char *) input_items[0];
+      char *out = (char *) output_items[0];
 
-  for(int i = 0; i < noutput_items; i++){
-    memcpy(out,in+d_prune_start*d_itemsize,(d_length-d_prune_start-d_prune_end)*d_itemsize);
-    in  += d_length*d_itemsize;
-    out += (d_length-d_prune_start-d_prune_end)*d_itemsize;
+      for (int i = 0; i < noutput_items; i++) {
+        memcpy(out, in + d_prune_start * d_itemsize, (d_length - d_prune_start - d_prune_end) * d_itemsize);
+        in += d_length * d_itemsize;
+        out += (d_length - d_prune_start - d_prune_end) * d_itemsize;
+      }
+
+      return noutput_items;
+    }
+
   }
-    
-  return noutput_items;
-}
-
-}
 }

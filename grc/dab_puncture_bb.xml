@@ -1,0 +1,20 @@
+<block>
+  <name>Puncture</name>
+  <key>dab_puncture_bb</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.puncture_bb($puncturing_vector)</make>
+  <param>
+    <name>Puncturing vector</name>
+    <key>puncturing_vector</key>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>

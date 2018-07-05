@@ -38,6 +38,7 @@ namespace gr {
      public:
       typedef boost::shared_ptr<fib_sink_vb> sptr;
 
+
       /*!
        * \brief Return a shared_ptr to a new instance of dab::fib_sink_vb.
        *
@@ -47,6 +48,13 @@ namespace gr {
        * creating new instances.
        */
       static sptr make();
+
+      virtual std::string get_ensemble_info() = 0;
+      virtual std::string get_service_info() = 0;
+      virtual std::string get_service_labels() = 0;
+      virtual std::string get_subch_info() = 0;
+      virtual std::string get_programme_type() = 0;
+      virtual bool get_crc_passed() = 0;
     };
 
   } // namespace dab

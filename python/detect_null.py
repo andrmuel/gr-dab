@@ -20,6 +20,8 @@
 
 # Andreas Mueller, 2008
 # andrmuel@ee.ethz.ch
+# Moritz Luca Schmid, 2017
+# luca.m.schmid@gmail.com
 
 from gnuradio import gr, blocks
 from dab import dab_swig
@@ -56,7 +58,7 @@ class detect_null(gr.hier_block2):
 		self.ns_invert = blocks.multiply_const_ff(-1)
 
 		# peak detector on the inverted, summed up signal -> we get the nulls (i.e. the position of the start of a frame)
-		self.ns_peak_detect = blocks.peak_detector_fb(0.6,0.7,10,0.0001) # mostly found by try and error -> remember that the values are negative!
+		self.ns_peak_detect = dab_swig.peak_detector_fb(0.6,0.7,10,0.0001) # mostly found by try and error -> remember that the values are negative!
 
 		# connect it all
 		self.connect(self, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect, self)

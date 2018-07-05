@@ -61,7 +61,10 @@ class ofdm_mod(gr.hier_block2):
 
 
 		# symbol mapping
-		self.mapper = dab.qpsk_mapper_vbc(dp.num_carriers)
+		self.mapper_v2s = blocks.vector_to_stream_make(gr.sizeof_char, 384)
+		self.mapper_unpack = blocks.packed_to_unpacked_bb_make(1, gr.GR_MSB_FIRST)
+		self.mapper = dab.mapper_bc_make(dp.num_carriers)
+		self.mapper_s2v = blocks.stream_to_vector_make(gr.sizeof_gr_complex, 1536)
 
 		# add pilot symbol
 		self.insert_pilot = dab.ofdm_insert_pilot_vcc(dp.prn)
@@ -92,14 +95,14 @@ class ofdm_mod(gr.hier_block2):
 		#
 
 		# data
-		self.connect((self,0), self.mapper, (self.insert_pilot,0), (self.sum_phase,0), self.interleave, self.move_and_insert_carrier, self.ifft, self.prefixer, self.s2v, (self.insert_null,0))
+		self.connect((self,0), self.mapper_v2s, self.mapper_unpack, self.mapper, self.mapper_s2v, (self.insert_pilot,0), (self.sum_phase,0), self.interleave, self.move_and_insert_carrier, self.ifft, self.prefixer, self.s2v, (self.insert_null,0))
 		self.connect(self.insert_null, self)
 
 		# control signal (frame start)
 		self.connect((self,1), (self.insert_pilot,1), (self.sum_phase,1), (self.insert_null,1))
 
 		if debug:
-			self.connect(self.mapper, blocks.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_mapper.dat"))
+			#self.connect(self.mapper, blocks.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_mapper.dat"))
 			self.connect(self.insert_pilot, blocks.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_insert_pilot.dat"))
 			self.connect(self.sum_phase, blocks.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_sum_phase.dat"))
 			self.connect(self.interleave, blocks.file_sink(gr.sizeof_gr_complex*dp.num_carriers, "debug/generated_signal_interleave.dat"))

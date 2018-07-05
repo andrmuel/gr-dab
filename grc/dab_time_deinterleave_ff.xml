@@ -1,0 +1,27 @@
+<block>
+  <name>Time Deinterleaver</name>
+  <key>dab_time_deinterleave_ff</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.time_deinterleave_ff($vector_length, $scrambling_vector)</make>
+  <param>
+    <name>Vector_length</name>
+    <key>vector_length</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Scrambling_vector</name>
+    <key>scrambling_vector</key>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+    <vlen>$vector_length</vlen>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+    <vlen>$vector_length</vlen>
+  </source>
+</block>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<block>
+  <name>CRC16</name>
+  <key>dab_crc16_bb</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.crc16_bb($length, $generator, $initial_state)</make>
+  <param>
+    <name>Length</name>
+    <key>length</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Generator polynome</name>
+    <key>generator</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Init state</name>
+    <key>initial_state</key>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>

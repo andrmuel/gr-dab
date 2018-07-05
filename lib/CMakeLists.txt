@@ -22,9 +22,8 @@
 ########################################################################
 include(GrPlatform) #define LIB_SUFFIX
 
-include_directories(${Boost_INCLUDE_DIR})
+include_directories(${Boost_INCLUDE_DIR} ${FDK-AAC-DAB_INCLUDE_DIRS} ${LIBTOOLAME-DAB_INCLUDE_DIR})
 link_directories(${Boost_LIBRARY_DIRS})
-
 list(APPEND dab_sources
     moving_sum_ff_impl.cc
     ofdm_ffe_all_in_one_impl.cc
@@ -51,7 +50,22 @@ list(APPEND dab_sources
     sum_phasor_trig_vcc_impl.cc
     ofdm_move_and_insert_zero_impl.cc
     insert_null_symbol_impl.cc
-)
+    time_deinterleave_ff_impl.cc
+    crc16_bb_impl.cc
+    select_subch_vfvf_impl.cc
+    unpuncture_ff_impl.cc
+    prune_impl.cc
+    firecode-checker.cpp
+    firecode_check_bb_impl.cc
+    puncture_bb_impl.cc
+    mp2_decode_bs_impl.cc
+    mp4_decode_bs_impl.cc
+    reed_solomon_decode_bb_impl.cc
+    fec/decode_rs_char.c
+    fec/init_rs_char.c
+    valve_ff_impl.cc
+    peak_detector_fb_impl.cc )
+
 
 set(dab_sources "${dab_sources}" PARENT_SCOPE)
 if(NOT dab_sources)
@@ -60,7 +74,7 @@ if(NOT dab_sources)
 endif(NOT dab_sources)
 
 add_library(gnuradio-dab SHARED ${dab_sources})
-target_link_libraries(gnuradio-dab ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${GNURADIO_FILTER_LIBRARIES})
+target_link_libraries(gnuradio-dab ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${GNURADIO_FILTER_LIBRARIES} ${FAAD_LIBRARIES})
 set_target_properties(gnuradio-dab PROPERTIES DEFINE_SYMBOL "gnuradio_dab_EXPORTS")
 
 if(APPLE)

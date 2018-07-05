@@ -1,0 +1,26 @@
+<block>
+  <name>Valve</name>
+  <key>dab_valve_ff</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.valve_ff($closed, $feed_with_zeros)</make>
+  <param>
+    <name>Closed</name>
+    <key>closed</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Feed with zeros</name>
+    <key>feed_with_zeros</key>
+    <value> false</value>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>float</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

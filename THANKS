@@ -2,3 +2,5 @@ Code from the following two people was very helpful as a reference:
 
 Jens Elsner - implementation of the DAB physical layer in GNU Radio
 Nicolas Alt - complete DAB receiver implementation in Matlab
+Jan van Katwijk - Qt-DAB: software for DAB/DAB+ reception
+Matthias Braendli - ODRAudioEnc: software for encoding DAB/DAB+ audio frames

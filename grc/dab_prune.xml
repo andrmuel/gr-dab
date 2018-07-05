@@ -1,0 +1,35 @@
+<block>
+  <name>Prune</name>
+  <key>dab_prune</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.prune($itemsize, $length, $prune_start, $prune_end)</make>
+  <param>
+    <name>Itemsize</name>
+    <key>itemsize</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Length</name>
+    <key>length</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Prune_start</name>
+    <key>prune_start</key>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Prune_end</name>
+    <key>prune_end</key>
+    <type>raw</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+</block>

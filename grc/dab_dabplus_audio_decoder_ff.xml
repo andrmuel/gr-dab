@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<block>
+  <name>DAB: DAB+ Decoder</name>
+  <key>dab_dabplus_audio_decoder_ff</key>
+  <category>[DAB]</category>
+  <import>import dab</import>
+  <make>dab.dabplus_audio_decoder_ff(dab.parameters.dab_parameters(mode=$dab_mode, sample_rate=$samp_rate, verbose=False), $bit_rate, $address, $subch_size, $protection, $output_float)</make>
+   <param>
+    <name>DAB Mode</name>
+    <key>dab_mode</key>
+    <value>1</value>
+    <type>int</type>
+    <option>
+    	<name>Mode 1</name>
+    	<key>1</key>
+    </option>
+    <option>
+    	<name>Mode 2</name>
+    	<key>2</key>
+    </option>
+    <option>
+    	<name>Mode 3</name>
+    	<key>3</key>
+    </option>
+    <option>
+    	<name>Mode 4</name>
+    	<key>4</key>
+    </option>
+  </param>
+  <param>
+    <name>Sampling Rate</name>
+    <key>samp_rate</key>
+    <value>samp_rate</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Bit rate</name>
+    <key>bit_rate</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Address</name>
+    <key>address</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Sub-channel Size</name>
+    <key>subch_size</key>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Output_float</name>
+    <key>output_float</key>
+    <type>bool</type>
+  </param>
+  <param>
+    <name>Protection Mode</name>
+    <key>protection</key>
+    <type>int</type>
+    <option>
+    	<name>A1</name>
+    	<key>0</key>
+    </option>
+    <option>
+    	<name>A2</name>
+    	<key>1</key>
+    </option>
+    <option>
+    	<name>A3</name>
+    	<key>2</key>
+    </option>
+    <option>
+    	<name>A4</name>
+    	<key>3</key>
+    </option>
+  </param>
+  <sink>
+    <name>dat</name>
+    <type>complex</type>
+    <vlen>1536</vlen> <!-- TODO adapt to mode -->
+  </sink>
+  <sink>
+    <name>sync</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>audio_left</name>
+    <type>float</type>
+  </source>
+  <source>
+    <name>audio_right</name>
+    <type>float</type>
+  </source>
+</block>

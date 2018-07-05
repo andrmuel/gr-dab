@@ -2,7 +2,7 @@
 <block>
   <name>DAB Modulo_FF</name>
   <key>dab_modulo_ff</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.modulo_ff($div_f)</make>
   <param>

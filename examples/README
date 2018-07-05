@@ -2,3 +2,5 @@
 simple_top.grc - all-in-one receiving block usage sample.
 dab_mer.grc - Hierarchical block, which counts MER.
 dab_measurement_graph_rtlsdr.grc - Top block to make measurements of DAB signal. Reception by RTL-SDR Stick.
+dab_receiver.grc - Reception of FIC and MSC of a DAB/DAB+ broadcast. Reception by USRP source.
+

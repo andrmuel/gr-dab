@@ -2,7 +2,7 @@
 <block>
   <name>OFDM coarse freq. corr.</name>
   <key>dab_ofdm_coarse_frequency_correct</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.ofdm_coarse_frequency_correct($fft_length, $num_carriers, $cp_length)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.

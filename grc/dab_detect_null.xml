@@ -2,7 +2,7 @@
 <block>
   <name>Detect NULL</name>
   <key>dab_detect_null</key>
-  <category>DAB</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.detect_null($length, False)</make>
   <param>
