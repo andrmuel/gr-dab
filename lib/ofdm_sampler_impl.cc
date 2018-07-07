@@ -95,7 +95,7 @@ ofdm_sampler_impl::general_work (int noutput_items,
       next_tag_position = tag_positions[next_tag_position_index];
   }
 
-  unsigned int n_in = (ninput_items[0]<ninput_items[1])?ninput_items[0]:ninput_items[1];
+  unsigned int n_in = ninput_items[0];
   unsigned int index = 0;
   unsigned int out = 0;
 

@@ -93,7 +93,7 @@ ofdm_remove_first_symbol_vcc_impl::general_work (int noutput_items,
       next_tag_position = tag_positions[next_tag_position_index];
   }
 
-  for (n_consumed=0; n_consumed<ninput_items[0] && n_consumed<ninput_items[1] && n_produced<noutput_items; n_consumed++) {
+  for (n_consumed=0; n_consumed<ninput_items[0] && n_produced<noutput_items; n_consumed++) {
 
     if (next_tag_position == n_consumed) { /* frame_start */
       next_tag_position_index++;

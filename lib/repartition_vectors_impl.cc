@@ -96,7 +96,7 @@ repartition_vectors_impl::general_work (int noutput_items,
   //
 
 
-  while (d_synced==0 && ninput_items[0]>n_consumed && ninput_items[1]>n_consumed) {
+  while (d_synced==0 && ninput_items[0]>n_consumed) {
     if (next_tag_position == n_consumed) {
       // Action when stream tags is found:
       d_synced=1;
@@ -117,7 +117,7 @@ repartition_vectors_impl::general_work (int noutput_items,
     }
   }
 
-  while (n_consumed + (int)d_multiply <= ninput_items[0] && n_consumed + (int)d_multiply <= ninput_items[1] && n_produced + (int)d_divide <= noutput_items) {
+  while (n_consumed + (int)d_multiply <= ninput_items[0] && n_produced + (int)d_divide <= noutput_items) {
 
     /* complete new block or is there already a next trigger? */
     for (unsigned int i=1; i<d_multiply; i++) {

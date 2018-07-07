@@ -96,7 +96,7 @@ select_vectors_impl::general_work (int noutput_items,
   //
 
 
-  while (n_consumed < ninput_items[0] && n_consumed < ninput_items[1] && n_produced < noutput_items) {
+  while (n_consumed < ninput_items[0] && n_produced < noutput_items) {
 
     if (next_tag_position == n_consumed) { /* new frame starts */
       // Action when stream tags is found:
