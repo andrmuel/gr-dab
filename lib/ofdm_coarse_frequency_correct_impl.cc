@@ -49,12 +49,13 @@ ofdm_coarse_frequency_correct::make(unsigned int fft_length, unsigned int num_ca
 
 ofdm_coarse_frequency_correct_impl::ofdm_coarse_frequency_correct_impl(unsigned int fft_length, unsigned int num_carriers, unsigned int cp_length)
   : gr::sync_block("ofdm_coarse_frequency_correct",
-             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char)),
-             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*num_carriers, sizeof(char))),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*fft_length),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*num_carriers)),
   d_fft_length(fft_length), d_num_carriers(num_carriers), d_cp_length(cp_length), 
   d_symbol_num(0), d_freq_offset(0), d_delta_f(0)
 {
   d_zeros_on_left = (d_fft_length-d_num_carriers)/2;
+  set_tag_propagation_policy(TPP_ONE_TO_ONE);
 }
 
 float
@@ -118,19 +119,25 @@ ofdm_coarse_frequency_correct_impl::work(int noutput_items,
       - calculation of the magnitude scale factors is done in the same step as the calculation of the energy for the freq. offset estimation -> very efficient :)
   */
   const gr_complex *iptr = (const gr_complex *) input_items[0];
-  const char *frame_start = (const char *) input_items[1];
   
   gr_complex *optr = (gr_complex *) output_items[0];
-  char *frame_start_out = (char *) output_items[1];
 
-  if (frame_start[0]) {
-    frame_start_out[0] = 1;
+  // This block is only handling one item at a time, so we only need to check one:
+  std::vector<tag_t> tags;
+  get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + 1, pmt::mp("first"));
+  bool tag_now = false;
+  for(int i=0;i<tags.size();i++) {
+      int current;
+      current = tags[i].offset - nitems_read(0);
+      if (current == 0) tag_now = true;
+  }
+
+  if (tag_now) { // Stream tag was found
     correlate_energy(iptr);
     d_delta_f = d_freq_offset+d_num_carriers/2-d_fft_length/2;
     // fprintf(stderr, "cfs: coarse freq. offset (subcarriers): %d\n", d_delta_f);
     d_symbol_num = 0;
   } else {
-    frame_start_out[0] = 0;
     d_symbol_num++;
   }
   

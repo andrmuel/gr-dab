@@ -36,6 +36,7 @@ class magnitude_equalizer_vcc_impl : public magnitude_equalizer_vcc
     unsigned int d_vlen;
     unsigned int d_num_symbols;
     float *d_equalizer;
+    int d_add_item_tag_at;
 
   public:
     magnitude_equalizer_vcc_impl(unsigned int vlen, unsigned int num_symbols);

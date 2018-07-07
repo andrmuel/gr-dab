@@ -44,12 +44,13 @@ select_vectors::make(size_t itemsize, unsigned int length, unsigned int num_sele
 
 select_vectors_impl::select_vectors_impl(size_t itemsize, unsigned int length, unsigned int num_select, unsigned int num_skip)
   : gr::block("select_vectors",
-             gr::io_signature::make2 (2, 2, itemsize*length, sizeof(char)),
-             gr::io_signature::make2 (2, 2, itemsize*length, sizeof(char))),
+             gr::io_signature::make (1, 1, itemsize*length),
+             gr::io_signature::make (1, 1, itemsize*length)),
   d_itemsize(itemsize), d_length(length), d_num_select(num_select), d_num_skip(num_skip), d_index(num_select+num_skip) /* <- dont output anything before 1st trigger */
 {
   assert(d_num_select!=0);
   assert(d_length!=0);
+  set_tag_propagation_policy(TPP_DONT);
 }
 
 void 
@@ -69,28 +70,54 @@ select_vectors_impl::general_work (int noutput_items,
                         gr_vector_void_star &output_items)
 {
   const char *iptr = (const char *) input_items[0];
-  const char *trigger = (const char *) input_items[1];
   
   char *optr = (char *) output_items[0];
-  char *triggerout = (char *) output_items[1];
 
   int n_consumed = 0;
   int n_produced = 0;
 
+  std::vector<int> tag_positions;
+  int next_tag_position = -1;
+  int next_tag_position_index = -1;
+
+  // Get all stream tags with key "dab_sync", and make a vector of the positions.
+  // "next_tag_position" contains the position within "iptr where the next "dab_sync" stream tag is found
+  std::vector<tag_t> tags;
+  get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + ninput_items[0], pmt::mp("first"));
+  for(int i=0;i<tags.size();i++) {
+      int current;
+      current = tags[i].offset - nitems_read(0);
+      tag_positions.push_back(current);
+      next_tag_position_index = 0;
+  }
+  if(next_tag_position_index >= 0) {
+      next_tag_position = tag_positions[next_tag_position_index];
+  }
+  //
+
 
   while (n_consumed < ninput_items[0] && n_consumed < ninput_items[1] && n_produced < noutput_items) {
 
-    /* start of frame? */
-    if (*trigger++ == 1)
+    if (next_tag_position == n_consumed) { /* new frame starts */
+      // Action when stream tags is found:
       d_index=0;
+      //
+
+      next_tag_position_index++;
+      if (next_tag_position_index == tag_positions.size()) {
+        next_tag_position_index = -1;
+        next_tag_position = -1;
+      }
+      else {
+        next_tag_position = tag_positions[next_tag_position_index];
+      }
+    }
     
     /* select this vector? */
     if (d_index >= d_num_skip && d_index < d_num_select + d_num_skip) {
       /* trigger signal */
-      if (d_index == d_num_skip)
-        *triggerout++ = 1;
-      else
-        *triggerout++ = 0;
+      if (d_index == d_num_skip) // Add stream tag to the output for the first symbol after 'd_num_skip'
+        add_item_tag(0, nitems_written(0) + n_produced, pmt::intern("first"), pmt::intern(""), pmt::intern("select_vectors"));
       /* data */
       memcpy(optr, iptr, d_length*d_itemsize);
       iptr += d_length*d_itemsize;

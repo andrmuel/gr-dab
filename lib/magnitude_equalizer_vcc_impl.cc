@@ -44,8 +44,8 @@ magnitude_equalizer_vcc::make(unsigned int vlen, unsigned int num_symbols)
 
 magnitude_equalizer_vcc_impl::magnitude_equalizer_vcc_impl(unsigned int vlen, unsigned int num_symbols)
   : gr::sync_block("magnitude_equalizer_vcc",
-             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char)),
-             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*vlen, sizeof(char))),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*vlen),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*vlen)),
   d_vlen(vlen), d_num_symbols(num_symbols)
 {
   assert(d_num_symbols>0);
@@ -55,6 +55,9 @@ magnitude_equalizer_vcc_impl::magnitude_equalizer_vcc_impl(unsigned int vlen, un
     d_equalizer[i] = 1;
 
   set_history(d_num_symbols);
+  set_tag_propagation_policy(TPP_DONT); // We need to handle the tag propagation "manually"
+                                        // because of set_history(d_num_symbols)
+  d_add_item_tag_at = -1;
 }
 
 magnitude_equalizer_vcc_impl::~magnitude_equalizer_vcc_impl(void)
@@ -93,13 +96,56 @@ magnitude_equalizer_vcc_impl::work(int noutput_items,
   gr_complex *out = (gr_complex *) output_items[0];
   char *frame_start_out = (char *) output_items[1];
 
+  std::vector<int> tag_positions;
+  int next_tag_position = -1;
+  int next_tag_position_index = -1;
+
+  // If there were not enough samples to be produced in the previous call to work(..),
+  // we need to add tags in the following call:
+  if (d_add_item_tag_at >= 0) {
+      if (d_add_item_tag_at < noutput_items) {
+          add_item_tag(0, nitems_written(0) + d_add_item_tag_at, pmt::intern("first"), pmt::intern(""), pmt::intern("magnitude_equalizer"));
+          d_add_item_tag_at = -1;
+      }
+      else {
+          d_add_item_tag_at = d_add_item_tag_at - noutput_items;
+      }
+  }
+  //
+
+  // Get all stream tags with key "first", and make a vector of the positions.
+  std::vector<tag_t> tags;
+  get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + noutput_items, pmt::mp("first"));
+  for(int i=0;i<tags.size();i++) {
+      int current;
+      current = tags[i].offset - nitems_read(0);
+      tag_positions.push_back(current);
+      next_tag_position_index = 0;
+  }
+  if(next_tag_position_index >= 0) {
+      next_tag_position = tag_positions[next_tag_position_index];
+  }
+
   for(int i=0; i<noutput_items; i++){
 
-    if (frame_start[i]==1) { /* there was a trigger signal d_num_symbols-1 symbols before -> update equalizer */
+    if (next_tag_position == i) { /* there was a trigger signal d_num_symbols-1 symbols before -> update equalizer */
+      // Action when stream tags is found:
       update_equalizer(in);
-      frame_start_out[i] = 1;
-    } else {
-      frame_start_out[i] = 0;
+      if ((i + d_num_symbols-1) < noutput_items)
+          add_item_tag(0, nitems_written(0) + i+d_num_symbols-1, pmt::intern("first"), pmt::intern(""), pmt::intern("magnitude_equalizer"));
+      else {
+          d_add_item_tag_at = (i + d_num_symbols -1) - noutput_items;
+      }
+      //
+
+      next_tag_position_index++;
+      if (next_tag_position_index == tag_positions.size()) {
+        next_tag_position_index = -1;
+        next_tag_position = -1;
+      }
+      else {
+        next_tag_position = tag_positions[next_tag_position_index];
+      }
     }
   
     for (unsigned int j=0;j<d_vlen;j++)

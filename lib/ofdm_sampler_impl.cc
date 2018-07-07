@@ -44,12 +44,13 @@ ofdm_sampler::make(unsigned int fft_length, unsigned int cp_length, unsigned int
 
 ofdm_sampler_impl::ofdm_sampler_impl(unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame,unsigned int gap)
   : gr::block("ofdm_sampler",
-             gr::io_signature::make2 (2, 2, sizeof(gr_complex), sizeof(char)),
-             gr::io_signature::make2 (2, 2, sizeof(gr_complex)*fft_length, sizeof(char))),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)*fft_length)),
   d_state(STATE_NS), d_pos(0), d_fft_length(fft_length), d_cp_length(cp_length), d_symbols_per_frame(symbols_per_frame), d_sym_nr(0), d_gap(gap), d_gap_left(0)
 {
   assert(gap<=cp_length);
   set_relative_rate(1/float(fft_length+cp_length));
+  set_tag_propagation_policy(TPP_DONT);
 }
 
 void 
@@ -72,10 +73,27 @@ ofdm_sampler_impl::general_work (int noutput_items,
 {
   /* partially adapted from gr_ofdm_sampler.cc */
   const gr_complex *iptr = (const gr_complex *) input_items[0];
-  const char *trigger = (const char *) input_items[1];
   
   gr_complex *optr = (gr_complex *) output_items[0];
-  char *outsig = (char *) output_items[1];
+
+
+  std::vector<int> tag_positions;
+  int next_tag_position = -1;
+  int next_tag_position_index = -1;
+
+  // Get all stream tags with key "dab_sync", and make a vector of the positions.
+  // "next_tag_position" contains the position within "iptr where the next "dab_sync" stream tag is found
+  std::vector<tag_t> tags;
+  get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + ninput_items[0], pmt::mp("dab_sync"));
+  for(int i=0;i<tags.size();i++) {
+      int current;
+      current = tags[i].offset - nitems_read(0);
+      tag_positions.push_back(current);
+      next_tag_position_index = 0;
+  }
+  if(next_tag_position_index >= 0) {
+      next_tag_position = tag_positions[next_tag_position_index];
+  }
 
   unsigned int n_in = (ninput_items[0]<ninput_items[1])?ninput_items[0]:ninput_items[1];
   unsigned int index = 0;
@@ -83,15 +101,35 @@ ofdm_sampler_impl::general_work (int noutput_items,
 
   switch (d_state) {
     case(STATE_NS):
+      {
       d_pos = 0;
       d_sym_nr = 0;
       d_gap_left = 0;
-      while (index<n_in && !trigger[index])
+      bool trigger_now = false;
+      while (index<n_in) {
+
+        if (next_tag_position == index) { /* trigger */
+          next_tag_position_index++;
+          if (next_tag_position_index == tag_positions.size()) {
+            next_tag_position_index = -1;
+            next_tag_position = -1;
+          }
+          else {
+            next_tag_position = tag_positions[next_tag_position_index];
+          }
+          // Action when stream tags is found:
+          trigger_now = true;
+          break;
+          //
+        }
+
         index++;
-      if (trigger[index]) 
+      }
+      if (trigger_now)
         d_state = STATE_CP;
       else
         break;
+      }
     case(STATE_CP):
       while (d_gap_left > 0 && index<n_in) { /* is there a gap left from the previous symbol? */
         index++;
@@ -112,10 +150,8 @@ ofdm_sampler_impl::general_work (int noutput_items,
         index += d_fft_length;
         d_pos = 0;
         /* first symbol in frame? */
-        if (d_sym_nr==1)
-          outsig[out] = 1;
-        else
-          outsig[out] = 0;
+        if (d_sym_nr==1) // A stream tag called "first" is added for the first symbol in frame:
+          add_item_tag(0, nitems_written(0) + out, pmt::intern("first"), pmt::intern(""), pmt::intern("ofdm_sampler"));
         out++;
         /* last symbol in frame? */
         if (d_sym_nr == d_symbols_per_frame) {

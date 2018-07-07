@@ -76,10 +76,6 @@
     <type>$type</type>
     <vlen>$vlen_in</vlen>
   </sink>
-  <sink>
-    <name>trigger_in</name>
-    <type>byte</type>
-  </sink>
 
   <!-- Make one 'source' node per output. Sub-nodes:
        * name (an identifier for the GUI)
@@ -90,9 +86,5 @@
     <name>out</name>
     <type>$type</type>
     <vlen>$vlen_out</vlen>
-  </source>
-  <source>
-    <name>trigger_out</name>
-    <type>byte</type>
   </source>
 </block>

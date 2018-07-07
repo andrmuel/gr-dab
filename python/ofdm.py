@@ -138,11 +138,11 @@ class ofdm_demod(gr.hier_block2):
 		if self.rp.softbits:
 			gr.hier_block2.__init__(self,"ofdm_demod",
 						gr.io_signature (1, 1, gr.sizeof_gr_complex), # input signature
-						gr.io_signature2(2, 2, gr.sizeof_float*self.dp.num_carriers*2, gr.sizeof_char)) # output signature
+						gr.io_signature (1, 1, gr.sizeof_float*self.dp.num_carriers*2)) # output signature
 		else:
 			gr.hier_block2.__init__(self,"ofdm_demod",
 						gr.io_signature (1, 1, gr.sizeof_gr_complex), # input signature
-						gr.io_signature2(2, 2, gr.sizeof_char*self.dp.num_carriers/4, gr.sizeof_char)) # output signature
+						gr.io_signature (1, 1, gr.sizeof_char*self.dp.num_carriers/4)) # output signature
 
 		
 
@@ -227,11 +227,11 @@ class ofdm_demod(gr.hier_block2):
 			self.connect(self.input2, self.sync)
 
 		# data stream
-		self.connect((self.sync, 0), (self.sampler, 0), self.fft, (self.cfs, 0), self.phase_diff, (self.remove_pilot,0))
+		self.connect(self.sync, self.sampler, self.fft, self.cfs, self.phase_diff, self.remove_pilot)
 		if self.rp.equalize_magnitude:
-			self.connect((self.remove_pilot,0), (self.equalizer,0), self.deinterleave)
+			self.connect(self.remove_pilot, self.equalizer, self.deinterleave)
 		else:
-			self.connect((self.remove_pilot,0), self.deinterleave)
+			self.connect(self.remove_pilot, self.deinterleave)
 		if self.rp.softbits:
 			if verbose: print "--> using soft bits"
 			self.softbit_interleaver = dab.complex_to_interleaved_float_vcf(self.dp.num_carriers)
@@ -239,12 +239,6 @@ class ofdm_demod(gr.hier_block2):
 		else:
 			self.connect(self.deinterleave, self.demapper, (self,0))
 
-		# control stream
-		self.connect((self.sync, 1), (self.sampler, 1), (self.cfs, 1), (self.remove_pilot,1))
-		if self.rp.equalize_magnitude:
-			self.connect((self.remove_pilot,1), (self.equalizer,1), (self,1))
-		else:
-			self.connect((self.remove_pilot,1), (self,1))
 			
 		# calculate an estimate of the SNR
 		self.phase_var_decim   = blocks.keep_one_in_n(gr.sizeof_gr_complex*self.dp.num_carriers, self.rp.phase_var_estimate_downsample)

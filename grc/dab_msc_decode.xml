@@ -71,10 +71,6 @@
     <name>data</name>
     <type>float</type>
   </sink>
-  <sink>
-    <name>trigger</name>
-    <type>byte</type>
-  </sink>
   <source>
     <name>out</name>
     <type>byte</type>

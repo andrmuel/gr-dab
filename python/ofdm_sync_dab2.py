@@ -50,7 +50,7 @@ class ofdm_sync_dab2(gr.hier_block2):
 		
 		gr.hier_block2.__init__(self,"ofdm_sync_dab",
 		                        gr.io_signature(1, 1, gr.sizeof_gr_complex), # input signature
-					gr.io_signature2(2, 2, gr.sizeof_gr_complex, gr.sizeof_char)) # output signature
+					gr.io_signature(1, 1, gr.sizeof_gr_complex)) # output signature
 
 		# workaround for a problem that prevents connecting more than one block directly (see trac ticket #161)
 		#self.input = gr.kludge_copy(gr.sizeof_gr_complex)
@@ -65,6 +65,7 @@ class ofdm_sync_dab2(gr.hier_block2):
 		self.ns_detect = dab.detect_null(dp.ns_length, debug)
 		self.connect(self.input, self.ns_detect)
 
+		self.add_stream_tag = dab.control_stream_to_tag_cc("dab_sync")
 		#
 		# fine frequency synchronisation
 		#
@@ -84,22 +85,21 @@ class ofdm_sync_dab2(gr.hier_block2):
 			self.ffs_mixer = blocks.multiply_cc()
 
 		# calculate fine frequency error
-		self.connect(self.input, (self.ffe, 0))
-		self.connect(self.ns_detect, (self.ffe, 1))
+		self.connect(self.ns_detect, (self.add_stream_tag, 1))
+		self.connect(self.input, (self.add_stream_tag, 0))
+		self.connect(self.add_stream_tag, self.ffe)
 
 		if rp.correct_ffe: 
 			# do the correction
 			self.connect(self.ffe, self.ffs_nco, (self.ffs_mixer, 0))
-			self.connect(self.input, self.ffs_delay_input_for_correction, (self.ffs_mixer, 1))
+			self.connect(self.add_stream_tag, self.ffs_delay_input_for_correction, (self.ffs_mixer, 1))
 			# output - corrected signal and start of DAB frames
 			self.connect(self.ffs_mixer, (self, 0))
-			self.connect(self.ns_detect, self.ffs_delay_frame_start, (self, 1))
 		else: 
 			# just patch the signal through
 			self.connect(self.ffe, blocks.null_sink(gr.sizeof_float))
-			self.connect(self.input, (self,0))
+			self.connect(self.add_stream_tag, (self,0))
 			# frame start still needed ..
-			self.connect(self.ns_detect, (self,1))
 
 		if debug:
 			self.connect(self.ffe, blocks.multiply_const_ff(1./(dp.T*2*pi)), blocks.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_fine_freq_err_f.dat"))
