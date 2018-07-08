@@ -40,7 +40,7 @@ class msc_decode(gr.hier_block2):
         gr.hier_block2.__init__(self,
                                 "msc_decode",
                                 # Input signature
-                                gr.io_signature2(2, 2, gr.sizeof_float * dab_params.num_carriers * 2, gr.sizeof_char),
+                                gr.io_signature(1, 1, gr.sizeof_float * dab_params.num_carriers * 2),
                                 # Output signature
                                 gr.io_signature(1, 1, gr.sizeof_char))
         self.dp = dab_params
@@ -137,9 +137,9 @@ class msc_decode(gr.hier_block2):
 
         # connect blocks
         self.connect((self, 0),
-                     (self.select_msc_syms, 0),
+                     (self.select_msc_syms),
                      #(self.repartition_msc_to_CIFs, 0),
-                     (self.repartition_msc_to_cus, 0),
+                     (self.repartition_msc_to_cus),
                      (self.select_subch, 0),
                      #(self.repartition_cus_to_logical_frame, 0),
                      self.time_v2s,
@@ -154,14 +154,6 @@ class msc_decode(gr.hier_block2):
                      self.pack_bits,
                      #self.energy_s2v, #better output stream or vector??
                      (self))
-        #connect trigger chain
-        self.connect((self, 1),
-                     (self.select_msc_syms, 1),
-                     #(self.repartition_msc_to_CIFs, 1),
-                     (self.repartition_msc_to_cus, 1),
-                     #(self.select_subch, 1),
-                     #(self.repartition_CUs_to_logical_frame, 1);
-                     blocks.null_sink(gr.sizeof_char))
         self.connect(self.prbs_src, (self.add_mod_2, 1))
 
 
@@ -173,7 +165,7 @@ class msc_decode(gr.hier_block2):
 
             #msc repartition cus
             self.sink_repartition_msc_to_cus = blocks.file_sink_make(gr.sizeof_float * self.dp.msc_cu_size, "debug/msc_repartitioned_to_cus.dat")
-            self.connect((self.repartition_msc_to_cus, 0), self.sink_repartition_msc_to_cus)
+            self.connect((self.repartition_msc_to_cus), self.sink_repartition_msc_to_cus)
 
             #data of one sub channel not decoded
             self.sink_select_subch = blocks.file_sink_make(gr.sizeof_float * self.dp.msc_cu_size * self.size, "debug/select_subch.dat")

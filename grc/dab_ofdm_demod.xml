@@ -145,10 +145,6 @@
     <type>$soft_bits.type</type>
     <vlen>$dab_mode.vlensize / $soft_bits.vlenfrac</vlen>
   </source>
-  <source>
-    <name>sync</name>
-    <type>byte</type>
-  </source>
   <doc>
     Demodulates a whole DAB signal.
     Output vector size depends on selected mode:

@@ -50,12 +50,13 @@ ofdm_ffe_all_in_one::make(unsigned int symbol_length, unsigned int fft_length, u
 
 ofdm_ffe_all_in_one_impl::ofdm_ffe_all_in_one_impl(unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate)
   : gr::sync_block("ofdm_ffe_all_in_one",
-             gr::io_signature::make2 (2, 2, sizeof(gr_complex), sizeof(char)),
+             gr::io_signature::make (1, 1, sizeof(gr_complex)),
              gr::io_signature::make (1, 1, sizeof(float))),
   d_symbol_length(symbol_length), d_fft_length(fft_length), d_num_symbols(num_symbols), d_alpha(alpha), d_sample_rate(sample_rate), d_cur_symbol(num_symbols), d_cur_sample(0), d_ffs_error_sum(0), d_estimated_error(0), d_estimated_error_per_sample(0)
 {
   assert(symbol_length<=2*fft_length); /* cyclic prefix can not be longer than fft_length .. */
   set_history(symbol_length+1);
+  set_tag_propagation_policy(TPP_DONT);
 }
 
 float 
@@ -78,19 +79,48 @@ ofdm_ffe_all_in_one_impl::work(int noutput_items,
           gr_vector_void_star &output_items)
 {
   const gr_complex *iptr = (const gr_complex *) input_items[0];
-  const char *trigger = (const char *) input_items[1];
   float *optr = (float *) output_items[0];
 
-  trigger += d_symbol_length;
   
   float new_estimate;
 
+  std::vector<int> tag_positions;
+  int next_tag_position = -1;
+  int next_tag_position_index = -1;
+
+  // Get all stream tags with key "dab_sync", and make a vector of the positions.
+  // "next_tag_position" contains the position within "iptr where the next "dab_sync" stream tag is found
+  std::vector<tag_t> tags;
+  get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + noutput_items, pmt::mp("dab_sync"));
+  for(int i=0;i<tags.size();i++) {
+      int current;
+      current = tags[i].offset - nitems_read(0);
+      tag_positions.push_back(current);
+      next_tag_position_index = 0;
+  }
+  if(next_tag_position_index >= 0) {
+      next_tag_position = tag_positions[next_tag_position_index];
+  }
+
+
   for (int i=0; i<noutput_items; i++) {
-    if (*trigger++ == 1) { /* new frame starts */
+    if (next_tag_position == i) { /* new frame starts */
+      // Action when stream tags is found:
       d_cur_symbol = 0;
       d_cur_sample = 0;
       d_ffs_error_sum = 0;
-    } 
+      //
+
+      next_tag_position_index++;
+      if (next_tag_position_index == tag_positions.size()) {
+        next_tag_position_index = -1;
+        next_tag_position = -1;
+      }
+      else {
+        next_tag_position = tag_positions[next_tag_position_index];
+      }
+    }
+
     
     if (d_cur_sample==d_symbol_length) { /* new symbol starts */
       d_cur_sample = 0;

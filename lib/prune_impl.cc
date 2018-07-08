@@ -53,6 +53,7 @@ namespace gr {
 
       set_output_multiple(length - prune_start - prune_end);
       set_relative_rate((length - prune_start - prune_end) / length);
+      set_tag_propagation_policy(TPP_DONT);
     }
 
     /*
@@ -76,10 +77,16 @@ namespace gr {
     {
       const char *in = (const char *) input_items[0];
       char *out = (char *) output_items[0];
+
+
+      int n_produced = 0;
+
       for (int i = 0; i < noutput_items / (d_length - d_prune_start - d_prune_end); i++) {
+        add_item_tag(0, nitems_written(0) + n_produced, pmt::intern("first"), pmt::intern(""), pmt::intern("prune"));
         memcpy(out, in + d_prune_start * d_itemsize, (d_length - d_prune_start - d_prune_end) * d_itemsize);
         in += d_length * d_itemsize;
         out += (d_length - d_prune_start - d_prune_end) * d_itemsize;
+        n_produced += (d_length - d_prune_start - d_prune_end);
       }
       // Tell runtime system how many input items we consumed on
       // each input stream.

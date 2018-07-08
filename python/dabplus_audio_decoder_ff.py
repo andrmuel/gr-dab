@@ -39,15 +39,14 @@ class dabplus_audio_decoder_ff(gr.hier_block2):
             gr.hier_block2.__init__(self,
                                     "dabplus_audio_decoder_ff",
                                     # Input signature
-                                    gr.io_signature2(2, 2, gr.sizeof_float * dab_params.num_carriers * 2, gr.sizeof_char),
+                                    gr.io_signature(1, 1, gr.sizeof_float * dab_params.num_carriers * 2),
                                     # Output signature
                                     gr.io_signature2(2, 2, gr.sizeof_float, gr.sizeof_float))
         else: # output signed 16 bit integers (directly from decoder)
             gr.hier_block2.__init__(self,
                                     "dabplus_audio_decoder_ff",
                                     # Input signature
-                                    gr.io_signature2(2, 2, gr.sizeof_float * dab_params.num_carriers * 2,
-                                                     gr.sizeof_char),
+                                    gr.io_signature(1, 1, gr.sizeof_float * dab_params.num_carriers * 2),
                                     # Output signature
                                     gr.io_signature2(2, 2, gr.sizeof_short, gr.sizeof_short))
         self.dp = dab_params
@@ -75,8 +74,7 @@ class dabplus_audio_decoder_ff(gr.hier_block2):
         # mp4 decoder
         self.mp4 = dab.mp4_decode_bs_make(self.bit_rate_n)
 
-        self.connect((self, 0), (self.msc_decoder, 0), self.firecode, self.rs, self.mp4)
-        self.connect((self, 1), (self.msc_decoder, 1))
+        self.connect((self, 0), self.msc_decoder, self.firecode, self.rs, self.mp4)
 
         if self.output_float:
             # map short samples to the range [-1,1] in floats

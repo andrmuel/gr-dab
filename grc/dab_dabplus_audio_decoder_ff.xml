@@ -79,10 +79,6 @@
     <type>complex</type>
     <vlen>1536</vlen> <!-- TODO adapt to mode -->
   </sink>
-  <sink>
-    <name>sync</name>
-    <type>byte</type>
-  </sink>
   <source>
     <name>audio_left</name>
     <type>float</type>

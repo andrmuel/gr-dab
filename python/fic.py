@@ -48,7 +48,7 @@ class fic_decode(gr.hier_block2):
         @param dab_params DAB parameter object (dab.parameters.dab_parameters)
         """
         gr.hier_block2.__init__(self, "fic",
-                                gr.io_signature2(2, 2, gr.sizeof_float * dab_params.num_carriers * 2, gr.sizeof_char),
+                                gr.io_signature(1, 1, gr.sizeof_float * dab_params.num_carriers * 2),
                                 gr.io_signature(1, 1, gr.sizeof_char * 32))
 
         self.dp = dab_params
@@ -128,8 +128,6 @@ class fic_decode(gr.hier_block2):
                      self.fibsink)
         self.connect(self.fibout, self)
         self.connect(self.prbs_src, (self.add_mod_2, 1))
-        self.connect((self, 1), (self.select_fic_syms, 1), (self.repartition_fic, 1), (self.cut_into_fibs, 1),
-                     self.nullsink)
 
         if self.debug:
             self.connect((self, 0), blocks.file_sink(gr.sizeof_float * self.dp.num_carriers * 2, "debug/transmission_frame.dat"))

@@ -64,7 +64,8 @@ list(APPEND dab_sources
     fec/decode_rs_char.c
     fec/init_rs_char.c
     valve_ff_impl.cc
-    peak_detector_fb_impl.cc )
+    peak_detector_fb_impl.cc
+    control_stream_to_tag_cc_impl.cc )
 
 
 set(dab_sources "${dab_sources}" PARENT_SCOPE)

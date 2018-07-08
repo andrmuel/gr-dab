@@ -95,11 +95,9 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		self.v2s = blocks.vector_to_stream(gr.sizeof_gr_complex, self.dab_params.num_carriers)
 		self.scope = scopesink2.scope_sink_c(self.panel, title="DAB constellation sink", sample_rate=self.dab_params.sample_rate, xy_mode=True)
 
-		self.trigsink = blocks.null_sink(gr.sizeof_char)
 		self.sink = blocks.null_sink(gr.sizeof_float*self.dab_params.num_carriers*2)
 
 		self.connect(self.src, self.demod, self.sink)
-		self.connect((self.demod,1), self.trigsink)
         
 		# build GUI
 		self.connect(self.demod.deinterleave, self.v2s, self.scope)

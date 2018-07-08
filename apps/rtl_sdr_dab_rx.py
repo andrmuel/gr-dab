@@ -93,13 +93,10 @@ class rtl_sdr_dab_rx(gr.top_block):
                         #self.sink = gr.file_sink(gr.sizeof_char*3072, self.filename)
                         self.connect(self.demod, self.sink)
 
-		# self.trigsink = gr.null_sink(gr.sizeof_char)
 
-		# self.connect((self.demod,1), self.trigsink)
 		
 		self.fic_dec = dab.fic_decode(self.dab_params)
-		self.connect(self.src, self.demod, (self.fic_dec,0))
-		self.connect((self.demod,1), (self.fic_dec,1))
+		self.connect(self.src, self.demod, self.fic_dec)
 
 		# tune frequency
 		self.frequency = options.freq

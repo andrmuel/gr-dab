@@ -16,18 +16,10 @@
     <type>complex</type>
     <vlen>$num_carriers</vlen>
   </sink>
-  <sink>
-    <name>sync</name>
-    <type>byte</type>
-  </sink>
 
   <source>
     <name>out</name>
     <type>complex</type>
     <vlen>$num_carriers</vlen>
-  </source>
-  <source>
-    <name>sync</name>
-    <type>byte</type>
   </source>
 </block>

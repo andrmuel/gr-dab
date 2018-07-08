@@ -60,5 +60,6 @@ install(FILES
     dab_reed_solomon_decode_bb.xml
     dab_dabplus_audio_decoder_ff.xml
     dab_valve_ff.xml
-    dab_peak_detector_fb.xml DESTINATION share/gnuradio/grc/blocks
+    dab_peak_detector_fb.xml
+    dab_control_stream_to_tag_cc.xml DESTINATION share/gnuradio/grc/blocks
 )

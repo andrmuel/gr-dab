@@ -42,7 +42,6 @@ class dab_ofdm_testbench(gr.top_block):
 			self.sink = dab.blocks.measure_ber_b()
 		else:
 			self.sink = gr.vector_sink_b()
-		self.trig_sink = gr.null_sink(gr.sizeof_char)
 
 		# self.noise_start      = gr.noise_source_c(gr.GR_GAUSSIAN, math.sqrt(2), random.randint(0,10000))
 		# self.noise_start_head = gr.head(gr.sizeof_gr_complex, NOISE_SAMPLES_AT_START)
@@ -71,7 +70,6 @@ class dab_ofdm_testbench(gr.top_block):
 		else:
 			self.connect(self.source, self.s2v, (self.mod,0), self.rescale, self.amp, self.channel, (self.demod,0), self.v2s, self.sink)
 		self.connect(self.trig, (self.mod,1))
-		self.connect((self.demod, 1), self.trig_sink)
 
 		# SNR calculation and prober
 		self.probe_signal = gr.probe_avg_mag_sqrd_c(0,0.00001)
@@ -121,8 +119,6 @@ class dab_ofdm_testbench(gr.top_block):
 		# TODO some state is still left in the demod block - for now just make a new one
 		self.disconnect(self.channel, self.demod)
 		self.disconnect((self.demod,0), self.v2s)
-		self.disconnect((self.demod,1), self.trig_sink)
 		self.demod = dab.ofdm_demod(self.dp, self.rp, debug = False, verbose = True)
 		self.connect(self.channel, self.demod)
 		self.connect((self.demod,0), self.v2s)
-		self.connect((self.demod,1), self.trig_sink)
