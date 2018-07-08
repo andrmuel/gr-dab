@@ -26,7 +26,11 @@ gr-dab.
 gr-dab contains everything needed to get audio from DAB and DAB+
 
 Much of the code was developed as part of "Google Summer of Code 2017" by
-Moritz Luca Schmid. (the completion of audio reception of DAB and DAB+)
+Moritz Luca Schmid. (the completion of audio reception of DAB and DAB+).
+His fork can be found here: https://github.com/kit-cel/gr-dab The fork also
+contains everything needed for transmission of DAB radio. It does however have
+a number of external dependencies which makes it slightly more tricky to
+install than this version without TX.
 
 This package requires that gnuradio-core is already installed.  It
 also depends on some GNU Radio prerequisites, such as Boost and
