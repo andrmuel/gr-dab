@@ -362,7 +362,7 @@ namespace gr {
           }
           aac_frame_length = d_au_start[i + 1] - d_au_start[i] - 2;
 
-          // sanity check for the aac_frame_length
+          // sanity check for the aac_frame_length // FIXME: Causes crash after running for a long time. Ignore and continue instead of throwing exception
           if ((aac_frame_length >= 960) || (aac_frame_length < 0)) {
             throw std::out_of_range((boost::format("aac frame length not in range (%d)") % aac_frame_length).str());
           }
