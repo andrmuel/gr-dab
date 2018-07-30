@@ -55,6 +55,7 @@ namespace gr {
       virtual std::string get_subch_info() = 0;
       virtual std::string get_programme_type() = 0;
       virtual bool get_crc_passed() = 0;
+      virtual void set_print_channel_info(bool val) = 0;
     };
 
   } // namespace dab

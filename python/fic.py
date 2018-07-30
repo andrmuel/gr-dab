@@ -157,3 +157,6 @@ class fic_decode(gr.hier_block2):
 
     def get_crc_passed(self):
         return self.fibsink.get_crc_passed()
+
+    def set_print_channel_info(self, val):
+        self.fibsink.set_print_channel_info(val)

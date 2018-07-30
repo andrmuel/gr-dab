@@ -4,7 +4,9 @@
   <key>dab_fib_sink_vb</key>
   <category>dab</category>
   <import>import dab</import>
-  <make>dab.fib_sink_vb()</make>
+  <make>dab.fib_sink_vb()
+self.$(id).set_print_channel_info($print_channel_info)</make>
+  <callback>self.$(id).set_print_channel_info($print_channel_info)</callback>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name
@@ -14,6 +16,21 @@
     <name>...</name>
     <key>...</key>
     <type>...</type>
+  </param>
+
+  <param>
+    <name>Print channel info</name>
+    <key>print_channel_info</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+        <name>Yes</name>
+        <key>True</key>
+    </option>
+    <option>
+        <name>No</name>
+        <key>False</key>
+    </option>
   </param>
 
   <!-- Make one 'sink' node per input. Sub-nodes:

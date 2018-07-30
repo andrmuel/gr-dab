@@ -11,7 +11,8 @@
             verbose=False
           )
         )
-  </make>
+self.$(id).set_print_channel_info($print_channel_info)</make>
+  <callback>self.$(id).set_print_channel_info($print_channel_info)</callback>
   <param>
     <name>DAB Mode</name>
     <key>dab_mode</key>
@@ -23,6 +24,20 @@
     <key>samp_rate</key>
     <value>samp_rate</value>
     <type>int</type>
+  </param>
+  <param>
+    <name>Print channel info</name>
+    <key>print_channel_info</key>
+    <value>False</value>
+    <type>bool</type>
+    <option>
+        <name>Yes</name>
+        <key>True</key>
+    </option>
+    <option>
+        <name>No</name>
+        <key>False</key>
+    </option>
   </param>
   <check>1 &lt;= $dab_mode &lt;= 4</check>
   <sink>
