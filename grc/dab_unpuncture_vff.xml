@@ -4,7 +4,7 @@
   <key>dab_unpuncture_vff</key>
   <category>[DAB]</category>
   <import>import dab</import>
-  <make>dab.unpuncture_vff($&puncturing_vector, $fillval)</make>
+  <make>dab.unpuncture_vff($puncturing_vector, $fillval)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name
