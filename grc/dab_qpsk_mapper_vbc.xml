@@ -2,7 +2,7 @@
 <block>
   <name>qpsk_mapper_vbc</name>
   <key>dab_qpsk_mapper_vbc</key>
-  <category>dab</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.qpsk_mapper_vbc($symbol_length)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.

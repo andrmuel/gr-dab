@@ -2,7 +2,7 @@
 <block>
   <name>qpsk_demapper_vcb</name>
   <key>dab_qpsk_demapper_vcb</key>
-  <category>dab</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.qpsk_demapper_vcb($symbol_length)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.

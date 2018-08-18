@@ -2,7 +2,7 @@
 <block>
   <name>fib_sink_vb</name>
   <key>dab_fib_sink_vb</key>
-  <category>dab</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.fib_sink_vb()
 self.$(id).set_print_channel_info($print_channel_info)</make>

@@ -2,7 +2,7 @@
 <block>
   <name>ofdm_insert_pilot_vcc</name>
   <key>dab_ofdm_insert_pilot_vcc</key>
-  <category>dab</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.ofdm_insert_pilot_vcc($&pilot)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.

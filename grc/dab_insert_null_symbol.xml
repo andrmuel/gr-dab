@@ -2,7 +2,7 @@
 <block>
   <name>insert_null_symbol</name>
   <key>dab_insert_null_symbol</key>
-  <category>dab</category>
+  <category>[DAB]</category>
   <import>import dab</import>
   <make>dab.insert_null_symbol($ns_length, $symbol_length)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
