@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 
 class qa_qpsk_demapper_vcb(gr_unittest.TestCase):
 	"""
@@ -21,7 +21,7 @@ class qa_qpsk_demapper_vcb(gr_unittest.TestCase):
 		expected_result = (10,128)
 		src = blocks.vector_source_c(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_gr_complex, 4)
-		qpsk_demapper_vcb = dab.qpsk_demapper_vcb(4)
+		qpsk_demapper_vcb = grdab.qpsk_demapper_vcb(4)
 		v2s = blocks.vector_to_stream(gr.sizeof_char, 1)
 		dst = blocks.vector_sink_b()
 		self.tb.connect(src, s2v, qpsk_demapper_vcb, v2s, dst)

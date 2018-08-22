@@ -3,8 +3,8 @@
   <name>OFDM ffe all in one</name>
   <key>dab_ofdm_ffe_all_in_one</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.ofdm_ffe_all_in_one($symbol_length, $fft_length, $num_symbols, $alpha, $sample_rate)</make>
+  <import>import grdab</import>
+  <make>grdab.ofdm_ffe_all_in_one($symbol_length, $fft_length, $num_symbols, $alpha, $sample_rate)</make>
   <param>
     <name>Symbol length</name>
     <key>symbol_length</key>

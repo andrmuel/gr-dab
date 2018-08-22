@@ -20,7 +20,7 @@
 # 
 
 from gnuradio import gr, blocks, trellis
-import dab
+import grdab
 from math import sqrt
 
 class msc_decode(gr.hier_block2):
@@ -80,24 +80,24 @@ class msc_decode(gr.hier_block2):
 
         # MSC selection and block partitioning
         # select OFDM carriers with MSC
-        self.select_msc_syms = dab.select_vectors(gr.sizeof_float, self.dp.num_carriers * 2, self.dp.num_msc_syms,
+        self.select_msc_syms = grdab.select_vectors(gr.sizeof_float, self.dp.num_carriers * 2, self.dp.num_msc_syms,
                                                   self.dp.num_fic_syms)
         # repartition MSC data in CIFs (left out due to heavy burden for scheduler and not really necessary)
-        #self.repartition_msc_to_CIFs = dab.repartition_vectors_make(gr.sizeof_float, self.dp.num_carriers * 2,
+        #self.repartition_msc_to_CIFs = grdab.repartition_vectors_make(gr.sizeof_float, self.dp.num_carriers * 2,
         #                                                            self.dp.cif_bits, self.dp.num_msc_syms,
         #                                                            self.dp.num_cifs)
         #repartition MSC to CUs
-        self.repartition_msc_to_cus = dab.repartition_vectors_make(gr.sizeof_float, self.dp.num_carriers*2, self.dp.msc_cu_size, self.dp.num_msc_syms, self.dp.num_cus * self.dp.num_cifs)
+        self.repartition_msc_to_cus = grdab.repartition_vectors_make(gr.sizeof_float, self.dp.num_carriers*2, self.dp.msc_cu_size, self.dp.num_msc_syms, self.dp.num_cus * self.dp.num_cifs)
 
         # select CUs of one subchannel of each CIF and form logical frame vector
-        self.select_subch = dab.select_subch_vfvf_make(self.dp.msc_cu_size, self.dp.msc_cu_size * self.size, self.address, self.dp.num_cus)
+        self.select_subch = grdab.select_subch_vfvf_make(self.dp.msc_cu_size, self.dp.msc_cu_size * self.size, self.address, self.dp.num_cus)
 
         # time deinterleaving
         self.time_v2s = blocks.vector_to_stream_make(gr.sizeof_float, self.dp.msc_cu_size * self.size)
-        self.time_deinterleaver = dab.time_deinterleave_ff_make(self.dp.msc_cu_size * self.size, self.dp.scrambling_vector)
+        self.time_deinterleaver = grdab.time_deinterleave_ff_make(self.dp.msc_cu_size * self.size, self.dp.scrambling_vector)
         # unpuncture
         self.conv_v2s = blocks.vector_to_stream(gr.sizeof_float, self.msc_punctured_codeword_length)
-        self.unpuncture = dab.unpuncture_ff_make(self.assembled_msc_puncturing_sequence, 0)
+        self.unpuncture = grdab.unpuncture_ff_make(self.assembled_msc_puncturing_sequence, 0)
 
         # convolutional decoding
         self.fsm = trellis.fsm(1, 4, [0133, 0171, 0145, 0133])  # OK (dumped to text and verified partially)
@@ -123,7 +123,7 @@ class msc_decode(gr.hier_block2):
         table = [(1 - 2 * x) / sqrt(2) for x in table]
         self.conv_decode = trellis.viterbi_combined_fb(self.fsm, self.msc_I + self.dp.conv_code_add_bits_input, 0, 0, 4, table, trellis.TRELLIS_EUCLIDEAN)
         self.conv_s2v = blocks.stream_to_vector(gr.sizeof_char, self.msc_I + self.dp.conv_code_add_bits_input)
-        self.conv_prune = dab.prune(gr.sizeof_char, self.msc_conv_codeword_length / 4, 0,
+        self.conv_prune = grdab.prune(gr.sizeof_char, self.msc_conv_codeword_length / 4, 0,
                                             self.dp.conv_code_add_bits_input)
 
         #energy descramble

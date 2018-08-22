@@ -3,9 +3,9 @@
   <name>DAB: FIC decoder</name>
   <key>dab_fic_decode</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.fic_decode(
-          dab.parameters.dab_parameters(
+  <import>import grdab</import>
+  <make>grdab.fic_decode(
+          grdab.parameters.dab_parameters(
             mode=$dab_mode,
             sample_rate=$samp_rate,
             verbose=False

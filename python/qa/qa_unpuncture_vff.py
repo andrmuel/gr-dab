@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 import cmath
 
 class qa_unpuncture_vff(gr_unittest.TestCase):
@@ -23,7 +23,7 @@ class qa_unpuncture_vff(gr_unittest.TestCase):
 		exp_res  = (0,77,77,77,1,77,2,3,4,5,77,77,77,6,77,7,8,9)
 		src = blocks.vector_source_f(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_float, 5)
-		unpuncture_vff = dab.unpuncture_vff(punc_seq, 77)
+		unpuncture_vff = grdab.unpuncture_vff(punc_seq, 77)
 		v2s = blocks.vector_to_stream(gr.sizeof_float, 9)
 		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, unpuncture_vff, v2s, dst)
@@ -37,7 +37,7 @@ class qa_unpuncture_vff(gr_unittest.TestCase):
 		exp_res  = (0,0,0,0,1,0,2,3,4,5,0,0,0,6,0,7,8,9)
 		src = blocks.vector_source_f(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_float, 5)
-		unpuncture_vff = dab.unpuncture_vff(punc_seq)
+		unpuncture_vff = grdab.unpuncture_vff(punc_seq)
 		v2s = blocks.vector_to_stream(gr.sizeof_float, 9)
 		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, unpuncture_vff, v2s, dst)

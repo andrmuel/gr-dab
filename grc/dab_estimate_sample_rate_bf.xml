@@ -3,8 +3,8 @@
   <name>DAB Est Samp Rate</name>
   <key>estimate_sample_rate_bf</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.estimate_sample_rate_bf($exp_samp_rate, $frame_length)</make>
+  <import>import grdab</import>
+  <make>grdab.estimate_sample_rate_bf($exp_samp_rate, $frame_length)</make>
   <param>
     <name>Samp. Rate</name>
     <key>exp_samp_rate</key>

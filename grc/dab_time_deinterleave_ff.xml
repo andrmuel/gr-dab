@@ -2,8 +2,8 @@
   <name>Time Deinterleaver</name>
   <key>dab_time_deinterleave_ff</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.time_deinterleave_ff($vector_length, $scrambling_vector)</make>
+  <import>import grdab</import>
+  <make>grdab.time_deinterleave_ff($vector_length, $scrambling_vector)</make>
   <param>
     <name>Vector_length</name>
     <key>vector_length</key>

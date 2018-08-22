@@ -26,7 +26,7 @@ description here (python/__init__.py).
 # import swig generated symbols into the dab namespace
 try:
 	# this might fail if the module is python-only
-	from dab_swig import *
+	from grdab_swig import *
 except ImportError:
 	pass
 

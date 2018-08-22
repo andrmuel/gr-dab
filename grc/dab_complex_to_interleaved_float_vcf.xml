@@ -2,8 +2,8 @@
   <name>Complex to interleaved float</name>
   <key>dab_complex_to_interleaved_float_vcf</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.complex_to_interleaved_float_vcf($length)</make>
+  <import>import grdab</import>
+  <make>grdab.complex_to_interleaved_float_vcf($length)</make>
   <param>
     <name>Length</name>
     <key>length</key>

@@ -23,7 +23,7 @@
 #ifndef INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_IMPL_H
 #define INCLUDED_DAB_ESTIMATE_SAMPLE_RATE_BF_IMPL_H
 
-#include <dab/estimate_sample_rate_bf.h>
+#include <grdab/estimate_sample_rate_bf.h>
 
 namespace gr {
   namespace dab {

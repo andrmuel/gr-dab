@@ -13,7 +13,7 @@ demodulate DAB signal and use it for calibration purposes
 from gnuradio import gr, blocks
 import osmosdr
 from gnuradio.eng_option import eng_option
-import dab
+import grdab
 from optparse import OptionParser
 import sys, threading, time
 
@@ -81,10 +81,10 @@ class rtl_sdr_dab_cal(gr.top_block):
 			self.src = blocks.file_source(gr.sizeof_gr_complex, self.filename, False)
 		
 		
-		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, 			autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
+		self.dab_params = grdab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
+		self.rx_params = grdab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, 			autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
 
-		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=self.verbose) 
+		self.demod = grdab.ofdm_demod(self.dab_params, self.rx_params, verbose=self.verbose) 
 
 		self.v2s = blocks.vector_to_stream(gr.sizeof_gr_complex, self.dab_params.num_carriers)
 

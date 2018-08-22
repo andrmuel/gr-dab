@@ -23,7 +23,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_peak_detector_fb (gr_unittest.TestCase):
 

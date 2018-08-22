@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_fib_sink_vb (gr_unittest.TestCase):
 
@@ -38,7 +38,7 @@ class qa_fib_sink_vb (gr_unittest.TestCase):
         0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x4C, 0x89)
         src = blocks.vector_source_b(data, True)
         fibout = blocks.stream_to_vector(1, 32)
-        fibsink = dab.fib_sink_vb()
+        fibsink = grdab.fib_sink_vb()
         self.tb.connect(src, blocks.head(gr.sizeof_char, 300), fibout, fibsink)
         self.tb.run()
         pass

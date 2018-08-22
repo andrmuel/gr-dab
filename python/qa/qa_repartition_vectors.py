@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 
 class qa_repartition_vectors(gr_unittest.TestCase):
 	"""
@@ -28,7 +28,7 @@ class qa_repartition_vectors(gr_unittest.TestCase):
 		src = blocks.vector_source_b(src_data)
 		trigsrc = blocks.vector_source_b(trig)
 		s2v = blocks.stream_to_vector(gr.sizeof_char, ilen)
-		repartition_vectors = dab.repartition_vectors(gr.sizeof_char,ilen,olen,mult,div)
+		repartition_vectors = grdab.repartition_vectors(gr.sizeof_char,ilen,olen,mult,div)
 		v2s = blocks.vector_to_stream(gr.sizeof_char, olen)
 		dst = blocks.vector_sink_b()
 		trigdst = blocks.vector_sink_b()
@@ -52,7 +52,7 @@ class qa_repartition_vectors(gr_unittest.TestCase):
 		src = blocks.vector_source_f(src_data)
 		trigsrc = blocks.vector_source_b(trig)
 		s2v = blocks.stream_to_vector(gr.sizeof_float, ilen)
-		repartition_vectors = dab.repartition_vectors(gr.sizeof_float,ilen,olen,mult,div)
+		repartition_vectors = grdab.repartition_vectors(gr.sizeof_float,ilen,olen,mult,div)
 		v2s = blocks.vector_to_stream(gr.sizeof_float, olen)
 		dst = blocks.vector_sink_f()
 		trigdst = blocks.vector_sink_b()

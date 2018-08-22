@@ -158,7 +158,7 @@ add_custom_target(uninstall
 ########################################################################
 # Add subdirectories
 ########################################################################
-add_subdirectory(include/dab)
+add_subdirectory(include/grdab)
 add_subdirectory(lib)
 add_subdirectory(swig)
 add_subdirectory(python)

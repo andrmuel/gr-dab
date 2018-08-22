@@ -2,7 +2,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab
+import grdab
 
 class qa_fractional_interpolator_triggered_update(gr_unittest.TestCase):
 	"""
@@ -24,7 +24,7 @@ class qa_fractional_interpolator_triggered_update(gr_unittest.TestCase):
 		expected_result = [x + 0j for x in expected_result]
 		src0 = blocks.vector_source_c(src_data)
 		src1 = blocks.vector_source_b(trigger)
-		fractional_interpolator_triggered_update = dab.fractional_interpolator_triggered_update_cc(0,1)
+		fractional_interpolator_triggered_update = grdab.fractional_interpolator_triggered_update_cc(0,1)
 		fractional_interpolator_triggered_update.set_interp_ratio(2)
 		dst = blocks.vector_sink_c()
 		self.tb.connect(src0, (fractional_interpolator_triggered_update,0))

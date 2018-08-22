@@ -2,8 +2,8 @@
   <name>Select subchannel</name>
   <key>dab_select_subch_vfvf</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.select_subch_vfvf($vlen_in, $vlen_out, $address, $total_size)</make>
+  <import>import grdab</import>
+  <make>grdab.select_subch_vfvf($vlen_in, $vlen_out, $address, $total_size)</make>
   <param>
     <name>Vector length in</name>
     <key>vlen_in</key>

@@ -3,14 +3,14 @@
   <name>DAB: OFDM Demodulator</name>
   <key>dab_ofdm_demod</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.ofdm_demod(
-          dab.parameters.dab_parameters(
+  <import>import grdab</import>
+  <make>grdab.ofdm_demod(
+          grdab.parameters.dab_parameters(
             mode=$dab_mode,
             sample_rate=$samp_rate,
             verbose=False
           ),
-          dab.parameters.receiver_parameters(
+          grdab.parameters.receiver_parameters(
             mode=$dab_mode,
             softbits=$soft_bits.soft,
             input_fft_filter=$input_fft,

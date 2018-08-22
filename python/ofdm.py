@@ -28,7 +28,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr, blocks, fft, filter, digital
-import dab
+import grdab
 from threading import Timer
 from time import sleep
 from math import pi
@@ -49,7 +49,7 @@ class ofdm_mod(gr.hier_block2):
 		"""
 		Hierarchical block for OFDM modulation
 
-		@param dab_params DAB parameter object (dab.parameters.dab_parameters)
+		@param dab_params DAB parameter object (grdab.parameters.dab_parameters)
 		@param debug enables debug output to files
 		"""
 
@@ -63,20 +63,20 @@ class ofdm_mod(gr.hier_block2):
 		# symbol mapping
 		self.mapper_v2s = blocks.vector_to_stream_make(gr.sizeof_char, 384)
 		self.mapper_unpack = blocks.packed_to_unpacked_bb_make(1, gr.GR_MSB_FIRST)
-		self.mapper = dab.mapper_bc_make(dp.num_carriers)
+		self.mapper = grdab.mapper_bc_make(dp.num_carriers)
 		self.mapper_s2v = blocks.stream_to_vector_make(gr.sizeof_gr_complex, 1536)
 
 		# add pilot symbol
-		self.insert_pilot = dab.ofdm_insert_pilot_vcc(dp.prn)
+		self.insert_pilot = grdab.ofdm_insert_pilot_vcc(dp.prn)
 
 		# phase sum
-		self.sum_phase = dab.sum_phasor_trig_vcc(dp.num_carriers)
+		self.sum_phase = grdab.sum_phasor_trig_vcc(dp.num_carriers)
 
 		# frequency interleaving
-		self.interleave = dab.frequency_interleaver_vcc(dp.frequency_interleaving_sequence_array)
+		self.interleave = grdab.frequency_interleaver_vcc(dp.frequency_interleaving_sequence_array)
 
 		# add central carrier & move to middle
-		self.move_and_insert_carrier = dab.ofdm_move_and_insert_zero(dp.fft_length, dp.num_carriers)
+		self.move_and_insert_carrier = grdab.ofdm_move_and_insert_zero(dp.fft_length, dp.num_carriers)
 
 		# ifft
 		self.ifft = fft.fft_vcc(dp.fft_length, False, [], True)
@@ -88,7 +88,7 @@ class ofdm_mod(gr.hier_block2):
 		self.s2v = blocks.stream_to_vector(gr.sizeof_gr_complex, dp.symbol_length)
 
 		# add null symbol
-		self.insert_null = dab.insert_null_symbol(dp.ns_length, dp.symbol_length)
+		self.insert_null = grdab.insert_null_symbol(dp.ns_length, dp.symbol_length)
 
 		#
 		# connect it all
@@ -125,8 +125,8 @@ class ofdm_demod(gr.hier_block2):
 		"""
 		Hierarchical block for OFDM demodulation
 
-		@param dab_params DAB parameter object (dab.parameters.dab_parameters)
-		@param rx_params RX parameter object (dab.parameters.receiver_parameters)
+		@param dab_params DAB parameter object (grdab.parameters.dab_parameters)
+		@param rx_params RX parameter object (grdab.parameters.receiver_parameters)
 		@param debug enables debug output to files
 		@param verbose whether to produce verbose messages
 		"""
@@ -165,12 +165,12 @@ class ofdm_demod(gr.hier_block2):
 		# correct sample rate offset, if enabled
 		if self.rp.autocorrect_sample_rate:
 			if verbose: print "--> dynamic sample rate correction enabled"
-			self.rate_detect_ns = dab.detect_null(dp.ns_length, False)
-			self.rate_estimator = dab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
+			self.rate_detect_ns = grdab.detect_null(dp.ns_length, False)
+			self.rate_estimator = grdab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 			self.rate_prober = blocks.probe_signal_f()
 			self.connect(self.input, self.rate_detect_ns, self.rate_estimator, self.rate_prober)
 			# self.resample = gr.fractional_interpolator_cc(0, 1)
-			self.resample = dab.fractional_interpolator_triggered_update_cc(0,1)
+			self.resample = grdab.fractional_interpolator_triggered_update_cc(0,1)
 			self.connect(self.rate_detect_ns, (self.resample,1))
 			self.updater = Timer(0.1,self.update_correction)
 			# self.updater = threading.Thread(target=self.update_correction)
@@ -184,33 +184,33 @@ class ofdm_demod(gr.hier_block2):
 				self.resample = gr.fractional_interpolator_cc(0, self.rp.sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
-		self.sync = dab.ofdm_sync_dab2(self.dp, self.rp, debug)
+		self.sync = grdab.ofdm_sync_dab2(self.dp, self.rp, debug)
 
 		# ofdm symbol sampler
-		self.sampler = dab.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
+		self.sampler = grdab.ofdm_sampler(dp.fft_length, dp.cp_length, dp.symbols_per_frame, rp.cp_gap)
 		
 		# fft for symbol vectors
 		self.fft = fft.fft_vcc(dp.fft_length, True, [], True)
 
 		# coarse frequency synchronisation
-		self.cfs = dab.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers, dp.cp_length)
+		self.cfs = grdab.ofdm_coarse_frequency_correct(dp.fft_length, dp.num_carriers, dp.cp_length)
 
 		# diff phasor
-		self.phase_diff = dab.diff_phasor_vcc(dp.num_carriers)
+		self.phase_diff = grdab.diff_phasor_vcc(dp.num_carriers)
 
 		# remove pilot symbol
-		self.remove_pilot = dab.ofdm_remove_first_symbol_vcc(dp.num_carriers)
+		self.remove_pilot = grdab.ofdm_remove_first_symbol_vcc(dp.num_carriers)
 
 		# magnitude equalisation
 		if self.rp.equalize_magnitude:
 			if verbose: print "--> magnitude equalization enabled"
-			self.equalizer = dab.magnitude_equalizer_vcc(dp.num_carriers, rp.symbols_for_magnitude_equalization)
+			self.equalizer = grdab.magnitude_equalizer_vcc(dp.num_carriers, rp.symbols_for_magnitude_equalization)
 
 		# frequency deinterleaving
-		self.deinterleave = dab.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
+		self.deinterleave = grdab.frequency_interleaver_vcc(dp.frequency_deinterleaving_sequence_array)
 		
 		# symbol demapping
-		self.demapper = dab.qpsk_demapper_vcb(dp.num_carriers)
+		self.demapper = grdab.qpsk_demapper_vcb(dp.num_carriers)
 
 		#
 		# connect everything
@@ -234,7 +234,7 @@ class ofdm_demod(gr.hier_block2):
 			self.connect(self.remove_pilot, self.deinterleave)
 		if self.rp.softbits:
 			if verbose: print "--> using soft bits"
-			self.softbit_interleaver = dab.complex_to_interleaved_float_vcf(self.dp.num_carriers)
+			self.softbit_interleaver = grdab.complex_to_interleaved_float_vcf(self.dp.num_carriers)
 			self.connect(self.deinterleave, self.softbit_interleaver, (self,0))
 		else:
 			self.connect(self.deinterleave, self.demapper, (self,0))
@@ -244,7 +244,7 @@ class ofdm_demod(gr.hier_block2):
 		self.phase_var_decim   = blocks.keep_one_in_n(gr.sizeof_gr_complex*self.dp.num_carriers, self.rp.phase_var_estimate_downsample)
 		self.phase_var_arg     = blocks.complex_to_arg(dp.num_carriers)
 		self.phase_var_v2s     = blocks.vector_to_stream(gr.sizeof_float, dp.num_carriers)
-		self.phase_var_mod     = dab.modulo_ff(pi/2)
+		self.phase_var_mod     = grdab.modulo_ff(pi/2)
 		self.phase_var_avg_mod = filter.iir_filter_ffd([rp.phase_var_estimate_alpha], [0,1-rp.phase_var_estimate_alpha]) 
 		self.phase_var_sub_avg = blocks.sub_ff()
 		self.phase_var_sqr     = blocks.multiply_ff()
@@ -256,7 +256,7 @@ class ofdm_demod(gr.hier_block2):
 		self.connect(self.phase_var_sqr, self.phase_var_avg, self.probe_phase_var)
 
 		# measure processing rate
-		self.measure_rate = dab.measure_processing_rate(gr.sizeof_gr_complex, 2000000) 
+		self.measure_rate = grdab.measure_processing_rate(gr.sizeof_gr_complex, 2000000) 
 		self.connect(self.input, self.measure_rate)
 
 		# debugging

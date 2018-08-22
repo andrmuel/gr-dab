@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_TIME_DEINTERLEAVE_FF_IMPL_H
 #define INCLUDED_DAB_TIME_DEINTERLEAVE_FF_IMPL_H
 
-#include <dab/time_deinterleave_ff.h>
+#include <grdab/time_deinterleave_ff.h>
 
 namespace gr {
     namespace dab {

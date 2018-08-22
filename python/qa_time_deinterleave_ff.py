@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_time_deinterleave_ff (gr_unittest.TestCase):
 
@@ -37,7 +37,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float_make()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 6)
-        time_deinterleaver = dab.time_deinterleave_ff_make(6, [0, 1])
+        time_deinterleaver = grdab.time_deinterleave_ff_make(6, [0, 1])
         v2s = blocks.vector_to_stream(gr.sizeof_float, 6)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, b2f, time_deinterleaver, blocks.head_make(gr.sizeof_float, 6*3), dst)
@@ -52,7 +52,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float_make()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 4)
-        time_deinterleaver = dab.time_deinterleave_ff_make(4, [0, 3, 2, 1])
+        time_deinterleaver = grdab.time_deinterleave_ff_make(4, [0, 3, 2, 1])
         v2s = blocks.vector_to_stream(gr.sizeof_float, 4)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, b2f, time_deinterleaver, blocks.head_make(gr.sizeof_float, 4*4), dst)
@@ -67,7 +67,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float_make()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 8)
-        time_deinterleaver = dab.time_deinterleave_ff_make(8, [2, 3, 0, 1])
+        time_deinterleaver = grdab.time_deinterleave_ff_make(8, [2, 3, 0, 1])
         v2s = blocks.vector_to_stream(gr.sizeof_float, 8)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, b2f, time_deinterleaver, blocks.head_make(gr.sizeof_float, 8*4), dst)
@@ -82,7 +82,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float_make()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 16)
-        time_deinterleaver = dab.time_deinterleave_ff_make(16, [0, 1, 2, 4])
+        time_deinterleaver = grdab.time_deinterleave_ff_make(16, [0, 1, 2, 4])
         v2s = blocks.vector_to_stream(gr.sizeof_float, 16)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, b2f, time_deinterleaver, blocks.head_make(gr.sizeof_float, 16*2), dst)

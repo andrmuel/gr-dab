@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 
 class qa_ofdm_insert_pilot_vcc(gr_unittest.TestCase):
 	"""
@@ -26,7 +26,7 @@ class qa_ofdm_insert_pilot_vcc(gr_unittest.TestCase):
 		src0 = blocks.vector_source_c(src_data0)
 		src1 = blocks.vector_source_b(src_data1)
 		s2v0 = blocks.stream_to_vector(gr.sizeof_gr_complex,2)
-		ofdm_insert_pilot = dab.ofdm_insert_pilot_vcc(pilot)
+		ofdm_insert_pilot = grdab.ofdm_insert_pilot_vcc(pilot)
 		v2s0 = blocks.vector_to_stream(gr.sizeof_gr_complex,2)
 		dst0 = blocks.vector_sink_c()
 		dst1 = blocks.vector_sink_b()

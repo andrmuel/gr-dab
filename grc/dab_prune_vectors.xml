@@ -3,8 +3,8 @@
   <name>prune_vectors</name>
   <key>dab_prune_vectors</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.prune_vectors($itemsize, $length, $prune_start, $prune_end)</make>
+  <import>import grdab</import>
+  <make>grdab.prune_vectors($itemsize, $length, $prune_start, $prune_end)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name

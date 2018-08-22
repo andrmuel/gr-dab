@@ -2,8 +2,8 @@
   <name>Unpuncture</name>
   <key>dab_unpuncture_ff</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.unpuncture_ff($puncturing_vector, $fillval)</make>
+  <import>import grdab</import>
+  <make>grdab.unpuncture_ff($puncturing_vector, $fillval)</make>
   <param>
     <name>Puncturing vector</name>
     <key>puncturing_vector</key>

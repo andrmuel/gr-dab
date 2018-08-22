@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 import cmath
 
 class qa_puncture_vbb(gr_unittest.TestCase):
@@ -23,7 +23,7 @@ class qa_puncture_vbb(gr_unittest.TestCase):
 		exp_res  = (0,1,2,3,4,5,6,7,8,9)
 		src = blocks.vector_source_b(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_char, 9)
-		puncture_vbb = dab.puncture_vbb(punc_seq)
+		puncture_vbb = grdab.puncture_vbb(punc_seq)
 		v2s = blocks.vector_to_stream(gr.sizeof_char, 5)
 		dst = blocks.vector_sink_b()
 		self.tb.connect(src, s2v, puncture_vbb, v2s, dst)

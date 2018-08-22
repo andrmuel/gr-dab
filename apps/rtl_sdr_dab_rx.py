@@ -13,7 +13,7 @@ receive DAB with USRP
 from gnuradio import gr, blocks
 import osmosdr
 from gnuradio.eng_option import eng_option
-import dab
+import grdab
 from optparse import OptionParser
 import sys, time, threading, math
 
@@ -69,12 +69,12 @@ class rtl_sdr_dab_rx(gr.top_block):
 		self.src.set_gain_mode(1, 0)
 		self.src.set_gain(0, 0)
 
-		self.dab_params = dab.parameters.dab_parameters(
+		self.dab_params = grdab.parameters.dab_parameters(
                         mode=options.dab_mode,
                         sample_rate=self.sample_rate,
                         verbose=options.verbose
                         )
-		self.rx_params = dab.parameters.receiver_parameters(
+		self.rx_params = grdab.parameters.receiver_parameters(
                         mode=options.dab_mode,
                         softbits=True,
                         input_fft_filter=options.filter_input,
@@ -85,7 +85,7 @@ class rtl_sdr_dab_rx(gr.top_block):
                         equalize_magnitude=options.equalize_magnitude
                         )
 
-		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
+		self.demod = grdab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
 
                 if len(args) >= 1:
                         self.filename = args[0]
@@ -95,7 +95,7 @@ class rtl_sdr_dab_rx(gr.top_block):
 
 
 		
-		self.fic_dec = dab.fic_decode(self.dab_params)
+		self.fic_dec = grdab.fic_decode(self.dab_params)
 		self.connect(self.src, self.demod, self.fic_dec)
 
 		# tune frequency

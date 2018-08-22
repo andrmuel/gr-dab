@@ -22,7 +22,7 @@
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 import os
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_mp2_decode_bs (gr_unittest.TestCase):
 
@@ -37,7 +37,7 @@ class qa_mp2_decode_bs (gr_unittest.TestCase):
         if os.path.exists("debug/mp2_encoded.dat"):
             self.src_mp2 = blocks.file_source_make(gr.sizeof_char, "debug/mp2_encoded.dat")
             self.unpack = blocks.packed_to_unpacked_bb_make(1, gr.GR_MSB_FIRST)
-            self.mp2_decode = dab.mp2_decode_bs_make(14)
+            self.mp2_decode = grdab.mp2_decode_bs_make(14)
             self.sink_left = blocks.file_sink_make(gr.sizeof_short, "debug/mp2_decoded_left.dat")
             self.sink_right = blocks.file_sink_make(gr.sizeof_short, "debug/mp2_decoded_right.dat")
             self.tb.connect(self.src_mp2, self.unpack, (self.mp2_decode, 0), self.sink_left)

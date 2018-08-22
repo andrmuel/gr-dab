@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_valve_ff (gr_unittest.TestCase):
 
@@ -35,7 +35,7 @@ class qa_valve_ff (gr_unittest.TestCase):
         src_data = (1, 2, 3, 4)
         expected_result = (1, 2, 3, 4)
         src = blocks.vector_source_f(src_data)
-        valve = dab.valve_ff(False)
+        valve = grdab.valve_ff(False)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, valve, dst)
         self.tb.run()
@@ -46,7 +46,7 @@ class qa_valve_ff (gr_unittest.TestCase):
         src_data = (1, 2, 3, 4)
         expected_result = (0, 0, 0, 0)
         src = blocks.vector_source_f(src_data)
-        valve = dab.valve_ff(True, True)
+        valve = grdab.valve_ff(True, True)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, valve, dst)
         self.tb.run()
