@@ -58,5 +58,5 @@ install(FILES
     reed_solomon_decode_bb.h
     valve_ff.h
     peak_detector_fb.h
-    control_stream_to_tag_cc.h DESTINATION include/dab
+    control_stream_to_tag_cc.h DESTINATION include/grdab
 )

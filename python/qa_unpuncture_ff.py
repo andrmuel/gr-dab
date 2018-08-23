@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_unpuncture_ff (gr_unittest.TestCase):
 
@@ -36,7 +36,7 @@ class qa_unpuncture_ff (gr_unittest.TestCase):
         punc_seq = (1, 0, 0, 0, 1, 0, 1, 1, 1)
         exp_res = (0, 77, 77, 77, 1, 77, 2, 3, 4, 5, 77, 77, 77, 6, 77, 7, 8, 9)
         src = blocks.vector_source_f(src_data)
-        unpuncture_ff = dab.unpuncture_ff(punc_seq, 77)
+        unpuncture_ff = grdab.unpuncture_ff(punc_seq, 77)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, unpuncture_ff, dst)
         self.tb.run()
@@ -48,7 +48,7 @@ class qa_unpuncture_ff (gr_unittest.TestCase):
         punc_seq = (1, 0, 0, 0, 1, 0, 1, 1, 1)
         exp_res = (0, 0, 0, 0, 1, 0, 2, 3, 4, 5, 0, 0, 0, 6, 0, 7, 8, 9)
         src = blocks.vector_source_f(src_data)
-        unpuncture_ff = dab.unpuncture_ff(punc_seq, 0)
+        unpuncture_ff = grdab.unpuncture_ff(punc_seq, 0)
         dst = blocks.vector_sink_f()
         self.tb.connect(src, unpuncture_ff, dst)
         self.tb.run()

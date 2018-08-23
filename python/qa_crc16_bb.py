@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 
 class qa_crc16_bb(gr_unittest.TestCase):
@@ -41,7 +41,7 @@ class qa_crc16_bb(gr_unittest.TestCase):
             0x09, 0x00, 0x00, 0x0C, 0x02, 0x00, 0x00, 0x02, 0x08, 0x00, 0x00, 0x0A, 0xE4, 0x9C)
         src = blocks.vector_source_b(src_data01)
         s2v = blocks.stream_to_vector(gr.sizeof_char, 32)
-        crc16 = dab.crc16_bb(32, 0x1021, 0xffff)
+        crc16 = grdab.crc16_bb(32, 0x1021, 0xffff)
         v2s = blocks.vector_to_stream(gr.sizeof_char, 32)
         dst = blocks.vector_sink_b()
         self.tb.connect(src, s2v, crc16, v2s, dst)
@@ -62,7 +62,7 @@ class qa_crc16_bb(gr_unittest.TestCase):
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x56, 0xEF)
         src = blocks.vector_source_b(src_data02)
         s2v = blocks.stream_to_vector(gr.sizeof_char, 32)
-        crc16 = dab.crc16_bb(32, 0x1021, 0xffff)
+        crc16 = grdab.crc16_bb(32, 0x1021, 0xffff)
         v2s = blocks.vector_to_stream(gr.sizeof_char, 32)
         dst = blocks.vector_sink_b()
         self.tb.connect(src, s2v, crc16, v2s, dst)

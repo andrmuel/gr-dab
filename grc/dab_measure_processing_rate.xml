@@ -3,8 +3,8 @@
   <name>DAB Measure Proc. Rate</name>
   <key>measure_processing_rate_x</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.measure_processing_rate($in_type.in_len, $samples_to_count)</make>
+  <import>import grdab</import>
+  <make>grdab.measure_processing_rate($in_type.in_len, $samples_to_count)</make>
   <param>
     <name>Type</name>
     <key>in_type</key>

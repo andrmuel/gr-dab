@@ -3,8 +3,8 @@
   <name>repartition_vectors</name>
   <key>dab_repartition_vectors</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.repartition_vectors($type.size, $vlen_in, $vlen_out, $multiply, $divide)</make>
+  <import>import grdab</import>
+  <make>grdab.repartition_vectors($type.size, $vlen_in, $vlen_out, $multiply, $divide)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name

@@ -2,8 +2,8 @@
   <name>Puncture</name>
   <key>dab_puncture_bb</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.puncture_bb($puncturing_vector)</make>
+  <import>import grdab</import>
+  <make>grdab.puncture_bb($puncturing_vector)</make>
   <param>
     <name>Puncturing vector</name>
     <key>puncturing_vector</key>

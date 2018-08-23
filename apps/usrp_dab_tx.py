@@ -12,7 +12,7 @@ send DAB with USRP
 
 from gnuradio import gr, uhd, blocks
 from gnuradio.eng_option import eng_option
-import dab
+import grdab
 from optparse import OptionParser
 import sys
 
@@ -45,14 +45,14 @@ class usrp_dab_tx(gr.top_block):
 
 		interp = 64
 		self.sample_rate = 128e6/interp
-		self.dab_params = dab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=options.verbose)
+		self.dab_params = grdab.parameters.dab_parameters(mode=1, sample_rate=2000000, verbose=options.verbose)
 
 		self.src = blocks.file_source(gr.sizeof_char, self.filename)
 		self.trigsrc = blocks.vector_source_b([1]+[0]*(self.dab_params.symbols_per_frame-1),True)
 		
 		self.s2v = blocks.stream_to_vector(gr.sizeof_char, 384)
 		
-		self.mod = dab.ofdm_mod(self.dab_params, verbose=options.verbose) 
+		self.mod = grdab.ofdm_mod(self.dab_params, verbose=options.verbose) 
 
 		#self.sink = usrp.sink_c(interp_rate = interp)
 		self.sink = uhd.usrp_sink("",uhd.io_type.COMPLEX_FLOAT32,1)

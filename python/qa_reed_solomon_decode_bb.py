@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 import os
 
 class qa_reed_solomon_decode_bb (gr_unittest.TestCase):
@@ -50,7 +50,7 @@ class qa_reed_solomon_decode_bb (gr_unittest.TestCase):
         206, 138, 38, 107, 242, 128, 228, 215, 34, 43, 109, 122, 92, 195, 54, 105, 246L)
 
         self.src = blocks.vector_source_b(self.corrupted_data)
-        self.rs_decoder = dab.reed_solomon_decode_bb_make(1)
+        self.rs_decoder = grdab.reed_solomon_decode_bb_make(1)
         self.sink = blocks.vector_sink_b_make()
         self.tb.connect(self.src, self.rs_decoder, self.sink)
         self.tb.run()

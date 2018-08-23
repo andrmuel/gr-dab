@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 
 class qa_prune_vectors(gr_unittest.TestCase):
 	"""
@@ -21,7 +21,7 @@ class qa_prune_vectors(gr_unittest.TestCase):
 		expected_result = [3,4,8,9,13,14]
 		src = blocks.vector_source_f(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_float, 5)
-		prune_vectors = dab.prune_vectors(gr.sizeof_float,5,2,1)
+		prune_vectors = grdab.prune_vectors(gr.sizeof_float,5,2,1)
 		v2s = blocks.vector_to_stream(gr.sizeof_float, 2)
 		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, prune_vectors, v2s, dst)
@@ -36,7 +36,7 @@ class qa_prune_vectors(gr_unittest.TestCase):
 		expected_result = [3,4,8,9,13,14]
 		src = blocks.vector_source_b(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_char, 5)
-		prune_vectors = dab.prune_vectors(gr.sizeof_char,5,2,1)
+		prune_vectors = grdab.prune_vectors(gr.sizeof_char,5,2,1)
 		v2s = blocks.vector_to_stream(gr.sizeof_char, 2)
 		dst = blocks.vector_sink_b()
 		self.tb.connect(src, s2v, prune_vectors, v2s, dst)

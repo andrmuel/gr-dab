@@ -3,8 +3,8 @@
   <name>sum_phasor_trig_vcc</name>
   <key>dab_sum_phasor_trig_vcc</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.sum_phasor_trig_vcc($length)</make>
+  <import>import grdab</import>
+  <make>grdab.sum_phasor_trig_vcc($length)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name

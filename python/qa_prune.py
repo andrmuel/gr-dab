@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_prune (gr_unittest.TestCase):
 
@@ -35,7 +35,7 @@ class qa_prune (gr_unittest.TestCase):
         src_data = [1, 2, 3, 4, 5, 6, 7, 6, 5, 4, 3, 2, 1, 2, 3]
         expected_result = [3, 4, 6, 5, 1, 2]
         src = blocks.vector_source_b(src_data)
-        prune = dab.prune(gr.sizeof_char, 5, 2, 1)
+        prune = grdab.prune(gr.sizeof_char, 5, 2, 1)
         dst = blocks.vector_sink_b()
         self.tb.connect(src, prune, dst)
         self.tb.run()

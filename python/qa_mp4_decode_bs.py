@@ -23,7 +23,7 @@ from gnuradio import gr, gr_unittest
 from gnuradio import blocks
 from gnuradio import audio
 import os
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_mp4_decode_bs (gr_unittest.TestCase):
 
@@ -37,7 +37,7 @@ class qa_mp4_decode_bs (gr_unittest.TestCase):
     def test_001_t (self):
         if os.path.exists("debug/reed_solomon_repaired.dat"):
             self.src = blocks.file_source_make(gr.sizeof_char, "debug/reed_solomon_repaired.dat")
-            self.mp4 = dab.mp4_decode_bs_make(14)
+            self.mp4 = grdab.mp4_decode_bs_make(14)
             self.s2f_left = blocks.short_to_float_make(1, 32767)
             self.s2f_right = blocks.short_to_float_make(1, 32767)
             self.audio = audio.sink_make(32000)

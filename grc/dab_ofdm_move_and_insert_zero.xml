@@ -3,8 +3,8 @@
   <name>ofdm_move_and_insert_zero</name>
   <key>dab_ofdm_move_and_insert_zero</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.ofdm_move_and_insert_zero($fft_length, $num_carriers)</make>
+  <import>import grdab</import>
+  <make>grdab.ofdm_move_and_insert_zero($fft_length, $num_carriers)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name

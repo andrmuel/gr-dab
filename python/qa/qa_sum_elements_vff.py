@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 
 class qa_sum_elements_vff(gr_unittest.TestCase):
 	"""
@@ -23,7 +23,7 @@ class qa_sum_elements_vff(gr_unittest.TestCase):
 		expected_result = [sum(a),sum(b)]
 		src = blocks.vector_source_f(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_float, 5)
-		sum_elements_vff = dab.sum_elements_vff(5)
+		sum_elements_vff = grdab.sum_elements_vff(5)
 		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, sum_elements_vff, dst)
 		self.tb.run()
@@ -39,7 +39,7 @@ class qa_sum_elements_vff(gr_unittest.TestCase):
 		expected_result = [sum(a),sum(b)]
 		src = blocks.vector_source_f(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_float, 4096)
-		sum_elements_vff = dab.sum_elements_vff(4096)
+		sum_elements_vff = grdab.sum_elements_vff(4096)
 		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, sum_elements_vff, dst)
 		self.tb.run()

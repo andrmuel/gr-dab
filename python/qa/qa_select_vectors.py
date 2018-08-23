@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest, blocks
-import dab
+import grdab
 
 class qa_select_vectors(gr_unittest.TestCase):
 	"""
@@ -27,7 +27,7 @@ class qa_select_vectors(gr_unittest.TestCase):
 		src = blocks.vector_source_b(src_data)
 		trigsrc = blocks.vector_source_b(trig)
 		s2v = blocks.stream_to_vector(gr.sizeof_char, 2)
-		select_vectors = dab.select_vectors(gr.sizeof_char,vlen,len,skip)
+		select_vectors = grdab.select_vectors(gr.sizeof_char,vlen,len,skip)
 		v2s = blocks.vector_to_stream(gr.sizeof_char, 2)
 		dst = blocks.vector_sink_b()
 		trigdst = blocks.vector_sink_b()
@@ -52,7 +52,7 @@ class qa_select_vectors(gr_unittest.TestCase):
 		src = blocks.vector_source_f(src_data)
 		trigsrc = blocks.vector_source_b(trig)
 		s2v = blocks.stream_to_vector(gr.sizeof_float, 2)
-		select_vectors = dab.select_vectors(gr.sizeof_float,vlen,len,skip)
+		select_vectors = grdab.select_vectors(gr.sizeof_float,vlen,len,skip)
 		v2s = blocks.vector_to_stream(gr.sizeof_float, 2)
 		dst = blocks.vector_sink_f()
 		trigdst = blocks.vector_sink_b()

@@ -27,7 +27,7 @@
 
 from gnuradio import gr
 from gnuradio.eng_option import eng_option
-import dab
+import grdab
 from optparse import OptionParser
 import sys
 
@@ -57,11 +57,11 @@ class test_fic(gr.top_block):
 		(options, args) = parser.parse_args ()
 	
 		if options.usrp_source:
-			dp = dab.dab_parameters(options.dab_mode, verbose=options.verbose, sample_rate=2000000)
+			dp = grdab.dab_parameters(options.dab_mode, verbose=options.verbose, sample_rate=2000000)
 		else:
-			dp = dab.dab_parameters(options.dab_mode, verbose=options.verbose)
+			dp = grdab.dab_parameters(options.dab_mode, verbose=options.verbose)
 
-		rp = dab.receiver_parameters(options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, correct_ffe=True, equalize_magnitude=True, verbose=options.verbose)
+		rp = grdab.receiver_parameters(options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, correct_ffe=True, equalize_magnitude=True, verbose=options.verbose)
 
 		if len(args)<1:
 			print "error: need file with samples"
@@ -72,8 +72,8 @@ class test_fic(gr.top_block):
 			self.src = gr.file_source(gr.sizeof_gr_complex, filename, False)
 
 		
-		self.dab_demod = dab.ofdm_demod(dp, rp, verbose=options.verbose, debug=options.debug)
-		self.fic_dec   = dab.fic_decode(dp, verbose=options.verbose, debug=options.debug)
+		self.dab_demod = grdab.ofdm_demod(dp, rp, verbose=options.verbose, debug=options.debug)
+		self.fic_dec   = grdab.fic_decode(dp, verbose=options.verbose, debug=options.debug)
 		
 		self.connect(self.src, self.dab_demod, self.fic_dec)
 		self.connect((self.dab_demod,1), (self.fic_dec,1))

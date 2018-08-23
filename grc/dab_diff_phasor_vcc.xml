@@ -3,8 +3,8 @@
   <name>Diff Phasor VCC</name>
   <key>dab_diff_phasor_vcc</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.diff_phasor_vcc($num_carriers)</make>
+  <import>import grdab</import>
+  <make>grdab.diff_phasor_vcc($num_carriers)</make>
 
   <param>
     <name>num_carriers</name>

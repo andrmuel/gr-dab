@@ -3,9 +3,9 @@
   <name>DAB: OFDM Modulator</name>
   <key>dab_ofdm_mod</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.ofdm_mod(
-          dab.parameters.dab_parameters(
+  <import>import grdab</import>
+  <make>grdab.ofdm_mod(
+          grdab.parameters.dab_parameters(
             mode=$dab_mode,
             sample_rate=$samp_rate,
             verbose=False

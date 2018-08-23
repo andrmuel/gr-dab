@@ -2,7 +2,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab
+import grdab
 import cmath
 from math import pi
 
@@ -32,7 +32,7 @@ class qa_ofdm_ffs_sample(gr_unittest.TestCase):
 		expected_result = (0,0,0,0,0,0,0,0,0,0,0,0,d,d,d,d,d,d,d,d)
 		src0 = blocks.vector_source_c(src_data0)
 		src1 = blocks.vector_source_b(src_data1)
-		ffe = dab.ofdm_ffe_all_in_one(symbol_length, fft_length, num_symbols, alpha, 10)
+		ffe = grdab.ofdm_ffe_all_in_one(symbol_length, fft_length, num_symbols, alpha, 10)
 		dst0 = blocks.vector_sink_f()
 		self.tb.connect(src0, (ffe,0))
 		self.tb.connect(src1, (ffe,1))

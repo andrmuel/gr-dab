@@ -2,7 +2,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab
+import grdab
 
 class qa_measure_ber_b(gr_unittest.TestCase):
 	"""
@@ -20,7 +20,7 @@ class qa_measure_ber_b(gr_unittest.TestCase):
 	def test_001_measure_ber_b(self):
 		src0 = blocks.vector_source_b(range(0,256))
 		src1 = blocks.vector_source_b(range(0,256))
-		sink = dab.measure_ber_b()
+		sink = grdab.measure_ber_b()
 		self.tb.connect(src0, (sink,0))
 		self.tb.connect(src1, (sink,1))
 		self.tb.run()
@@ -29,7 +29,7 @@ class qa_measure_ber_b(gr_unittest.TestCase):
 	def test_001_measure_ber_b(self):
 		src0 = blocks.vector_source_b([0]*100)
 		src1 = blocks.vector_source_b([255]*100)
-		sink = dab.measure_ber_b()
+		sink = grdab.measure_ber_b()
 		self.tb.connect(src0, (sink,0))
 		self.tb.connect(src1, (sink,1))
 		self.tb.run()
@@ -38,7 +38,7 @@ class qa_measure_ber_b(gr_unittest.TestCase):
 	def test_002_measure_ber_b(self):
 		src0 = blocks.vector_source_b(range(0,256)*2)
 		src1 = blocks.vector_source_b([0]*256+[255]*256)
-		sink = dab.measure_ber_b()
+		sink = grdab.measure_ber_b()
 		self.tb.connect(src0, (sink,0))
 		self.tb.connect(src1, (sink,1))
 		self.tb.run()
@@ -47,7 +47,7 @@ class qa_measure_ber_b(gr_unittest.TestCase):
 	def test_003_measure_ber_b(self):
 		src0 = blocks.vector_source_b([0,7,255,250])
 		src1 = blocks.vector_source_b([0,2,255,3])
-		sink = dab.measure_ber_b()
+		sink = grdab.measure_ber_b()
 		self.tb.connect(src0, (sink,0))
 		self.tb.connect(src1, (sink,1))
 		self.tb.run()

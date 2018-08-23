@@ -11,7 +11,7 @@ Complete DAB TX and RX with a software channel to simulate noise, frequency offs
 """
 
 from gnuradio import gr, blks2
-import dab
+import grdab
 import math, random
 
 DAB_SAMPLE_RATE=2048000
@@ -19,8 +19,8 @@ DAB_SAMPLE_RATE=2048000
 class dab_ofdm_testbench(gr.top_block):
 	def __init__(self, autocorrect_sample_rate=False, input_filter=True, ber_sink=False):
 		gr.top_block.__init__(self)
-		self.dp = dab.dab_parameters(1)
-		self.rp = dab.receiver_parameters(1, softbits=False, input_fft_filter=input_filter, autocorrect_sample_rate=autocorrect_sample_rate, correct_ffe=True, equalize_magnitude=False)
+		self.dp = grdab.dab_parameters(1)
+		self.rp = grdab.receiver_parameters(1, softbits=False, input_fft_filter=input_filter, autocorrect_sample_rate=autocorrect_sample_rate, correct_ffe=True, equalize_magnitude=False)
 		self.ber_sink = ber_sink
 		os.environ['GR_SCHEDULER'] = "STS" # need single threaded scheduler for use with concatenate_signals
 
@@ -39,7 +39,7 @@ class dab_ofdm_testbench(gr.top_block):
 		self.source    = gr.vector_source_b(self.random_bytes, False)
 		self.trig      = gr.vector_source_b(self.frame_start, False)
 		if self.ber_sink:
-			self.sink = dab.blocks.measure_ber_b()
+			self.sink = grdab.blocks.measure_ber_b()
 		else:
 			self.sink = gr.vector_sink_b()
 
@@ -56,12 +56,12 @@ class dab_ofdm_testbench(gr.top_block):
 			self.ber_skipbytes1 = gr.skiphead(gr.sizeof_char, self.ber_skipbytes+self.dp.bytes_per_frame)
 		
 		# more blocks (they have state, so better reinitialise them)
-		self.mod       = dab.ofdm_mod(self.dp, debug = False)
+		self.mod       = grdab.ofdm_mod(self.dp, debug = False)
 		self.rescale   = gr.multiply_const_cc(1)
 		self.amp       = gr.multiply_const_cc(1)
 		self.channel   = blks2.channel_model(noise_voltage=0, noise_seed=random.randint(0,10000))
-		# self.cat       = dab.concatenate_signals(gr.sizeof_gr_complex)
-		self.demod     = dab.ofdm_demod(self.dp, self.rp, debug = False, verbose = True)
+		# self.cat       = grdab.concatenate_signals(gr.sizeof_gr_complex)
+		self.demod     = grdab.ofdm_demod(self.dp, self.rp, debug = False, verbose = True)
 
 		# connect it all
 		if self.ber_sink:
@@ -119,6 +119,6 @@ class dab_ofdm_testbench(gr.top_block):
 		# TODO some state is still left in the demod block - for now just make a new one
 		self.disconnect(self.channel, self.demod)
 		self.disconnect((self.demod,0), self.v2s)
-		self.demod = dab.ofdm_demod(self.dp, self.rp, debug = False, verbose = True)
+		self.demod = grdab.ofdm_demod(self.dp, self.rp, debug = False, verbose = True)
 		self.connect(self.channel, self.demod)
 		self.connect((self.demod,0), self.v2s)

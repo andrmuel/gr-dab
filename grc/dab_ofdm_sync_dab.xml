@@ -3,8 +3,8 @@
   <name>ofdm_sync_dab</name>
   <key>dab_ofdm_sync_dab</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.ofdm_sync_dab($dab_params, $rx_params, $debug)</make>
+  <import>import grdab</import>
+  <make>grdab.ofdm_sync_dab($dab_params, $rx_params, $debug)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name

@@ -3,8 +3,8 @@
   <name>select_vectors</name>
   <key>dab_select_vectors</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.select_vectors($type.size, $total_length, $num_msc_syms, $num_fic_syms)</make>
+  <import>import grdab</import>
+  <make>grdab.select_vectors($type.size, $total_length, $num_msc_syms, $num_fic_syms)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name

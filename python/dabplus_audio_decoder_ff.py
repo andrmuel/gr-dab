@@ -21,7 +21,7 @@
 
 from gnuradio import gr, blocks
 from gnuradio import filter
-import dab
+import grdab
 
 class dabplus_audio_decoder_ff(gr.hier_block2):
     """
@@ -66,13 +66,13 @@ class dabplus_audio_decoder_ff(gr.hier_block2):
         #     raise ValueError
 
         # MSC decoder extracts logical frames out of transmission frame and decodes it
-        self.msc_decoder = dab.msc_decode(self.dp, self.address, self.size, self.protection, self.verbose, self.debug)
+        self.msc_decoder = grdab.msc_decode(self.dp, self.address, self.size, self.protection, self.verbose, self.debug)
         # firecode synchronizes to superframes and checks
-        self.firecode = dab.firecode_check_bb_make(self.bit_rate_n)
+        self.firecode = grdab.firecode_check_bb_make(self.bit_rate_n)
         # Reed-Solomon error repair
-        self.rs = dab.reed_solomon_decode_bb_make(self.bit_rate_n)
+        self.rs = grdab.reed_solomon_decode_bb_make(self.bit_rate_n)
         # mp4 decoder
-        self.mp4 = dab.mp4_decode_bs_make(self.bit_rate_n)
+        self.mp4 = grdab.mp4_decode_bs_make(self.bit_rate_n)
 
         self.connect((self, 0), self.msc_decoder, self.firecode, self.rs, self.mp4)
 

@@ -3,8 +3,8 @@
   <name>DAB: MSC decoder</name>
   <key>dab_msc_decode</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.msc_decode($dab_params, $address, $size, $protection, $verbose, $debug)</make>
+  <import>import grdab</import>
+  <make>grdab.msc_decode($dab_params, $address, $size, $protection, $verbose, $debug)</make>
   <param>
     <name>DAB parameter</name>
     <key>dab_params</key>

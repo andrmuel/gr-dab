@@ -3,8 +3,8 @@
   <name>Detect NULL</name>
   <key>dab_detect_null</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.detect_null($length, False)</make>
+  <import>import grdab</import>
+  <make>grdab.detect_null($length, False)</make>
   <param>
     <name>NULL Len. in samples</name>
     <key>length</key>

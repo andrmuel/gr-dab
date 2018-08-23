@@ -12,7 +12,7 @@ receive DAB with USRP
 
 from gnuradio import gr, uhd, blocks
 from gnuradio import audio
-import dab
+import grdab
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 import sys, time, threading, math
@@ -70,21 +70,21 @@ class usrp_dab_rx(gr.top_block):
 		self.sample_rate = 2e6#self.src.adc_rate()/options.decim
 		self.src.set_samp_rate(self.sample_rate)
 		self.src.set_antenna(options.antenna)
-		self.dab_params = dab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
-		self.rx_params = dab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
+		self.dab_params = grdab.parameters.dab_parameters(mode=options.dab_mode, sample_rate=self.sample_rate, verbose=options.verbose)
+		self.rx_params = grdab.parameters.receiver_parameters(mode=options.dab_mode, softbits=True, input_fft_filter=options.filter_input, autocorrect_sample_rate=options.autocorrect_sample_rate, sample_rate_correction_factor=options.resample_fixed, verbose=options.verbose, correct_ffe=options.correct_ffe, equalize_magnitude=options.equalize_magnitude)
 
-		self.demod = dab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
+		self.demod = grdab.ofdm_demod(self.dab_params, self.rx_params, verbose=options.verbose) 
 
 		# self.sink = gr.file_sink(gr.sizeof_char*384, self.filename)
 		# self.trigsink = gr.null_sink(gr.sizeof_char)
 		# self.connect(self.src, self.demod, self.sink)
 		# self.connect((self.demod,1), self.trigsink)
 		
-		self.fic_dec = dab.fic_decode(self.dab_params)
+		self.fic_dec = grdab.fic_decode(self.dab_params)
 		self.connect(self.src, self.demod, self.fic_dec)
 
 		# add MSC chain
-		self.dabplus = dab.dabplus_audio_decoder_ff(self.dab_params, 112, 54, 84, 2, True)
+		self.dabplus = grdab.dabplus_audio_decoder_ff(self.dab_params, 112, 54, 84, 2, True)
 		self.audio = audio.sink_make(32000)
 		self.connect(self.demod, self.dabplus)
 		# left stereo channel

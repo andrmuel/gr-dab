@@ -3,7 +3,7 @@
 import os
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab
+import grdab
 
 class qa_concatenate_signals(gr_unittest.TestCase):
 	"""
@@ -27,7 +27,7 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 		src0 = blocks.vector_source_c(src_data0)
 		src1 = blocks.vector_source_c(src_data1)
 		src2 = blocks.vector_source_c(src_data2)
-		concatenate_signals = dab.concatenate_signals(gr.sizeof_gr_complex)
+		concatenate_signals = grdab.concatenate_signals(gr.sizeof_gr_complex)
 		dst = blocks.vector_sink_c()
 		self.tb.connect(src0, (concatenate_signals,0))
 		self.tb.connect(src1, (concatenate_signals,1))
@@ -47,7 +47,7 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 		src1 = blocks.vector_source_c(src_data1)
 		src2 = blocks.vector_source_c(src_data2)
 		src3 = blocks.vector_source_c(src_data3)
-		concatenate_signals = dab.concatenate_signals(gr.sizeof_gr_complex)
+		concatenate_signals = grdab.concatenate_signals(gr.sizeof_gr_complex)
 		dst = blocks.vector_sink_c()
 		self.tb.connect(src0, (concatenate_signals,0))
 		self.tb.connect(src1, (concatenate_signals,1))
@@ -68,7 +68,7 @@ class qa_concatenate_signals(gr_unittest.TestCase):
 		src1 = blocks.vector_source_b(src_data1)
 		src2 = blocks.vector_source_b(src_data2)
 		src3 = blocks.vector_source_b(src_data3)
-		concatenate_signals = dab.concatenate_signals(gr.sizeof_char)
+		concatenate_signals = grdab.concatenate_signals(gr.sizeof_char)
 		dst = blocks.vector_sink_b()
 		self.tb.connect(src0, (concatenate_signals,0))
 		self.tb.connect(src1, (concatenate_signals,1))

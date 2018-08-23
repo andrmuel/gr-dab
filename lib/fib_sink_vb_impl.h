@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_FIB_SINK_VB_IMPL_H
 #define INCLUDED_DAB_FIB_SINK_VB_IMPL_H
 
-#include <dab/fib_sink_vb.h>
+#include <grdab/fib_sink_vb.h>
 
 namespace gr {
   namespace dab {

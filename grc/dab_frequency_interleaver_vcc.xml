@@ -2,8 +2,8 @@
   <name>Frequency interleaver</name>
   <key>dab_frequency_interleaver_vcc</key>
   <category>[DAB]</category>
-  <import>import dab</import>
-  <make>dab.frequency_interleaver_vcc($interleaving_sequence)</make>
+  <import>import grdab</import>
+  <make>grdab.frequency_interleaver_vcc($interleaving_sequence)</make>
   <param>
     <name>Interleaving sequence</name>
     <key>interleaving_sequence</key>

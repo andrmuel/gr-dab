@@ -2,7 +2,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab
+import grdab
 
 class qa_complex_to_interleaved_float_vcf(gr_unittest.TestCase):
 	"""
@@ -22,7 +22,7 @@ class qa_complex_to_interleaved_float_vcf(gr_unittest.TestCase):
 		expected_result = (1,3,2,4,5,7,6,8)
 		src = blocks.vector_source_c(src_data)
 		s2v = blocks.stream_to_vector(gr.sizeof_gr_complex, 2)
-		complex_to_interleaved_float_vcf = dab.complex_to_interleaved_float_vcf(2)
+		complex_to_interleaved_float_vcf = grdab.complex_to_interleaved_float_vcf(2)
 		v2s = blocks.vector_to_stream(gr.sizeof_float, 4)
 		dst = blocks.vector_sink_f()
 		self.tb.connect(src, s2v, complex_to_interleaved_float_vcf, v2s, dst)

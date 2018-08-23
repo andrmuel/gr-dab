@@ -21,7 +21,7 @@
 
 from gnuradio import gr, gr_unittest
 from gnuradio import blocks
-import dab_swig as dab
+import grdab_swig as grdab
 
 class qa_energy_disp (gr_unittest.TestCase):
 
@@ -38,7 +38,7 @@ class qa_energy_disp (gr_unittest.TestCase):
         fib_packed_to_unpacked = blocks.packed_to_unpacked_bb(1,gr.GR_MSB_FIRST)
         fib_unpacked_to_packed = blocks.unpacked_to_packed_bb(1, gr.GR_MSB_FIRST)
         src = blocks.vector_source_b(energy_dispersal_undone)
-        self.dp = dab.parameters.dab_parameters(1, 2e6, False)
+        self.dp = grdab.parameters.dab_parameters(1, 2e6, False)
         prbs_src = blocks.vector_source_b(self.dp.prbs(self.dp.energy_dispersal_fic_vector_length), True)
         add_mod_2 = blocks.xor_bb()
         dst = blocks.vector_sink_b()
