@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_H
 #define INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {

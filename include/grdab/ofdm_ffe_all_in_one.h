@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H
 #define INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {

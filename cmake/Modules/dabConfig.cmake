@@ -3,7 +3,7 @@ PKG_CHECK_MODULES(PC_DAB dab)
 
 FIND_PATH(
     DAB_INCLUDE_DIRS
-    NAMES dab/api.h
+    NAMES grdab/api.h
     HINTS $ENV{DAB_DIR}/include
         ${PC_DAB_INCLUDEDIR}
     PATHS ${CMAKE_INSTALL_PREFIX}/include

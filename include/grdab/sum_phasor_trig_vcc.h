@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_H
 #define INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {

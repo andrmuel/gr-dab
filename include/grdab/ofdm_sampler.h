@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_SAMPLER_H
 #define INCLUDED_DAB_OFDM_SAMPLER_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {

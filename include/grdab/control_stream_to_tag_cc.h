@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_CONTROL_STREAM_TO_TAG_CC_H
 #define INCLUDED_DAB_CONTROL_STREAM_TO_TAG_CC_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {

@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_SELECT_VECTORS_H
 #define INCLUDED_DAB_SELECT_VECTORS_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {

@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_MP2_DECODE_BS_H
 #define INCLUDED_DAB_MP2_DECODE_BS_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {

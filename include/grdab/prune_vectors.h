@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_PRUNE_VECTORS_H
 #define INCLUDED_DAB_PRUNE_VECTORS_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {

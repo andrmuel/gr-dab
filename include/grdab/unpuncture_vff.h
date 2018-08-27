@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_UNPUNCTURE_VFF_H
 #define INCLUDED_DAB_UNPUNCTURE_VFF_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {

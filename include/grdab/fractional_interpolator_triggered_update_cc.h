@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_H
 #define INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_H
 
-#include <dab/api.h>
+#include <grdab/api.h>
 #include <gnuradio/block.h>
 
 namespace gr {
