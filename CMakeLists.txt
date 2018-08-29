@@ -82,7 +82,7 @@ endif()
 include(GrPlatform) #define LIB_SUFFIX
 set(GR_RUNTIME_DIR      bin)
 set(GR_LIBRARY_DIR      lib${LIB_SUFFIX})
-set(GR_INCLUDE_DIR      include/dab)
+set(GR_INCLUDE_DIR      include/grdab)
 set(GR_DATA_DIR         share)
 set(GR_PKG_DATA_DIR     ${GR_DATA_DIR}/${CMAKE_PROJECT_NAME})
 set(GR_DOC_DIR          ${GR_DATA_DIR}/doc)
@@ -170,5 +170,5 @@ add_subdirectory(docs)
 # Install cmake search helper for this library
 ########################################################################
 install(FILES cmake/Modules/dabConfig.cmake
-    DESTINATION lib/cmake/dab
+    DESTINATION lib/cmake/grdab
 )

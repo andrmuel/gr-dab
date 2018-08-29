@@ -65,5 +65,5 @@ install(
     FILES
     grdab_swig.i
     ${CMAKE_CURRENT_BINARY_DIR}/grdab_swig_doc.i
-    DESTINATION ${GR_INCLUDE_DIR}/grdab/swig
+    DESTINATION ${GR_INCLUDE_DIR}/swig
 )
