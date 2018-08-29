@@ -77,6 +77,7 @@ endif(NOT dab_sources)
 add_library(gnuradio-dab SHARED ${dab_sources})
 target_link_libraries(gnuradio-dab ${Boost_LIBRARIES} ${GNURADIO_ALL_LIBRARIES} ${GNURADIO_FILTER_LIBRARIES} ${FAAD_LIBRARIES})
 set_target_properties(gnuradio-dab PROPERTIES DEFINE_SYMBOL "gnuradio_dab_EXPORTS")
+set_target_properties(gnuradio-dab PROPERTIES SOVERSION 3.7.13)
 
 if(APPLE)
     set_target_properties(gnuradio-dab PROPERTIES
