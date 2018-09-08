@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-def receive_dabplus():
+def receive_dabplus(frequency=220.352e6, rf_gain=49, if_gain=20, bb_gain=20, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1):
     from gnuradio import gr, blocks, audio
 
     import osmosdr
@@ -8,16 +8,18 @@ def receive_dabplus():
 
     samp_rate = samp_rate = 2000000
 
+    print("Setting frequency: %0.3f MHz" % (frequency/1e6))
+
     osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
     osmosdr_source_0.set_sample_rate(samp_rate)
-    osmosdr_source_0.set_center_freq(220.352e6, 0)
-    osmosdr_source_0.set_freq_corr(80, 0)
+    osmosdr_source_0.set_center_freq(frequency, 0)
+    osmosdr_source_0.set_freq_corr(ppm, 0)
     osmosdr_source_0.set_dc_offset_mode(0, 0)
     osmosdr_source_0.set_iq_balance_mode(0, 0)
     osmosdr_source_0.set_gain_mode(False, 0)
-    osmosdr_source_0.set_gain(49, 0)
-    osmosdr_source_0.set_if_gain(20, 0)
-    osmosdr_source_0.set_bb_gain(20, 0)
+    osmosdr_source_0.set_gain(rf_gain, 0)
+    osmosdr_source_0.set_if_gain(if_gain, 0)
+    osmosdr_source_0.set_bb_gain(bb_gain, 0)
     osmosdr_source_0.set_antenna('', 0)
     osmosdr_source_0.set_bandwidth(0, 0)
 
@@ -39,13 +41,13 @@ def receive_dabplus():
               )
             )
       
-    dab_dabplus_audio_decoder_ff_0 = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), 64, 304, 64, 1, True)
+    dab_dabplus_audio_decoder_ff_0 = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), dab_bit_rate, dab_address, dab_subch_size, dab_protect_level, True)
 
     xrun_monitor = grdab.xrun_monitor_cc(500000)
     f2c = blocks.float_to_complex()
     c2f = blocks.complex_to_float()
 
-    audio_sink_0 = audio.sink(48000, '', True)
+    audio_sink_0 = audio.sink(audio_sample_rate, '', True)
 
     fg = gr.top_block()
 

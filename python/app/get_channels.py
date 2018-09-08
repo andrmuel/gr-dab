@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 
 
-def get_channels():
+def get_channels(frequency=220.352e6):
     from gnuradio import gr, blocks, audio
 
     import osmosdr
@@ -9,9 +9,11 @@ def get_channels():
 
     samp_rate = samp_rate = 2000000
 
+    print("Setting frequency: %0.3f MHz" % (frequency/1e6))
+
     osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
     osmosdr_source_0.set_sample_rate(samp_rate)
-    osmosdr_source_0.set_center_freq(220.352e6, 0)
+    osmosdr_source_0.set_center_freq(frequency, 0)
     osmosdr_source_0.set_freq_corr(80, 0)
     osmosdr_source_0.set_dc_offset_mode(0, 0)
     osmosdr_source_0.set_iq_balance_mode(0, 0)
