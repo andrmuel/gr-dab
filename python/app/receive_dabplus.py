@@ -45,7 +45,7 @@ def receive_dabplus():
     f2c = blocks.float_to_complex()
     c2f = blocks.complex_to_float()
 
-    audio_sink_0 = audio.sink(44100, '', True)
+    audio_sink_0 = audio.sink(48000, '', True)
 
     fg = gr.top_block()
 
