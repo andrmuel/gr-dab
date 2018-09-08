@@ -61,5 +61,6 @@ install(FILES
     dab_dabplus_audio_decoder_ff.xml
     dab_valve_ff.xml
     dab_peak_detector_fb.xml
+    dab_xrun_monitor.xml
     dab_control_stream_to_tag_cc.xml DESTINATION share/gnuradio/grc/blocks
 )
