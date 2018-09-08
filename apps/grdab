@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+import argparse
+
+import grdab.app
+
+
+grdab.app.get_channels()

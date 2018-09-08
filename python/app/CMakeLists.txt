@@ -8,5 +8,6 @@ if(NOT PYTHONINTERP_FOUND)
 GR_PYTHON_INSTALL(
     FILES
     get_channels.py
+    receive_dabplus.py
     __init__.py DESTINATION ${GR_PYTHON_DIR}/grdab/app
 )

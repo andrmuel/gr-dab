@@ -21,5 +21,6 @@ include(GrPython)
 
 GR_PYTHON_INSTALL(
     PROGRAMS
+    grdab
     DESTINATION bin
 )
