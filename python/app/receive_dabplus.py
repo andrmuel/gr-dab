@@ -41,13 +41,21 @@ def receive_dabplus():
       
     dab_dabplus_audio_decoder_ff_0 = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), 64, 304, 64, 1, True)
 
+    xrun_monitor = grdab.xrun_monitor_cc(500000)
+    f2c = blocks.float_to_complex()
+    c2f = blocks.complex_to_float()
+
     audio_sink_0 = audio.sink(44100, '', True)
 
     fg = gr.top_block()
 
     fg.connect(osmosdr_source_0, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
-    fg.connect((dab_dabplus_audio_decoder_ff_0, 0), (audio_sink_0, 0))
-    fg.connect((dab_dabplus_audio_decoder_ff_0, 1), (audio_sink_0, 1))
+    fg.connect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
+    fg.connect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+    fg.connect(f2c, xrun_monitor)
+    fg.connect(xrun_monitor, c2f)
+    fg.connect((c2f, 0), (audio_sink_0, 0))
+    fg.connect((c2f, 1), (audio_sink_0, 1))
 
 
 
