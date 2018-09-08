@@ -50,6 +50,7 @@ GR_PYTHON_INSTALL(
     parameters.py
     fic.py
     msc_decode.py
+    app/get_channels.py
     ${CMAKE_CURRENT_BINARY_DIR}/constants.py
     dabplus_audio_decoder_ff.py DESTINATION ${GR_PYTHON_DIR}/grdab
 )
@@ -74,3 +75,5 @@ GR_ADD_TEST(qa_dabplus_audio_decoder_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOU
 GR_ADD_TEST(qa_reed_solomon_decode_bb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_reed_solomon_decode_bb.py)
 GR_ADD_TEST(qa_valve_ff ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_valve_ff.py)
 GR_ADD_TEST(qa_peak_detector_fb ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_peak_detector_fb.py)
+
+add_subdirectory(app)
