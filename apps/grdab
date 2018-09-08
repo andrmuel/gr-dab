@@ -6,14 +6,22 @@ import sys
 import grdab.app
 
 parser = argparse.ArgumentParser(description='DAB radio (grdab)')
-parser.add_argument('-l','--list', help='List channels', action="store_true")
-parser.add_argument('-r','--receive', help='Receive DAB+', action="store_true")
+subparsers = parser.add_subparsers()
+
+parser_receive = subparsers.add_parser('receive', help='Receive DAB+ audio')
+parser_info = subparsers.add_parser('info', help='Get channel details')
+
+def receive_handler(res):
+  print("receive handler")
+  grdab.app.receive_dabplus()
+
+def info_handler(res):
+  print("info handler")
+  grdab.app.get_channels()
+
+parser_receive.set_defaults(func=receive_handler)
+parser_info.set_defaults(func=info_handler)
 args = parser.parse_args()
 
-if args.receive:
-    grdab.app.receive_dabplus()
-elif args.list:
-    grdab.app.get_channels()
-else:
-    sys.stderr.write("No options given\n")
-    sys.exit(-1)
+args.func(args)
+
