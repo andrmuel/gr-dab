@@ -45,6 +45,7 @@
 #include "grdab/valve_ff.h"
 #include "grdab/peak_detector_fb.h"
 #include "grdab/control_stream_to_tag_cc.h"
+#include "grdab/xrun_monitor_cc.h"
 %}
 
 
@@ -126,3 +127,6 @@ GR_SWIG_BLOCK_MAGIC2(dab, valve_ff);
 GR_SWIG_BLOCK_MAGIC2(dab, peak_detector_fb);
 %include "grdab/control_stream_to_tag_cc.h"
 GR_SWIG_BLOCK_MAGIC2(dab, control_stream_to_tag_cc);
+
+%include "grdab/xrun_monitor_cc.h"
+GR_SWIG_BLOCK_MAGIC2(dab, xrun_monitor_cc);
