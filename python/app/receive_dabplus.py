@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-def receive_dabplus(frequency=220.352e6, rf_gain=49, if_gain=20, bb_gain=20, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1):
+def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1):
     from gnuradio import gr, blocks, audio
 
     import osmosdr
@@ -9,6 +9,8 @@ def receive_dabplus(frequency=220.352e6, rf_gain=49, if_gain=20, bb_gain=20, ppm
     samp_rate = samp_rate = 2000000
 
     print("Setting frequency: %0.3f MHz" % (frequency/1e6))
+    print("Setting RF gain to: %d" % rf_gain)
+    print("Setting Frequency error (ppm) to: %d" % ppm)
 
     osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
     osmosdr_source_0.set_sample_rate(samp_rate)
@@ -21,7 +23,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=49, if_gain=20, bb_gain=20, ppm
     osmosdr_source_0.set_if_gain(if_gain, 0)
     osmosdr_source_0.set_bb_gain(bb_gain, 0)
     osmosdr_source_0.set_antenna('', 0)
-    osmosdr_source_0.set_bandwidth(0, 0)
+    osmosdr_source_0.set_bandwidth(2000000, 0)
 
     dab_ofdm_demod_0 = grdab.ofdm_demod(
               grdab.parameters.dab_parameters(
