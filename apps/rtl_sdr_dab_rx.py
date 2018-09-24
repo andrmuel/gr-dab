@@ -66,7 +66,7 @@ class rtl_sdr_dab_rx(gr.top_block):
 		self.src.set_sample_rate(sample_rate)
 		#self.src.set_center_freq(209.936e6, 0)
 		self.src.set_freq_corr(options.ppm)
-		self.src.set_gain_mode(1, 0)
+		self.src.set_gain_mode(True, 0)
 		self.src.set_gain(0, 0)
 
 		self.dab_params = grdab.parameters.dab_parameters(
@@ -105,7 +105,7 @@ class rtl_sdr_dab_rx(gr.top_block):
 		# set gain      
 		if options.rx_gain is None:
 			# if no gain was specified, use AGC
-                        self.src.set_gain_mode(1, 0)
+                        self.src.set_gain_mode(True, 0)
                 else:
                         self.src.set_gain(options.rx_gain, 0)
 
