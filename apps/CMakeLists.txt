@@ -22,5 +22,12 @@ include(GrPython)
 GR_PYTHON_INSTALL(
     PROGRAMS
     grdab
+    dab_rx_constellation.py
+    rtl_sdr_dab_calibrate.py
+    rtl_sdr_dab_rx.py
+    rtl_sdr_dab_rx_constellation.py
+    usrp_dab_rx.py
+    usrp_dab_rx_audio.py
+    usrp_dab_tx.py
     DESTINATION bin
 )
