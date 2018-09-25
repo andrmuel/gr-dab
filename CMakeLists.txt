@@ -170,5 +170,5 @@ add_subdirectory(docs)
 # Install cmake search helper for this library
 ########################################################################
 install(FILES cmake/Modules/dabConfig.cmake
-    DESTINATION lib/cmake/grdab
+    DESTINATION lib${LIB_SUFFIX}/cmake/grdab
 )
