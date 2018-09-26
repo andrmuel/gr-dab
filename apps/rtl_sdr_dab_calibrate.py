@@ -70,7 +70,7 @@ class rtl_sdr_dab_cal(gr.top_block):
 			# set gain 
 			if options.rx_gain is None:
 				# if no gain was specified, use AGC
-				self.src.set_gain_mode(1, 0)
+				self.src.set_gain_mode(True, 0)
 			else:
 				self.src.set_gain(options.rx_gain, 0)
 
