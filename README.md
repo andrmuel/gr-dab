@@ -48,17 +48,4 @@ To build the examples from the tarball run these commands:
   $ sudo ldconfig
 ```
 
-Additional notes
-----------------
 
-To build gr-dab, please take into account:
-
-* gr-dab does not work with GNU Radio 3.3; I usually work with the master
-  branch from the GNU Radio git repository
-
-* for the simulations in python/channel_tests/, you need the following
-  additional dependencies:
-   * the patches in the patches directory (except for the patches in
-     'applied_in_trunk') must be applied to the GNU Radio trunk
-   * Scipy (available from http://scipy.sourceforge.net)
-   * Matplotlib (available from http://matplotlib.sourceforge.net)
