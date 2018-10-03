@@ -127,6 +127,10 @@ namespace gr {
         d_starting = false;
       }
 
+      if (d_first && ninput_items[0] > 0) {
+        printf("xrun_monitor received first samples (%d). Waiting to fill up buffer..\n" , ninput_items[0]);
+        d_first = false;
+      }
 
       int produced = 0;
       int consumed = 0;
