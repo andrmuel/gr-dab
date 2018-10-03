@@ -179,7 +179,7 @@ class ofdm_demod(gr.hier_block2):
 			self.updater.start()
 		else:
 			self.run_interpolater_update_thread = False
-			if self.rp.sample_rate_correction_factor != 1:
+			if self.rp.sample_rate_correction_factor != 1 or self.rp.always_include_resample:
 				if verbose: print "--> static sample rate correction enabled"
 				self.resample = filter.fractional_interpolator_cc(0, self.rp.sample_rate_correction_factor)
 
@@ -216,7 +216,7 @@ class ofdm_demod(gr.hier_block2):
 		# connect everything
 		#
 
-		if self.rp.autocorrect_sample_rate or self.rp.sample_rate_correction_factor != 1:
+		if self.rp.autocorrect_sample_rate or self.rp.sample_rate_correction_factor != 1 or self.rp.always_include_resample:
 			self.connect(self.input, self.resample)
 			self.input2 = self.resample
 		else:

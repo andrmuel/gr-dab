@@ -468,7 +468,7 @@ class receiver_parameters:
     usrp_ffc_adapt_factor = 0.5  # how much to adapt the correction?
 
     def __init__(self, mode, sample_rate=2048000, softbits=False, input_fft_filter=True, autocorrect_sample_rate=False,
-                 sample_rate_correction_factor=1, correct_ffe=True, equalize_magnitude=True, verbose=True):
+                 sample_rate_correction_factor=1, correct_ffe=True, equalize_magnitude=True, verbose=True, always_include_resample=False):
         """
         Create new instance.
 
@@ -493,6 +493,7 @@ class receiver_parameters:
         self.correct_ffe = correct_ffe
         self.equalize_magnitude = equalize_magnitude
         self.verbose = verbose
+        self.always_include_resample = always_include_resample
 
     def set_mode(self, mode):
         self.mode = mode

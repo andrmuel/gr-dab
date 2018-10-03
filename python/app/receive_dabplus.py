@@ -25,6 +25,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
     osmosdr_source_0.set_antenna('', 0)
     osmosdr_source_0.set_bandwidth(2000000, 0)
 
+    sample_rate_correction_factor = 1 + float(ppm)*1e-6
     dab_ofdm_demod_0 = grdab.ofdm_demod(
               grdab.parameters.dab_parameters(
                 mode=1,
@@ -36,7 +37,8 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
                 softbits=True,
                 input_fft_filter=True,
                 autocorrect_sample_rate=False,
-                sample_rate_correction_factor=1,
+                sample_rate_correction_factor=sample_rate_correction_factor,
+                always_include_resample=True,
                 verbose=False,
                 correct_ffe=True,
                 equalize_magnitude=True

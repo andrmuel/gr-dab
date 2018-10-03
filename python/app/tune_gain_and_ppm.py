@@ -173,7 +173,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
         self.osmosdr_source_0.set_sample_rate(samp_rate)
         self.osmosdr_source_0.set_center_freq(current_frequency, 0)
-        self.osmosdr_source_0.set_freq_corr(ppm, 0)
+        self.osmosdr_source_0.set_freq_corr(0, 0)
         self.osmosdr_source_0.set_dc_offset_mode(0, 0)
         self.osmosdr_source_0.set_iq_balance_mode(0, 0)
         self.osmosdr_source_0.set_gain_mode(False, 0)
@@ -184,6 +184,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.osmosdr_source_0.set_bandwidth(2000000, 0)
           
         self.digital_mpsk_snr_est_cc_0 = digital.mpsk_snr_est_cc(0, 10000, 0.001)
+        sample_rate_correction_factor = 1 + float(ppm)*1e-6
         self.dab_ofdm_demod_0 = grdab.ofdm_demod(
                   grdab.parameters.dab_parameters(
                     mode=1,
@@ -195,7 +196,8 @@ class top_block(gr.top_block, Qt.QWidget):
                     softbits=True,
                     input_fft_filter=True,
                     autocorrect_sample_rate=False,
-                    sample_rate_correction_factor=1,
+                    sample_rate_correction_factor=sample_rate_correction_factor,
+                    always_include_resample=True,
                     verbose=False,
                     correct_ffe=True,
                     equalize_magnitude=True
@@ -231,7 +233,9 @@ class top_block(gr.top_block, Qt.QWidget):
 
     def set_ppm(self, ppm):
         self.ppm = ppm
-        self.osmosdr_source_0.set_freq_corr(self.ppm, 0)
+        factor = 1 + float(ppm)*1e-6
+        self.dab_ofdm_demod_0.resample.set_interp_ratio(factor)
+        #self.osmosdr_source_0.set_freq_corr(self.ppm, 0)
 
     def get_gain_rf(self):
         return self.gain_rf

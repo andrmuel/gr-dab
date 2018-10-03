@@ -41,7 +41,7 @@ def receive_handler(res):
 
 def info_handler(res):
   print("info handler")
-  grdab.app.get_channels(frequency=(res.freq*1e6))
+  grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm)
 
 def adjust_handler(res):
   import grdab.app.tune_gain_and_ppm
