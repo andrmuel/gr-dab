@@ -172,7 +172,7 @@ namespace gr {
                         if (protect_level <= 4) {
                           int bit_rate = subch_size * 8 / (my_conv_table[protect_level]);
                           char *protect_level_string = protect_string[protect_level];
-                          printf("{\"bit_rate\" : \"%d\", \"address\" : \"%d\", \"subch_size\" : \"%d\", \"protect_level\" : \"%s\"}\n", bit_rate, start_address, subch_size, protect_level_string);
+                          printf("{\"bit_rate\" : \"%d\", \"address\" : \"%d\", \"subch_size\" : \"%d\", \"protect_level\" : \"%s (%d)\"}\n", bit_rate, start_address, subch_size, protect_level_string, protect_level);
                         }
                       }
                     }

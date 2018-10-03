@@ -52,7 +52,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
                 verbose=False
               )
             )
-    #dab_fic_decode_0.set_print_channel_info(True)  
+    dab_fic_decode_0.set_print_channel_info(True)
 
     fg = gr.top_block()
 
