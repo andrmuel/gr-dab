@@ -18,7 +18,7 @@ import osmosdr
 import sip
 import sys
 import time
-import grdab.channel_mapping
+import grdab.app.channel_mapping
 
 
 
@@ -73,7 +73,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self._gain_bb_win = RangeWidget(self._gain_bb_range, self.set_gain_bb, 'Gain BB', "counter_slider", float)
         self.top_grid_layout.addWidget(self._gain_bb_win, 3,0,1,1)
 
-        nchannels = len(grdab.channel_mapping.table)
+        nchannels = len(grdab.app.channel_mapping.table)
         default_channel = 26
         self._ch_select_range = Range(0, nchannels-1, 1, default_channel, 200)
         self._ch_select_win = RangeWidget(self._ch_select_range, self.set_channel, 'Channel', "counter_slider", float)
@@ -252,7 +252,7 @@ class top_block(gr.top_block, Qt.QWidget):
         self.osmosdr_source_0.set_if_gain(self.gain_if, 0)
 
     def set_channel(self, val):
-        channel = grdab.channel_mapping.table[int(val)]
+        channel = grdab.app.channel_mapping.table[int(val)]
         print(channel['frequency'])
         self.current_frequency = float(channel['frequency'])*1e6
         self.osmosdr_source_0.set_center_freq(self.current_frequency, 0)

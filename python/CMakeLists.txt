@@ -50,8 +50,6 @@ GR_PYTHON_INSTALL(
     parameters.py
     fic.py
     msc_decode.py
-    channel_mapping.py
-    app/get_channels.py
     ${CMAKE_CURRENT_BINARY_DIR}/constants.py
     dabplus_audio_decoder_ff.py DESTINATION ${GR_PYTHON_DIR}/grdab
 )

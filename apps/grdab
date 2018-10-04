@@ -67,9 +67,37 @@ def info_handler(res):
   grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm)
 
 def adjust_handler(res):
-  import grdab.app.tune_gain_and_ppm
+  import grdab.app.adjustment_gui
   print("will open GUI to adjust gain and ppm")
-  grdab.app.tune_gain_and_ppm.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm)
+
+  import ctypes
+  import sys
+  if sys.platform.startswith('linux'):
+      try:
+          x11 = ctypes.cdll.LoadLibrary('libX11.so')
+          x11.XInitThreads()
+      except:
+          print "Warning: failed to XInitThreads()"
+
+  class SubClass(grdab.app.adjustment_gui.top_block):
+
+    def __init__(self):
+      super(SubClass, self).__init__(frequency_id_default=26, gain_rf_default=rf_gain, gain_if_default=if_gain, gain_bb_default=bb_gain, ppm_default=ppm)
+
+    def set_variable_qtgui_push_button_0(self, val):
+      self.variable_qtgui_push_button_0 = val
+      if val == 1:
+        import grdab.app.config
+        import os
+        cfg_dir = "".join([os.getenv("HOME"),"/.grdab"])
+        cfg = grdab.app.config.Configuration(cfg_dir)
+        cfg.adjust_config = {"gain" : {"gain_rf" : self.get_gain_slider(), "gain_if" : self.get_gain_if(), "gain_bb" : self.get_gain_bb()}, "ppm" : self.get_ppm()}
+        cfg.save()
+
+  tp = SubClass
+
+  grdab.app.adjustment_gui.main(tp)
+  #grdab.app.tune_gain_and_ppm.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm)
 
 parser_receive.set_defaults(func=receive_handler)
 parser_info.set_defaults(func=info_handler)
