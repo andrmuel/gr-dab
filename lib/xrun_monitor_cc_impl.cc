@@ -85,13 +85,13 @@ namespace gr {
                 current_fill = d_length - d_read_index + d_write_index;
 
             float fill_percentage = (((float)current_fill)/((float)d_length))*100;
-            if(fill_percentage > 30 || d_starting) {
+            if(fill_percentage > 10 || d_starting) {
                 ninput_items_required[0] = 0;
             }
             else {
                 ninput_items_required[0] = noutput_items;
                 d_starting = true;
-                printf("Fill fell below 30%% Starting again\n");
+                printf("Fill fell below 10%% Starting again\n");
             }
         }
 
