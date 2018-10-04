@@ -160,7 +160,7 @@
     </param>
     <param>
       <key>stop</key>
-      <value>adjust_gui_helpers.get_number_of_channels()</value>
+      <value>adjust_gui_helpers.get_number_of_channels()-1</value>
     </param>
     <param>
       <key>rangeType</key>
