@@ -67,4 +67,23 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
 
     fg.start()
     raw_input("Running..")
+    #new = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), 64, 304, 64, 1, True)
+    #newaudio = audio.sink(44100, '', True)
     fg.stop()
+    #fg.wait()
+    #xrun_monitor.stop_until_tag()
+    #fg.disconnect(osmosdr_source_0, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
+    #fg.disconnect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
+    #fg.disconnect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+    #fg.disconnect((c2f, 0), (audio_sink_0, 0))
+    #fg.disconnect((c2f, 1), (audio_sink_0, 1))
+    #dab_dabplus_audio_decoder_ff_0 = new
+    #audio_sink_0 = newaudio
+    #fg.connect(osmosdr_source_0, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
+    #fg.connect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
+    #fg.connect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+    #fg.connect((c2f, 0), (audio_sink_0, 0))
+    #fg.connect((c2f, 1), (audio_sink_0, 1))
+    #fg.start()
+    #raw_input("Running..")
+    #fg.stop()
