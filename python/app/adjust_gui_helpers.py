@@ -6,6 +6,6 @@ def get_number_of_channels():
   return len(channel_mapping.table)
 
 def id_to_frequency(i):
-  frequency = float(channel_mapping.table[int(i)]['frequency'])*1e6
-  print(frequency)
-  return frequency
+  frequency_mhz = float(channel_mapping.table[int(i)]['frequency'])
+  print(frequency_mhz)
+  return frequency_mhz*1e6
