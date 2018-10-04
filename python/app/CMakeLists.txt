@@ -15,7 +15,6 @@ GR_PYTHON_INSTALL(
     get_channels.py
     receive_dabplus.py
     config.py
-    tune_gain_and_ppm.py
     adjust_gui_helpers.py
     channel_mapping.py
     ${CMAKE_BINARY_DIR}/python/app/adjustment_gui.py

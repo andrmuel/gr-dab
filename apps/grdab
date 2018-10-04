@@ -70,15 +70,6 @@ def adjust_handler(res):
   import grdab.app.adjustment_gui
   print("will open GUI to adjust gain and ppm")
 
-  import ctypes
-  import sys
-  if sys.platform.startswith('linux'):
-      try:
-          x11 = ctypes.cdll.LoadLibrary('libX11.so')
-          x11.XInitThreads()
-      except:
-          print "Warning: failed to XInitThreads()"
-
   class SubClass(grdab.app.adjustment_gui.top_block):
 
     def __init__(self):
@@ -97,7 +88,6 @@ def adjust_handler(res):
   tp = SubClass
 
   grdab.app.adjustment_gui.main(tp)
-  #grdab.app.tune_gain_and_ppm.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm)
 
 parser_receive.set_defaults(func=receive_handler)
 parser_info.set_defaults(func=info_handler)
