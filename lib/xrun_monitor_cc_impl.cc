@@ -52,6 +52,7 @@ namespace gr {
         d_first = true;
         d_starting = true;
         d_drop_when_full = false;
+        d_stop_until_tag = false;
     }
 
     /*
@@ -96,6 +97,18 @@ namespace gr {
 
     }
 
+    void
+    xrun_monitor_cc_impl::stop_until_tag()
+    {
+        gr::thread::scoped_lock lock(common_mutex);
+        d_stop_until_tag = true;
+        d_n = 0;
+        d_write_index = 0;
+        d_read_index = 0;
+        d_first = true;
+        d_starting = true;
+    }
+
     int
     xrun_monitor_cc_impl::general_work(int noutput_items,
         gr_vector_int &ninput_items,
@@ -106,6 +119,29 @@ namespace gr {
       if (input_items.size() > 0)
         in  = (const gr_complex *) input_items[0];
       gr_complex *out = (gr_complex *) output_items[0];
+
+      gr::thread::scoped_lock lock(common_mutex);
+
+      int end_pos = -1;
+      if (d_stop_until_tag) {
+        std::vector<tag_t> tags;
+        get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + ninput_items[0], pmt::mp("start"));
+        if (tags.size() > 0) {
+          end_pos = tags[0].offset - nitems_read(0);
+          d_stop_until_tag = false;
+        }
+        else {
+          consume_each(ninput_items[0]);
+          for(int i=0;i<noutput_items;i++) {
+            out[i] = 0;
+          }
+          return noutput_items;
+        }
+      }
+      if (end_pos > 0) {
+        consume_each(end_pos);
+        return 0;
+      }
 
       // Do <+signal processing+>
       int zeros_to_produce = 0;

@@ -39,6 +39,9 @@ namespace gr {
       bool d_first;
       bool d_starting;
       bool d_drop_when_full;
+      bool d_stop_until_tag;
+
+      boost::mutex common_mutex;
 
      public:
       xrun_monitor_cc_impl(int length);
@@ -52,6 +55,7 @@ namespace gr {
          gr_vector_void_star &output_items);
 
       void set_drop_when_full(bool val);
+      void stop_until_tag();
 
     };
 
