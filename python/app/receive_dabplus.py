@@ -47,7 +47,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
       
     dab_dabplus_audio_decoder_ff_0 = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), dab_bit_rate, dab_address, dab_subch_size, dab_protect_level, True)
 
-    xrun_monitor = grdab.xrun_monitor_cc(500000)
+    xrun_monitor = grdab.xrun_monitor_cc(100000)
     f2c = blocks.float_to_complex()
     c2f = blocks.complex_to_float()
 

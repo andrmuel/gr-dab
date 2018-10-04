@@ -155,7 +155,7 @@ namespace gr {
       }
       float fill_percentage;
       fill_percentage = (((float)current_fill)/((float)d_length))*100;
-      if (d_starting && fill_percentage < 50) {
+      if (d_starting && fill_percentage < 75) {
         zeros_to_produce = noutput_items;
         noutput_items = 0;
       }
@@ -236,7 +236,6 @@ namespace gr {
       }
 
       if(tosave >= (d_length-current_fill)) {
-        printf("Buffer full!\n");
         tosave = d_length - current_fill - 1;
       }
 
