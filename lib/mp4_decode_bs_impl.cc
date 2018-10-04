@@ -66,6 +66,7 @@ namespace gr {
       aacHandle = NeAACDecOpen();
       //memset(d_aac_frame, 0, 960);
       d_sample_rate = -1;
+      d_first = true;
     }
 
     /*
@@ -296,6 +297,11 @@ namespace gr {
       int16_t *out1 = (int16_t *) output_items[0];
       int16_t *out2 = (int16_t *) output_items[1];
       d_nsamples_produced = 0;
+
+      if (d_first) {
+        add_item_tag(0, nitems_written(0), pmt::mp("audio_start"), pmt::PMT_NIL);
+        d_first = false;
+      }
 
       for (int n = 0; n < noutput_items / (960 * 4); n++) {
         // process superframe header

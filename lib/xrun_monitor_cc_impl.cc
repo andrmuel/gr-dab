@@ -125,7 +125,7 @@ namespace gr {
       int end_pos = -1;
       if (d_stop_until_tag) {
         std::vector<tag_t> tags;
-        get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + ninput_items[0], pmt::mp("start"));
+        get_tags_in_range(tags, 0, nitems_read(0), nitems_read(0) + ninput_items[0], pmt::mp("audio_start"));
         if (tags.size() > 0) {
           end_pos = tags[0].offset - nitems_read(0);
           d_stop_until_tag = false;

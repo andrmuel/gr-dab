@@ -48,6 +48,7 @@ namespace gr {
       int32_t baudRate;
       uint8_t d_dac_rate, d_sbr_flag, d_aac_channel_mode, d_ps_flag, d_mpeg_surround, d_num_aus;
       int16_t d_au_start[10];
+      bool d_first;
 
       NeAACDecHandle aacHandle;
 
