@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import json
+import time
 
 def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, use_zeromq=False):
     from gnuradio import gr, blocks, audio
@@ -30,6 +31,15 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
         osmosdr_source_0.set_bandwidth(2000000, 0)
     else:
         zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, "tcp://127.0.0.1:10444", 100, False, -1)
+        rpc_mgr_server = zeromq.rpc_manager()
+        rpc_mgr_server.set_request_socket("tcp://127.0.0.1:10445")
+        rpc_mgr_server.request("set_sample_rate",[samp_rate])
+        rpc_mgr_server.request("set_rf_gain",[rf_gain])
+        rpc_mgr_server.request("set_if_gain",[if_gain])
+        rpc_mgr_server.request("set_bb_gain",[bb_gain])
+        rpc_mgr_server.request("set_ppm",[0]) # Not using hardware correction since it behaves differently on different hardware
+        rpc_mgr_server.request("set_frequency",[frequency])
+        time.sleep(0.7)
 
     sample_rate_correction_factor = 1 + float(ppm)*1e-6
     dab_ofdm_demod_0 = grdab.ofdm_demod(
@@ -72,6 +82,8 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
 
     fg.start()
 
+    attempt = 0
+    maxattempts = 9
     channels = {}
     while True:
         service_labels = dab_fic_decode_0.get_service_labels()
@@ -105,21 +117,28 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
         for c,item in channels.items():
             if 'label' not in item:
                 all_have_label = False
+        if attempt == maxattempts-1:
+            all_have_label = True
         complete = False
         if len(channels) > 0 and all_have_label:
             print("Channels:")
             for c,item in channels.items():
-                if 'label' in item and 'subch_info' in item:
+                if 'subch_info' in item:
                     conv_table = [ 128, 8, 6, 5];
                     protect_level = item['subch_info']['protection']
                     subch_size = item['subch_info']['size']
                     if protect_level <= 4:
+                        if 'label' in item:
+                            label = item['label']
+                        else:
+                            label = "UNKNOWN"
                         bit_rate = subch_size * 8 / (conv_table[protect_level]);
 
-                        print("%s: (address: %3d, subch_size: %3d, protect_level: %1d, bit_rate: %3d)" % (item['label'], item['subch_info']['address'], item['subch_info']['size'], item['subch_info']['protection'], bit_rate))
+                        print("%s: (address: %3d, subch_size: %3d, protect_level: %1d, bit_rate: %3d)" % (label, item['subch_info']['address'], item['subch_info']['size'], item['subch_info']['protection'], bit_rate))
                 complete = True
 
         if complete:
             break
+        attempt = attempt + 1
         time.sleep(1)
     fg.stop()
