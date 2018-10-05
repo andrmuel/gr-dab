@@ -101,7 +101,13 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
             print("Channels:")
             for c,item in channels.items():
                 if 'label' in item and 'subch_info' in item:
-                    print("%s: (address: %3d, subch_size: %3d, protect_level: %1d)" % (item['label'], item['subch_info']['address'], item['subch_info']['size'], item['subch_info']['protection']))
+                    conv_table = [ 128, 8, 6, 5];
+                    protect_level = item['subch_info']['protection']
+                    subch_size = item['subch_info']['size']
+                    if protect_level <= 4:
+                        bit_rate = subch_size * 8 / (conv_table[protect_level]);
+
+                        print("%s: (address: %3d, subch_size: %3d, protect_level: %1d, bit_rate: %3d)" % (item['label'], item['subch_info']['address'], item['subch_info']['size'], item['subch_info']['protection'], bit_rate))
                 complete = True
 
         if complete:
