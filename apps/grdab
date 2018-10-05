@@ -33,6 +33,7 @@ parser_receive.add_argument("--bit_rate", help="", type=int, default=64)
 parser_receive.add_argument("--address", help="", type=int, default=304)
 parser_receive.add_argument("--subch_size", help="", type=int, default=64)
 parser_receive.add_argument("--protect_level", help="", type=int, default=1)
+parser_receive.add_argument("-z","--zeromq", help="Use zeromq", action="store_true")
 
 parser_info = subparsers.add_parser('info', help='Get channel details')
 parser_info.add_argument("-f","--freq", help="Frequency in MHz", type=float, default=220.352)
@@ -61,7 +62,7 @@ if "ppm" in cfg.adjust_config:
 
 def receive_handler(res):
   print("receive handler")
-  grdab.app.receive_dabplus(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, audio_sample_rate=res.audiorate, dab_bit_rate=res.bit_rate, dab_address=res.address, dab_subch_size=res.subch_size, dab_protect_level=res.protect_level)
+  grdab.app.receive_dabplus(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, audio_sample_rate=res.audiorate, dab_bit_rate=res.bit_rate, dab_address=res.address, dab_subch_size=res.subch_size, dab_protect_level=res.protect_level, use_zeromq=res.zeromq)
 
 def info_handler(res):
   print("info handler")
