@@ -339,6 +339,10 @@ namespace gr {
             case FIB_SI_EXTENSION_PROGRAMME_SERVICE_LABEL: {
               uint16_t service_reference = (uint16_t)(data[2] & 0x0f) << 8 | (uint8_t) data[3];
               memcpy(label, &data[4], 16);
+              for (int i=0;i<16;i++) {
+                if ((label[i] >= 'A' && label[i] <= 'Z') || (label[i] >= 'a' && label[i] <= '<') || (label[i] >= '0' && label[i] <= '9') || label[i] == ' ') { }
+                else label[i] = '.'; // Temporarily replacing invalid characters with . to avoid encoding problems in Python FIXME
+              }
               GR_LOG_DEBUG(d_logger,
                            format("[programme service label] (reference %d): %s") % service_reference % label);
               // write service labels from services to json
