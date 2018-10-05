@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import json
 
 def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
     from gnuradio import gr, blocks, audio
@@ -52,7 +53,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
                 verbose=False
               )
             )
-    dab_fic_decode_0.set_print_channel_info(True)
+    #dab_fic_decode_0.set_print_channel_info(True)
 
     fg = gr.top_block()
 
@@ -62,17 +63,48 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
 
     fg.start()
 
+    channels = {}
     while True:
-        #print(dab_fic_decode_0.fibsink.get_service_info())
-        #print(dab_fic_decode_0.fibsink.get_service_labels())
-        #print(dab_fic_decode_0.fibsink.get_ensemble_info())
-        #print(dab_fic_decode_0.fibsink.get_subch_info())
-        #print(dab_fic_decode_0.fibsink.get_programme_type())
-        #print(dab_fic_decode_0.get_service_info()) # mapping between service_labels number and subch_info number
-        print(dab_fic_decode_0.get_service_labels()) # actual channel names
-        #print(dab_fic_decode_0.get_ensemble_info()) # Short description of whole frequency
-        print(dab_fic_decode_0.get_subch_info()) # settings needed for setting channel
-        #print(dab_fic_decode_0.get_programme_type()) # some programme_type reference stuff
+        service_labels = dab_fic_decode_0.get_service_labels()
+        if service_labels.strip() != "":
+            service_labels_json = json.loads(service_labels.strip())
+            for s in service_labels_json:
+                if s['reference'] not in channels:
+                    channels[s['reference']] = {}
+                channels[s['reference']]['label'] = s['label']
+            subch_info = dab_fic_decode_0.get_subch_info()
+        service_info = dab_fic_decode_0.get_service_info() # mapping between service_labels number and subch_info number
+        if service_info.strip() != "":
+            service_info_json = json.loads(service_info.strip())
+            for s in service_info_json:
+                if s['reference'] not in channels:
+                    channels[s['reference']] = {}
+                channels[s['reference']]['id'] = s['ID']
+        subch_info = dab_fic_decode_0.get_subch_info() # settings needed for setting channel
+        if subch_info.strip() != "":
+            subch_info_json = json.loads(subch_info.strip())
+            for s in subch_info_json:
+                if 'ID' in s:
+                    current_id = s['ID']
+                    for key,val in channels.items():
+                        if 'id' in val:
+                            if val['id'] == current_id:
+                                channels[key]['subch_info'] = s
+                                break
+
+        all_have_label = True
+        for c,item in channels.items():
+            if 'label' not in item:
+                all_have_label = False
+        complete = False
+        if len(channels) > 0 and all_have_label:
+            print("Channels:")
+            for c,item in channels.items():
+                if 'label' in item and 'subch_info' in item:
+                    print("%s: (address: %3d, subch_size: %3d, protect_level: %1d)" % (item['label'], item['subch_info']['address'], item['subch_info']['size'], item['subch_info']['protection']))
+                complete = True
+
+        if complete:
+            break
         time.sleep(1)
-    raw_input("Running..")
     fg.stop()
