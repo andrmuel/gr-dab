@@ -36,6 +36,7 @@ parser_receive.add_argument("--protect_level", help="", type=int, default=1)
 
 parser_info = subparsers.add_parser('info', help='Get channel details')
 parser_info.add_argument("-f","--freq", help="Frequency in MHz", type=float, default=220.352)
+parser_info.add_argument("-z","--zeromq", help="Use zeromq", action="store_true")
 
 parser_adjust = subparsers.add_parser('adjust', help='Find optimum gain and freq error ppm settings')
 parser_adjust.add_argument("-f","--freq", help="Frequency in MHz", type=float, default=220.352)
@@ -64,7 +65,7 @@ def receive_handler(res):
 
 def info_handler(res):
   print("info handler")
-  grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm)
+  grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq=res.zeromq)
 
 def adjust_handler(res):
   import grdab.app.adjustment_gui

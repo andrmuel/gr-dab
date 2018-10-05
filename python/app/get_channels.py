@@ -2,8 +2,10 @@
 
 import json
 
-def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
+def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, use_zeromq=False):
     from gnuradio import gr, blocks, audio
+    if use_zeromq:
+        from gnuradio import zeromq
 
     import osmosdr
     import grdab
@@ -13,18 +15,21 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
 
     print("Setting frequency: %0.3f MHz" % (frequency/1e6))
 
-    osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
-    osmosdr_source_0.set_sample_rate(samp_rate)
-    osmosdr_source_0.set_center_freq(frequency, 0)
-    osmosdr_source_0.set_freq_corr(0, 0)
-    osmosdr_source_0.set_dc_offset_mode(0, 0)
-    osmosdr_source_0.set_iq_balance_mode(0, 0)
-    osmosdr_source_0.set_gain_mode(False, 0)
-    osmosdr_source_0.set_gain(rf_gain, 0)
-    osmosdr_source_0.set_if_gain(if_gain, 0)
-    osmosdr_source_0.set_bb_gain(bb_gain, 0)
-    osmosdr_source_0.set_antenna('', 0)
-    osmosdr_source_0.set_bandwidth(2000000, 0)
+    if not use_zeromq:
+        osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
+        osmosdr_source_0.set_sample_rate(samp_rate)
+        osmosdr_source_0.set_center_freq(frequency, 0)
+        osmosdr_source_0.set_freq_corr(0, 0)
+        osmosdr_source_0.set_dc_offset_mode(0, 0)
+        osmosdr_source_0.set_iq_balance_mode(0, 0)
+        osmosdr_source_0.set_gain_mode(False, 0)
+        osmosdr_source_0.set_gain(rf_gain, 0)
+        osmosdr_source_0.set_if_gain(if_gain, 0)
+        osmosdr_source_0.set_bb_gain(bb_gain, 0)
+        osmosdr_source_0.set_antenna('', 0)
+        osmosdr_source_0.set_bandwidth(2000000, 0)
+    else:
+        zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, "tcp://127.0.0.1:10444", 100, False, -1)
 
     sample_rate_correction_factor = 1 + float(ppm)*1e-6
     dab_ofdm_demod_0 = grdab.ofdm_demod(
@@ -57,7 +62,11 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0):
 
     fg = gr.top_block()
 
-    fg.connect(osmosdr_source_0, dab_ofdm_demod_0, dab_fic_decode_0)
+    if not use_zeromq:
+        fg.connect(osmosdr_source_0, dab_ofdm_demod_0)
+    else:
+        fg.connect(zeromq_source, dab_ofdm_demod_0)
+    fg.connect(dab_ofdm_demod_0, dab_fic_decode_0)
 
 
 
