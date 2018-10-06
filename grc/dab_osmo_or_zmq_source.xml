@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<block>
+  <name>OsmoSDR or ZeroMQ Source</name>
+  <key>dab_osmo_or_zmq_source</key>
+  <category>[DAB]</category>
+  <import>import grdab</import>
+  <make>grdab.osmo_or_zmq_source($frequency, $rf_gain, $if_gain, $bb_gain, $zeromq)</make>
+
+
+  <param>
+    <name>ZeroMQ</name>
+    <key>zeromq</key>
+    <value>False</value>
+    <type>bool</type>
+  </param>
+
+  <param>
+    <name>Frequency</name>
+    <key>frequency</key>
+    <value>230e6</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>RF gain</name>
+    <key>rf_gain</key>
+    <value>0</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>IF gain</name>
+    <key>if_gain</key>
+    <value>0</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>BB gain</name>
+    <key>bb_gain</key>
+    <value>0</value>
+    <type>int</type>
+  </param>
+
+  <source>
+    <name>iq</name>
+    <type>complex</type>
+  </source>
+</block>

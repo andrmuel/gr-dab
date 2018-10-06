@@ -41,6 +41,7 @@ parser_info.add_argument("-z","--zeromq", help="Use zeromq", action="store_true"
 
 parser_adjust = subparsers.add_parser('adjust', help='Find optimum gain and freq error ppm settings')
 parser_adjust.add_argument("-f","--freq", help="Frequency in MHz", type=float, default=220.352)
+parser_adjust.add_argument("-z","--zeromq", help="Use zeromq", action="store_true")
 
 import grdab.app.config
 import os
@@ -75,7 +76,7 @@ def adjust_handler(res):
   class SubClass(grdab.app.adjustment_gui.top_block):
 
     def __init__(self):
-      super(SubClass, self).__init__(frequency_id_default=26, gain_rf_default=rf_gain, gain_if_default=if_gain, gain_bb_default=bb_gain, ppm_default=ppm)
+      super(SubClass, self).__init__(frequency_id_default=26, gain_rf_default=rf_gain, gain_if_default=if_gain, gain_bb_default=bb_gain, ppm_default=ppm, zeromq=res.zeromq)
 
     def set_variable_qtgui_push_button_0(self, val):
       self.variable_qtgui_push_button_0 = val
@@ -89,7 +90,8 @@ def adjust_handler(res):
 
   tp = SubClass
 
-  grdab.app.adjustment_gui.main(tp)
+  sys.argv = [] # Hack since the next function call also parses argv
+  grdab.app.adjustment_gui.main(tp, options=None)
 
 parser_receive.set_defaults(func=receive_handler)
 parser_info.set_defaults(func=info_handler)

@@ -62,5 +62,6 @@ install(FILES
     dab_valve_ff.xml
     dab_peak_detector_fb.xml
     dab_xrun_monitor.xml
+    dab_osmo_or_zmq_source.xml
     dab_control_stream_to_tag_cc.xml DESTINATION share/gnuradio/grc/blocks
 )
