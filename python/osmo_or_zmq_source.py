@@ -35,6 +35,7 @@ class osmo_or_zmq_source(gr.hier_block2):
                                 gr.io_signature(1, 1, gr.sizeof_gr_complex))
 
         samp_rate = 2000000
+        self.use_zeromq = use_zeromq
 
         if not use_zeromq:
             import osmosdr
@@ -67,3 +68,27 @@ class osmo_or_zmq_source(gr.hier_block2):
 
         self.connect(self.src, (self, 0))
 
+
+    def set_frequency(self, val):
+        if self.use_zeromq:
+            self.rpc_mgr_server.request("set_frequency",[val]) 
+        else:
+            self.osmosdr_source_0.set_center_freq(val, 0)
+
+    def set_rf_gain(self, val):
+        if self.use_zeromq:
+            self.rpc_mgr_server.request("set_rf_gain",[val]) 
+        else:
+            self.osmosdr_source_0.set_gain(val, 0)
+
+    def set_if_gain(self, val):
+        if self.use_zeromq:
+            self.rpc_mgr_server.request("set_if_gain",[val]) 
+        else:
+            self.osmosdr_source_0.set_if_gain(val, 0)
+
+    def set_bb_gain(self, val):
+        if self.use_zeromq:
+            self.rpc_mgr_server.request("set_bb_gain",[val]) 
+        else:
+            self.osmosdr_source_0.set_bb_gain(val, 0)

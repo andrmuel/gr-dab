@@ -5,6 +5,10 @@
   <category>[DAB]</category>
   <import>import grdab</import>
   <make>grdab.osmo_or_zmq_source($frequency, $rf_gain, $if_gain, $bb_gain, $zeromq)</make>
+  <callback>self.$(id).set_frequency($frequency)</callback>
+  <callback>self.$(id).set_rf_gain($rf_gain)</callback>
+  <callback>self.$(id).set_if_gain($if_gain)</callback>
+  <callback>self.$(id).set_bb_gain($bb_gain)</callback>
 
 
   <param>
