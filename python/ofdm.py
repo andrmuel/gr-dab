@@ -181,7 +181,7 @@ class ofdm_demod(gr.hier_block2):
 			self.run_interpolater_update_thread = False
 			if self.rp.sample_rate_correction_factor != 1 or self.rp.always_include_resample:
 				if verbose: print "--> static sample rate correction enabled"
-				self.resample = filter.fractional_interpolator_cc(0, self.rp.sample_rate_correction_factor)
+				self.resample = filter.fractional_resampler_cc(0, self.rp.sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
 		self.sync = grdab.ofdm_sync_dab2(self.dp, self.rp, debug)
