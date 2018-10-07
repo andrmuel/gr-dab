@@ -126,6 +126,13 @@ def draw_menu(stdscr):
                 selected = nelem-1
             if selected >= height - 1 + scroll:
                 scroll += 15
+        elif k == 360: # end
+            selected = nelem-1
+            if selected >= height - 1 + scroll:
+                scroll = nelem - height + 1
+        elif k == 262: # home
+            selected = 0
+            scroll = 0
         elif k == 10: # enter
             active = selected
 
