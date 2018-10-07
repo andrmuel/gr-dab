@@ -74,6 +74,7 @@ def draw_menu(stdscr):
 
     selected = 0
     active = 0
+    scroll = 0
     nelem = len(channel_list)
     # Loop where k is the last character pressed
     while (k != ord('q')):
@@ -98,9 +99,16 @@ def draw_menu(stdscr):
         if k == 259: # key up
             if selected > 0:
                 selected -= 1
+            if selected <= scroll:
+                if scroll > 1:
+                    scroll -= 1
+                else:
+                    scroll = 0
         elif k == 258: # key down
             if selected < (nelem-1):
                 selected += 1
+            if selected == height - 1 + scroll:
+                scroll += 1
         elif k == 10: # enter
             active = selected
 
@@ -168,14 +176,17 @@ def draw_menu(stdscr):
 
         # Rendering some text
         whstr = "Width: {}, Height: {}".format(width, height)
-        for i in range(0, len(channel_list)):
+        ntorender = len(channel_list)-scroll
+        if ntorender >= height - 1:
+            ntorender = height - 1;
+        for i in range(scroll, ntorender+scroll):
             channel_name = channel_list[i]['name'].encode('utf-8')
             if i == selected:
-                stdscr.addstr(i, 0, channel_name, curses.color_pair(3))
+                stdscr.addstr(i-scroll, 0, channel_name, curses.color_pair(3))
             elif i == active:
-                stdscr.addstr(i, 0, channel_name, curses.color_pair(2))
+                stdscr.addstr(i-scroll, 0, channel_name, curses.color_pair(2))
             else:
-                stdscr.addstr(i, 0, channel_name, curses.color_pair(1))
+                stdscr.addstr(i-scroll, 0, channel_name, curses.color_pair(1))
 
         # Render status bar
         stdscr.attron(curses.color_pair(3))
