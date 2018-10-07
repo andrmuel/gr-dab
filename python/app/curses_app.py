@@ -25,14 +25,18 @@ import time
 import yaml
 from gnuradio import gr, blocks, audio
 import grdab
+import locale
 
+locale.setlocale(locale.LC_ALL, '')
 
 channel_list_filename = "".join([os.getenv("HOME"),"/.grdab/channels.yaml"])
 
 channel_list = []
 if os.path.isfile(channel_list_filename):
-    with open(channel_list_filename, "r") as fp:
-        channel_list = yaml.load(fp)
+    with open(channel_list_filename, "rb") as fp:
+        filecontent = fp.read().decode('utf-8')
+        channel_list = yaml.load(filecontent)
+
 
 samp_rate = samp_rate = 2000000
 
@@ -165,12 +169,13 @@ def draw_menu(stdscr):
         # Rendering some text
         whstr = "Width: {}, Height: {}".format(width, height)
         for i in range(0, len(channel_list)):
+            channel_name = channel_list[i]['name'].encode('utf-8')
             if i == selected:
-                stdscr.addstr(i, 0, str(channel_list[i]['name']), curses.color_pair(3))
+                stdscr.addstr(i, 0, channel_name, curses.color_pair(3))
             elif i == active:
-                stdscr.addstr(i, 0, str(channel_list[i]['name']), curses.color_pair(2))
+                stdscr.addstr(i, 0, channel_name, curses.color_pair(2))
             else:
-                stdscr.addstr(i, 0, str(channel_list[i]['name']), curses.color_pair(1))
+                stdscr.addstr(i, 0, channel_name, curses.color_pair(1))
 
         # Render status bar
         stdscr.attron(curses.color_pair(3))
