@@ -1,0 +1,39 @@
+- Radio Trondheim : {frequency: 220.352, address: 192, subch_size: 112, protect_level: 1, bit_rate: 112}
+- Radio Revolt    : {frequency: 220.352, address: 304, subch_size:  64, protect_level: 1, bit_rate:  64}
+- Nea Radio       : {frequency: 220.352, address:   0, subch_size: 192, protect_level: 1, bit_rate: 192}
+- Radio 3.16      : {frequency: 220.352, address: 432, subch_size:  64, protect_level: 1, bit_rate:  64}
+- KristenRiksradio: {frequency: 220.352, address: 368, subch_size:  64, protect_level: 1, bit_rate:  64}
+- P24.7 MIX       : {frequency: 229.072, address: 576, subch_size:  42, protect_level: 2, bit_rate:  56}
+- RADIO NORGE     : {frequency: 229.072, address: 432, subch_size:  54, protect_level: 2, bit_rate:  72}
+- TOPP40          : {frequency: 229.072, address: 720, subch_size:  48, protect_level: 2, bit_rate:  64}
+- KISS N.DANCE    : {frequency: 229.072, address: 540, subch_size:  36, protect_level: 2, bit_rate:  48}
+- RADIO1          : {frequency: 229.072, address: 768, subch_size:  48, protect_level: 2, bit_rate:  64}
+- NRJ NORGE       : {frequency: 229.072, address: 390, subch_size:  36, protect_level: 2, bit_rate:  48}
+- P10 Country     : {frequency: 229.072, address: 336, subch_size:  54, protect_level: 2, bit_rate:  72}
+- P4 LydenAvNorge : {frequency: 229.072, address:   0, subch_size: 776, protect_level: 0, bit_rate:  48}
+- P5 Hits         : {frequency: 229.072, address:  96, subch_size:  48, protect_level: 2, bit_rate:  64}
+- P6 Rock         : {frequency: 229.072, address: 144, subch_size:  48, protect_level: 2, bit_rate:  64}
+- P7 Klem         : {frequency: 229.072, address: 192, subch_size:  48, protect_level: 2, bit_rate:  64}
+- P8 Pop          : {frequency: 229.072, address: 240, subch_size:  48, protect_level: 2, bit_rate:  64}
+- P9 Retro        : {frequency: 229.072, address: 288, subch_size:  48, protect_level: 2, bit_rate:  64}
+- JULERADIOEN     : {frequency: 229.072, address: 816, subch_size:  42, protect_level: 2, bit_rate:  56}
+- NORSK POP       : {frequency: 229.072, address: 618, subch_size:  48, protect_level: 2, bit_rate:  64}
+- VINYL           : {frequency: 229.072, address: 666, subch_size:  54, protect_level: 2, bit_rate:  72}
+- RADIO ROCK      : {frequency: 229.072, address: 486, subch_size:  54, protect_level: 2, bit_rate:  72}
+- NRK JAZZ        : {frequency: 227.360, address: 804, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK P1          : {frequency: 227.360, address: 204, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK P2          : {frequency: 227.360, address: 384, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK P3          : {frequency: 227.360, address: 444, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK KLASSISK    : {frequency: 227.360, address: 564, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK S.PMI       : {frequency: 227.360, address: 624, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK Vær Vest    : {frequency: 227.360, address:  24, subch_size:  30, protect_level: 2, bit_rate:  40}
+- NRK P1 Møre . Ro: {frequency: 227.360, address: 264, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK mP3         : {frequency: 227.360, address: 504, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK P1.         : {frequency: 227.360, address: 324, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK SUPER       : {frequency: 227.360, address: 744, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK SPORT       : {frequency: 227.360, address: 144, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK P13         : {frequency: 227.360, address: 684, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK P1.Trøndelag: {frequency: 227.360, address: 324, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK NYHETER     : {frequency: 227.360, address:  84, subch_size:  60, protect_level: 2, bit_rate:  80}
+- NRK Trafikk6 TMR: {frequency: 227.360, address:  54, subch_size:  30, protect_level: 2, bit_rate:  40}
+- UNKNOWN         : {frequency: 227.360, address:   0, subch_size:  24, protect_level: 2, bit_rate:  32}

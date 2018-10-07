@@ -17,6 +17,7 @@ GR_PYTHON_INSTALL(
     config.py
     adjust_gui_helpers.py
     channel_mapping.py
+    curses_app.py
     ${CMAKE_BINARY_DIR}/python/app/adjustment_gui.py
     __init__.py DESTINATION ${GR_PYTHON_DIR}/grdab/app
 )

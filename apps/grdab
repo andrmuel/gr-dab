@@ -41,6 +41,8 @@ parser_info.add_argument("-f","--freq", help="Frequency in MHz", type=float, def
 parser_adjust = subparsers.add_parser('adjust', help='Find optimum gain and freq error ppm settings')
 parser_adjust.add_argument("-f","--freq", help="Frequency in MHz", type=float, default=220.352)
 
+parser_curses = subparsers.add_parser('curses', help='Run the ncurses listening app')
+
 import grdab.app.config
 import os
 cfg_dir = "".join([os.getenv("HOME"),"/.grdab"])
@@ -91,9 +93,14 @@ def adjust_handler(res):
   sys.argv = [] # Hack since the next function call also parses argv
   grdab.app.adjustment_gui.main(tp, options=None)
 
+def curses_handler(res):
+  import grdab.app.curses_app
+  grdab.app.curses_app.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq_in=res.zeromq)
+
 parser_receive.set_defaults(func=receive_handler)
 parser_info.set_defaults(func=info_handler)
 parser_adjust.set_defaults(func=adjust_handler)
+parser_curses.set_defaults(func=curses_handler)
 args = parser.parse_args()
 
 args.func(args)

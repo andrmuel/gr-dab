@@ -53,6 +53,7 @@ namespace gr {
         d_starting = true;
         d_drop_when_full = false;
         d_stop_until_tag = false;
+        d_report_fill = true;
     }
 
     /*
@@ -95,6 +96,12 @@ namespace gr {
             }
         }
 
+    }
+
+    void
+    xrun_monitor_cc_impl::set_report_fill(bool val)
+    {
+        d_report_fill = val;
     }
 
     void
@@ -263,7 +270,8 @@ namespace gr {
 
         if (d_n > 10000) {
             //printf("ninput_items: %d, noutput_items: %d\n", ninput_items[0], noutput_items);
-            printf("Fill: %f %\n", (((float)current_fill)/((float)d_length))*100);
+            if (d_report_fill)
+                printf("Fill: %f %\n", (((float)current_fill)/((float)d_length))*100);
             d_n = 0;
         }
 

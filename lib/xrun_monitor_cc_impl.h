@@ -40,6 +40,7 @@ namespace gr {
       bool d_starting;
       bool d_drop_when_full;
       bool d_stop_until_tag;
+      bool d_report_fill;
 
       boost::mutex common_mutex;
 
@@ -56,6 +57,7 @@ namespace gr {
 
       void set_drop_when_full(bool val);
       void stop_until_tag();
+      void set_report_fill(bool val);
 
     };
 
