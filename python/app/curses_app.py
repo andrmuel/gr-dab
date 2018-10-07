@@ -109,6 +109,23 @@ def draw_menu(stdscr):
                 selected += 1
             if selected == height - 1 + scroll:
                 scroll += 1
+        elif k == 339: # page up
+            if selected >= 15:
+                selected -= 15
+            else:
+                selected = 0
+            if selected <= height - 1 + scroll:
+                if scroll >= 15:
+                    scroll -= 15
+                else:
+                    scroll = 0
+        elif k == 338: # page down
+            if selected < (nelem-15):
+                selected += 15
+            else:
+                selected = nelem-1
+            if selected >= height - 1 + scroll:
+                scroll += 15
         elif k == 10: # enter
             active = selected
 
