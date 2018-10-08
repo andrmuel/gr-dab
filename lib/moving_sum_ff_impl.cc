@@ -101,5 +101,11 @@ moving_sum_ff_impl::work(int noutput_items,
   return noutput_items;
 }
 
+bool moving_sum_ff_impl::stop()
+{
+    d_sum = 0;
+    return true;
+}
+
 }
 }
