@@ -95,3 +95,30 @@ grdab receive -f 227.360 --bit_rate 80 --address 204 --subch_size 60 --protect_l
 ```
 
 where you replace the different options with the output from *grdab info* for the desired channel. You might have to experiment with a few different values for *--audiorate* (such as 44100 or 48000).
+
+#### Ncurses app:
+
+
+If you create a file called ~/.grdab/channels.yaml, and list all the channels in your area:
+
+```
+- {name: NRK P1          , frequency: 227.360, address: 204, subch_size:  60, protect_level: 2, bit_rate:  80}
+- {name: NRK P2          , frequency: 227.360, address: 384, subch_size:  60, protect_level: 2, bit_rate:  80}
+- {name: NRK P3          , frequency: 227.360, address: 444, subch_size:  60, protect_level: 2, bit_rate:  80}
+- {name: NRK KLASSISK    , frequency: 227.360, address: 564, subch_size:  60, protect_level: 2, bit_rate:  80}
+- ...
+```
+
+You can afterward use the grdab ncurses application:
+```
+grdab curses
+```
+
+It allows you to select a channel and listen to it:
+
+![The ncurses application](docs/grdab_ncurses.png)
+
+
+#### ZMQ source:
+
+To allow starting and stopping grdab without having to reinitialize the Software Defined Radio, you can start apps/sdr-zmq-daemon in the background. If you then start grdab with `grdab -z`, it will start much faster.
