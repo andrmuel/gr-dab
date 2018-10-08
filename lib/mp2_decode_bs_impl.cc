@@ -261,6 +261,7 @@ namespace gr {
       d_number_of_frames = 0;
       d_error_frames = 0;
       d_output_size = KJMP2_SAMPLES_PER_FRAME;
+      d_first = true;
 
       set_output_multiple(d_output_size);
       GR_LOG_DEBUG(d_logger, "mp2 decoder initialized");
@@ -617,6 +618,11 @@ namespace gr {
       int16_t *out_left = (int16_t *) output_items[0];
       int16_t *out_right = (int16_t *) output_items[1];
       d_nproduced = 0;
+
+      if (d_first) {
+        add_item_tag(0, nitems_written(0), pmt::mp("audio_start"), pmt::PMT_NIL);
+        d_first = false;
+      }
 
       for (int logical_frame_count; logical_frame_count < noutput_items / d_output_size; logical_frame_count++) {
         int16_t i, j;

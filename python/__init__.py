@@ -41,6 +41,7 @@ from ofdm import ofdm_demod
 from fic import fic_decode
 from msc_decode import msc_decode
 from dabplus_audio_decoder_ff import dabplus_audio_decoder_ff
+from dab_audio_decoder_ff import dab_audio_decoder_ff
 from osmo_or_zmq_source import osmo_or_zmq_source
 import constants
 #

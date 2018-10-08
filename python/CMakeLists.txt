@@ -52,6 +52,7 @@ GR_PYTHON_INSTALL(
     msc_decode.py
     osmo_or_zmq_source.py
     ${CMAKE_CURRENT_BINARY_DIR}/constants.py
+    dab_audio_decoder_ff.py
     dabplus_audio_decoder_ff.py DESTINATION ${GR_PYTHON_DIR}/grdab
 )
 

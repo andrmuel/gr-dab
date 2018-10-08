@@ -42,7 +42,7 @@ samp_rate = samp_rate = 2000000
 
 def draw_menu(stdscr):
     global src
-    global dab_dabplus_audio_decoder_ff_0
+    global decoder
     global dab_ofdm_demod_0
     global c2f
     global f2c
@@ -144,7 +144,17 @@ def draw_menu(stdscr):
                 rpc_mgr_server.request("set_frequency",[freq])
             else:
                 src.set_center_freq(freq, 0)
-            new = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), ch['bit_rate'], ch['address'], ch['subch_size'], ch['protect_level'], True)
+
+            if 'classic' in ch and ch['classic'] == True:
+                dabplus = False
+            else:
+                dabplus = True
+
+            if dabplus:
+                new = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), ch['bit_rate'], ch['address'], ch['subch_size'], ch['protect_level'], True)
+            else:
+                new = grdab.dab_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), ch['bit_rate'], ch['address'], ch['subch_size'], ch['protect_level'], True)
+
             newaudio = audio.sink(48000, '', True)
             sample_rate_correction_factor = 1 + float(ppm_shared)*1e-6
             new_ofdm = grdab.ofdm_demod(
@@ -168,20 +178,20 @@ def draw_menu(stdscr):
             fg.stop()
             fg.wait()
             xrun_monitor.stop_until_tag()
-            fg.disconnect(src, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
-            fg.disconnect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
-            fg.disconnect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+            fg.disconnect(src, dab_ofdm_demod_0, decoder)
+            fg.disconnect((decoder, 0), (f2c, 0))
+            fg.disconnect((decoder, 1), (f2c, 1))
             fg.disconnect((c2f, 0), (audio_sink_0, 0))
             fg.disconnect((c2f, 1), (audio_sink_0, 1))
-            del dab_dabplus_audio_decoder_ff_0
+            del decoder
             del audio_sink_0
             del dab_ofdm_demod_0
-            dab_dabplus_audio_decoder_ff_0 = new
+            decoder = new
             audio_sink_0 = newaudio
             dab_ofdm_demod_0 = new_ofdm
-            fg.connect(src, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
-            fg.connect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
-            fg.connect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+            fg.connect(src, dab_ofdm_demod_0, decoder)
+            fg.connect((decoder, 0), (f2c, 0))
+            fg.connect((decoder, 1), (f2c, 1))
             fg.connect((c2f, 0), (audio_sink_0, 0))
             fg.connect((c2f, 1), (audio_sink_0, 1))
             time.sleep(1)
@@ -259,7 +269,7 @@ class KeyDetecThread(threading.Thread):
 
 def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False):
     global src
-    global dab_dabplus_audio_decoder_ff_0
+    global decoder
     global dab_ofdm_demod_0
     global c2f
     global f2c
@@ -340,7 +350,15 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False):
               )
             )
 
-    dab_dabplus_audio_decoder_ff_0 = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), ch['bit_rate'], ch['address'], ch['subch_size'], ch['protect_level'], True)
+    if 'classic' in ch and ch['classic'] == True:
+        dabplus = False
+    else:
+        dabplus = True
+
+    if dabplus:
+        decoder = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), ch['bit_rate'], ch['address'], ch['subch_size'], ch['protect_level'], True)
+    else:
+        decoder = grdab.dab_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), ch['bit_rate'], ch['address'], ch['subch_size'], ch['protect_level'], True)
 
     xrun_monitor = grdab.xrun_monitor_cc(100000)
     xrun_monitor.set_report_fill(False)
@@ -357,9 +375,9 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False):
     else:
         src = zeromq_source
 
-    fg.connect(src, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
-    fg.connect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
-    fg.connect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+    fg.connect(src, dab_ofdm_demod_0, decoder)
+    fg.connect((decoder, 0), (f2c, 0))
+    fg.connect((decoder, 1), (f2c, 1))
     fg.connect(f2c, xrun_monitor)
     fg.connect(xrun_monitor, c2f)
     fg.connect((c2f, 0), (audio_sink_0, 0))

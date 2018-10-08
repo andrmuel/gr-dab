@@ -84,6 +84,7 @@ namespace gr {
       int32_t d_scalefactor[2][32][3];
       int32_t d_sample[2][32][3];
       int32_t d_U[512];
+      bool d_first;
 
       void set_samplerate(int32_t);
 

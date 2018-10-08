@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1, use_zeromq=False):
+def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1, use_zeromq=False, dabplus=True):
     from gnuradio import gr, blocks, audio
     if use_zeromq:
         from gnuradio import zeromq
@@ -59,8 +59,11 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
                 equalize_magnitude=True
               )
             )
-      
-    dab_dabplus_audio_decoder_ff_0 = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), dab_bit_rate, dab_address, dab_subch_size, dab_protect_level, True)
+
+    if dabplus:
+        decoder = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), dab_bit_rate, dab_address, dab_subch_size, dab_protect_level, True)
+    else:
+        decoder = grdab.dab_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), dab_bit_rate, dab_address, dab_subch_size, dab_protect_level, True)
 
     xrun_monitor = grdab.xrun_monitor_cc(100000)
     f2c = blocks.float_to_complex()
@@ -75,9 +78,9 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
     else:
         src = zeromq_source
 
-    fg.connect(src, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
-    fg.connect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
-    fg.connect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+    fg.connect(src, dab_ofdm_demod_0, decoder)
+    fg.connect((decoder, 0), (f2c, 0))
+    fg.connect((decoder, 1), (f2c, 1))
     fg.connect(f2c, xrun_monitor)
     fg.connect(xrun_monitor, c2f)
     fg.connect((c2f, 0), (audio_sink_0, 0))
@@ -92,16 +95,16 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
     fg.stop()
     #fg.wait()
     #xrun_monitor.stop_until_tag()
-    #fg.disconnect(src, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
-    #fg.disconnect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
-    #fg.disconnect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+    #fg.disconnect(src, dab_ofdm_demod_0, decoder)
+    #fg.disconnect((decoder, 0), (f2c, 0))
+    #fg.disconnect((decoder, 1), (f2c, 1))
     #fg.disconnect((c2f, 0), (audio_sink_0, 0))
     #fg.disconnect((c2f, 1), (audio_sink_0, 1))
-    #dab_dabplus_audio_decoder_ff_0 = new
+    #decoder = new
     #audio_sink_0 = newaudio
-    #fg.connect(src, dab_ofdm_demod_0, dab_dabplus_audio_decoder_ff_0)
-    #fg.connect((dab_dabplus_audio_decoder_ff_0, 0), (f2c, 0))
-    #fg.connect((dab_dabplus_audio_decoder_ff_0, 1), (f2c, 1))
+    #fg.connect(src, dab_ofdm_demod_0, decoder)
+    #fg.connect((decoder, 0), (f2c, 0))
+    #fg.connect((decoder, 1), (f2c, 1))
     #fg.connect((c2f, 0), (audio_sink_0, 0))
     #fg.connect((c2f, 1), (audio_sink_0, 1))
     #fg.start()
