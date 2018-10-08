@@ -101,6 +101,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
                 if s['reference'] not in channels:
                     channels[s['reference']] = {}
                 channels[s['reference']]['id'] = s['ID']
+                channels[s['reference']]['dabplus'] = s['DAB+']
         subch_info = dab_fic_decode_0.get_subch_info() # settings needed for setting channel
         if subch_info.strip() != "":
             subch_info_json = json.loads(subch_info.strip())
@@ -134,7 +135,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
                             label = "UNKNOWN"
                         bit_rate = subch_size * 8 / (conv_table[protect_level]);
 
-                        print("%s: (address: %3d, subch_size: %3d, protect_level: %1d, bit_rate: %3d)" % (label, item['subch_info']['address'], item['subch_info']['size'], item['subch_info']['protection'], bit_rate))
+                        print("%s: (address: %3d, subch_size: %3d, protect_level: %1d, bit_rate: %3d, classic: %1d)" % (label, item['subch_info']['address'], item['subch_info']['size'], item['subch_info']['protection'], bit_rate, not item['dabplus']))
                 complete = True
 
         if complete:
