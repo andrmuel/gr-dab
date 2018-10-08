@@ -156,25 +156,6 @@ def draw_menu(stdscr):
                 new = grdab.dab_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), ch['bit_rate'], ch['address'], ch['subch_size'], ch['protect_level'], True)
 
             newaudio = audio.sink(48000, '', True)
-            sample_rate_correction_factor = 1 + float(ppm_shared)*1e-6
-            new_ofdm = grdab.ofdm_demod(
-                      grdab.parameters.dab_parameters(
-                        mode=1,
-                        sample_rate=samp_rate,
-                        verbose=False
-                      ),
-                      grdab.parameters.receiver_parameters(
-                        mode=1,
-                        softbits=True,
-                        input_fft_filter=True,
-                        autocorrect_sample_rate=False,
-                        sample_rate_correction_factor=sample_rate_correction_factor,
-                        always_include_resample=True,
-                        verbose=False,
-                        correct_ffe=True,
-                        equalize_magnitude=True
-                      )
-                    )
             fg.stop()
             fg.wait()
             xrun_monitor.stop_until_tag()
@@ -185,10 +166,8 @@ def draw_menu(stdscr):
             fg.disconnect((c2f, 1), (audio_sink_0, 1))
             del decoder
             del audio_sink_0
-            del dab_ofdm_demod_0
             decoder = new
             audio_sink_0 = newaudio
-            dab_ofdm_demod_0 = new_ofdm
             fg.connect(src, dab_ofdm_demod_0, decoder)
             fg.connect((decoder, 0), (f2c, 0))
             fg.connect((decoder, 1), (f2c, 1))
