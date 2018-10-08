@@ -23,7 +23,7 @@
           )
         )
   </make>
-  <callback>self.$(id).resample.set_interp_ratio(1+float($ppm_error)*1e-6)</callback>
+  <callback>self.$(id).resample.set_resamp_ratio(1+float($ppm_error)*1e-6)</callback>
 
   <param>
     <name>DAB Mode</name>
