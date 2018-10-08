@@ -121,4 +121,4 @@ It allows you to select a channel and listen to it:
 
 #### ZMQ source:
 
-To allow starting and stopping grdab without having to reinitialize the Software Defined Radio, you can start apps/sdr-zmq-daemon in the background. If you then start grdab with `grdab -z`, it will start much faster.
+To allow starting and stopping grdab without having to reinitialize the Software Defined Radio, you can start apps/sdr-zmq-daemon in the background. If you then start grdab with `grdab -z`, it will start much faster, and you can have multiple instances of grdab running at the same time.
