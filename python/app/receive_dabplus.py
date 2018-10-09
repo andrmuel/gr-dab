@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1, use_zeromq=False, dabplus=True):
+def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1, use_zeromq=False, dabplus=True, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445"):
     from gnuradio import gr, blocks, audio
     if use_zeromq:
         from gnuradio import zeromq
@@ -29,9 +29,9 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
         osmosdr_source_0.set_antenna('', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
     else:
-        zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, "tcp://127.0.0.1:10444", 100, False, -1)
+        zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, server, 100, False, -1)
         rpc_mgr_server = zeromq.rpc_manager()
-        rpc_mgr_server.set_request_socket("tcp://127.0.0.1:10445")
+        rpc_mgr_server.set_request_socket(server_control)
         rpc_mgr_server.request("set_sample_rate",[samp_rate])
         rpc_mgr_server.request("set_rf_gain",[rf_gain])
         rpc_mgr_server.request("set_if_gain",[if_gain])

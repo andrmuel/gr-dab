@@ -25,7 +25,7 @@ class osmo_or_zmq_source(gr.hier_block2):
     """
     """
 
-    def __init__(self, frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, use_zeromq=False):
+    def __init__(self, frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, use_zeromq=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445"):
 
         gr.hier_block2.__init__(self,
                                 "osmo_or_zmq_source",
@@ -54,9 +54,9 @@ class osmo_or_zmq_source(gr.hier_block2):
             self.src = self.osmosdr_source_0
         else:
             from gnuradio import zeromq
-            self.zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, "tcp://127.0.0.1:10444", 100, False, -1)
+            self.zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, server, 100, False, -1)
             self.rpc_mgr_server = zeromq.rpc_manager()
-            self.rpc_mgr_server.set_request_socket("tcp://127.0.0.1:10445")
+            self.rpc_mgr_server.set_request_socket(server_control)
             self.rpc_mgr_server.request("set_sample_rate",[samp_rate])
             self.rpc_mgr_server.request("set_rf_gain",[rf_gain])
             self.rpc_mgr_server.request("set_if_gain",[if_gain])

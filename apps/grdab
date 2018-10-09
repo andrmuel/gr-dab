@@ -26,6 +26,8 @@ import grdab.app
 parser = argparse.ArgumentParser(description='DAB radio (grdab)')
 subparsers = parser.add_subparsers()
 parser.add_argument("-z","--zeromq", help="Use zeromq", action="store_true")
+parser.add_argument("--server", help="Address to ZeroMQ", default="tcp://127.0.0.1:10444")
+parser.add_argument("--server_control", help="Address to ZeroMQ control server", default="tcp://127.0.0.1:10445")
 
 parser_receive = subparsers.add_parser('receive', help='Receive DAB+ audio')
 parser_receive.add_argument("-f","--freq", help="Frequency in MHz", type=float, default=220.352)
@@ -64,11 +66,11 @@ if "ppm" in cfg.adjust_config:
 
 def receive_handler(res):
   print("receive handler")
-  grdab.app.receive_dabplus(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, audio_sample_rate=res.audiorate, dab_bit_rate=res.bit_rate, dab_address=res.address, dab_subch_size=res.subch_size, dab_protect_level=res.protect_level, use_zeromq=res.zeromq, dabplus=not res.classic)
+  grdab.app.receive_dabplus(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, audio_sample_rate=res.audiorate, dab_bit_rate=res.bit_rate, dab_address=res.address, dab_subch_size=res.subch_size, dab_protect_level=res.protect_level, use_zeromq=res.zeromq, dabplus=not res.classic, server=res.server, server_control=res.server_control)
 
 def info_handler(res):
   print("info handler")
-  grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq=res.zeromq)
+  grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq=res.zeromq, server=res.server, server_control=res.server_control)
 
 def adjust_handler(res):
   import grdab.app.adjustment_gui
@@ -77,7 +79,7 @@ def adjust_handler(res):
   class SubClass(grdab.app.adjustment_gui.top_block):
 
     def __init__(self):
-      super(SubClass, self).__init__(frequency_id_default=26, gain_rf_default=rf_gain, gain_if_default=if_gain, gain_bb_default=bb_gain, ppm_default=ppm, zeromq=res.zeromq)
+      super(SubClass, self).__init__(frequency_id_default=26, gain_rf_default=rf_gain, gain_if_default=if_gain, gain_bb_default=bb_gain, ppm_default=ppm, zeromq=res.zeromq, server=res.server, server_control=res.server_control)
 
     def set_variable_qtgui_push_button_0(self, val):
       self.variable_qtgui_push_button_0 = val
@@ -96,7 +98,7 @@ def adjust_handler(res):
 
 def curses_handler(res):
   import grdab.app.curses_app
-  grdab.app.curses_app.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq_in=res.zeromq)
+  grdab.app.curses_app.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq_in=res.zeromq, server=res.server, server_control=res.server_control)
 
 parser_receive.set_defaults(func=receive_handler)
 parser_info.set_defaults(func=info_handler)
