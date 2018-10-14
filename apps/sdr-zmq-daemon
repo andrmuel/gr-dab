@@ -50,7 +50,7 @@ class top_block(gr.top_block):
         self.osmosdr_source_0.set_if_gain(0, 0)
         self.osmosdr_source_0.set_bb_gain(0, 0)
         self.osmosdr_source_0.set_antenna('', 0)
-        self.osmosdr_source_0.set_bandwidth(0, 0)
+        self.osmosdr_source_0.set_bandwidth(2000000, 0)
 
         self.rpc_manager = zeromq.rpc_manager()
         self.rpc_manager.set_reply_socket("tcp://127.0.0.1:10445")
