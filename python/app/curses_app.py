@@ -260,9 +260,6 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
     global dab_ofdm_demod_0
     global ppm_shared
     frequency=220.352e6
-    rf_gain=25
-    if_gain=0
-    bb_gain=0
     audio_sample_rate=48000
     ppm_shared = ppm
     dab_bit_rate=64
@@ -295,7 +292,7 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
         osmosdr_source_0.set_gain(rf_gain, 0)
         osmosdr_source_0.set_if_gain(if_gain, 0)
         osmosdr_source_0.set_bb_gain(bb_gain, 0)
-        osmosdr_source_0.set_antenna('', 0)
+        osmosdr_source_0.set_antenna('RX2', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
     else:
         zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, server, 100, False, -1)

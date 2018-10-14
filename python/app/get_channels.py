@@ -27,7 +27,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
         osmosdr_source_0.set_gain(rf_gain, 0)
         osmosdr_source_0.set_if_gain(if_gain, 0)
         osmosdr_source_0.set_bb_gain(bb_gain, 0)
-        osmosdr_source_0.set_antenna('', 0)
+        osmosdr_source_0.set_antenna('RX2', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
     else:
         zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, server, 100, False, -1)
