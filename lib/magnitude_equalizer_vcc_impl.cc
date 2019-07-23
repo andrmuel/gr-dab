@@ -92,9 +92,7 @@ magnitude_equalizer_vcc_impl::work(int noutput_items,
                         gr_vector_void_star &output_items)
 {
   gr_complex const *in = (const gr_complex *) input_items[0];
-  const char *frame_start = (const char *) input_items[1];
   gr_complex *out = (gr_complex *) output_items[0];
-  char *frame_start_out = (char *) output_items[1];
 
   std::vector<int> tag_positions;
   int next_tag_position = -1;
