@@ -30,7 +30,7 @@
 #include <grdab/reed_solomon_decode_bb.h>
 
 extern "C" {
-#include <fec/fec.h>
+#include "./fec/fec.h"
 }
 
 namespace gr {

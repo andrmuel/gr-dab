@@ -22,9 +22,10 @@ FIND_LIBRARY(
           /usr/local/lib64
           /usr/lib
           /usr/lib64
-)
+          )
+
+include("${CMAKE_CURRENT_LIST_DIR}/dabTarget.cmake")
 
 INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(DAB DEFAULT_MSG DAB_LIBRARIES DAB_INCLUDE_DIRS)
 MARK_AS_ADVANCED(DAB_LIBRARIES DAB_INCLUDE_DIRS)
-

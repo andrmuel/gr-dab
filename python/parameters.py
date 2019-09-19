@@ -229,10 +229,10 @@ class dab_parameters:
 
     # convolutional coding - 11.1, page 129/130
     conv_code_generator_polynomials = [
-        0133,
-        0171,
-        0145,
-        0133
+        0o133,
+        0o171,
+        0o145,
+        0o133
     ]
     conv_code_initial_state = 0
     conv_code_final_state = 0
@@ -268,7 +268,7 @@ class dab_parameters:
         @param sample_rate sampling frequency
         """
         if verbose:
-            print "--> creating DAB parameter object"  # should not be seen more than once
+            print("--> creating DAB parameter object") # should not be seen more than once
 
         assert (mode >= 1 and mode <= 4)
         self.mode = mode
@@ -295,25 +295,25 @@ class dab_parameters:
         assert (self.prbs(16) == self.__prbs_bits__)  # bits from DAB standard
         assert (self.prbs(511) == self.prbs(1022)[511:])  # sequence must repeat itself
         if verbose:
-            print "--> DAB parameters self check ok"
+            print("--> DAB parameters self check ok")
 
         self.__update_parameters__()
 
     def set_mode(self, mode):
         if self.verbose:
-            print "--> setting DAB mode to " + str(mode)
+            print("--> setting DAB mode to " + str(mode))
         self.mode = mode
         self.__update_parameters__()
 
     def set_sample_rate(self, sample_rate):
         if self.verbose:
-            print "--> setting sample rate to " + str(sample_rate)
+            print("--> setting sample rate to " + str(sample_rate))
         self.sample_rate = sample_rate
         self.__update_parameters__()
 
     def __update_parameters__(self):
         if self.verbose:
-            print "--> updating DAB parameters"
+            print("--> updating DAB parameters")
         mode = self.mode
         # OFDM parameters (14)
         self.symbols_per_frame = self.__symbols_per_frame__[mode - 1]
@@ -374,7 +374,7 @@ class dab_parameters:
         # adapt for non-standard sample rate - do this at end, frequency interleaving calculation still needs default fft length
         if self.sample_rate != self.default_sample_rate:
             if self.verbose:
-                print "--> using non-standard sample rate: " + str(self.sample_rate)
+                print("--> using non-standard sample rate: " + str(self.sample_rate))
             self.T = 1. / self.sample_rate
             self.ns_length = int(round(self.ns_length * float(self.sample_rate) / float(self.default_sample_rate)))
             self.cp_length = int(round(self.cp_length * float(self.sample_rate) / float(self.default_sample_rate)))
@@ -481,7 +481,7 @@ class receiver_parameters:
         @param verbose be talkative
         """
         if verbose:
-            print "--> creating RX parameter object"
+            print("--> creating RX parameter object")
         assert (mode >= 1 and mode <= 4)
 
         self.set_mode(mode)

@@ -24,7 +24,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr, trellis, blocks
-import grdab_swig as grdab
+from . import grdab_swig as grdab
 from math import sqrt
 
 """
@@ -66,7 +66,7 @@ class fic_decode(gr.hier_block2):
 
         # convolutional coding
         # self.fsm = trellis.fsm(self.dp.conv_code_in_bits, self.dp.conv_code_out_bits, self.dp.conv_code_generator_polynomials)
-        self.fsm = trellis.fsm(1, 4, [0133, 0171, 0145, 0133])  # OK (dumped to text and verified partially)
+        self.fsm = trellis.fsm(1, 4, [0o133, 0o171, 0o145, 0o133])  # OK (dumped to text and verified partially)
         self.conv_v2s = blocks.vector_to_stream(gr.sizeof_float, self.dp.fic_conv_codeword_length)
         # self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 20, 0, 0, 1, [1./sqrt(2),-1/sqrt(2)] , trellis.TRELLIS_EUCLIDEAN)
         table = [

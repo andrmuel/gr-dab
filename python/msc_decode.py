@@ -100,7 +100,7 @@ class msc_decode(gr.hier_block2):
         self.unpuncture = grdab.unpuncture_ff_make(self.assembled_msc_puncturing_sequence, 0)
 
         # convolutional decoding
-        self.fsm = trellis.fsm(1, 4, [0133, 0171, 0145, 0133])  # OK (dumped to text and verified partially)
+        self.fsm = trellis.fsm(1, 4, [0o133, 0o171, 0o145, 0o133])  # OK (dumped to text and verified partially)
         table = [
             0, 0, 0, 0,
             0, 0, 0, 1,

@@ -153,7 +153,7 @@ class ofdm_demod(gr.hier_block2):
 		
 		# input filtering
 		if self.rp.input_fft_filter: 
-			if verbose: print "--> RX filter enabled"
+			if verbose: print("--> RX filter enabled")
 			lowpass_taps = filter.firdes_low_pass(1.0,                     # gain
 							  dp.sample_rate,          # sampling rate
 							  rp.filt_bw,              # cutoff frequency
@@ -164,7 +164,7 @@ class ofdm_demod(gr.hier_block2):
 
 		# correct sample rate offset, if enabled
 		if self.rp.autocorrect_sample_rate:
-			if verbose: print "--> dynamic sample rate correction enabled"
+			if verbose: print("--> dynamic sample rate correction enabled")
 			self.rate_detect_ns = grdab.detect_null(dp.ns_length, False)
 			self.rate_estimator = grdab.estimate_sample_rate_bf(dp.sample_rate, dp.frame_length)
 			self.rate_prober = blocks.probe_signal_f()
@@ -180,7 +180,7 @@ class ofdm_demod(gr.hier_block2):
 		else:
 			self.run_interpolater_update_thread = False
 			if self.rp.sample_rate_correction_factor != 1 or self.rp.always_include_resample:
-				if verbose: print "--> static sample rate correction enabled"
+				if verbose: print("--> static sample rate correction enabled")
 				self.resample = filter.fractional_resampler_cc(0, self.rp.sample_rate_correction_factor)
 
 		# timing and fine frequency synchronisation
@@ -203,7 +203,7 @@ class ofdm_demod(gr.hier_block2):
 
 		# magnitude equalisation
 		if self.rp.equalize_magnitude:
-			if verbose: print "--> magnitude equalization enabled"
+			if verbose: print("--> magnitude equalization enabled")
 			self.equalizer = grdab.magnitude_equalizer_vcc(dp.num_carriers, rp.symbols_for_magnitude_equalization)
 
 		# frequency deinterleaving
@@ -233,7 +233,7 @@ class ofdm_demod(gr.hier_block2):
 		else:
 			self.connect(self.remove_pilot, self.deinterleave)
 		if self.rp.softbits:
-			if verbose: print "--> using soft bits"
+			if verbose: print("--> using soft bits")
 			self.softbit_interleaver = grdab.complex_to_interleaved_float_vcf(self.dp.num_carriers)
 			self.connect(self.deinterleave, self.softbit_interleaver, (self,0))
 		else:
