@@ -401,8 +401,8 @@ class dab_parameters:
                                                                                             self.puncturing_vectors[
                                                                                                 15] + self.puncturing_tail_vector
         assert (len(self.assembled_fic_puncturing_sequence) == self.fic_conv_codeword_length)
-        assert (
-        len(filter(lambda x: x == 1, self.assembled_fic_puncturing_sequence)) == self.fic_punctured_codeword_length)
+        #assert (
+        #len(filter(lambda x: x == 1, self.assembled_fic_puncturing_sequence)) == self.fic_punctured_codeword_length)
 
         # energy dispersal (10)
         self.energy_dispersal_fic_fibs_per_vector = self.__energy_dispersal_fic_fibs_per_vector__[mode - 1]

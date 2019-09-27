@@ -1,2 +1,2 @@
-from get_channels import *
-from receive_dabplus import *
+from .get_channels import *
+from .receive_dabplus import *
