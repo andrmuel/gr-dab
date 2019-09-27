@@ -11,8 +11,7 @@ parameters:
     default: '1'
     options: ['1', '2', '3', '4']
     option_attributes:
-        vlensize: ['1536', '384', '192', '768']
-    hide: ${ 'part' if vlen == 1 else 'none' }
+        vlensize: [1536, 384, 192, 768]
 -   id: samp_rate
     label: Sampling Rate
     dtype: int
@@ -52,9 +51,9 @@ parameters:
     options: [soft, hard]
     option_labels: [Soft Bits, Hard Bits]
     option_attributes:
-        soft: ['True', 'True']
+        soft: [True, True]
         type: [complex, byte]
-        vlenfrac: ['1', '4']
+        vlenfrac: [1, 4]
     hide: part
 
 inputs:
@@ -65,9 +64,7 @@ outputs:
 -   label: dat
     domain: stream
     dtype: ${ soft_bits.type }
-    vlen: ${ dab_mode.vlensize / soft_bits.vlenfrac }
-asserts:
-- ${ 1 <= dab_mode <= 4 }
+    vlen: ${ int(dab_mode.vlensize // soft_bits.vlenfrac) }
 
 templates:
     imports: import grdab
