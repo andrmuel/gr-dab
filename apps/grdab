@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # Copyright 2018 by Ruben Undheim
 #
@@ -22,6 +22,11 @@ import argparse
 import sys
 
 import grdab.app
+import os
+
+extra_module_path = os.path.dirname(grdab.app.__file__)
+
+sys.path.append(extra_module_path)
 
 parser = argparse.ArgumentParser(description='DAB radio (grdab)')
 subparsers = parser.add_subparsers()
@@ -93,7 +98,7 @@ def adjust_handler(res):
 
   tp = SubClass
 
-  sys.argv = [] # Hack since the next function call also parses argv
+  sys.argv = [sys.argv[0]] # Hack since the next function call also parses argv
   grdab.app.adjustment_gui.main(tp, options=None)
 
 def curses_handler(res):
@@ -106,5 +111,10 @@ parser_adjust.set_defaults(func=adjust_handler)
 parser_curses.set_defaults(func=curses_handler)
 args = parser.parse_args()
 
-args.func(args)
+try:
+  func = args.func
+except AttributeError:
+  parser.error("Too few arguments")
+
+func(args)
 

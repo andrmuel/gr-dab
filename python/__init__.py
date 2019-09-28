@@ -23,25 +23,27 @@ This is the GNU Radio DAB module. Place your Python package
 description here (python/__init__.py).
 '''
 
+from __future__ import unicode_literals
+
 # import swig generated symbols into the dab namespace
 try:
 	# this might fail if the module is python-only
-	from grdab_swig import *
+	from .grdab_swig import *
 except ImportError:
 	pass
 
 # import any pure python here
-from ofdm_sync_dab import ofdm_sync_dab
-from ofdm_sync_dab2 import ofdm_sync_dab2
-from detect_null import detect_null
-from parameters import dab_parameters
-from parameters import receiver_parameters
-from ofdm import ofdm_mod
-from ofdm import ofdm_demod
-from fic import fic_decode
-from msc_decode import msc_decode
-from dabplus_audio_decoder_ff import dabplus_audio_decoder_ff
-from dab_audio_decoder_ff import dab_audio_decoder_ff
-from osmo_or_zmq_source import osmo_or_zmq_source
-import constants
+from .ofdm_sync_dab import ofdm_sync_dab
+from .ofdm_sync_dab2 import ofdm_sync_dab2
+from .detect_null import detect_null
+from .parameters import dab_parameters
+from .parameters import receiver_parameters
+from .ofdm import ofdm_mod
+from .ofdm import ofdm_demod
+from .fic import fic_decode
+from .msc_decode import msc_decode
+from .dabplus_audio_decoder_ff import dabplus_audio_decoder_ff
+from .dab_audio_decoder_ff import dab_audio_decoder_ff
+from .osmo_or_zmq_source import osmo_or_zmq_source
+from . import constants
 #

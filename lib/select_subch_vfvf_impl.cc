@@ -52,7 +52,7 @@ namespace gr {
       if (address * vlen_in + vlen_out > total_size * vlen_in)
         throw std::out_of_range("vlen_out too long or address wrong");
 
-      set_relative_rate(1 / total_size);
+      set_relative_rate(1.0 / total_size);
     }
 
     /*
