@@ -57,7 +57,7 @@ namespace gr {
       d_vlen_in = puncturing_vector.size();
       d_vlen_out = ones(puncturing_vector);
       set_output_multiple(d_vlen_out);
-      set_relative_rate(d_vlen_out / d_vlen_in);
+      set_relative_rate(((float)d_vlen_out) / d_vlen_in);
     }
 
     /*
