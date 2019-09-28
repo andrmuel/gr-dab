@@ -65,8 +65,8 @@ class msc_decode(gr.hier_block2):
                 self.puncturing_PI1[self.protect]] + self.puncturing_L2[self.protect] * 4 * \
                                                      self.dp.puncturing_vectors_ones[
                                                          self.puncturing_PI2[self.protect]] + 12
-            self.assembled_msc_puncturing_sequence = self.puncturing_L1[self.protect] * 4 * self.dp.puncturing_vectors[
-                self.puncturing_PI1[self.protect]] + self.puncturing_L2[self.protect] * 4 * self.dp.puncturing_vectors[
+            self.assembled_msc_puncturing_sequence = int(self.puncturing_L1[self.protect]) * 4 * self.dp.puncturing_vectors[
+                self.puncturing_PI1[self.protect]] + int(self.puncturing_L2[self.protect]) * 4 * self.dp.puncturing_vectors[
                 self.puncturing_PI2[self.protect]] + self.dp.puncturing_tail_vector
             self.msc_conv_codeword_length = 4*self.msc_I + 24 # 4*I + 24 ()
         # exception in table
@@ -127,7 +127,7 @@ class msc_decode(gr.hier_block2):
                                             self.dp.conv_code_add_bits_input)
 
         #energy descramble
-        self.prbs_src = blocks.vector_source_b(self.dp.prbs(self.msc_I), True)
+        self.prbs_src = blocks.vector_source_b(self.dp.prbs(int(self.msc_I)), True)
         self.energy_v2s = blocks.vector_to_stream(gr.sizeof_char, self.msc_I)
         self.add_mod_2 = blocks.xor_bb()
         #self.energy_s2v = blocks.stream_to_vector(gr.sizeof_char, self.msc_I)

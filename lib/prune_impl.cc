@@ -52,7 +52,7 @@ namespace gr {
         throw std::out_of_range((boost::format("want to cut %d more items than stream is long") % (prune_start + prune_end - length)).str());
 
       set_output_multiple(length - prune_start - prune_end);
-      set_relative_rate((length - prune_start - prune_end) / length);
+      set_relative_rate(((float)(length - prune_start - prune_end)) / length);
       set_tag_propagation_policy(TPP_DONT);
     }
 
