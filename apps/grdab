@@ -22,6 +22,11 @@ import argparse
 import sys
 
 import grdab.app
+import os
+
+extra_module_path = os.path.dirname(grdab.app.__file__)
+
+sys.path.append(extra_module_path)
 
 parser = argparse.ArgumentParser(description='DAB radio (grdab)')
 subparsers = parser.add_subparsers()
