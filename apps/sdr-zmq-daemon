@@ -99,7 +99,7 @@ def main(top_block_cls=top_block, options=None):
     tb = top_block_cls()
     tb.start()
     try:
-        raw_input('Press Enter to quit: ')
+        input('Press Enter to quit: ')
     except EOFError:
         pass
     tb.stop()

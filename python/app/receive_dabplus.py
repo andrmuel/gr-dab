@@ -89,7 +89,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
 
 
     fg.start()
-    raw_input("Running..")
+    input("Running..")
     #new = grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=1, sample_rate=samp_rate, verbose=False), 64, 304, 64, 1, True)
     #newaudio = audio.sink(44100, '', True)
     fg.stop()
