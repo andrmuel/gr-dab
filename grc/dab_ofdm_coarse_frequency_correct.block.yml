@@ -8,11 +8,9 @@ parameters:
 -   id: fft_length
     label: Length
     dtype: int
-    hide: ${ 'part' if vlen == 1 else 'none' }
 -   id: num_carriers
     label: Carriers
     dtype: int
-    hide: ${ 'part' if vlen == 1 else 'none' }
 -   id: cp_length
     label: CP Len
     dtype: int

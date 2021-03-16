@@ -8,7 +8,6 @@ parameters:
 -   id: num_carriers
     label: Num Carriers
     dtype: int
-    hide: ${ 'part' if vlen == 1 else 'none' }
 
 inputs:
 -   domain: stream

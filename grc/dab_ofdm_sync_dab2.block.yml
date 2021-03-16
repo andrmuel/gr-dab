@@ -8,6 +8,13 @@ parameters:
 -   id: mode
     label: Mode
     dtype: int
+-   id: debug
+    label: Debug
+    dtype: bool
+-   id: samp_rate
+    label: Sample rate
+    dtype: int
+    default: 2000000
 
 inputs:
 -   domain: stream
@@ -16,12 +23,12 @@ inputs:
 outputs:
 -   domain: stream
     dtype: complex
--   label: trigger
-    domain: stream
-    dtype: byte
+#-   label: trigger
+#    domain: stream
+#    dtype: byte
 
 templates:
     imports: import grdab
-    make: grdab.ofdm_sync_dab2(${dab_params}, ${rx_params}, ${debug})
+    make: grdab.ofdm_sync_dab2(grdab.parameters.dab_parameters(mode=1,sample_rate=${samp_rate},verbose=False), grdab.parameters.receiver_parameters(mode=${mode}, softbits=True, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=0.0, always_include_resample=True, verbose=False, correct_ffe=True, equalize_magnitude=True), ${debug})
 
 file_format: 1
