@@ -23,34 +23,68 @@ from gnuradio import gr
 from gnuradio import zeromq
 import osmosdr
 import time
+from gnuradio import uhd
+import argparse
 
 
 class top_block(gr.top_block):
 
-    def __init__(self):
+    def __init__(self, use_uhd=False, antenna=None, has_gpsdo=False):
         gr.top_block.__init__(self, "Top Block")
 
         ##################################################
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 2e6
+        self.use_uhd = use_uhd
 
         ##################################################
         # Blocks
         ##################################################
         self.zeromq_pub_sink_1 = zeromq.pub_sink(gr.sizeof_gr_complex, 1, 'tcp://127.0.0.1:10444', 100, False, -1)
-        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
-        self.osmosdr_source_0.set_sample_rate(samp_rate)
-        self.osmosdr_source_0.set_center_freq(220.352e6, 0)
-        self.osmosdr_source_0.set_freq_corr(80, 0)
-        self.osmosdr_source_0.set_dc_offset_mode(2, 0)
-        self.osmosdr_source_0.set_iq_balance_mode(0, 0)
-        self.osmosdr_source_0.set_gain_mode(False, 0)
-        self.osmosdr_source_0.set_gain(35, 0)
-        self.osmosdr_source_0.set_if_gain(0, 0)
-        self.osmosdr_source_0.set_bb_gain(0, 0)
-        self.osmosdr_source_0.set_antenna('', 0)
-        self.osmosdr_source_0.set_bandwidth(2000000, 0)
+
+        if not self.use_uhd:
+            if has_gpsdo:
+                print("Warning: Option --gpsdo only supported with --uhd")
+            self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
+            self.osmosdr_source_0.set_sample_rate(samp_rate)
+            self.osmosdr_source_0.set_center_freq(392e6, 0)
+            self.osmosdr_source_0.set_freq_corr(0, 0)
+            self.osmosdr_source_0.set_dc_offset_mode(2, 0)
+            self.osmosdr_source_0.set_iq_balance_mode(0, 0)
+            self.osmosdr_source_0.set_gain_mode(False, 0)
+            self.osmosdr_source_0.set_gain(20, 0)
+            self.osmosdr_source_0.set_if_gain(0, 0)
+            self.osmosdr_source_0.set_bb_gain(0, 0)
+            if antenna != None:
+                self.osmosdr_source_0.set_antenna(antenna, 0)
+            self.osmosdr_source_0.set_bandwidth(2000000, 0)
+            self.src = self.osmosdr_source_0
+
+        else:
+            self.uhd_usrp_source_0 = uhd.usrp_source(
+                ",".join(("", "")),
+                uhd.stream_args(
+                    cpu_format="fc32",
+                    args='',
+                    channels=list(range(0,1)),
+                ),
+            )
+            if has_gpsdo:
+                self.uhd_usrp_source_0.set_time_source('external', 0)
+                self.uhd_usrp_source_0.set_clock_source('external', 0)
+            else:
+                self.uhd_usrp_source_0.set_time_source('internal', 0)
+                self.uhd_usrp_source_0.set_clock_source('internal', 0)
+            self.uhd_usrp_source_0.set_center_freq(392e6, 0)
+            self.uhd_usrp_source_0.set_gain(20, 0)
+            if antenna != None:
+                self.uhd_usrp_source_0.set_antenna(antenna, 0)
+            self.uhd_usrp_source_0.set_bandwidth(2e6, 0)
+            self.uhd_usrp_source_0.set_samp_rate(samp_rate)
+            if has_gpsdo:
+                self.uhd_usrp_source_0.set_time_unknown_pps(uhd.time_spec())
+            self.src = self.uhd_usrp_source_0
 
         self.rpc_manager = zeromq.rpc_manager()
         self.rpc_manager.set_reply_socket("tcp://127.0.0.1:10445")
@@ -66,37 +100,54 @@ class top_block(gr.top_block):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.osmosdr_source_0, 0), (self.zeromq_pub_sink_1, 0))
+        self.connect((self.src, 0), (self.zeromq_pub_sink_1, 0))
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+        if not self.use_uhd:
+            self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+        else:
+            self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
 
     def set_frequency(self, freq):
-        self.osmosdr_source_0.set_center_freq(freq, 0)
+        self.src.set_center_freq(freq, 0)
 
     def set_rf_gain(self, gain):
-        self.osmosdr_source_0.set_gain(gain, 0)
+        self.src.set_gain(gain, 0)
 
     def set_if_gain(self, gain):
-        self.osmosdr_source_0.set_if_gain(gain, 0)
+        if not self.use_uhd:
+            self.osmosdr_source_0.set_if_gain(gain, 0)
 
     def set_bb_gain(self, gain):
-        self.osmosdr_source_0.set_bb_gain(gain, 0)
+        if not self.use_uhd:
+            self.osmosdr_source_0.set_bb_gain(gain, 0)
 
-    def set_sample_rate(self, rate):
-        self.osmosdr_source_0.set_sample_rate(rate)
+    def set_sample_rate(self, samp_rate):
+        self.samp_rate = samp_rate
+        if not self.use_uhd:
+            self.osmosdr_source_0.set_sample_rate(self.samp_rate)
+        else:
+            self.uhd_usrp_source_0.set_samp_rate(self.samp_rate)
 
     def set_ppm(self, ppm):
-        self.osmosdr_source_0.set_freq_corr(ppm, 0)
+        if not self.use_uhd:
+            self.osmosdr_source_0.set_freq_corr(ppm, 0)
+        else:
+            print("set_ppm(): Not supported")
 
 
 def main(top_block_cls=top_block, options=None):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--uhd", action='store_true')
+    parser.add_argument("--antenna", type=str, default=None)
+    parser.add_argument("--gpsdo", action='store_true')
+    args = parser.parse_args()
 
-    tb = top_block_cls()
+    tb = top_block_cls(use_uhd=args.uhd, antenna=args.antenna, has_gpsdo=args.gpsdo)
     tb.start()
     try:
         input('Press Enter to quit: ')
