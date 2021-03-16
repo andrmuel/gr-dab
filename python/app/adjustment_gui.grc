@@ -230,6 +230,7 @@ blocks:
     if_gain: gain_if
     maxoutbuf: '0'
     minoutbuf: '0'
+    samp_rate: samp_rate
     rf_gain: gain_slider
     server: server
     server_control: server_control

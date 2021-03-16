@@ -25,7 +25,7 @@ class osmo_or_zmq_source(gr.hier_block2):
     """
     """
 
-    def __init__(self, frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, use_zeromq=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445"):
+    def __init__(self, frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, use_zeromq=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445", samp_rate = 2000000):
 
         gr.hier_block2.__init__(self,
                                 "osmo_or_zmq_source",
@@ -34,7 +34,6 @@ class osmo_or_zmq_source(gr.hier_block2):
                                 # Output signature
                                 gr.io_signature(1, 1, gr.sizeof_gr_complex))
 
-        samp_rate = 2000000
         self.use_zeromq = use_zeromq
 
         if not use_zeromq:
