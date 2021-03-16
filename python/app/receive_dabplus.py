@@ -9,7 +9,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
     import osmosdr
     import grdab
 
-    samp_rate = samp_rate = 2000000
+    samp_rate = samp_rate = 2048000
 
     print("Setting frequency: %0.3f MHz" % (frequency/1e6))
     print("Setting RF gain to: %d" % rf_gain)
