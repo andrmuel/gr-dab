@@ -53,6 +53,7 @@ def draw_menu(stdscr):
     global rpc_mgr_server
     global dab_ofdm_demod_0
     global ppm_shared
+    global from_file_global
 
     k = 0
     cursor_x = 0
@@ -140,7 +141,9 @@ def draw_menu(stdscr):
             stdscr.move(center_y, center_x)
             ch = channel_list[active]
             freq = float(ch['frequency'])*1e6
-            if use_zeromq:
+            if from_file_global != None:
+                pass
+            elif use_zeromq:
                 rpc_mgr_server.request("set_frequency",[freq])
             else:
                 src.set_center_freq(freq, 0)
@@ -246,7 +249,7 @@ class KeyDetecThread(threading.Thread):
         while self.running:
             k = self.stdscr.getch()
 
-def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445"):
+def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445", from_file=None, from_file_repeat=False, skip_xrun_monitor=False):
     global src
     global decoder
     global dab_ofdm_demod_0
@@ -259,6 +262,7 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
     global rpc_mgr_server
     global dab_ofdm_demod_0
     global ppm_shared
+    global from_file_global
     frequency=220.352e6
     audio_sample_rate=48000
     ppm_shared = ppm
@@ -267,6 +271,7 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
     dab_subch_size=64
     dab_protect_level=1
     use_zeromq=use_zeromq_in
+    from_file_global = from_file
     if use_zeromq:
         from gnuradio import zeromq
     else:
@@ -281,7 +286,18 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
 
     print("Setting frequency: %0.3f MHz" % (frequency/1e6))
 
-    if not use_zeromq:
+    fg = gr.top_block()
+
+    if from_file != None:
+        file_input = blocks.file_source(gr.sizeof_gr_complex, from_file, from_file_repeat)
+        if skip_xrun_monitor:
+            src = file_input
+        else:
+            fthrottle = blocks.throttle(gr.sizeof_gr_complex, samp_rate)
+            fg.connect(file_input, fthrottle)
+            src = fthrottle
+        print("Run from file %s" % from_file)
+    elif not use_zeromq:
         osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
         osmosdr_source_0.set_sample_rate(samp_rate)
         osmosdr_source_0.set_center_freq(frequency, 0)
@@ -294,6 +310,7 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
         osmosdr_source_0.set_bb_gain(bb_gain, 0)
         osmosdr_source_0.set_antenna('RX2', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
+        src = osmosdr_source_0
     else:
         zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, server, 100, False, -1)
         rpc_mgr_server = zeromq.rpc_manager()
@@ -305,6 +322,7 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
         rpc_mgr_server.request("set_ppm",[0]) # Not using hardware correction since it behaves differently on different hardware
         rpc_mgr_server.request("set_frequency",[frequency])
         time.sleep(0.7)
+        src = zeromq_source
 
     sample_rate_correction_factor = 1 + float(ppm_shared)*1e-6
     dab_ofdm_demod_0 = grdab.ofdm_demod(
@@ -344,18 +362,16 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
     audio_sink_0 = audio.sink(audio_sample_rate, '', True)
 
 
-    fg = gr.top_block()
 
-    if not use_zeromq:
-        src = osmosdr_source_0
-    else:
-        src = zeromq_source
 
     fg.connect(src, dab_ofdm_demod_0, decoder)
     fg.connect((decoder, 0), (f2c, 0))
     fg.connect((decoder, 1), (f2c, 1))
-    fg.connect(f2c, xrun_monitor)
-    fg.connect(xrun_monitor, c2f)
+    if skip_xrun_monitor:
+        fg.connect(f2c, c2f)
+    else:
+        fg.connect(f2c, xrun_monitor)
+        fg.connect(xrun_monitor, c2f)
     fg.connect((c2f, 0), (audio_sink_0, 0))
     fg.connect((c2f, 1), (audio_sink_0, 1))
 

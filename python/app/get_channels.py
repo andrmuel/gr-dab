@@ -3,7 +3,7 @@
 import json
 import time
 
-def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, use_zeromq=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445"):
+def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, use_zeromq=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445", from_file=None, from_file_repeat=False):
     from gnuradio import gr, blocks, audio
     if use_zeromq:
         from gnuradio import zeromq
@@ -16,7 +16,18 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
 
     print("Setting frequency: %0.3f MHz" % (frequency/1e6))
 
-    if not use_zeromq:
+    fg = gr.top_block()
+
+    if from_file != None:
+        file_input = blocks.file_source(gr.sizeof_gr_complex, from_file, from_file_repeat)
+        if skip_xrun_monitor:
+            src = file_input
+        else:
+            fthrottle = blocks.throttle(gr.sizeof_gr_complex, samp_rate)
+            fg.connect(file_input, fthrottle)
+            src = fthrottle
+        print("Run from file %s" % from_file)
+    elif not use_zeromq:
         osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
         osmosdr_source_0.set_sample_rate(samp_rate)
         osmosdr_source_0.set_center_freq(frequency, 0)
@@ -29,6 +40,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
         osmosdr_source_0.set_bb_gain(bb_gain, 0)
         osmosdr_source_0.set_antenna('RX2', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
+        src = osmosdr_source_0
     else:
         zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, server, 100, False, -1)
         rpc_mgr_server = zeromq.rpc_manager()
@@ -40,6 +52,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
         rpc_mgr_server.request("set_ppm",[0]) # Not using hardware correction since it behaves differently on different hardware
         rpc_mgr_server.request("set_frequency",[frequency])
         time.sleep(0.7)
+        src = zeromq_source
 
     sample_rate_correction_factor = 1 + float(ppm)*1e-6
     dab_ofdm_demod_0 = grdab.ofdm_demod(
@@ -70,12 +83,8 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
             )
     #dab_fic_decode_0.set_print_channel_info(True)
 
-    fg = gr.top_block()
 
-    if not use_zeromq:
-        fg.connect(osmosdr_source_0, dab_ofdm_demod_0)
-    else:
-        fg.connect(zeromq_source, dab_ofdm_demod_0)
+    fg.connect(src, dab_ofdm_demod_0)
     fg.connect(dab_ofdm_demod_0, dab_fic_decode_0)
 
 

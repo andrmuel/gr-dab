@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1, use_zeromq=False, dabplus=True, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445"):
+def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=80, audio_sample_rate=48000, dab_bit_rate=64, dab_address=304, dab_subch_size=64, dab_protect_level=1, use_zeromq=False, dabplus=True, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445", from_file=None, from_file_repeat=False, skip_xrun_monitor=False):
     from gnuradio import gr, blocks, audio
     if use_zeromq:
         from gnuradio import zeromq
@@ -15,7 +15,18 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
     print("Setting RF gain to: %d" % rf_gain)
     print("Setting Frequency error (ppm) to: %d" % ppm)
 
-    if not use_zeromq:
+    fg = gr.top_block()
+
+    if from_file != None:
+        file_input = blocks.file_source(gr.sizeof_gr_complex, from_file, from_file_repeat)
+        if skip_xrun_monitor:
+            src = file_input
+        else:
+            fthrottle = blocks.throttle(gr.sizeof_gr_complex, samp_rate)
+            fg.connect(file_input, fthrottle)
+            src = fthrottle
+        print("Run from file %s" % from_file)
+    elif not use_zeromq:
         osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
         osmosdr_source_0.set_sample_rate(samp_rate)
         osmosdr_source_0.set_center_freq(frequency, 0)
@@ -28,6 +39,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
         osmosdr_source_0.set_bb_gain(bb_gain, 0)
         osmosdr_source_0.set_antenna('RX2', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
+        src = osmosdr_source_0
     else:
         zeromq_source = zeromq.sub_source(gr.sizeof_gr_complex, 1, server, 100, False, -1)
         rpc_mgr_server = zeromq.rpc_manager()
@@ -39,6 +51,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
         rpc_mgr_server.request("set_ppm",[0]) # Not using hardware correction since it behaves differently on different hardware
         rpc_mgr_server.request("set_frequency",[frequency])
         time.sleep(0.7)
+        src = zeromq_source
 
     sample_rate_correction_factor = 1 + float(ppm)*1e-6
     dab_ofdm_demod_0 = grdab.ofdm_demod(
@@ -71,18 +84,16 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
 
     audio_sink_0 = audio.sink(audio_sample_rate, '', True)
 
-    fg = gr.top_block()
 
-    if not use_zeromq:
-        src = osmosdr_source_0
-    else:
-        src = zeromq_source
 
     fg.connect(src, dab_ofdm_demod_0, decoder)
     fg.connect((decoder, 0), (f2c, 0))
     fg.connect((decoder, 1), (f2c, 1))
-    fg.connect(f2c, xrun_monitor)
-    fg.connect(xrun_monitor, c2f)
+    if skip_xrun_monitor:
+        fg.connect(f2c, c2f)
+    else:
+        fg.connect(f2c, xrun_monitor)
+        fg.connect(xrun_monitor, c2f)
     fg.connect((c2f, 0), (audio_sink_0, 0))
     fg.connect((c2f, 1), (audio_sink_0, 1))
 
