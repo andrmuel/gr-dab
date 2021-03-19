@@ -19,13 +19,13 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-from gnuradio import gr
+from gnuradio import gr, blocks
 
 class osmo_or_zmq_source(gr.hier_block2):
     """
     """
 
-    def __init__(self, frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, use_zeromq=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445", samp_rate = 2048000):
+    def __init__(self, frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, use_zeromq=False, server="tcp://127.0.0.1:10444", server_control="tcp://127.0.0.1:10445", samp_rate = 2048000, from_file=None, from_file_repeat=False):
 
         gr.hier_block2.__init__(self,
                                 "osmo_or_zmq_source",
@@ -36,7 +36,13 @@ class osmo_or_zmq_source(gr.hier_block2):
 
         self.use_zeromq = use_zeromq
 
-        if not use_zeromq:
+        if from_file != None:
+            print("Run from file %s" % from_file)
+            file_input = blocks.file_source(gr.sizeof_gr_complex, from_file, from_file_repeat)
+            fthrottle = blocks.throttle(gr.sizeof_gr_complex, samp_rate)
+            self.connect(file_input, fthrottle)
+            self.src = fthrottle
+        elif not use_zeromq:
             import osmosdr
             self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )
             self.osmosdr_source_0.set_sample_rate(samp_rate)

@@ -9,6 +9,14 @@ parameters:
     label: ZeroMQ
     dtype: bool
     default: 'False'
+-   id: from_file
+    label: from_file
+    dtype: raw
+    default: None
+-   id: from_file_repeat
+    label: Repeat_from_file
+    dtype: bool
+    default: 'False'
 -   id: server
     label: Server
     dtype: string
@@ -46,7 +54,7 @@ outputs:
 templates:
     imports: import grdab
     make: grdab.osmo_or_zmq_source(${frequency}, ${rf_gain}, ${if_gain}, ${bb_gain},
-        ${zeromq}, ${server}, ${server_control}, samp_rate=${samp_rate})
+        ${zeromq}, ${server}, ${server_control}, samp_rate=${samp_rate}, from_file=${from_file}, from_file_repeat=${from_file_repeat})
     callbacks:
     - self.${id}.set_frequency(${frequency})
     - self.${id}.set_rf_gain(${rf_gain})

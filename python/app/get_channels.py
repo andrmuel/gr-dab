@@ -19,13 +19,8 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
     fg = gr.top_block()
 
     if from_file != None:
-        file_input = blocks.file_source(gr.sizeof_gr_complex, from_file, from_file_repeat)
-        if skip_xrun_monitor:
-            src = file_input
-        else:
-            fthrottle = blocks.throttle(gr.sizeof_gr_complex, samp_rate)
-            fg.connect(file_input, fthrottle)
-            src = fthrottle
+        file_input = blocks.file_source(gr.sizeof_gr_complex, from_file, True) # Makes sense to always repeat
+        src = file_input
         print("Run from file %s" % from_file)
     elif not use_zeromq:
         osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + '' )

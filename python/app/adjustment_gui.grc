@@ -227,11 +227,13 @@ blocks:
     bb_gain: gain_bb
     comment: ''
     frequency: frequency
+    from_file: from_file
+    from_file_repeat: from_file_repeat
     if_gain: gain_if
     maxoutbuf: '0'
     minoutbuf: '0'
-    samp_rate: samp_rate
     rf_gain: gain_slider
+    samp_rate: samp_rate
     server: server
     server_control: server_control
     zeromq: zeromq
@@ -275,6 +277,40 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [440, 444]
+    rotation: 0
+    state: enabled
+- name: from_file
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: ''
+    value: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [792, 588.0]
+    rotation: 0
+    state: enabled
+- name: from_file_repeat
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: ''
+    short_id: ''
+    type: ''
+    value: 'False'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 588.0]
     rotation: 0
     state: enabled
 - name: gain_bb_default
@@ -561,7 +597,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 532]
+    coordinate: [936, 540.0]
     rotation: 0
     state: enabled
 - name: zeromq
