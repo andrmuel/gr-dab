@@ -38,7 +38,7 @@ if os.path.isfile(channel_list_filename):
         channel_list = yaml.load(filecontent)
 
 
-samp_rate = samp_rate = 2000000
+samp_rate = samp_rate = 2048000
 
 def draw_menu(stdscr):
     global src

@@ -12,7 +12,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
     import grdab
     import time
 
-    samp_rate = samp_rate = 2000000
+    samp_rate = samp_rate = 2048000
 
     print("Setting frequency: %0.3f MHz" % (frequency/1e6))
 

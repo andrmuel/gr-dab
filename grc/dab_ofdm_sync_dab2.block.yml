@@ -14,7 +14,7 @@ parameters:
 -   id: samp_rate
     label: Sample rate
     dtype: int
-    default: 2000000
+    default: 2048000
 
 inputs:
 -   domain: stream
