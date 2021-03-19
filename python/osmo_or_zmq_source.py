@@ -35,6 +35,7 @@ class osmo_or_zmq_source(gr.hier_block2):
                                 gr.io_signature(1, 1, gr.sizeof_gr_complex))
 
         self.use_zeromq = use_zeromq
+        self.from_file = from_file
 
         if from_file != None:
             print("Run from file %s" % from_file)
@@ -75,25 +76,33 @@ class osmo_or_zmq_source(gr.hier_block2):
 
 
     def set_frequency(self, val):
-        if self.use_zeromq:
+        if self.from_file:
+            print("set_frequency() Meaningless when listening to file")
+        elif self.use_zeromq:
             self.rpc_mgr_server.request("set_frequency",[val]) 
         else:
             self.osmosdr_source_0.set_center_freq(val, 0)
 
     def set_rf_gain(self, val):
-        if self.use_zeromq:
+        if self.from_file:
+            print("set_rf_gain() Meaningless when listening to file")
+        elif self.use_zeromq:
             self.rpc_mgr_server.request("set_rf_gain",[val]) 
         else:
             self.osmosdr_source_0.set_gain(val, 0)
 
     def set_if_gain(self, val):
-        if self.use_zeromq:
+        if self.from_file:
+            print("set_if_gain() Meaningless when listening to file")
+        elif self.use_zeromq:
             self.rpc_mgr_server.request("set_if_gain",[val]) 
         else:
             self.osmosdr_source_0.set_if_gain(val, 0)
 
     def set_bb_gain(self, val):
-        if self.use_zeromq:
+        if self.from_file:
+            print("set_bb_gain() Meaningless when listening to file")
+        elif self.use_zeromq:
             self.rpc_mgr_server.request("set_bb_gain",[val]) 
         else:
             self.osmosdr_source_0.set_bb_gain(val, 0)
