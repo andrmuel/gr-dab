@@ -71,7 +71,6 @@ namespace gr {
 
       memset(optr, 0, noutput_items*sizeof(char));
 
-      int outc = 0;
       int peak_ind = 0;
       int i = 0;
 
@@ -84,7 +83,6 @@ namespace gr {
           else {
             d_avg = (d_avg_alpha)*iptr[i] + (1-d_avg_alpha)*d_avg;
             i++;
-            outc++;
           }
         }
         else if(d_state == 1) {  // above threshold, have not found peak
@@ -95,17 +93,20 @@ namespace gr {
             d_peak_add_next = 1;
             d_avg = (d_avg_alpha)*iptr[i] + (1-d_avg_alpha)*d_avg;
             i++;
-            outc++;
           }
           else if(iptr[i] > d_avg*d_threshold_factor_fall) {
             d_avg = (d_avg_alpha)*iptr[i] + (1-d_avg_alpha)*d_avg;
             i++;
-            outc++;
           }
           else {
-            optr[i] = 1;
-            d_peak_add_next = 0;
-            printf("Peak add at %d\n", nitems_written(0) + i);
+            if (d_peak_add_next) { 
+              if (i > 0)
+                optr[i-1] = 1;
+              else
+                optr[i] = 1;
+              d_peak_add_next = 0;
+              printf("Peak add at %d\n", nitems_written(0) + i);
+            }
             d_state = 0;
             d_peak_val = -(float)INFINITY;
             //printf("Leaving  State 1: Peak: %f  Peak Ind: %d   i: %d  noutput_items: %d\n",
