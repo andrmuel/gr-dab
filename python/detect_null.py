@@ -62,7 +62,7 @@ class detect_null(gr.hier_block2):
 
 		# connect it all
 		self.connect(self, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect, (self,0))
-		self.connect(self.ns_moving_sum, (self,1))
+		self.connect(self.ns_invert, (self,1))
 
 		import capture_tools
 		outf = capture_tools.file_sink_store_tags(gr.sizeof_char, "/tmp/res", "/tmp/rest")
