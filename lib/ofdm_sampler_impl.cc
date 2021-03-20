@@ -51,6 +51,7 @@ ofdm_sampler_impl::ofdm_sampler_impl(unsigned int fft_length, unsigned int cp_le
   assert(gap<=cp_length);
   set_relative_rate(1/float(fft_length+cp_length));
   set_tag_propagation_policy(TPP_DONT);
+  fpi = fopen("/tmp/valout","w");
 }
 
 void 
@@ -88,6 +89,7 @@ ofdm_sampler_impl::general_work (int noutput_items,
   for(int i=0;i<tags.size();i++) {
       int current;
       current = tags[i].offset - nitems_read(0);
+      fprintf(fpi, "Tag: %d\n", tags[i].offset);
       tag_positions.push_back(current);
       next_tag_position_index = 0;
   }
@@ -108,7 +110,8 @@ ofdm_sampler_impl::general_work (int noutput_items,
       bool trigger_now = false;
       while (index<n_in) {
 
-        if (next_tag_position == index) { /* trigger */
+        if  (next_tag_position == index) { /* trigger */
+          printf("index: %d\n",index);
           next_tag_position_index++;
           if (next_tag_position_index == tag_positions.size()) {
             next_tag_position_index = -1;
@@ -125,8 +128,11 @@ ofdm_sampler_impl::general_work (int noutput_items,
 
         index++;
       }
-      if (trigger_now)
+      if (trigger_now) {
+
+        fprintf(fpi, "STATE_CP: %d\n", nitems_read(0)+index);
         d_state = STATE_CP;
+      }
       else
         break;
       }

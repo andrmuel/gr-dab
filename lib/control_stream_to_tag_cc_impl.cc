@@ -65,6 +65,7 @@ namespace gr {
 
       for(int i=0;i<noutput_items;i++) {
         if(in_control[i] == 1) {
+          printf("Add at index: %d\n", nitems_read(0)+i);
           add_item_tag(0, nitems_written(0) + i, d_stream_tag, pmt::intern(""), pmt::intern("control_stream_to_tag_cc"));
         }
       }

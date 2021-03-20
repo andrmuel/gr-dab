@@ -52,6 +52,7 @@ class ofdm_sampler_impl : public ofdm_sampler
     unsigned int d_sym_nr;                  // number of symbol inside DAB frame
     unsigned int d_gap;                     // gap from next symbol -> if gap>0: sample before end of frame
     unsigned int d_gap_left;                // gap left to next symbol?
+    FILE *fpi;
 
   public:
     ofdm_sampler_impl(unsigned int fft_length, unsigned int cp_length, unsigned int symbols_per_frame,unsigned int gap);

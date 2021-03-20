@@ -63,6 +63,10 @@ class detect_null(gr.hier_block2):
 		# connect it all
 		self.connect(self, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect, self)
 
+		import capture_tools
+		outf = capture_tools.file_sink_store_tags(gr.sizeof_char, "/tmp/res", "/tmp/rest")
+		self.connect(self.ns_peak_detect, outf)
+
 		if debug:
 			self.connect(self.ns_invert, blocks.file_sink(gr.sizeof_float, "debug/ofdm_sync_dab_ns_filter_inv_f.dat"))
 			self.connect(self.ns_peak_detect,blocks.file_sink(gr.sizeof_char, "debug/ofdm_sync_dab_peak_detect_b.dat"))

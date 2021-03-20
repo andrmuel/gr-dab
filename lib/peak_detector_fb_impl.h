@@ -38,6 +38,9 @@ namespace gr {
       float d_avg_alpha;
       float d_avg;
       unsigned char d_found;
+        unsigned char d_state;
+      float d_peak_val;
+      bool d_peak_add_next ;
 
      public:
       peak_detector_fb_impl(float threshold_factor_rise, float threshold_factor_fall, int look_ahead, float alpha);
