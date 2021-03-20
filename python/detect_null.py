@@ -42,7 +42,7 @@ class detect_null(gr.hier_block2):
 		"""
 		gr.hier_block2.__init__(self,"detect_null",
 		                        gr.io_signature(1, 1, gr.sizeof_gr_complex),    # input signature
-					gr.io_signature(1, 1, gr.sizeof_char))          # output signature
+					gr.io_signature2(2, 2, gr.sizeof_char, gr.sizeof_float))          # output signature
 
 
 		# get the magnitude squared
@@ -61,7 +61,8 @@ class detect_null(gr.hier_block2):
 		self.ns_peak_detect = grdab_swig.peak_detector_fb(0.6,0.7,10,0.0001) # mostly found by try and error -> remember that the values are negative!
 
 		# connect it all
-		self.connect(self, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect, self)
+		self.connect(self, self.ns_c2magsquared, self.ns_moving_sum, self.ns_invert, self.ns_peak_detect, (self,0))
+		self.connect(self.ns_moving_sum, (self,1))
 
 		import capture_tools
 		outf = capture_tools.file_sink_store_tags(gr.sizeof_char, "/tmp/res", "/tmp/rest")

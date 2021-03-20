@@ -16,6 +16,10 @@ inputs:
 outputs:
 -   domain: stream
     dtype: byte
+-   domain: stream
+    dtype: float
+    optional: True
+
 
 templates:
     imports: import grdab
