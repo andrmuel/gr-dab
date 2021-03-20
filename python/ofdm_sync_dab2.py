@@ -64,12 +64,9 @@ class ofdm_sync_dab2(gr.hier_block2):
 		
 		self.ns_detect = grdab.detect_null(dp.ns_length, debug)
 		self.connect(self.input, self.ns_detect)
-		import capture_tools
-		outf = capture_tools.file_sink_store_tags(gr.sizeof_gr_complex, "/tmp/res", "/tmp/rest")
 
 
 		self.add_stream_tag = grdab.control_stream_to_tag_cc("dab_sync")
-		self.connect(self.add_stream_tag, outf)
 		#
 		# fine frequency synchronisation
 		#
