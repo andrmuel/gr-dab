@@ -69,15 +69,22 @@ namespace gr {
       float *iptr = (float*)input_items[0];
       char *optr = (char*)output_items[0];
 
-      memset(optr, 0, noutput_items*sizeof(char));
+      //memset(optr, 0, noutput_items*sizeof(char));
 
       int peak_ind = 0;
       int i = 0;
 
       //printf("noutput_items %d\n",noutput_items);
       while(i < noutput_items) {
+      //for(int i=0;i<noutput_items;i++) {
+        //if (iptr[i] > -100)
+        //    optr[i] = 1;
+        //else
+        //    optr[i] = 0;
+        optr[i] = 0;
         if(d_state == 0) {  // below threshold
           if(iptr[i] > d_avg*d_threshold_factor_rise) {
+            //optr[i] = 1;
             d_state = 1;
           }
           else {
@@ -85,9 +92,11 @@ namespace gr {
             i++;
           }
         }
+      //  }
         else if(d_state == 1) {  // above threshold, have not found peak
-          //printf("Entered State 1: %f  i: %d  noutput_items: %d\n", iptr[i], i, noutput_items);
+      //    //printf("Entered State 1: %f  i: %d  noutput_items: %d\n", iptr[i], i, noutput_items);
           if(iptr[i] > d_peak_val) {
+            //optr[i] = 1;
             d_peak_val = iptr[i];
             peak_ind = i;
             d_peak_add_next = 1;
@@ -100,29 +109,26 @@ namespace gr {
           }
           else {
             if (d_peak_add_next) { 
-              if (i > 0)
-                optr[i-1] = 1;
-              else
-                optr[i] = 1;
+                optr[peak_ind] = 1;
               d_peak_add_next = 0;
-              printf("Peak add at %d\n", nitems_written(0) + i);
+      //        printf("Peak add at %d\n", nitems_written(0) + i);
             }
             d_state = 0;
             d_peak_val = -(float)INFINITY;
-            //printf("Leaving  State 1: Peak: %f  Peak Ind: %d   i: %d  noutput_items: %d\n",
-            //peak_val, peak_ind, i, noutput_items);
+      //      //printf("Leaving  State 1: Peak: %f  Peak Ind: %d   i: %d  noutput_items: %d\n",
+      //      //peak_val, peak_ind, i, noutput_items);
           }
         }
       }
 
-      //if(d_state == 0) {
+      if(d_state == 0) {
         //printf("Leave in State 0, produced %d\n",noutput_items);
         return noutput_items;
-      //}
-      //else {   // only return up to passing the threshold
-      //  //printf("Leave in State 1, only produced %d of %d\n",peak_ind,noutput_items);
-      //  return outc;
-      //}
+      }
+      else {   // only return up to passing the threshold
+        //printf("Leave in State 1, only produced %d of %d\n",peak_ind,noutput_items);
+        return peak_ind ;
+      }
     }
 
   } /* namespace dab */
