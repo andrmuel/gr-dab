@@ -74,6 +74,10 @@ class dabplus_audio_decoder_ff(gr.hier_block2):
         # mp4 decoder
         self.mp4 = grdab.mp4_decode_bs_make(self.bit_rate_n)
 
+        import capture_tools
+        outf = capture_tools.file_sink_store_tags(gr.sizeof_char, "/tmp/res", "/tmp/rest")
+        self.connect(self.rs, outf)
+
         self.connect((self, 0), self.msc_decoder, self.firecode, self.rs, self.mp4)
 
         if self.output_float:
