@@ -62,7 +62,7 @@ namespace gr {
       d_superframe_size = bit_rate_n * 110;
       d_aacInitialized = false;
       baudRate = 48000;
-      set_output_multiple(960 * 4); //TODO: right? baudRate*0.12 for output of one superframe
+      set_output_multiple(960 * bit_rate_n); //TODO: right? baudRate*0.12 for output of one superframe
       aacHandle = NeAACDecOpen();
       //memset(d_aac_frame, 0, 960);
       d_sample_rate = -1;
@@ -302,8 +302,9 @@ namespace gr {
         add_item_tag(0, nitems_written(0), pmt::mp("audio_start"), pmt::PMT_NIL);
         d_first = false;
       }
+      int frames = 0;
 
-      for (int n = 0; n < noutput_items / (960 * 4); n++) {
+      for (int n = 0; n < 1; n++) {
         // process superframe header
         // bits 0 .. 15 is firecode
         // bit 16 is unused
@@ -370,7 +371,9 @@ namespace gr {
 
           // sanity check for the aac_frame_length // FIXME: Causes crash after running for a long time. Ignore and continue instead of throwing exception
           if ((aac_frame_length >= 960) || (aac_frame_length < 0)) {
+           
             throw std::out_of_range((boost::format("aac frame length not in range (%d)") % aac_frame_length).str());
+            //std::cout << (boost::format("aac frame length not in range (%d)") % aac_frame_length).str();
           }
 
           // CRC check of each AU (the 2 byte (16 bit) CRC word is excluded in aac_frame_length)
@@ -390,13 +393,15 @@ namespace gr {
             GR_LOG_DEBUG(d_logger, format("CRC failure with dab+ frame"));
           }
         }
+        frames ++;
       }
 
       // Tell runtime system how many input items we consumed on
       // each input stream.
-      consume_each(noutput_items * d_superframe_size / (960 * 4));
+      consume_each(frames * d_superframe_size); 
 
       // Tell runtime system how many output items we produced.
+        printf("produced %d samples (possible: %d, ninput_items: %d, consumed: %d)\n", d_nsamples_produced,noutput_items, ninput_items[0],d_superframe_size);
       return d_nsamples_produced;
     }
 

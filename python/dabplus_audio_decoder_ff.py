@@ -72,6 +72,7 @@ class dabplus_audio_decoder_ff(gr.hier_block2):
         # Reed-Solomon error repair
         self.rs = grdab.reed_solomon_decode_bb_make(self.bit_rate_n)
         # mp4 decoder
+        print("bit rate n: %d" % self.bit_rate_n)
         self.mp4 = grdab.mp4_decode_bs_make(self.bit_rate_n)
 
         import capture_tools
