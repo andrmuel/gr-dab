@@ -109,7 +109,7 @@ namespace gr {
           sf[pos * subch_index + i] = rs_packet[pos];
         }
       }
-      GR_LOG_DEBUG(d_logger, format("RS corrected %d errors in superframe") % total_corr_count);
+      //GR_LOG_DEBUG(d_logger, format("RS corrected %d errors in superframe") % total_corr_count);
       d_corrected_errors = total_corr_count;
     }
 

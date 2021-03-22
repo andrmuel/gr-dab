@@ -201,7 +201,7 @@ namespace gr {
         if (!initialize(dacRate, sbrFlag, mpegSurround, aacChannelMode))
           return 0;
         d_aacInitialized = true;
-        GR_LOG_DEBUG(d_logger, "AAC initialized");
+        //GR_LOG_DEBUG(d_logger, "AAC initialized");
       }
 
       outBuffer = (int16_t *) NeAACDecDecode(aacHandle, &hInfo, buffer, bufferLength);
@@ -215,11 +215,11 @@ namespace gr {
         baudRate = sample_rate;
       }
       d_sample_rate = sample_rate;
-      GR_LOG_DEBUG(d_logger, format("bytes consumed %d") % (int) (hInfo.bytesconsumed));
-      GR_LOG_DEBUG(d_logger,
-                   format("sample_rate = %d, samples = %d, channels = %d, error = %d, sbr = %d") % sample_rate %
-                   samples %
-                   (int) (hInfo.channels) % (int) (hInfo.error) % (int) (hInfo.sbr));
+      //GR_LOG_DEBUG(d_logger, format("bytes consumed %d") % (int) (hInfo.bytesconsumed));
+      //GR_LOG_DEBUG(d_logger,
+      //             format("sample_rate = %d, samples = %d, channels = %d, error = %d, sbr = %d") % sample_rate %
+      //             samples %
+      //             (int) (hInfo.channels) % (int) (hInfo.error) % (int) (hInfo.sbr));
       channels = hInfo.channels;
       if (hInfo.error != 0) {
         fprintf(stderr, "Warning: %s\n",
@@ -245,7 +245,7 @@ namespace gr {
       } else
         GR_LOG_ERROR(d_logger, "Cannot handle these channels -> dump samples");
 
-      GR_LOG_DEBUG(d_logger, format("Produced %d PCM samples (for each channel)") % (samples / 2));
+      //GR_LOG_DEBUG(d_logger, format("Produced %d PCM samples (for each channel)") % (samples / 2));
       d_nsamples_produced += samples / 2;
       return samples / 2;
     }
@@ -314,10 +314,10 @@ namespace gr {
         d_ps_flag = (in[n * d_superframe_size + 2] >> 3) & 01; // bit 20
         d_mpeg_surround = (in[n * d_superframe_size + 2] & 07); // bits 21 .. 23
         // log header information
-        GR_LOG_DEBUG(d_logger,
-                     format("superframe header: dac_rate %d, sbr_flag %d, aac_mode %d, ps_flag %d, surround %d") %
-                     (int) d_dac_rate % (int) d_sbr_flag % (int) d_aac_channel_mode % (int) d_ps_flag %
-                     (int) d_mpeg_surround);
+        //GR_LOG_DEBUG(d_logger,
+        //             format("superframe header: dac_rate %d, sbr_flag %d, aac_mode %d, ps_flag %d, surround %d") %
+        //             (int) d_dac_rate % (int) d_sbr_flag % (int) d_aac_channel_mode % (int) d_ps_flag %
+        //             (int) d_mpeg_surround);
 
         switch (2 * d_dac_rate + d_sbr_flag) {
           default:    // cannot happen
@@ -376,7 +376,7 @@ namespace gr {
 
           // CRC check of each AU (the 2 byte (16 bit) CRC word is excluded in aac_frame_length)
           if (crc16(&in[n * d_superframe_size + d_au_start[i]], aac_frame_length)) {
-            GR_LOG_DEBUG(d_logger, format("CRC check of AU %d successful") % i);
+            //GR_LOG_DEBUG(d_logger, format("CRC check of AU %d successful") % i);
             // handle proper AU
             handle_aac_frame(&in[n * d_superframe_size + d_au_start[i]],
                              aac_frame_length,
