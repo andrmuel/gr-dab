@@ -49,7 +49,10 @@ namespace gr {
         d_threshold_factor_rise(threshold_factor_rise),
         d_threshold_factor_fall(threshold_factor_fall),
         d_look_ahead(look_ahead), d_avg_alpha(alpha), d_avg(0), d_found(0)
-    {}
+    {
+     d_state = 0;
+     d_peak_val = -(float)INFINITY;
+    }
 
     /*
      * Our virtual destructor.
@@ -66,28 +69,25 @@ namespace gr {
       float *iptr = (float*)input_items[0];
       char *optr = (char*)output_items[0];
 
-      memset(optr, 0, noutput_items*sizeof(char));
 
-      float peak_val = -(float)INFINITY;
       int peak_ind = 0;
-      unsigned char state = 0;
       int i = 0;
 
       //printf("noutput_items %d\n",noutput_items);
       while(i < noutput_items) {
-        if(state == 0) {  // below threshold
+        optr[i] = 0;
+        if(d_state == 0) {  // below threshold
           if(iptr[i] > d_avg*d_threshold_factor_rise) {
-            state = 1;
+            d_state = 1;
           }
           else {
             d_avg = (d_avg_alpha)*iptr[i] + (1-d_avg_alpha)*d_avg;
             i++;
           }
         }
-        else if(state == 1) {  // above threshold, have not found peak
-          //printf("Entered State 1: %f  i: %d  noutput_items: %d\n", iptr[i], i, noutput_items);
-          if(iptr[i] > peak_val) {
-            peak_val = iptr[i];
+        else if(d_state == 1) {  // above threshold, have not found peak
+          if(iptr[i] > d_peak_val) {
+            d_peak_val = iptr[i];
             peak_ind = i;
             d_avg = (d_avg_alpha)*iptr[i] + (1-d_avg_alpha)*d_avg;
             i++;
@@ -98,21 +98,21 @@ namespace gr {
           }
           else {
             optr[peak_ind] = 1;
-            state = 0;
-            peak_val = -(float)INFINITY;
+            d_state = 0;
+            d_peak_val = -(float)INFINITY;
             //printf("Leaving  State 1: Peak: %f  Peak Ind: %d   i: %d  noutput_items: %d\n",
             //peak_val, peak_ind, i, noutput_items);
           }
         }
       }
 
-      if(state == 0) {
+      if(d_state == 0) {
         //printf("Leave in State 0, produced %d\n",noutput_items);
         return noutput_items;
       }
       else {   // only return up to passing the threshold
         //printf("Leave in State 1, only produced %d of %d\n",peak_ind,noutput_items);
-        return peak_ind+1;
+        return peak_ind ;
       }
     }
 
