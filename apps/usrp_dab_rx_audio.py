@@ -85,7 +85,7 @@ class usrp_dab_rx(gr.top_block):
 
 		# add MSC chain
 		self.dabplus = grdab.dabplus_audio_decoder_ff(self.dab_params, 112, 54, 84, 2, True)
-		self.audio = audio.sink_make(32000)
+		self.audio = audio.sink(32000)
 		self.connect(self.demod, self.dabplus)
 		# left stereo channel
 		self.connect((self.dabplus, 0), (self.audio, 0))
