@@ -26,7 +26,7 @@
 
 class dab_moving_sum_cc;
 
-typedef boost::shared_ptr<dab_moving_sum_cc> dab_moving_sum_cc_sptr;
+typedef std::shared_ptr<dab_moving_sum_cc> dab_moving_sum_cc_sptr;
 
 dab_moving_sum_cc_sptr dab_make_moving_sum_cc (int length);
 

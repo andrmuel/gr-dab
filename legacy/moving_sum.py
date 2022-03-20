@@ -46,8 +46,8 @@ class moving_sum_cc(gr.hier_block2):
 		# calculate moving sum as two separate moving sums of the real and imaginary part
 		self.real = gr.complex_to_real()
 		self.imag = gr.complex_to_imag()
-		self.rsum = dab_swig.moving_sum_ff(elements)
-		self.isum = dab_swig.moving_sum_ff(elements)
+		self.rsum = dab_python.moving_sum_ff(elements)
+		self.isum = dab_python.moving_sum_ff(elements)
 		self.f2c  = gr.float_to_complex()
 		self.gain = gr.multiply_const_cc(gain)
 

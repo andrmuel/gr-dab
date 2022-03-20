@@ -14,7 +14,7 @@ from gnuradio import gr, uhd, blocks
 from gnuradio import eng_notation
 from gnuradio.eng_option import eng_option
 from gnuradio.wxgui import stdgui2, fftsink2, scopesink2
-import grdab
+import gnuradio.dab as grdab
 from optparse import OptionParser
 import wx
 import sys, threading, time
@@ -27,7 +27,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		self.panel = panel
 
 		parser = OptionParser(option_class=eng_option, usage="%prog: [options] <filename>")
-  		parser.add_option("-m", "--dab-mode", type="int", default=1,
+		parser.add_option("-m", "--dab-mode", type="int", default=1,
         	     	help="DAB mode [default=%default]")
 		parser.add_option("-F", "--filter-input", action="store_true", default=False,
                           help="Enable FFT filter at input")
@@ -37,7 +37,7 @@ class usrp_dab_gui_rx(stdgui2.std_top_block):
 		     help="do fine frequency correction by retuning the USRP instead of in software")
 		parser.add_option('-e', '--equalize-magnitude', action="store_true", default=False,
 		     help="do magnitude equalization")
-  		parser.add_option("-s", "--resample-fixed", type="eng_float", default=1,
+		parser.add_option("-s", "--resample-fixed", type="eng_float", default=1,
 			help="resample by a fixed factor (fractional interpolation)")
 		parser.add_option("-S", "--autocorrect-sample-rate", action="store_true", default=False,
                           help="Estimate sample rate offset and resample (dynamic fractional interpolation)")

@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_IMPL_H
 #define INCLUDED_DAB_FREQUENCY_INTERLEAVER_VCC_IMPL_H
 
-#include <grdab/frequency_interleaver_vcc.h>
+#include <dab/frequency_interleaver_vcc.h>
 
 namespace gr {
   namespace dab {

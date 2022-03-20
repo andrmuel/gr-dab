@@ -12,7 +12,7 @@ receive DAB with USRP
 
 from gnuradio import gr, uhd, blocks
 from gnuradio import audio
-import grdab
+import gnuradio.dab as grdab
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 import sys, time, threading, math

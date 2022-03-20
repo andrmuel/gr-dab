@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_INSERT_PILOT_VCC_IMPL_H
 #define INCLUDED_DAB_OFDM_INSERT_PILOT_VCC_IMPL_H
 
-#include <grdab/ofdm_insert_pilot_vcc.h>
+#include <dab/ofdm_insert_pilot_vcc.h>
 
 namespace gr {
   namespace dab {

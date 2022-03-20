@@ -25,7 +25,7 @@
 
 #define I_SQRT2 0.707106781187
 
-#include <grdab/qpsk_mapper_vbc.h>
+#include <dab/qpsk_mapper_vbc.h>
 
 namespace gr {
   namespace dab {

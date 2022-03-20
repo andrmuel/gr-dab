@@ -52,8 +52,8 @@ outputs:
     dtype: complex
 
 templates:
-    imports: import grdab
-    make: grdab.osmo_or_zmq_source(${frequency}, ${rf_gain}, ${if_gain}, ${bb_gain},
+    imports: import gnuradio.dab as dab
+    make: dab.osmo_or_zmq_source(${frequency}, ${rf_gain}, ${if_gain}, ${bb_gain},
         ${zeromq}, ${server}, ${server_control}, samp_rate=${samp_rate}, from_file=${from_file}, from_file_repeat=${from_file_repeat})
     callbacks:
     - self.${id}.set_frequency(${frequency})

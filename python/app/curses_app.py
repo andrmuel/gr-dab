@@ -24,7 +24,7 @@ import time
 #import queue
 import yaml
 from gnuradio import gr, blocks, audio
-import grdab
+import gnuradio.dab as grdab
 import locale
 
 locale.setlocale(locale.LC_ALL, '')

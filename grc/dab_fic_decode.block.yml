@@ -35,10 +35,10 @@ asserts:
 - ${ 1 <= dab_mode <= 4 }
 
 templates:
-    imports: import grdab
+    imports: import gnuradio.dab as dab
     make: |-
-        grdab.fic_decode(
-                  grdab.parameters.dab_parameters(
+        dab.fic_decode(
+                  dab.parameters.dab_parameters(
                     mode=${dab_mode},
                     sample_rate=${samp_rate},
                     verbose=False

@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_PUNCTURE_BB_IMPL_H
 #define INCLUDED_DAB_PUNCTURE_BB_IMPL_H
 
-#include <grdab/puncture_bb.h>
+#include <dab/puncture_bb.h>
 
 namespace gr {
   namespace dab {

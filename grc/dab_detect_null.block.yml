@@ -18,7 +18,7 @@ outputs:
     dtype: byte
 
 templates:
-    imports: import grdab
-    make: grdab.detect_null(${length}, False)
+    imports: import gnuradio.dab as dab
+    make: dab.detect_null(${length}, False)
 
 file_format: 1

@@ -18,7 +18,7 @@ outputs:
     dtype: ''
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_move_and_insert_zero(${fft_length}, ${num_carriers})
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_move_and_insert_zero(${fft_length}, ${num_carriers})
 
 file_format: 1

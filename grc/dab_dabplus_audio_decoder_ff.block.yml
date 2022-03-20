@@ -48,8 +48,8 @@ outputs:
     dtype: float
 
 templates:
-    imports: import grdab
-    make: grdab.dabplus_audio_decoder_ff(grdab.parameters.dab_parameters(mode=${dab_mode},
+    imports: import gnuradio.dab as dab
+    make: dab.dabplus_audio_decoder_ff(dab.parameters.dab_parameters(mode=${dab_mode},
         sample_rate=${samp_rate}, verbose=False), ${bit_rate}, ${address}, ${subch_size},
         ${protection}, ${output_float})
 

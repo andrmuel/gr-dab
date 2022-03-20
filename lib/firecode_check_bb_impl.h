@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_FIRECODE_CHECK_BB_IMPL_H
 #define INCLUDED_DAB_FIRECODE_CHECK_BB_IMPL_H
 
-#include <grdab/firecode_check_bb.h>
+#include <dab/firecode_check_bb.h>
 #include "firecode-checker.h"
 
 namespace gr {

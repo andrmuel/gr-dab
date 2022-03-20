@@ -18,7 +18,7 @@ outputs:
     dtype: byte
 
 templates:
-    imports: import grdab
-    make: grdab.puncture_bb(${puncturing_vector})
+    imports: import gnuradio.dab as dab
+    make: dab.puncture_bb(${puncturing_vector})
 
 file_format: 1

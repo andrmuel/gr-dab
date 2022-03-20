@@ -30,8 +30,8 @@ outputs:
     dtype: float
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_ffe_all_in_one(${symbol_length}, ${fft_length}, ${num_symbols},
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_ffe_all_in_one(${symbol_length}, ${fft_length}, ${num_symbols},
         ${alpha}, ${sample_rate})
 
 file_format: 1

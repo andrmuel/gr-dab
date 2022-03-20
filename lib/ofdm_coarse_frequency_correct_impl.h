@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_IMPL_H
 #define INCLUDED_DAB_OFDM_COARSE_FREQUENCY_CORRECT_IMPL_H
 
-#include <grdab/ofdm_coarse_frequency_correct.h>
+#include <dab/ofdm_coarse_frequency_correct.h>
 
 namespace gr {
   namespace dab {

@@ -24,9 +24,9 @@ outputs:
     dtype: ''
 
 templates:
-    imports: import grdab
+    imports: import gnuradio.dab as dab
     make: |-
-        grdab.fib_sink_vb
+        dab.fib_sink_vb
         self.${id}.set_print_channel_info(${print_channel_info})
     callbacks:
     - self.${id}.set_print_channel_info(${print_channel_info})

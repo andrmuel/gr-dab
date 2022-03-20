@@ -24,7 +24,7 @@ outputs:
     vlen: ${ vlen }
 
 templates:
-    imports: import grdab
-    make: grdab.magnitude_equalizer_vcc(${vlen}, ${num_symbols})
+    imports: import gnuradio.dab as dab
+    make: dab.magnitude_equalizer_vcc(${vlen}, ${num_symbols})
 
 file_format: 1

@@ -26,7 +26,7 @@
 
 class dab_ofdm_ffs_sample;
 
-typedef boost::shared_ptr<dab_ofdm_ffs_sample> dab_ofdm_ffs_sample_sptr;
+typedef std::shared_ptr<dab_ofdm_ffs_sample> dab_ofdm_ffs_sample_sptr;
 
 dab_ofdm_ffs_sample_sptr dab_make_ofdm_ffs_sample (unsigned int symbol_length, unsigned int fft_length, unsigned int num_symbols, float alpha, unsigned int sample_rate);
 

@@ -15,7 +15,7 @@ import osmosdr
 from gnuradio import eng_notation
 from gnuradio.eng_option import eng_option
 from gnuradio.wxgui import stdgui2, fftsink2, scopesink2
-import grdab
+import gnuradio.dab as grdab
 from optparse import OptionParser
 import wx
 import sys, threading, time

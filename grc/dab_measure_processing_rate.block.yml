@@ -23,7 +23,7 @@ inputs:
     dtype: ${ in_type }
 
 templates:
-    imports: import grdab
-    make: grdab.measure_processing_rate(${in_type.in_len}, ${samples_to_count})
+    imports: import gnuradio.dab as dab
+    make: dab.measure_processing_rate(${in_type.in_len}, ${samples_to_count})
 
 file_format: 1

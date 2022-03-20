@@ -28,7 +28,7 @@ outputs:
 #    dtype: byte
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_sync_dab2(grdab.parameters.dab_parameters(mode=1,sample_rate=${samp_rate},verbose=False), grdab.parameters.receiver_parameters(mode=${mode}, softbits=True, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=0.0, always_include_resample=True, verbose=False, correct_ffe=True, equalize_magnitude=True), ${debug})
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_sync_dab2(dab.parameters.dab_parameters(mode=1,sample_rate=${samp_rate},verbose=False), dab.parameters.receiver_parameters(mode=${mode}, softbits=True, input_fft_filter=True, autocorrect_sample_rate=False, sample_rate_correction_factor=0.0, always_include_resample=True, verbose=False, correct_ffe=True, equalize_magnitude=True), ${debug})
 
 file_format: 1

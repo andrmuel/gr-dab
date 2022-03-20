@@ -18,7 +18,7 @@ outputs:
     dtype: float
 
 templates:
-    imports: import grdab
-    make: grdab.moving_sum_ff(${length})
+    imports: import gnuradio.dab as dab
+    make: dab.moving_sum_ff(${length})
 
 file_format: 1

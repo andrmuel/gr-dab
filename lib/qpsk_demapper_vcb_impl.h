@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_QPSK_DEMAPPER_VCB_IMPL_H
 #define INCLUDED_DAB_QPSK_DEMAPPER_VCB_IMPL_H
 
-#include <grdab/qpsk_demapper_vcb.h>
+#include <dab/qpsk_demapper_vcb.h>
 
 namespace gr {
   namespace dab {

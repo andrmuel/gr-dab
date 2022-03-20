@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_VALVE_FF_IMPL_H
 #define INCLUDED_DAB_VALVE_FF_IMPL_H
 
-#include <grdab/valve_ff.h>
+#include <dab/valve_ff.h>
 
 namespace gr {
   namespace dab {

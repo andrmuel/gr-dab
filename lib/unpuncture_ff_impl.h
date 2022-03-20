@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_UNPUNCTURE_FF_IMPL_H
 #define INCLUDED_DAB_UNPUNCTURE_FF_IMPL_H
 
-#include <grdab/unpuncture_ff.h>
+#include <dab/unpuncture_ff.h>
 
 namespace gr {
   namespace dab {

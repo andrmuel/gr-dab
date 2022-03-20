@@ -28,7 +28,7 @@ outputs:
     vlen: ${ fft_length }
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_sampler(${fft_length}, ${cp_length}, ${symbols_per_frame}, ${gap})
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_sampler(${fft_length}, ${cp_length}, ${symbols_per_frame}, ${gap})
 
 file_format: 1

@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_UNPUNCTURE_VFF_IMPL_H
 #define INCLUDED_DAB_UNPUNCTURE_VFF_IMPL_H
 
-#include <grdab/unpuncture_vff.h>
+#include <dab/unpuncture_vff.h>
 
 namespace gr {
   namespace dab {

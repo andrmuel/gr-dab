@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_MODULO_FF_IMPL_H
 #define INCLUDED_DAB_MODULO_FF_IMPL_H
 
-#include <grdab/modulo_ff.h>
+#include <dab/modulo_ff.h>
 
 namespace gr {
   namespace dab {

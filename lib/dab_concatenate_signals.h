@@ -26,7 +26,7 @@
 #include <gr_block.h>
 
 class dab_concatenate_signals;
-typedef boost::shared_ptr<dab_concatenate_signals> dab_concatenate_signals_sptr;
+typedef std::shared_ptr<dab_concatenate_signals> dab_concatenate_signals_sptr;
 
 dab_concatenate_signals_sptr dab_make_concatenate_signals (size_t itemsize);
 

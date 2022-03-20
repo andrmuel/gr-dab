@@ -23,7 +23,7 @@ outputs:
     vlen: ${ size }
 
 templates:
-    imports: import grdab
-    make: grdab.frequency_interleaver_vcc(${interleaving_sequence})
+    imports: import gnuradio.dab as dab
+    make: dab.frequency_interleaver_vcc(${interleaving_sequence})
 
 file_format: 1

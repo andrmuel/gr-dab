@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from gnuradio import gr, gr_unittest
-import dab_swig
+import dab_python
 
 class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 	"""
@@ -25,7 +25,7 @@ class qa_ofdm_coarse_frequency_correct(gr_unittest.TestCase):
 		src0 = gr.vector_source_c(src_data0)
 		src1 = gr.vector_source_b(src_data1)
 		s2v0 = gr.stream_to_vector(gr.sizeof_gr_complex, 10)
-		ofdm_coarse_frequency_correct = dab_swig.ofdm_coarse_frequency_correct(10,2)
+		ofdm_coarse_frequency_correct = dab_python.ofdm_coarse_frequency_correct(10,2)
 		v2s0 = gr.vector_to_stream(gr.sizeof_gr_complex, 2)
 		dst0 = gr.vector_sink_c()
 		dst1 = gr.vector_sink_b()

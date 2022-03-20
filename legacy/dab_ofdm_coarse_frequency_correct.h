@@ -26,7 +26,7 @@
 
 class dab_ofdm_coarse_frequency_correct;
 
-typedef boost::shared_ptr<dab_ofdm_coarse_frequency_correct> dab_ofdm_coarse_frequency_correct_sptr;
+typedef std::shared_ptr<dab_ofdm_coarse_frequency_correct> dab_ofdm_coarse_frequency_correct_sptr;
 
 dab_ofdm_coarse_frequency_correct_sptr 
 dab_make_ofdm_coarse_frequency_correct (unsigned int fft_length, 

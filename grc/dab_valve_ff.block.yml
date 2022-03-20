@@ -22,7 +22,7 @@ outputs:
     dtype: float
 
 templates:
-    imports: import grdab
-    make: grdab.valve_ff(${closed}, ${feed_with_zeros})
+    imports: import gnuradio.dab as dab
+    make: dab.valve_ff(${closed}, ${feed_with_zeros})
 
 file_format: 1

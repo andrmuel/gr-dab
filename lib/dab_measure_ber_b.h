@@ -26,7 +26,7 @@
 #include <gr_sync_block.h>
 
 class dab_measure_ber_b;
-typedef boost::shared_ptr<dab_measure_ber_b> dab_measure_ber_b_sptr;
+typedef std::shared_ptr<dab_measure_ber_b> dab_measure_ber_b_sptr;
 
 dab_measure_ber_b_sptr dab_make_measure_ber_b();
 

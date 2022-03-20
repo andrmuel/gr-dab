@@ -24,7 +24,7 @@ outputs:
     dtype: byte
 
 templates:
-    imports: import grdab
-    make: grdab.crc16_bb(${length}, ${generator}, ${initial_state})
+    imports: import gnuradio.dab as dab
+    make: dab.crc16_bb(${length}, ${generator}, ${initial_state})
 
 file_format: 1

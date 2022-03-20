@@ -27,7 +27,7 @@
 #ifndef INCLUDED_DAB_REED_SOLOMON_DECODE_BB_IMPL_H
 #define INCLUDED_DAB_REED_SOLOMON_DECODE_BB_IMPL_H
 
-#include <grdab/reed_solomon_decode_bb.h>
+#include <dab/reed_solomon_decode_bb.h>
 
 extern "C" {
 #include "./fec/fec.h"

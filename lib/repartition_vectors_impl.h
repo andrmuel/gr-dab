@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_REPARTITION_VECTORS_IMPL_H
 #define INCLUDED_DAB_REPARTITION_VECTORS_IMPL_H
 
-#include <grdab/repartition_vectors.h>
+#include <dab/repartition_vectors.h>
 
 namespace gr {
   namespace dab {

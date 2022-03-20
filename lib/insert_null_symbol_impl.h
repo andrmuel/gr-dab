@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_INSERT_NULL_SYMBOL_IMPL_H
 #define INCLUDED_DAB_INSERT_NULL_SYMBOL_IMPL_H
 
-#include <grdab/insert_null_symbol.h>
+#include <dab/insert_null_symbol.h>
 
 namespace gr {
   namespace dab {

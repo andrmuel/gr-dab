@@ -24,7 +24,7 @@ outputs:
     vlen: ${ vector_length }
 
 templates:
-    imports: import grdab
-    make: grdab.time_deinterleave_ff(${vector_length}, ${scrambling_vector})
+    imports: import gnuradio.dab as dab
+    make: dab.time_deinterleave_ff(${vector_length}, ${scrambling_vector})
 
 file_format: 1

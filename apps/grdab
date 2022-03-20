@@ -21,7 +21,7 @@
 import argparse
 import sys
 
-import grdab.app
+import gnuradio.dab.app
 import os
 
 extra_module_path = os.path.dirname(grdab.app.__file__)
@@ -55,7 +55,7 @@ parser_adjust.add_argument("-f","--freq", help="Frequency in MHz", type=float, d
 parser_curses = subparsers.add_parser('curses', help='Run the ncurses listening app')
 parser_curses.add_argument("--skip-xrun-monitor", help="Run without throttle and xrun_buffer", action="store_true")
 
-import grdab.app.config
+import gnuradio.dab.app.config
 import os
 cfg_dir = "".join([os.getenv("HOME"),"/.grdab"])
 cfg = grdab.app.config.Configuration(cfg_dir)
@@ -82,7 +82,7 @@ def info_handler(res):
   grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq=res.zeromq, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat)
 
 def adjust_handler(res):
-  import grdab.app.adjustment_gui
+  import gnuradio.dab.app.adjustment_gui
   print("will open GUI to adjust gain and ppm")
 
   class SubClass(grdab.app.adjustment_gui.top_block):
@@ -93,7 +93,7 @@ def adjust_handler(res):
     def set_variable_qtgui_push_button_0(self, val):
       self.variable_qtgui_push_button_0 = val
       if val == 1:
-        import grdab.app.config
+        import gnuradio.dab.app.config
         import os
         cfg_dir = "".join([os.getenv("HOME"),"/.grdab"])
         cfg = grdab.app.config.Configuration(cfg_dir)
@@ -106,7 +106,7 @@ def adjust_handler(res):
   grdab.app.adjustment_gui.main(tp, options=None)
 
 def curses_handler(res):
-  import grdab.app.curses_app
+  import gnuradio.dab.app.curses_app
   grdab.app.curses_app.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq_in=res.zeromq, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat, skip_xrun_monitor=res.skip_xrun_monitor)
 
 parser_receive.set_defaults(func=receive_handler)

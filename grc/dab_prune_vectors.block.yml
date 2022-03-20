@@ -18,7 +18,7 @@ outputs:
     dtype: ''
 
 templates:
-    imports: import grdab
-    make: grdab.prune_vectors(${itemsize}, ${length}, ${prune_start}, ${prune_end})
+    imports: import gnuradio.dab as dab
+    make: dab.prune_vectors(${itemsize}, ${length}, ${prune_start}, ${prune_end})
 
 file_format: 1

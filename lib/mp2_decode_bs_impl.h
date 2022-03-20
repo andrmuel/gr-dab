@@ -32,7 +32,7 @@
 #ifndef INCLUDED_DAB_MP2_DECODE_BS_IMPL_H
 #define INCLUDED_DAB_MP2_DECODE_BS_IMPL_H
 
-#include <grdab/mp2_decode_bs.h>
+#include <dab/mp2_decode_bs.h>
 #include	<stdio.h>
 #include	<stdint.h>
 #include	<math.h>

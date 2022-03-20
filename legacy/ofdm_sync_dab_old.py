@@ -26,7 +26,7 @@
 # andrmuel@ee.ethz.ch
 
 from gnuradio import gr
-import dab_swig
+import dab_python
 import sys
 from math import pi
 import parameters, detect_null
@@ -84,7 +84,7 @@ class ofdm_sync_dab(gr.hier_block2):
 		self.ffs_conj = gr.conjugate_cc()
 		self.ffs_mult = gr.multiply_cc()
 		# self.ffs_moving_sum = gr.fir_filter_ccf(1, [1]*dp.cp_length)
-		self.ffs_moving_sum = dab_swig.moving_sum_cc(dp.cp_length)
+		self.ffs_moving_sum = dab_python.moving_sum_cc(dp.cp_length)
 		self.ffs_angle = gr.complex_to_arg()
 		self.ffs_angle_scale = gr.multiply_const_ff(1./dp.fft_length)
 		self.ffs_delay_sample_and_hold = gr.delay(gr.sizeof_char, dp.symbol_length) # sample the value at the end of the symbol ..

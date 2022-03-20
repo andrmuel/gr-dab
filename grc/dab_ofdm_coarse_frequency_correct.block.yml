@@ -26,7 +26,7 @@ outputs:
     vlen: ${ num_carriers }
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_coarse_frequency_correct(${fft_length}, ${num_carriers}, ${cp_length})
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_coarse_frequency_correct(${fft_length}, ${num_carriers}, ${cp_length})
 
 file_format: 1

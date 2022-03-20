@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_CONTROL_STREAM_TO_TAG_CC_IMPL_H
 #define INCLUDED_DAB_CONTROL_STREAM_TO_TAG_CC_IMPL_H
 
-#include <grdab/control_stream_to_tag_cc.h>
+#include <dab/control_stream_to_tag_cc.h>
 
 namespace gr {
   namespace dab {
