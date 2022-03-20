@@ -19,7 +19,7 @@
 # Boston, MA 02110-1301, USA.
 # 
 
-from gnuradio import gr, blocks, trellis
+from gnuradio import gr, blocks, trellis, digital
 import gnuradio.dab as grdab
 from math import sqrt
 
@@ -83,21 +83,21 @@ class msc_decode(gr.hier_block2):
         self.select_msc_syms = grdab.select_vectors(gr.sizeof_float, self.dp.num_carriers * 2, self.dp.num_msc_syms,
                                                   self.dp.num_fic_syms)
         # repartition MSC data in CIFs (left out due to heavy burden for scheduler and not really necessary)
-        #self.repartition_msc_to_CIFs = grdab.repartition_vectors_make(gr.sizeof_float, self.dp.num_carriers * 2,
+        #self.repartition_msc_to_CIFs = grdab.repartition_vectors(gr.sizeof_float, self.dp.num_carriers * 2,
         #                                                            self.dp.cif_bits, self.dp.num_msc_syms,
         #                                                            self.dp.num_cifs)
         #repartition MSC to CUs
-        self.repartition_msc_to_cus = grdab.repartition_vectors_make(gr.sizeof_float, self.dp.num_carriers*2, self.dp.msc_cu_size, self.dp.num_msc_syms, self.dp.num_cus * self.dp.num_cifs)
+        self.repartition_msc_to_cus = grdab.repartition_vectors(gr.sizeof_float, self.dp.num_carriers*2, self.dp.msc_cu_size, self.dp.num_msc_syms, self.dp.num_cus * self.dp.num_cifs)
 
         # select CUs of one subchannel of each CIF and form logical frame vector
-        self.select_subch = grdab.select_subch_vfvf_make(self.dp.msc_cu_size, self.dp.msc_cu_size * self.size, self.address, self.dp.num_cus)
+        self.select_subch = grdab.select_subch_vfvf(self.dp.msc_cu_size, self.dp.msc_cu_size * self.size, self.address, self.dp.num_cus)
 
         # time deinterleaving
-        self.time_v2s = blocks.vector_to_stream_make(gr.sizeof_float, self.dp.msc_cu_size * self.size)
-        self.time_deinterleaver = grdab.time_deinterleave_ff_make(self.dp.msc_cu_size * self.size, self.dp.scrambling_vector)
+        self.time_v2s = blocks.vector_to_stream(gr.sizeof_float, int(self.dp.msc_cu_size * self.size))
+        self.time_deinterleaver = grdab.time_deinterleave_ff(self.dp.msc_cu_size * self.size, self.dp.scrambling_vector)
         # unpuncture
-        self.conv_v2s = blocks.vector_to_stream(gr.sizeof_float, self.msc_punctured_codeword_length)
-        self.unpuncture = grdab.unpuncture_ff_make(self.assembled_msc_puncturing_sequence, 0)
+        self.conv_v2s = blocks.vector_to_stream(gr.sizeof_float, int(self.msc_punctured_codeword_length))
+        self.unpuncture = grdab.unpuncture_ff(self.assembled_msc_puncturing_sequence, 0)
 
         # convolutional decoding
         self.fsm = trellis.fsm(1, 4, [0o133, 0o171, 0o145, 0o133])  # OK (dumped to text and verified partially)
@@ -121,19 +121,19 @@ class msc_decode(gr.hier_block2):
         ]
         assert (len(table) / 4 == self.fsm.O())
         table = [(1 - 2 * x) / sqrt(2) for x in table]
-        self.conv_decode = trellis.viterbi_combined(self.fsm, self.msc_I + self.dp.conv_code_add_bits_input, 0, 0, 4, table, trellis.TRELLIS_EUCLIDEAN)
-        self.conv_s2v = blocks.stream_to_vector(gr.sizeof_char, self.msc_I + self.dp.conv_code_add_bits_input)
-        self.conv_prune = grdab.prune(gr.sizeof_char, self.msc_conv_codeword_length / 4, 0,
+        self.conv_decode = trellis.viterbi_combined_fb(self.fsm, int(self.msc_I + self.dp.conv_code_add_bits_input), 0, 0, 4, table, digital.TRELLIS_EUCLIDEAN)
+        self.conv_s2v = blocks.stream_to_vector(gr.sizeof_char, int(self.msc_I + self.dp.conv_code_add_bits_input))
+        self.conv_prune = grdab.prune(gr.sizeof_char, int(self.msc_conv_codeword_length / 4), 0,
                                             self.dp.conv_code_add_bits_input)
 
         #energy descramble
         self.prbs_src = blocks.vector_source_b(self.dp.prbs(int(self.msc_I)), True)
-        self.energy_v2s = blocks.vector_to_stream(gr.sizeof_char, self.msc_I)
+        self.energy_v2s = blocks.vector_to_stream(gr.sizeof_char, int(self.msc_I))
         self.add_mod_2 = blocks.xor_bb()
         #self.energy_s2v = blocks.stream_to_vector(gr.sizeof_char, self.msc_I)
 
         #pack bits
-        self.pack_bits = blocks.unpacked_to_packed_bb_make(1, gr.GR_MSB_FIRST)
+        self.pack_bits = blocks.unpacked_to_packed_bb(1, gr.GR_MSB_FIRST)
 
         # connect blocks
         self.connect((self, 0),
@@ -160,37 +160,37 @@ class msc_decode(gr.hier_block2):
 #debug
         if debug is True:
             #msc_select_syms
-            self.sink_msc_select_syms = blocks.file_sink_make(gr.sizeof_float * self.dp.num_carriers * 2, "debug/msc_select_syms.dat")
+            self.sink_msc_select_syms = blocks.file_sink(gr.sizeof_float * self.dp.num_carriers * 2, "debug/msc_select_syms.dat")
             self.connect(self.select_msc_syms, self.sink_msc_select_syms)
 
             #msc repartition cus
-            self.sink_repartition_msc_to_cus = blocks.file_sink_make(gr.sizeof_float * self.dp.msc_cu_size, "debug/msc_repartitioned_to_cus.dat")
+            self.sink_repartition_msc_to_cus = blocks.file_sink(gr.sizeof_float * self.dp.msc_cu_size, "debug/msc_repartitioned_to_cus.dat")
             self.connect((self.repartition_msc_to_cus), self.sink_repartition_msc_to_cus)
 
             #data of one sub channel not decoded
-            self.sink_select_subch = blocks.file_sink_make(gr.sizeof_float * self.dp.msc_cu_size * self.size, "debug/select_subch.dat")
+            self.sink_select_subch = blocks.file_sink(gr.sizeof_float * self.dp.msc_cu_size * self.size, "debug/select_subch.dat")
             self.connect(self.select_subch, self.sink_select_subch)
 
             #sub channel time_deinterleaved
-            self.sink_subch_time_deinterleaved = blocks.file_sink_make(gr.sizeof_float, "debug/subch_time_deinterleaved.dat")
+            self.sink_subch_time_deinterleaved = blocks.file_sink(gr.sizeof_float, "debug/subch_time_deinterleaved.dat")
             self.connect(self.time_deinterleaver, self.sink_subch_time_deinterleaved)
 
             #sub channel unpunctured
-            self.sink_subch_unpunctured = blocks.file_sink_make(gr.sizeof_float, "debug/subch_unpunctured.dat")
+            self.sink_subch_unpunctured = blocks.file_sink(gr.sizeof_float, "debug/subch_unpunctured.dat")
             self.connect(self.unpuncture, self.sink_subch_unpunctured)
 
             # sub channel convolutional decoded
-            self.sink_subch_decoded = blocks.file_sink_make(gr.sizeof_char, "debug/subch_decoded.dat")
+            self.sink_subch_decoded = blocks.file_sink(gr.sizeof_char, "debug/subch_decoded.dat")
             self.connect(self.conv_decode, self.sink_subch_decoded)
 
             # sub channel convolutional decoded
-            self.sink_subch_pruned = blocks.file_sink_make(gr.sizeof_char, "debug/subch_pruned.dat")
+            self.sink_subch_pruned = blocks.file_sink(gr.sizeof_char, "debug/subch_pruned.dat")
             self.connect(self.conv_prune, self.sink_subch_pruned)
 
             # sub channel energy dispersal undone unpacked
-            self.sink_subch_energy_disp_undone = blocks.file_sink_make(gr.sizeof_char, "debug/subch_energy_disp_undone_unpacked.dat")
+            self.sink_subch_energy_disp_undone = blocks.file_sink(gr.sizeof_char, "debug/subch_energy_disp_undone_unpacked.dat")
             self.connect(self.add_mod_2, self.sink_subch_energy_disp_undone)
 
             # sub channel energy dispersal undone packed
-            self.sink_subch_energy_disp_undone_packed = blocks.file_sink_make(gr.sizeof_char, "debug/subch_energy_disp_undone_packed.dat")
+            self.sink_subch_energy_disp_undone_packed = blocks.file_sink(gr.sizeof_char, "debug/subch_energy_disp_undone_packed.dat")
             self.connect(self.pack_bits, self.sink_subch_energy_disp_undone_packed)

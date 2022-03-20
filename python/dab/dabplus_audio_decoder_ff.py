@@ -68,18 +68,18 @@ class dabplus_audio_decoder_ff(gr.hier_block2):
         # MSC decoder extracts logical frames out of transmission frame and decodes it
         self.msc_decoder = grdab.msc_decode(self.dp, self.address, self.size, self.protection, self.verbose, self.debug)
         # firecode synchronizes to superframes and checks
-        self.firecode = grdab.firecode_check_bb_make(self.bit_rate_n)
+        self.firecode = grdab.firecode_check_bb(int(self.bit_rate_n))
         # Reed-Solomon error repair
-        self.rs = grdab.reed_solomon_decode_bb_make(self.bit_rate_n)
+        self.rs = grdab.reed_solomon_decode_bb(int(self.bit_rate_n))
         # mp4 decoder
-        self.mp4 = grdab.mp4_decode_bs_make(self.bit_rate_n)
+        self.mp4 = grdab.mp4_decode_bs(int(self.bit_rate_n))
 
         self.connect((self, 0), self.msc_decoder, self.firecode, self.rs, self.mp4)
 
         if self.output_float:
             # map short samples to the range [-1,1] in floats
-            self.s2f_left = blocks.short_to_float_make(1, 32767)
-            self.s2f_right = blocks.short_to_float_make(1, 32767)
+            self.s2f_left = blocks.short_to_float(1, 32767)
+            self.s2f_right = blocks.short_to_float(1, 32767)
             self.gain_left = blocks.multiply_const_ff(1, 1)
             self.gain_right = blocks.multiply_const_ff(1, 1)
             self.connect((self.mp4, 0), self.s2f_left, self.gain_left, (self, 0))

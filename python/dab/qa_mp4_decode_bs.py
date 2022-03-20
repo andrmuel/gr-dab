@@ -36,11 +36,11 @@ class qa_mp4_decode_bs (gr_unittest.TestCase):
 # manual check, if header info makes sense, and if audio is played, input = repaired (= Reed-Solomon decoded) DAB+ audio superframes
     def test_001_t (self):
         if os.path.exists("debug/reed_solomon_repaired.dat"):
-            self.src = blocks.file_source_make(gr.sizeof_char, "debug/reed_solomon_repaired.dat")
-            self.mp4 = grdab.mp4_decode_bs_make(14)
-            self.s2f_left = blocks.short_to_float_make(1, 32767)
-            self.s2f_right = blocks.short_to_float_make(1, 32767)
-            self.audio = audio.sink_make(32000)
+            self.src = blocks.file_source(gr.sizeof_char, "debug/reed_solomon_repaired.dat")
+            self.mp4 = grdab.mp4_decode_bs(14)
+            self.s2f_left = blocks.short_to_float(1, 32767)
+            self.s2f_right = blocks.short_to_float(1, 32767)
+            self.audio = audio.sink(32000)
 
             self.tb.connect(self.src, (self.mp4, 0), self.s2f_left, (self.audio, 0))
             self.tb.connect((self.mp4, 1), self.s2f_right, (self.audio, 1))

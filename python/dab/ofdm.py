@@ -61,10 +61,10 @@ class ofdm_mod(gr.hier_block2):
 
 
 		# symbol mapping
-		self.mapper_v2s = blocks.vector_to_stream_make(gr.sizeof_char, 384)
-		self.mapper_unpack = blocks.packed_to_unpacked_bb_make(1, gr.GR_MSB_FIRST)
-		self.mapper = grdab.mapper_bc_make(dp.num_carriers)
-		self.mapper_s2v = blocks.stream_to_vector_make(gr.sizeof_gr_complex, 1536)
+		self.mapper_v2s = blocks.vector_to_stream(gr.sizeof_char, 384)
+		self.mapper_unpack = blocks.packed_to_unpacked_bb(1, gr.GR_MSB_FIRST)
+		self.mapper = grdab.mapper_bc(dp.num_carriers)
+		self.mapper_s2v = blocks.stream_to_vector(gr.sizeof_gr_complex, 1536)
 
 		# add pilot symbol
 		self.insert_pilot = grdab.ofdm_insert_pilot_vcc(dp.prn)

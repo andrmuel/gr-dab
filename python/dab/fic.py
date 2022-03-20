@@ -91,7 +91,7 @@ class fic_decode(gr.hier_block2):
         table = [(1 - 2 * x) / sqrt(2) for x in table]
         self.conv_decode = trellis.viterbi_combined_fb(self.fsm, 774, 0, 0, 4, table, digital.TRELLIS_EUCLIDEAN)
         #self.conv_s2v = blocks.stream_to_vector(gr.sizeof_char, 774)
-        self.conv_prune = grdab.prune(gr.sizeof_char, self.dp.fic_conv_codeword_length / 4, 0,
+        self.conv_prune = grdab.prune(gr.sizeof_char, self.dp.fic_conv_codeword_length // 4, 0,
                                             self.dp.conv_code_add_bits_input)
 
         # energy dispersal
