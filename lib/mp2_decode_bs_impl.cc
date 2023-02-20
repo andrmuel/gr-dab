@@ -264,7 +264,7 @@ namespace gr {
       d_first = true;
 
       set_output_multiple(d_output_size);
-      GR_LOG_DEBUG(d_logger, "mp2 decoder initialized");
+      d_logger->debug("mp2 decoder initialized");
     }
 
     /*
@@ -407,7 +407,7 @@ namespace gr {
       // read the rest of the header
       bit_rate_index_minus1 = get_bits(4) - 1;
       if (bit_rate_index_minus1 > 13) {
-        GR_LOG_DEBUG(d_logger, "invalid bit rate or unknown format");
+        d_logger->debug("invalid bit rate or unknown format");
         return 0;  // invalid bit rate or 'free format'
       }
 
@@ -440,10 +440,10 @@ namespace gr {
 // compute the frame size
       frame_size = (144000 * bitrates[bit_rate_index_minus1]
                     / sample_rates[sampling_frequency]) + padding_bit;
-      GR_LOG_DEBUG(d_logger, format("frame_size = %d") % frame_size);
+      d_logger->debug("frame_size = {}",frame_size);
 
       if (!pcm) {
-        GR_LOG_ERROR(d_logger, "pcm is NULL ptr - no decoding");
+        d_logger->error("pcm is NULL ptr - no decoding");
         return frame_size;  // no decoding
       }
 
@@ -647,9 +647,9 @@ namespace gr {
                   out_right[d_nproduced + n] = sample_buf[n*2+1];
                 }
                 d_nproduced += KJMP2_SAMPLES_PER_FRAME;
-                GR_LOG_DEBUG(d_logger, "mp2 decoding succeeded");
+                d_logger->debug("mp2 decoding succeeded");
               } else {
-                GR_LOG_DEBUG(d_logger, "mp2 decoding failed");
+                d_logger->debug("mp2 decoding failed");
               }
               d_mp2_header_OK = 0;
               d_mp2_header_count = 0;

@@ -127,7 +127,7 @@ namespace gr {
       int core_ch_config = get_aac_channel_configuration(mpegSurround,
                                                          aacChannelMode);
       if (core_ch_config == -1) {
-        GR_LOG_ERROR(d_logger, "Unrecognized mpeg surround config (ignored)");
+        d_logger->error("Unrecognized mpeg surround config (ignored)");
         return false;
       }
       uint8_t asc[2];
@@ -140,7 +140,7 @@ namespace gr {
                                            &channels);
       if (init_result != 0) {
 /*      If some error initializing occured, skip the file */
-        GR_LOG_ERROR(d_logger, "Error initializing decoding library");
+        d_logger->error("Error initializing decoding library");
         NeAACDecClose(aacHandle);
         return false;
       }
@@ -201,7 +201,7 @@ namespace gr {
         if (!initialize(dacRate, sbrFlag, mpegSurround, aacChannelMode))
           return 0;
         d_aacInitialized = true;
-        //GR_LOG_DEBUG(d_logger, "AAC initialized");
+        //d_logger->debug("AAC initialized");
       }
 
       outBuffer = (int16_t *) NeAACDecDecode(aacHandle, &hInfo, buffer, bufferLength);
@@ -215,7 +215,7 @@ namespace gr {
         baudRate = sample_rate;
       }
       d_sample_rate = sample_rate;
-      //GR_LOG_DEBUG(d_logger, format("bytes consumed %d") % (int) (hInfo.bytesconsumed));
+      //d_logger->debug(format("bytes consumed %d") % (int) (hInfo.bytesconsumed));
       //GR_LOG_DEBUG(d_logger,
       //             format("sample_rate = %d, samples = %d, channels = %d, error = %d, sbr = %d") % sample_rate %
       //             samples %
@@ -243,9 +243,9 @@ namespace gr {
           out_sample2[n + d_nsamples_produced] = (int16_t) outBuffer[n * 2 + 1];
         }
       } else
-        GR_LOG_ERROR(d_logger, "Cannot handle these channels -> dump samples");
+        d_logger->error("Cannot handle these channels -> dump samples");
 
-      //GR_LOG_DEBUG(d_logger, format("Produced %d PCM samples (for each channel)") % (samples / 2));
+      //d_logger->debug(format("Produced %d PCM samples (for each channel)") % (samples / 2));
       d_nsamples_produced += samples / 2;
       return samples / 2;
     }
@@ -376,7 +376,7 @@ namespace gr {
 
           // CRC check of each AU (the 2 byte (16 bit) CRC word is excluded in aac_frame_length)
           if (crc16(&in[n * d_superframe_size + d_au_start[i]], aac_frame_length)) {
-            //GR_LOG_DEBUG(d_logger, format("CRC check of AU %d successful") % i);
+            //d_logger->debug(format("CRC check of AU %d successful") % i);
             // handle proper AU
             handle_aac_frame(&in[n * d_superframe_size + d_au_start[i]],
                              aac_frame_length,
@@ -388,7 +388,7 @@ namespace gr {
                              out2);
           } else {
             // dump corrupted AU
-            GR_LOG_DEBUG(d_logger, format("CRC failure with dab+ frame"));
+            d_logger->debug("CRC failure with dab+ frame");
           }
         }
         frames ++;
