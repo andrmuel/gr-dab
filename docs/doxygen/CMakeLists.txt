@@ -15,8 +15,16 @@ file(TO_NATIVE_PATH ${CMAKE_SOURCE_DIR} abs_top_srcdir)
 file(TO_NATIVE_PATH ${CMAKE_BINARY_DIR} abs_top_builddir)
 
 set(HAVE_DOT ${DOXYGEN_DOT_FOUND})
+find_package(LATEX)
+option(ENABLE_DOXYGEN_PDF "Build Doxygen PDF" OFF)
+
+if(ENABLE_DOXYGEN_PDF AND LATEX_FOUND)
+    set(enable_latex_docs YES)
+else()
+    set(enable_latex_docs NO)
+endif()
+
 set(enable_html_docs YES)
-set(enable_latex_docs NO)
 set(enable_mathjax NO)
 set(enable_xml_docs YES)
 
@@ -25,7 +33,13 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
 @ONLY)
 
-set(BUILT_DIRS ${CMAKE_CURRENT_BINARY_DIR}/xml ${CMAKE_CURRENT_BINARY_DIR}/html)
+if(enable_html_docs)
+   list(APPEND BUILT_DIRS ${CMAKE_CURRENT_BINARY_DIR}/html)
+endif()
+
+if(enable_xml_docs)
+   list(APPEND BUILT_DIRS ${CMAKE_CURRENT_BINARY_DIR}/xml)
+endif()
 
 ########################################################################
 # Make and install doxygen docs
@@ -38,5 +52,26 @@ add_custom_command(
 )
 
 add_custom_target(doxygen_target ALL DEPENDS ${BUILT_DIRS})
+
+########################################################################
+# Make and install doxygen PDF docs
+########################################################################
+if(enable_latex_docs)
+   add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/latex/refman.pdf
+	COMMAND ${LATEX_COMPILER} ${CMAKE_CURRENT_BINARY_DIR}/latex/refman.tex
+	COMMAND ${LATEX_COMPILER} ${CMAKE_CURRENT_BINARY_DIR}/latex/refman.tex
+	COMMAND ${LATEX_COMPILER} ${CMAKE_CURRENT_BINARY_DIR}/latex/refman.tex
+	COMMAND ${DVIPDF_CONVERTER} ${CMAKE_CURRENT_BINARY_DIR}/latex/refman.dvi
+	WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/latex
+	DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/latex/Makefile
+	COMMENT "Generating PDF documentation with latex")
+
+   add_custom_target(doxygen_pdf_target ALL
+	DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/latex/refman.pdf)
+
+   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/latex/refman.pdf
+        DESTINATION ${GR_PKG_DOC_DIR})
+endif()
 
 install(DIRECTORY ${BUILT_DIRS} DESTINATION ${GR_PKG_DOC_DIR})
