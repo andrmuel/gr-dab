@@ -14,7 +14,7 @@
 /* BINDTOOL_GEN_AUTOMATIC(0)                                                       */
 /* BINDTOOL_USE_PYGCCXML(0)                                                        */
 /* BINDTOOL_HEADER_FILE(peak_detector_fb.h)                                        */
-/* BINDTOOL_HEADER_FILE_HASH(927b7771cbffd3a09b139d617765031b)                     */
+/* BINDTOOL_HEADER_FILE_HASH(c969bb41ee9dc6b59bed20ce0d71b89b)                     */
 /***********************************************************************************/
 
 #include <pybind11/complex.h>
