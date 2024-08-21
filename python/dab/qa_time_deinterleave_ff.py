@@ -33,7 +33,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
 
     def test_001_t(self):
         vector01 =          (1, 0, 3, 0, 5, 0,   7, 2, 9, 4, 11, 6,   13, 8, 15, 10, 17, 12)
-        expected_result =   (0, 0, 0, 0, 0, 0,   1, 2, 3, 4,  5, 6,    7, 8,  9, 10, 11, 12)
+        expected_result =   [float(x) for x in (0, 0, 0, 0, 0, 0,   1, 2, 3, 4,  5, 6,    7, 8,  9, 10, 11, 12)]
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 6)
@@ -48,7 +48,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
 
     def test_002_t(self):
         vector01 =          (1, 0, 0, 0,  5, 4, 0, 0,  9, 8, 3, 0,  13, 12, 7, 2)
-        expected_result =   (0, 0, 0, 0,  0, 4, 0, 0,  0, 8, 0, 0,   1, 12, 3, 0)
+        expected_result =   [float(x) for x in (0, 0, 0, 0,  0, 4, 0, 0,  0, 8, 0, 0,   1, 12, 3, 0)]
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 4)
@@ -63,7 +63,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
 
     def test_003_t(self):
         vector01 =          (3, 0, 0, 0, 7, 0, 0, 0,    11, 4, 0, 0, 15, 8,  0, 0,      19, 12, 1, 0, 23, 16, 5, 0,     27, 20,  9,  2, 31, 24, 13,  6)
-        expected_result =   (0, 0, 0, 0, 0, 0, 0, 0,     3, 4, 0, 0,  7, 8,  0, 0,      11, 12, 0, 0, 15, 16, 0, 0,      19,20, 0, 0, 23, 24, 0, 0)
+        expected_result =   [float(x) for x in (0, 0, 0, 0, 0, 0, 0, 0,     3, 4, 0, 0,  7, 8,  0, 0,      11, 12, 0, 0, 15, 16, 0, 0,      19,20, 0, 0, 23, 24, 0, 0)]
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 8)
@@ -78,7 +78,7 @@ class qa_time_deinterleave_ff (gr_unittest.TestCase):
 
     def test_004_t(self):
         vector01 =          (1, 2, 3, 4,  5, 6, 7, 8,  9, 10, 11, 12,  13, 14, 15, 16)
-        expected_result =   (0,0,0,4,0,0,0,8,0,0,0,12,0,0,0,16,0,0,3,4,0,0,7,8,0,0,11,12,0,0,15,16)
+        expected_result =   [float(x) for x in (0,0,0,4,0,0,0,8,0,0,0,12,0,0,0,16,0,0,3,4,0,0,7,8,0,0,11,12,0,0,15,16)]
         src = blocks.vector_source_b(vector01, True)
         b2f = blocks.char_to_float()
         s2v = blocks.stream_to_vector(gr.sizeof_float, 16)

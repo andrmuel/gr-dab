@@ -34,7 +34,7 @@ class qa_puncture_bb (gr_unittest.TestCase):
     def test_001_puncture_ff(self):
         src_data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         punc_seq = (1, 0, 0, 0, 1, 0, 1, 1, 1)
-        exp_res = (0, 4, 6, 7, 8)
+        exp_res = [float(x) for x in (0, 4, 6, 7, 8)]
         src = blocks.vector_source_b(src_data)
         puncture = grdab.puncture_bb(punc_seq)
         dst = blocks.vector_sink_b()
@@ -46,7 +46,7 @@ class qa_puncture_bb (gr_unittest.TestCase):
     def test_002_puncture_ff(self):
         src_data = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
         punc_seq = (1, 0, 0)
-        exp_res = (0, 3, 6, 9, 2, 5)
+        exp_res = [float(x) for x in (0, 3, 6, 9, 2, 5)]
         src = blocks.vector_source_b(src_data)
         puncture = grdab.puncture_bb(punc_seq)
         dst = blocks.vector_sink_b()

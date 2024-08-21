@@ -39,8 +39,8 @@ class qa_peak_detector_fb (gr_unittest.TestCase):
         data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
-        expected_result = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        expected_result = [float(x) for x in (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0)]
 
         src = blocks.vector_source_f(data, False)
         regen = blocks.peak_detector_fb()
@@ -60,8 +60,8 @@ class qa_peak_detector_fb (gr_unittest.TestCase):
         data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
-        expected_result = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        expected_result = [float(x) for x in (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0)]
 
         src = blocks.vector_source_i(data, False)
         regen = blocks.peak_detector_ib()
@@ -81,8 +81,8 @@ class qa_peak_detector_fb (gr_unittest.TestCase):
         data = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
 
-        expected_result = (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+        expected_result = [float(x) for x in (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0)]
 
         src = blocks.vector_source_s(data, False)
         regen = blocks.peak_detector_sb()

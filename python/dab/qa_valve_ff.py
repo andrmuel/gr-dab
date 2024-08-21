@@ -33,7 +33,7 @@ class qa_valve_ff (gr_unittest.TestCase):
 
     def test_001_t (self):
         src_data = (1, 2, 3, 4)
-        expected_result = (1, 2, 3, 4)
+        expected_result = [float(x) for x in (1, 2, 3, 4)]
         src = blocks.vector_source_f(src_data)
         valve = grdab.valve_ff(False)
         dst = blocks.vector_sink_f()
@@ -44,7 +44,7 @@ class qa_valve_ff (gr_unittest.TestCase):
 
     def test_002_t (self):
         src_data = (1, 2, 3, 4)
-        expected_result = (0, 0, 0, 0)
+        expected_result = [float(x) for x in (0, 0, 0, 0)]
         src = blocks.vector_source_f(src_data)
         valve = grdab.valve_ff(True, True)
         dst = blocks.vector_sink_f()
