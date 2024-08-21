@@ -19,5 +19,5 @@ GR_PYTHON_INSTALL(
     channel_mapping.py
     curses_app.py
     ${CMAKE_BINARY_DIR}/python/app/adjustment_gui.py
-    __init__.py DESTINATION ${GR_PYTHON_DIR}/grdab/app
+    __init__.py DESTINATION ${GR_PYTHON_DIR}/gnuradio/dab/app
 )

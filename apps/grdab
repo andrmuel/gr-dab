@@ -24,7 +24,7 @@ import sys
 import gnuradio.dab.app
 import os
 
-extra_module_path = os.path.dirname(grdab.app.__file__)
+extra_module_path = os.path.dirname(gnuradio.dab.app.__file__)
 
 sys.path.append(extra_module_path)
 
@@ -58,7 +58,7 @@ parser_curses.add_argument("--skip-xrun-monitor", help="Run without throttle and
 import gnuradio.dab.app.config
 import os
 cfg_dir = "".join([os.getenv("HOME"),"/.grdab"])
-cfg = grdab.app.config.Configuration(cfg_dir)
+cfg = gnuradio.dab.app.config.Configuration(cfg_dir)
 
 rf_gain = 50
 if_gain = 0
@@ -75,17 +75,17 @@ if "ppm" in cfg.adjust_config:
 
 def receive_handler(res):
   print("receive handler")
-  grdab.app.receive_dabplus(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, audio_sample_rate=res.audiorate, dab_bit_rate=res.bit_rate, dab_address=res.address, dab_subch_size=res.subch_size, dab_protect_level=res.protect_level, use_zeromq=res.zeromq, dabplus=not res.classic, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat, skip_xrun_monitor=res.skip_xrun_monitor)
+  gnuradio.dab.app.receive_dabplus(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, audio_sample_rate=res.audiorate, dab_bit_rate=res.bit_rate, dab_address=res.address, dab_subch_size=res.subch_size, dab_protect_level=res.protect_level, use_zeromq=res.zeromq, dabplus=not res.classic, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat, skip_xrun_monitor=res.skip_xrun_monitor)
 
 def info_handler(res):
   print("info handler")
-  grdab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq=res.zeromq, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat)
+  gnuradio.dab.app.get_channels(frequency=(res.freq*1e6), rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq=res.zeromq, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat)
 
 def adjust_handler(res):
   import gnuradio.dab.app.adjustment_gui
   print("will open GUI to adjust gain and ppm")
 
-  class SubClass(grdab.app.adjustment_gui.top_block):
+  class SubClass(gnuradio.dab.app.adjustment_gui.top_block):
 
     def __init__(self):
       super(SubClass, self).__init__(frequency_id_default=26, gain_rf_default=rf_gain, gain_if_default=if_gain, gain_bb_default=bb_gain, ppm_default=ppm, zeromq=res.zeromq, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat)
@@ -96,18 +96,18 @@ def adjust_handler(res):
         import gnuradio.dab.app.config
         import os
         cfg_dir = "".join([os.getenv("HOME"),"/.grdab"])
-        cfg = grdab.app.config.Configuration(cfg_dir)
+        cfg = gnuradio.dab.app.config.Configuration(cfg_dir)
         cfg.adjust_config = {"gain" : {"gain_rf" : self.get_gain_slider(), "gain_if" : self.get_gain_if(), "gain_bb" : self.get_gain_bb()}, "ppm" : self.get_ppm()}
         cfg.save()
 
   tp = SubClass
 
   sys.argv = [sys.argv[0]] # Hack since the next function call also parses argv
-  grdab.app.adjustment_gui.main(tp, options=None)
+  gnuradio.dab.app.adjustment_gui.main(tp, options=None)
 
 def curses_handler(res):
   import gnuradio.dab.app.curses_app
-  grdab.app.curses_app.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq_in=res.zeromq, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat, skip_xrun_monitor=res.skip_xrun_monitor)
+  gnuradio.dab.app.curses_app.main(rf_gain=rf_gain, if_gain=if_gain, bb_gain=bb_gain, ppm=ppm, use_zeromq_in=res.zeromq, server=res.server, server_control=res.server_control, from_file=res.file, from_file_repeat=res.file_repeat, skip_xrun_monitor=res.skip_xrun_monitor)
 
 parser_receive.set_defaults(func=receive_handler)
 parser_info.set_defaults(func=info_handler)
