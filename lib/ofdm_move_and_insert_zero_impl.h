@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_MOVE_AND_INSERT_ZERO_IMPL_H
 #define INCLUDED_DAB_OFDM_MOVE_AND_INSERT_ZERO_IMPL_H
 
-#include <grdab/ofdm_move_and_insert_zero.h>
+#include <dab/ofdm_move_and_insert_zero.h>
 
 namespace gr {
   namespace dab {

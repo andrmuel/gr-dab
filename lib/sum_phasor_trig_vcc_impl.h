@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_IMPL_H
 #define INCLUDED_DAB_SUM_PHASOR_TRIG_VCC_IMPL_H
 
-#include <grdab/sum_phasor_trig_vcc.h>
+#include <dab/sum_phasor_trig_vcc.h>
 
 namespace gr {
   namespace dab {

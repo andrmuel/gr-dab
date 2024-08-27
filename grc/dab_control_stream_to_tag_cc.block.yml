@@ -29,7 +29,7 @@ outputs:
     vlen: ${ vlen }
 
 templates:
-    imports: import grdab
-    make: grdab.control_stream_to_tag_cc(${tag_str}, ${vlen})
+    imports: import gnuradio.dab as dab
+    make: dab.control_stream_to_tag_cc(${tag_str}, ${vlen})
 
 file_format: 1

@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_SELECT_VECTORS_IMPL_H
 #define INCLUDED_DAB_SELECT_VECTORS_IMPL_H
 
-#include <grdab/select_vectors.h>
+#include <dab/select_vectors.h>
 
 namespace gr {
   namespace dab {

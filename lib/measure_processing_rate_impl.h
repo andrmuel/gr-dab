@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_MEASURE_PROCESSING_RATE_IMPL_H
 #define INCLUDED_DAB_MEASURE_PROCESSING_RATE_IMPL_H
 
-#include <grdab/measure_processing_rate.h>
+#include <dab/measure_processing_rate.h>
 
 namespace gr {
   namespace dab {

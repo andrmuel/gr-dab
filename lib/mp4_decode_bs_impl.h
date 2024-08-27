@@ -30,7 +30,7 @@
 #ifndef INCLUDED_DAB_MP4_DECODE_BS_IMPL_H
 #define INCLUDED_DAB_MP4_DECODE_BS_IMPL_H
 
-#include <grdab/mp4_decode_bs.h>
+#include <dab/mp4_decode_bs.h>
 #include "neaacdec.h"
 
 namespace gr {

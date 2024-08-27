@@ -26,7 +26,7 @@ outputs:
     dtype: complex
 
 templates:
-    imports: import grdab
-    make: grdab.fractional_interpolator_triggered_update_cc(${phase_shift}, ${interp_ratio})
+    imports: import gnuradio.dab as dab
+    make: dab.fractional_interpolator_triggered_update_cc(${phase_shift}, ${interp_ratio})
 
 file_format: 1

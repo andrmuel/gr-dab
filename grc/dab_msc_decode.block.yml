@@ -38,8 +38,8 @@ outputs:
     dtype: byte
 
 templates:
-    imports: import grdab
-    make: grdab.msc_decode(${dab_params}, ${address}, ${size}, ${protection}, ${verbose},
+    imports: import gnuradio.dab as dab
+    make: dab.msc_decode(${dab_params}, ${address}, ${size}, ${protection}, ${verbose},
         ${debug})
 
 file_format: 1

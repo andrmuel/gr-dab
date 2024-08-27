@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_IMPL_H
 #define INCLUDED_DAB_FRACTIONAL_INTERPOLATOR_TRIGGERED_UPDATE_CC_IMPL_H
 
-#include <grdab/fractional_interpolator_triggered_update_cc.h>
+#include <dab/fractional_interpolator_triggered_update_cc.h>
 #include <gnuradio/filter/mmse_fir_interpolator_cc.h>
 
 namespace gr {

@@ -39,8 +39,8 @@ outputs:
     vlen: ${ vlen_out }
 
 templates:
-    imports: import grdab
-    make: grdab.repartition_vectors(${type.size}, ${vlen_in}, ${vlen_out}, ${multiply},
+    imports: import gnuradio.dab as dab
+    make: dab.repartition_vectors(${type.size}, ${vlen_in}, ${vlen_out}, ${multiply},
         ${divide})
 
 file_format: 1

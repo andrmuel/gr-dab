@@ -30,8 +30,8 @@ outputs:
     dtype: complex
 
 templates:
-    imports: import grdab
-    make: "grdab.ofdm_mod(\n          grdab.parameters.dab_parameters(\n         \
+    imports: import gnuradio.dab as dab
+    make: "dab.ofdm_mod(\n          dab.parameters.dab_parameters(\n         \
         \   mode=${dab_mode},\n            sample_rate=${samp_rate},\n           \
         \ verbose=False\n          )\n        )\n  "
 

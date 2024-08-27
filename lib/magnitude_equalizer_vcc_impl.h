@@ -23,7 +23,7 @@
 #ifndef INCLUDED_DAB_MAGNITUDE_EQUALIZER_VCC_IMPL_H
 #define INCLUDED_DAB_MAGNITUDE_EQUALIZER_VCC_IMPL_H
 
-#include <grdab/magnitude_equalizer_vcc.h>
+#include <dab/magnitude_equalizer_vcc.h>
 
 namespace gr {
   namespace dab {

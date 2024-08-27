@@ -9,7 +9,7 @@ def get_channels(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=0, u
         from gnuradio import zeromq
 
     import osmosdr
-    import grdab
+    import gnuradio.dab as grdab
     import time
 
     samp_rate = samp_rate = 2048000

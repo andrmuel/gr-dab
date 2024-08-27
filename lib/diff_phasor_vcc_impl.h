@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_DIFF_PHASOR_VCC_IMPL_H
 #define INCLUDED_DAB_DIFF_PHASOR_VCC_IMPL_H
 
-#include <grdab/diff_phasor_vcc.h>
+#include <dab/diff_phasor_vcc.h>
 
 namespace gr {
   namespace dab {

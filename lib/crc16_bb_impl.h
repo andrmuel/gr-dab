@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_CRC16_BB_IMPL_H
 #define INCLUDED_DAB_CRC16_BB_IMPL_H
 
-#include <grdab/crc16_bb.h>
+#include <dab/crc16_bb.h>
 
 namespace gr {
   namespace dab {

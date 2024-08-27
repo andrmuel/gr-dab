@@ -24,7 +24,7 @@
 #ifndef INCLUDED_DAB_PEAK_DETECTOR_FB_IMPL_H
 #define INCLUDED_DAB_PEAK_DETECTOR_FB_IMPL_H
 
-#include <grdab/peak_detector_fb.h>
+#include <dab/peak_detector_fb.h>
 
 namespace gr {
   namespace dab {

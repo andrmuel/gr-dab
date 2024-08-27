@@ -19,7 +19,7 @@ outputs:
     multiplicity: '2'
 
 templates:
-    imports: import grdab
-    make: grdab.mp4_decode_bs(${bit_rate_n})
+    imports: import gnuradio.dab as dab
+    make: dab.mp4_decode_bs(${bit_rate_n})
 
 file_format: 1

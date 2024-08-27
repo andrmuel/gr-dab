@@ -18,7 +18,7 @@ outputs:
     dtype: ''
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_insert_pilot_vcc(${pilot})
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_insert_pilot_vcc(${pilot})
 
 file_format: 1

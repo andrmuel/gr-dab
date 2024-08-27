@@ -20,7 +20,7 @@ outputs:
     vlen: ${ num_carriers }
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_remove_first_symbol_vcc(${num_carriers})
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_remove_first_symbol_vcc(${num_carriers})
 
 file_format: 1

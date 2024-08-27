@@ -27,7 +27,7 @@
 
 class dab_puncture_vbb;
 
-typedef boost::shared_ptr <dab_puncture_vbb> dab_puncture_vbb_sptr;
+typedef std::shared_ptr <dab_puncture_vbb> dab_puncture_vbb_sptr;
 
 dab_puncture_vbb_sptr
 dab_make_puncture_vbb(const std::vector<unsigned char> &puncturing_vector);

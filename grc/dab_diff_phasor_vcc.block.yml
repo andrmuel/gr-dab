@@ -20,7 +20,7 @@ outputs:
     vlen: ${ num_carriers }
 
 templates:
-    imports: import grdab
-    make: grdab.diff_phasor_vcc(${num_carriers})
+    imports: import gnuradio.dab as dab
+    make: dab.diff_phasor_vcc(${num_carriers})
 
 file_format: 1

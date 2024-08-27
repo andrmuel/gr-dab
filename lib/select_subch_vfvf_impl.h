@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_SELECT_SUBCH_VFVF_IMPL_H
 #define INCLUDED_DAB_SELECT_SUBCH_VFVF_IMPL_H
 
-#include <grdab/select_subch_vfvf.h>
+#include <dab/select_subch_vfvf.h>
 
 namespace gr {
   namespace dab {

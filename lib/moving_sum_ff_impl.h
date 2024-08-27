@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_MOVING_SUM_FF_IMPL_H
 #define INCLUDED_DAB_MOVING_SUM_FF_IMPL_H
 
-#include <grdab/moving_sum_ff.h>
+#include <dab/moving_sum_ff.h>
 
 namespace gr {
   namespace dab {

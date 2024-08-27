@@ -21,7 +21,7 @@
 #ifndef INCLUDED_DAB_PRUNE_IMPL_H
 #define INCLUDED_DAB_PRUNE_IMPL_H
 
-#include <grdab/prune.h>
+#include <dab/prune.h>
 
 namespace gr {
   namespace dab {

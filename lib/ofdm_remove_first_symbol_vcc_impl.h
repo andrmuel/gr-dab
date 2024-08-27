@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_IMPL_H
 #define INCLUDED_DAB_OFDM_REMOVE_FIRST_SYMBOL_VCC_IMPL_H
 
-#include <grdab/ofdm_remove_first_symbol_vcc.h>
+#include <dab/ofdm_remove_first_symbol_vcc.h>
 
 namespace gr {
   namespace dab {

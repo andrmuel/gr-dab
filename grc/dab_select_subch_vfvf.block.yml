@@ -31,7 +31,7 @@ outputs:
     vlen: ${ vlen_out }
 
 templates:
-    imports: import grdab
-    make: grdab.select_subch_vfvf(${vlen_in}, ${vlen_out}, ${address}, ${total_size})
+    imports: import gnuradio.dab as dab
+    make: dab.select_subch_vfvf(${vlen_in}, ${vlen_out}, ${address}, ${total_size})
 
 file_format: 1

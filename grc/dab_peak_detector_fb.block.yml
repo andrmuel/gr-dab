@@ -31,8 +31,8 @@ outputs:
     dtype: byte
 
 templates:
-    imports: import grdab
-    make: grdab.peak_detector_fb(${threshold_factor_rise}, ${threshold_factor_fall},
+    imports: import gnuradio.dab as dab
+    make: dab.peak_detector_fb(${threshold_factor_rise}, ${threshold_factor_fall},
         ${look_ahead}, ${alpha})
 
 file_format: 1

@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_PRUNE_VECTORS_IMPL_H
 #define INCLUDED_DAB_PRUNE_VECTORS_IMPL_H
 
-#include <grdab/prune_vectors.h>
+#include <dab/prune_vectors.h>
 
 namespace gr {
   namespace dab {

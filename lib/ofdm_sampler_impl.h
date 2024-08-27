@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_SAMPLER_IMPL_H
 #define INCLUDED_DAB_OFDM_SAMPLER_IMPL_H
 
-#include <grdab/ofdm_sampler.h>
+#include <dab/ofdm_sampler.h>
 
 namespace gr {
   namespace dab {

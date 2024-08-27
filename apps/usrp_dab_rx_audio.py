@@ -12,7 +12,7 @@ receive DAB with USRP
 
 from gnuradio import gr, uhd, blocks
 from gnuradio import audio
-import grdab
+import gnuradio.dab as grdab
 from gnuradio.eng_option import eng_option
 from optparse import OptionParser
 import sys, time, threading, math
@@ -85,7 +85,7 @@ class usrp_dab_rx(gr.top_block):
 
 		# add MSC chain
 		self.dabplus = grdab.dabplus_audio_decoder_ff(self.dab_params, 112, 54, 84, 2, True)
-		self.audio = audio.sink_make(32000)
+		self.audio = audio.sink(32000)
 		self.connect(self.demod, self.dabplus)
 		# left stereo channel
 		self.connect((self.dabplus, 0), (self.audio, 0))

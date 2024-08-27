@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_IMPL_H
 #define INCLUDED_DAB_OFDM_FFE_ALL_IN_ONE_IMPL_H
 
-#include <grdab/ofdm_ffe_all_in_one.h>
+#include <dab/ofdm_ffe_all_in_one.h>
 
 namespace gr {
   namespace dab {

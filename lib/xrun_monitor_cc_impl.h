@@ -21,7 +21,7 @@
 #ifndef INCLUDED_CAPTURE_TOOLS_XRUN_MONITOR_CC_IMPL_H
 #define INCLUDED_CAPTURE_TOOLS_XRUN_MONITOR_CC_IMPL_H
 
-#include <grdab/xrun_monitor_cc.h>
+#include <dab/xrun_monitor_cc.h>
 
 namespace gr {
   namespace dab {

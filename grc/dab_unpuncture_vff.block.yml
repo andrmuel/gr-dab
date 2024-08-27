@@ -18,7 +18,7 @@ outputs:
     dtype: ''
 
 templates:
-    imports: import grdab
-    make: grdab.unpuncture_vff(${puncturing_vector}, ${fillval})
+    imports: import gnuradio.dab as dab
+    make: dab.unpuncture_vff(${puncturing_vector}, ${fillval})
 
 file_format: 1

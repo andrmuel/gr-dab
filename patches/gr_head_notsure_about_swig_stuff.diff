@@ -24,7 +24,7 @@ Index: gnuradio-core/src/lib/general/gr_head.h
  #include <stddef.h>			// size_t
  
 +class gr_head;
-+typedef boost::shared_ptr<gr_head> gr_head_sptr;
++typedef std::shared_ptr<gr_head> gr_head_sptr;
 +
  /*!
   * \brief copies the first N items to the output then signals done

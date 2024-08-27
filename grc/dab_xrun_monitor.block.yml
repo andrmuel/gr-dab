@@ -31,9 +31,9 @@ outputs:
     dtype: ${ type }
 
 templates:
-    imports: import grdab
+    imports: import gnuradio.dab as dab
     make: |-
-        grdab.xrun_monitor_${type.fcn}(${length})
+        dab.xrun_monitor_${type.fcn}(${length})
         self.${id}.set_drop_when_full(${drop_when_full})
 
 file_format: 1

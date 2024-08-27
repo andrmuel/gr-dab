@@ -18,7 +18,7 @@ outputs:
     dtype: float
 
 templates:
-    imports: import grdab
-    make: grdab.modulo_ff(${div_f})
+    imports: import gnuradio.dab as dab
+    make: dab.modulo_ff(${div_f})
 
 file_format: 1

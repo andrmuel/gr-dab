@@ -7,7 +7,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
 
     import time
     import osmosdr
-    import grdab
+    import gnuradio.dab as grdab
 
     samp_rate = samp_rate = 2048000
 

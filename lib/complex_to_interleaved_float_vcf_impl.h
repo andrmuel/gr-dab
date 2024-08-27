@@ -22,7 +22,7 @@
 #ifndef INCLUDED_DAB_COMPLEX_TO_INTERLEAVED_FLOAT_VCF_IMPL_H
 #define INCLUDED_DAB_COMPLEX_TO_INTERLEAVED_FLOAT_VCF_IMPL_H
 
-#include <grdab/complex_to_interleaved_float_vcf.h>
+#include <dab/complex_to_interleaved_float_vcf.h>
 
 namespace gr {
   namespace dab {

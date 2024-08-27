@@ -27,7 +27,7 @@ outputs:
     dtype: byte
 
 templates:
-    imports: import grdab
-    make: grdab.prune(${itemsize}, ${length}, ${prune_start}, ${prune_end})
+    imports: import gnuradio.dab as dab
+    make: dab.prune(${itemsize}, ${length}, ${prune_start}, ${prune_end})
 
 file_format: 1

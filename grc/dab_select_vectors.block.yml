@@ -35,7 +35,7 @@ outputs:
     vlen: ${ total_length }
 
 templates:
-    imports: import grdab
-    make: grdab.select_vectors(${type.size}, ${total_length}, ${num_msc_syms}, ${num_fic_syms})
+    imports: import gnuradio.dab as dab
+    make: dab.select_vectors(${type.size}, ${total_length}, ${num_msc_syms}, ${num_fic_syms})
 
 file_format: 1

@@ -18,7 +18,7 @@ outputs:
     dtype: ''
 
 templates:
-    imports: import grdab
-    make: grdab.ofdm_sync_dab(${dab_params}, ${rx_params}, ${debug})
+    imports: import gnuradio.dab as dab
+    make: dab.ofdm_sync_dab(${dab_params}, ${rx_params}, ${debug})
 
 file_format: 1
