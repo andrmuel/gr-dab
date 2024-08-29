@@ -35,7 +35,7 @@ channel_list = []
 if os.path.isfile(channel_list_filename):
     with open(channel_list_filename, "rb") as fp:
         filecontent = fp.read().decode('utf-8')
-        channel_list = yaml.load(filecontent)
+        channel_list = yaml.safe_load(filecontent)
 
 
 samp_rate = samp_rate = 2048000

@@ -17,7 +17,7 @@ class Configuration():
 
     try:
       with open(self.adjust_file_name, 'r') as ymlfile:
-        self.adjust_config = yaml.load(ymlfile)
+        self.adjust_config = yaml.safe_load(ymlfile)
     except IOError:
       pass
       
