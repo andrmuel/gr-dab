@@ -308,7 +308,7 @@ def main(rf_gain, if_gain, bb_gain, ppm, use_zeromq_in=False, server="tcp://127.
         osmosdr_source_0.set_gain(rf_gain, 0)
         osmosdr_source_0.set_if_gain(if_gain, 0)
         osmosdr_source_0.set_bb_gain(bb_gain, 0)
-        osmosdr_source_0.set_antenna('RX2', 0)
+        osmosdr_source_0.set_antenna('', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
         src = osmosdr_source_0
     else:
