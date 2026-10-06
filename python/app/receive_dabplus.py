@@ -37,7 +37,7 @@ def receive_dabplus(frequency=220.352e6, rf_gain=25, if_gain=0, bb_gain=0, ppm=8
         osmosdr_source_0.set_gain(rf_gain, 0)
         osmosdr_source_0.set_if_gain(if_gain, 0)
         osmosdr_source_0.set_bb_gain(bb_gain, 0)
-        osmosdr_source_0.set_antenna('RX2', 0)
+        osmosdr_source_0.set_antenna('', 0)
         osmosdr_source_0.set_bandwidth(2000000, 0)
         src = osmosdr_source_0
     else:
